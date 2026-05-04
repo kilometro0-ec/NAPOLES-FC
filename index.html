@@ -3,95 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro | Nápoles FC</title>
-    <!-- Vinculación de estilos externos -->
+    <title>Inscripción | Nápoles FC</title>
+    <!-- Vinculación del CSS que acabas de proporcionar -->
     <link rel="stylesheet" href="estilos.css">
     <style>
-        /* Estilos específicos para este formulario */
+        /* Ajustes específicos para la experiencia de usuario */
         input { text-transform: uppercase; } 
+        #correo { text-transform: none; } /* El correo debe ser minúscula */
+        
         .preview-camara { 
             width: 100%; 
             max-width: 300px; 
             border-radius: 10px; 
             display: none; 
             margin: 10px auto; 
-            border: 2px solid #B59461;
+            border: 2px solid var(--dorado);
         }
-        .seccion-formulario {
-            animation: fadeIn 0.5s;
+
+        .botones-nav {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+
+        .btn-secundario {
+            background-color: transparent;
+            border: 1px solid var(--dorado);
+            color: var(--dorado);
         }
     </style>
 </head>
 <body>
+
     <div class="contenedor-principal">
-        <header>
-            <h2>Inscripción Nápoles F.C.</h2>
-        </header>
+        <h2>Inscripción Oficial</h2>
+        <p style="text-align: center; font-size: 0.8em; color: var(--dorado);">NÁPOLES F.C. 2026</p>
 
         <form id="formularioRegistro">
-            <!-- PASO 1: Datos Personales Básicos -->
+            
+            <!-- PASO 1: Identificación -->
             <div id="paso1" class="seccion-formulario">
+                <label>Nombres Completos</label>
                 <input type="text" id="nombre1" placeholder="Primer Nombre" required>
                 <input type="text" id="nombre2" placeholder="Segundo Nombre" required>
                 <input type="text" id="apellidos" placeholder="Apellidos" required>
-                <input type="text" id="cedula" placeholder="Cédula (10 dígitos)" maxlength="10" pattern="\d{10}" title="Debe tener 10 números" required>
+                
+                <label>Identificación</label>
+                <input type="text" id="cedula" placeholder="Cédula (10 dígitos)" maxlength="10" pattern="\d{10}" required>
+                
                 <button type="button" class="btn-accion" onclick="validarYPasar(1, 2)">Siguiente</button>
             </div>
 
-            <!-- PASO 2: Contacto y Nacimiento -->
+            <!-- PASO 2: Contacto -->
             <div id="paso2" class="seccion-formulario" style="display: none;">
-                <label for="fechaNac">Fecha de Nacimiento</label>
+                <label>Fecha de Nacimiento</label>
                 <input type="date" id="fechaNac" required>
                 
-                <input type="tel" id="telefono" placeholder="Teléfono (Ej: 0984016027)" maxlength="10" pattern="09\d{8}" title="Formato: 09XXXXXXXX (10 dígitos)" required>
-                
-                <input type="email" id="correo" placeholder="Correo Electrónico" required style="text-transform: none;">
+                <label>Contacto Directo</label>
+                <input type="tel" id="telefono" placeholder="WhatsApp (Ej: 0984016027)" maxlength="10" pattern="09\d{8}" required>
+                <input type="email" id="correo" placeholder="Correo Electrónico" required>
                 
                 <div class="botones-nav">
-                    <button type="button" class="btn-accion" onclick="irAtras(2, 1)">Anterior</button>
+                    <button type="button" class="btn-accion btn-secundario" onclick="irAtras(2, 1)">Atrás</button>
                     <button type="button" class="btn-accion" onclick="validarYPasar(2, 3)">Siguiente: Fotos</button>
                 </div>
             </div>
 
-            <!-- PASO 3: Verificación Multimedia -->
+            <!-- PASO 3: Documentación Visual -->
             <div id="paso3" class="seccion-formulario" style="display: none;">
-                <label>Foto de Rostro (Cámara)</label>
+                <label>Verificación de Rostro</label>
                 <video id="video" autoplay playsinline class="preview-camara"></video>
                 <canvas id="canvas" style="display:none;"></canvas>
                 
-                <button type="button" id="btnCapturar" class="btn-accion" style="background:#B59461; margin-bottom: 10px;">
-                    Abrir Cámara y Capturar
+                <button type="button" id="btnCapturar" class="btn-accion" style="background: var(--dorado); color: var(--azul-noche); margin-bottom: 10px;">
+                    📷 Abrir Cámara y Capturar
                 </button>
                 
                 <img id="fotoPreview" class="preview-camara">
                 
-                <label>Foto de Cédula (Archivo)</label>
+                <label style="margin-top: 15px; display: block;">Foto de Cédula (Imagen clara)</label>
                 <input type="file" id="fotoCedula" accept="image/*" required>
                 
                 <div class="botones-nav">
-                    <button type="button" class="btn-accion" onclick="irAtras(3, 2)">Anterior</button>
+                    <button type="button" class="btn-accion btn-secundario" onclick="irAtras(3, 2)">Atrás</button>
                     <button type="submit" class="btn-accion">Finalizar Inscripción</button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- Scripts de Lógica Interna -->
+    <!-- SCRIPTS DE FUNCIONAMIENTO INTERNO -->
     <script>
         function validarYPasar(actual, siguiente) {
             const inputs = document.querySelectorAll(`#paso${actual} [required]`);
             let todoLleno = true;
-            
-            inputs.forEach(i => { 
-                if(!i.checkValidity()) { 
-                    i.reportValidity(); 
-                    todoLleno = false; 
-                } 
-            });
+            inputs.forEach(i => { if(!i.checkValidity()) { i.reportValidity(); todoLleno = false; } });
             
             if(todoLleno) {
                 document.getElementById(`paso${actual}`).style.display = 'none';
@@ -103,55 +109,33 @@
         function irAtras(actual, anterior) {
             document.getElementById(`paso${actual}`).style.display = 'none';
             document.getElementById(`paso${anterior}`).style.display = 'block';
-            // Detener cámara si se regresa del paso 3
-            if(actual === 3 && stream) {
-                stream.getTracks().forEach(t => t.stop());
-            }
+            if(actual === 3 && stream) stream.getTracks().forEach(t => t.stop());
         }
 
-        // Lógica de Cámara
         let stream;
         async function iniciarCamara() {
+            const video = document.getElementById('video');
+            video.style.display = 'block';
             try {
-                const video = document.getElementById('video');
-                const btnCapturar = document.getElementById('btnCapturar');
-                video.style.display = 'block';
-                
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: "user" }, 
-                    audio: false 
-                });
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 video.srcObject = stream;
-            } catch (err) {
-                console.error("Error al acceder a la cámara: ", err);
-                alert("No se pudo acceder a la cámara. Por favor, asegúrate de dar los permisos.");
-            }
+            } catch (e) { alert("Error al activar cámara. Verifique permisos."); }
         }
 
         document.getElementById('btnCapturar').onclick = function() {
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
-            const fotoPreview = document.getElementById('fotoPreview');
-
-            if (video.srcObject) {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
-                
-                const data = canvas.toDataURL('image/jpeg');
-                fotoPreview.src = data;
-                fotoPreview.style.display = 'block';
-                video.style.display = 'none';
-                
-                // Detener el flujo de la cámara para ahorrar recursos
-                stream.getTracks().forEach(t => t.stop());
-            } else {
-                iniciarCamara();
-            }
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            document.getElementById('fotoPreview').src = canvas.toDataURL('image/jpeg', 0.7); // 0.7 para optimizar tamaño en Google Sheets
+            document.getElementById('fotoPreview').style.display = 'block';
+            video.style.display = 'none';
+            stream.getTracks().forEach(t => t.stop());
         };
     </script>
 
-    <!-- Vinculación de archivos JS externos -->
+    <!-- ARCHIVOS EXTERNOS -->
     <script src="api.js"></script>
     <script src="nav.js"></script>
 </body>
