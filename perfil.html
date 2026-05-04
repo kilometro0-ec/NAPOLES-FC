@@ -6,6 +6,13 @@
     <title>Perfil Oficial | Nápoles FC</title>
     <link rel="stylesheet" href="estilos.css">
     <style>
+        :root {
+            --dorado: #b59461;
+            --azul-noche: #001a33;
+            --rojo-alerta: #ff4444;
+            --verde-ok: #00c851;
+        }
+
         .perfil-grid {
             display: grid;
             grid-template-columns: 1fr 340px;
@@ -15,95 +22,97 @@
             padding: 20px;
         }
 
-        /* DISEÑO DE LA CAMISETA PROFESIONAL */
+        /* TARJETA DE ESTADO DEPORTIVO */
+        .status-card {
+            background: #111;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid var(--dorado);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .indicador {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-activo { background: var(--verde-ok); color: white; }
+        .status-inhabilitado { background: var(--rojo-alerta); color: white; box-shadow: 0 0 10px var(--rojo-alerta); }
+
+        /* SECCIÓN DE FINANZAS */
+        .finanzas-box {
+            background: linear-gradient(145deg, #1a1a1a, #000);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+
+        .monto-total {
+            font-size: 2.5em;
+            font-weight: 900;
+            color: var(--dorado);
+            display: block;
+            margin: 10px 0;
+        }
+
+        /* DISEÑO DE LA CAMISETA */
         .camiseta-container {
-            background: linear-gradient(180deg, #001a33 0%, #000 100%);
+            background: linear-gradient(180deg, var(--azul-noche) 0%, #000 100%);
             border: 2px solid var(--dorado);
             border-radius: 20px;
-            height: 600px;
+            height: 550px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            padding-top: 30px;
             position: relative;
-        }
-
-        .foto-camiseta {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid var(--dorado);
-            object-fit: cover;
-            background: #222;
-            margin-bottom: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
         .nombre-estampado {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             color: white;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             font-family: 'Arial Black', sans-serif;
-            margin-bottom: 5px;
+            margin-top: 15px;
         }
 
         .numero-estampado {
-            font-size: 160px;
+            font-size: 150px;
             font-weight: 900;
             color: var(--dorado);
             line-height: 0.8;
             font-family: 'Impact', sans-serif;
-            text-shadow: 5px 5px 0px rgba(0,0,0,0.8);
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.8);
         }
 
-        /* MODAL OBLIGATORIO */
+        .foto-perfil {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 3px solid var(--dorado);
+            object-fit: cover;
+            background: #222;
+        }
+
+        /* MODAL DE DORSALES */
         #modalEleccion {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98);
-            z-index: 9999;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
             justify-content: center;
             align-items: center;
-        }
-
-        .caja-eleccion {
-            background: var(--azul-noche);
-            padding: 40px;
-            border: 2px solid var(--dorado);
-            border-radius: 20px;
-            text-align: center;
-            width: 90%;
-            max-width: 450px;
-        }
-
-        .advertencia {
-            color: #ff4444;
-            font-weight: bold;
-            font-size: 0.85em;
-            background: rgba(255, 68, 68, 0.1);
-            padding: 10px;
-            border: 1px solid #ff4444;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        /* FICHA DE DATOS */
-        .ficha-datos {
-            background: var(--gris-suave);
-            padding: 25px;
-            border-radius: 15px;
-            border-top: 4px solid var(--dorado);
-        }
-
-        .dato-fila {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 5px;
         }
 
         @media (max-width: 850px) {
@@ -114,64 +123,76 @@
 </head>
 <body>
 
-    <!-- MODAL DE ELECCIÓN PRIMERA VEZ -->
+    <!-- MODAL OBLIGATORIO PARA ELEGIR DORSAL -->
     <div id="modalEleccion">
-        <div class="caja-eleccion">
-            <h2 style="color: var(--dorado); margin-bottom: 5px;">EQUIPACIÓN OFICIAL</h2>
-            <div class="advertencia">
-                ⚠️ UNA VEZ GUARDADO EL NOMBRE Y NÚMERO, NO PODRÁ REALIZAR CAMBIOS.
-            </div>
+        <div style="background: var(--azul-noche); padding: 30px; border-radius: 20px; border: 2px solid var(--dorado); width: 90%; max-width: 400px; text-align: center;">
+            <h2 style="color: var(--dorado);">EQUIPACIÓN 2026</h2>
+            <p style="font-size: 0.8em; color: #ccc; margin-bottom: 20px;">Elige tu nombre en dorsal y número disponible.</p>
             
-            <div style="text-align: left;">
-                <label style="display: block; margin-bottom: 5px;">Nombre en la Dorsal:</label>
-                <select id="selectNombre" class="btn-accion" style="margin-bottom: 20px; width: 100%;"></select>
-                
-                <label style="display: block; margin-bottom: 5px;">Número Disponible:</label>
-                <select id="selectNumero" class="btn-accion" style="margin-bottom: 30px; width: 100%;">
-                    <option value="">Cargando números disponibles...</option>
-                </select>
-            </div>
+            <label style="display: block; text-align: left; margin-bottom: 5px;">Nombre estampado:</label>
+            <select id="selectNombre" class="btn-accion" style="width: 100%; margin-bottom: 15px; padding: 10px;"></select>
             
-            <button id="btnGuardarConfig" onclick="validarYConfirmar()" class="btn-accion" style="width: 100%;" disabled>
-                GUARDAR PERMANENTEMENTE
-            </button>
+            <label style="display: block; text-align: left; margin-bottom: 5px;">Número de camiseta:</label>
+            <select id="selectNumero" class="btn-accion" style="width: 100%; margin-bottom: 25px; padding: 10px;">
+                <option value="">Cargando...</option>
+            </select>
+            
+            <button id="btnGuardar" onclick="guardarConfig()" class="btn-accion" style="width: 100%;" disabled>CONFIRMAR DORSAL</button>
         </div>
     </div>
 
     <div class="perfil-grid">
-        <!-- IZQUIERDA: DATOS COMPLETOS -->
-        <div class="info-area">
-            <div class="ficha-datos">
-                <h3 style="color: var(--dorado); margin-top: 0;">DATOS DEL JUGADOR</h3>
-                <div class="dato-fila"><span>Primer Nombre (B):</span><strong id="txtB">---</strong></div>
-                <div class="dato-fila"><span>Segundo Nombre (C):</span><strong id="txtC">---</strong></div>
-                <div class="dato-fila"><span>Apellidos (D):</span><strong id="txtD">---</strong></div>
-                <div class="dato-fila"><span>Cédula:</span><strong id="txtCI">---</strong></div>
-                
-                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
-                
-                <h3 style="color: var(--dorado);">ESTADÍSTICAS</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div style="background: #000; padding: 15px; border-radius: 10px; text-align: center;">
-                        <small>GOLES</small><br><span id="valG" style="font-size: 1.5em; color: var(--dorado);">0</span>
-                    </div>
-                    <div style="background: #000; padding: 15px; border-radius: 10px; text-align: center;">
-                        <small>AMARILLAS</small><br><span id="valA" style="font-size: 1.5em; color: #ffcc00;">0</span>
-                    </div>
+        <!-- ÁREA DE INFORMACIÓN Y PAGOS -->
+        <div class="info-column">
+            
+            <!-- ESTADO DEPORTIVO -->
+            <div class="status-card">
+                <div>
+                    <small style="color: #888;">ESTADO DE COMPETICIÓN</small>
+                    <h3 id="txtEstadoDisplay" style="margin: 5px 0;">VERIFICANDO...</h3>
+                </div>
+                <div id="badgeEstado" class="indicador">---</div>
+            </div>
+
+            <!-- SALDOS ACUMULADOS -->
+            <div class="finanzas-box">
+                <small style="color: var(--dorado); letter-spacing: 1px;">TOTAL PENDIENTE (Vocalías + Multas)</small>
+                <span class="monto-total">$ <span id="txtDeuda">0.00</span></span>
+                <p id="msgNoticia" style="font-size: 0.85em; color: #aaa; border-top: 1px solid #333; pt-10; margin-top: 10px;">
+                    Cargando notificaciones...
+                </p>
+            </div>
+
+            <!-- ESTADÍSTICAS RÁPIDAS -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <div style="background: #111; padding: 15px; border-radius: 10px; text-align: center;">
+                    <small>GOLES</small><br><strong id="statGoles" style="color: var(--dorado); font-size: 1.5em;">0</strong>
+                </div>
+                <div style="background: #111; padding: 15px; border-radius: 10px; text-align: center;">
+                    <small>AMARILLAS</small><br><strong id="statAmarillas" style="color: #ffcc00; font-size: 1.5em;">0</strong>
+                </div>
+                <div style="background: #111; padding: 15px; border-radius: 10px; text-align: center;">
+                    <small>ROJAS</small><br><strong id="statRojas" style="color: #ff4444; font-size: 1.5em;">0</strong>
                 </div>
             </div>
 
-            <button onclick="cerrarSesion()" style="margin-top: 20px; background: none; border: 1px solid #ff4444; color: #ff4444; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
-                Cerrar Sesión
+            <button onclick="cerrarSesion()" style="margin-top: 30px; width: 100%; background: none; border: 1px solid #444; color: #666; padding: 10px; border-radius: 10px; cursor: pointer;">
+                Cerrar Sesión Oficial
             </button>
         </div>
 
-        <!-- DERECHA: CAMISETA -->
-        <div class="camiseta-container">
-            <img id="camImg" src="https://via.placeholder.com/150" class="foto-camiseta">
-            <div id="camNom" class="nombre-estampado">NOMBRE</div>
-            <div id="camNum" class="numero-estampado">--</div>
-            <p style="margin-top: 20px; color: var(--dorado); letter-spacing: 3px; font-size: 0.7em;">NÁPOLES FC OFFICIAL</p>
+        <!-- VISTA DE LA CAMISETA -->
+        <div class="camiseta-area">
+            <div class="camiseta-container">
+                <img id="imgJugador" src="" class="foto-perfil" alt="Rostro">
+                <div id="dorsalNombre" class="nombre-estampado">---</div>
+                <div id="dorsalNumero" class="numero-estampado">--</div>
+                
+                <div style="position: absolute; bottom: 20px; text-align: center;">
+                    <img src="logo-napoles.png" style="width: 40px; margin-bottom: 5px;"><br>
+                    <small style="color: rgba(255,255,255,0.3); letter-spacing: 2px;">NÁPOLES F.C.</small>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -181,100 +202,78 @@
             const j = JSON.parse(localStorage.getItem('datos_jugador'));
             if(!j) { window.location.href = 'login.html'; return; }
 
-            // 1. Mostrar datos completos (Columnas B, C, D)
-            document.getElementById('txtB').innerText = j.nombre1 || "---";
-            document.getElementById('txtC').innerText = j.nombre2 || "---";
-            document.getElementById('txtD').innerText = j.apellidos || "---";
-            document.getElementById('txtCI').innerText = j.cedula;
-            document.getElementById('valG').innerText = j.goles || 0;
-            document.getElementById('valA').innerText = j.amarillas || 0;
-            document.getElementById('camImg').src = j.foto || 'https://via.placeholder.com/150';
+            // Inyectar Datos
+            document.getElementById('txtDeuda').innerText = j.vocalia;
+            document.getElementById('statGoles').innerText = j.goles;
+            document.getElementById('statAmarillas').innerText = j.amarillas;
+            document.getElementById('statRojas').innerText = j.rojas;
+            document.getElementById('msgNoticia').innerText = j.notificacion;
+            document.getElementById('imgJugador').src = j.foto;
 
-            // 2. Verificar si ya tiene configuración guardada
-            if(!j.nomCamiseta || !j.numDorsal) {
-                abrirModalConfig(j);
+            // Lógica de Semáforo de Estado
+            const badge = document.getElementById('badgeEstado');
+            const txtStatus = document.getElementById('txtEstadoDisplay');
+            if(j.estado === "INHABILITADO") {
+                badge.innerText = "INHABILITADO";
+                badge.className = "indicador status-inhabilitado";
+                txtStatus.innerText = "Sancionado";
+                txtStatus.style.color = "var(--rojo-alerta)";
             } else {
-                actualizarVistaCamiseta(j.nomCamiseta, j.numDorsal);
+                badge.innerText = "ACTIVO";
+                badge.className = "indicador status-activo";
+                txtStatus.innerText = "Apto para jugar";
+            }
+
+            // Verificar Dorsal
+            if(!j.numDorsal) {
+                mostrarModalConfig(j);
+            } else {
+                document.getElementById('dorsalNombre').innerText = j.nomCamiseta;
+                document.getElementById('dorsalNumero').innerText = j.numDorsal;
             }
         });
 
-        async function abrirModalConfig(j) {
+        async function mostrarModalConfig(j) {
             document.getElementById('modalEleccion').style.display = 'flex';
             
-            // Cargar Nombres (Columna B o C)
-            const selectNom = document.getElementById('selectNombre');
-            const b = j.nombre1 || "NOMBRE";
-            const c = j.nombre2 || "";
-            let htmlNoms = `<option value="${b}">${b}</option>`;
-            if(c) htmlNoms += `<option value="${c}">${c}</option>`;
-            selectNom.innerHTML = htmlNoms;
-
-            // Cargar Números disponibles desde el servidor
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=getNumeros`);
-                const numeros = await response.json();
-                
-                const selectNum = document.getElementById('selectNumero');
-                selectNum.innerHTML = '<option value="">-- Elige un Número --</option>';
-                
-                numeros.forEach(n => {
-                    let opt = document.createElement('option');
-                    opt.value = n;
-                    opt.innerText = "Dorsal " + n;
-                    selectNum.appendChild(opt);
-                });
-                
-                document.getElementById('btnGuardarConfig').disabled = false;
-            } catch (e) {
-                alert("Error al cargar números. Recarga la página.");
-            }
-        }
-
-        function validarYConfirmar() {
-            const nom = document.getElementById('selectNombre').value;
-            const num = document.getElementById('selectNumero').value;
-
-            if(!num) { alert("Selecciona un número de dorsal."); return; }
-
-            const check = confirm(`¿Confirmas tu equipación?\n\nNombre: ${nom}\nNúmero: ${num}\n\nRECUERDA: Esta acción no se puede deshacer.`);
+            // Opciones de Nombre
+            const selectN = document.getElementById('selectNombre');
+            selectN.innerHTML = `<option value="${j.nombre1}">${j.nombre1}</option>
+                                 <option value="${j.nombre2}">${j.nombre2 || j.nombre1}</option>
+                                 <option value="${j.apellidos.split(' ')[0]}">${j.apellidos.split(' ')[0]}</option>`;
             
-            if(check) {
-                guardarEnServidor(nom, num);
-            }
+            // Cargar Números Libres
+            const res = await fetch(`${SCRIPT_URL}?action=getNumeros`);
+            const numeros = await res.json();
+            const selectNum = document.getElementById('selectNumero');
+            selectNum.innerHTML = '<option value="">Seleccionar...</option>';
+            numeros.forEach(n => {
+                let opt = document.createElement('option');
+                opt.value = n; opt.innerText = n;
+                selectNum.appendChild(opt);
+            });
+            document.getElementById('btnGuardar').disabled = false;
         }
 
-        async function guardarEnServidor(nom, num) {
+        async function guardarConfig() {
             const j = JSON.parse(localStorage.getItem('datos_jugador'));
-            const btn = document.getElementById('btnGuardarConfig');
-            btn.innerText = "PROCESANDO...";
-            btn.disabled = true;
+            const nCam = document.getElementById('selectNombre').value;
+            const nNum = document.getElementById('selectNumero').value;
 
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=saveConfig&cedula=${j.cedula}&nomCamiseta=${nom}&numDorsal=${num}`);
-                const res = await response.json();
+            if(!nNum) return alert("Elige un número.");
 
-                if(res.success) {
-                    j.nomCamiseta = nom;
-                    j.numDorsal = num;
-                    localStorage.setItem('datos_jugador', JSON.stringify(j));
-                    
-                    actualizarVistaCamiseta(nom, num);
-                    document.getElementById('modalEleccion').style.display = 'none';
-                    alert("¡Configuración guardada exitosamente!");
-                } else {
-                    alert("Error: El número ya fue tomado por otro jugador.");
-                    location.reload();
-                }
-            } catch (e) {
-                alert("Error de conexión al guardar.");
-                btn.disabled = false;
-                btn.innerText = "GUARDAR PERMANENTEMENTE";
+            const res = await fetch(`${SCRIPT_URL}?action=saveConfig&cedula=${j.cedula}&nomCamiseta=${nCam}&numDorsal=${nNum}`);
+            const data = await res.json();
+
+            if(data.success) {
+                j.nomCamiseta = nCam;
+                j.numDorsal = nNum;
+                localStorage.setItem('datos_jugador', JSON.stringify(j));
+                location.reload();
+            } else {
+                alert("Este número acaba de ser ocupado. Elige otro.");
+                location.reload();
             }
-        }
-
-        function actualizarVistaCamiseta(nom, num) {
-            document.getElementById('camNom').innerText = nom;
-            document.getElementById('camNum').innerText = num;
         }
 
         function cerrarSesion() {
@@ -282,6 +281,5 @@
             window.location.href = 'login.html';
         }
     </script>
-    <script src="nav.js"></script>
 </body>
 </html>
