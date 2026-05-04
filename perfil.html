@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Pro | Nápoles FC</title>
+    <title>Perfil Oficial | Nápoles FC</title>
     <link rel="stylesheet" href="estilos.css">
     <style>
         .perfil-grid {
@@ -79,6 +79,17 @@
             max-width: 450px;
         }
 
+        .advertencia {
+            color: #ff4444;
+            font-weight: bold;
+            font-size: 0.85em;
+            background: rgba(255, 68, 68, 0.1);
+            padding: 10px;
+            border: 1px solid #ff4444;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
         /* FICHA DE DATOS */
         .ficha-datos {
             background: var(--gris-suave);
@@ -106,16 +117,24 @@
     <!-- MODAL DE ELECCIÓN PRIMERA VEZ -->
     <div id="modalEleccion">
         <div class="caja-eleccion">
-            <h2 style="color: var(--dorado);">CONFIGURACIÓN INICIAL</h2>
-            <p style="margin-bottom: 25px;">Selecciona los datos de tu uniforme oficial</p>
+            <h2 style="color: var(--dorado); margin-bottom: 5px;">EQUIPACIÓN OFICIAL</h2>
+            <div class="advertencia">
+                ⚠️ UNA VEZ GUARDADO EL NOMBRE Y NÚMERO, NO PODRÁ REALIZAR CAMBIOS.
+            </div>
             
-            <label style="display: block; text-align: left; margin-bottom: 5px;">Nombre en la Camiseta (Columna B o C)</label>
-            <select id="selectNombre" class="btn-accion" style="margin-bottom: 20px; width: 100%;"></select>
+            <div style="text-align: left;">
+                <label style="display: block; margin-bottom: 5px;">Nombre en la Dorsal:</label>
+                <select id="selectNombre" class="btn-accion" style="margin-bottom: 20px; width: 100%;"></select>
+                
+                <label style="display: block; margin-bottom: 5px;">Número Disponible:</label>
+                <select id="selectNumero" class="btn-accion" style="margin-bottom: 30px; width: 100%;">
+                    <option value="">Cargando números disponibles...</option>
+                </select>
+            </div>
             
-            <label style="display: block; text-align: left; margin-bottom: 5px;">Número de Dorsal</label>
-            <input type="number" id="inputNumero" min="1" max="99" placeholder="Ej: 10" class="btn-accion" style="margin-bottom: 30px; width: 100%;">
-            
-            <button onclick="guardarConfig()" class="btn-accion" style="width: 100%;">CONFIRMAR E INGRESAR</button>
+            <button id="btnGuardarConfig" onclick="validarYConfirmar()" class="btn-accion" style="width: 100%;" disabled>
+                GUARDAR PERMANENTEMENTE
+            </button>
         </div>
     </div>
 
@@ -124,19 +143,19 @@
         <div class="info-area">
             <div class="ficha-datos">
                 <h3 style="color: var(--dorado); margin-top: 0;">DATOS DEL JUGADOR</h3>
-                <div class="dato-fila"><span>Primer Nombre:</span><strong id="txtB">---</strong></div>
-                <div class="dato-fila"><span>Segundo Nombre:</span><strong id="txtC">---</strong></div>
-                <div class="dato-fila"><span>Apellidos:</span><strong id="txtD">---</strong></div>
+                <div class="dato-fila"><span>Primer Nombre (B):</span><strong id="txtB">---</strong></div>
+                <div class="dato-fila"><span>Segundo Nombre (C):</span><strong id="txtC">---</strong></div>
+                <div class="dato-fila"><span>Apellidos (D):</span><strong id="txtD">---</strong></div>
                 <div class="dato-fila"><span>Cédula:</span><strong id="txtCI">---</strong></div>
                 
                 <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
                 
                 <h3 style="color: var(--dorado);">ESTADÍSTICAS</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div style="background: #000; padding: 15px; border-radius: 10px;">
+                    <div style="background: #000; padding: 15px; border-radius: 10px; text-align: center;">
                         <small>GOLES</small><br><span id="valG" style="font-size: 1.5em; color: var(--dorado);">0</span>
                     </div>
-                    <div style="background: #000; padding: 15px; border-radius: 10px;">
+                    <div style="background: #000; padding: 15px; border-radius: 10px; text-align: center;">
                         <small>AMARILLAS</small><br><span id="valA" style="font-size: 1.5em; color: #ffcc00;">0</span>
                     </div>
                 </div>
@@ -158,7 +177,7 @@
 
     <script src="api.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const j = JSON.parse(localStorage.getItem('datos_jugador'));
             if(!j) { window.location.href = 'login.html'; return; }
 
@@ -171,45 +190,86 @@
             document.getElementById('valA').innerText = j.amarillas || 0;
             document.getElementById('camImg').src = j.foto || 'https://via.placeholder.com/150';
 
-            // 2. Verificar si ya eligió camiseta
+            // 2. Verificar si ya tiene configuración guardada
             if(!j.nomCamiseta || !j.numDorsal) {
-                abrirModal(j);
+                abrirModalConfig(j);
             } else {
                 actualizarVistaCamiseta(j.nomCamiseta, j.numDorsal);
             }
         });
 
-        function abrirModal(j) {
+        async function abrirModalConfig(j) {
             document.getElementById('modalEleccion').style.display = 'flex';
-            const select = document.getElementById('selectNombre');
             
-            // Opciones obligatorias de Columna B o C
+            // Cargar Nombres (Columna B o C)
+            const selectNom = document.getElementById('selectNombre');
             const b = j.nombre1 || "NOMBRE";
             const c = j.nombre2 || "";
-            
-            let html = `<option value="${b}">${b} (1er Nombre)</option>`;
-            if(c) html += `<option value="${c}">${c} (2do Nombre)</option>`;
-            
-            select.innerHTML = html;
+            let htmlNoms = `<option value="${b}">${b}</option>`;
+            if(c) htmlNoms += `<option value="${c}">${c}</option>`;
+            selectNom.innerHTML = htmlNoms;
+
+            // Cargar Números disponibles desde el servidor
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getNumeros`);
+                const numeros = await response.json();
+                
+                const selectNum = document.getElementById('selectNumero');
+                selectNum.innerHTML = '<option value="">-- Elige un Número --</option>';
+                
+                numeros.forEach(n => {
+                    let opt = document.createElement('option');
+                    opt.value = n;
+                    opt.innerText = "Dorsal " + n;
+                    selectNum.appendChild(opt);
+                });
+                
+                document.getElementById('btnGuardarConfig').disabled = false;
+            } catch (e) {
+                alert("Error al cargar números. Recarga la página.");
+            }
         }
 
-        function guardarConfig() {
+        function validarYConfirmar() {
             const nom = document.getElementById('selectNombre').value;
-            const num = document.getElementById('inputNumero').value;
-            const j = JSON.parse(localStorage.getItem('datos_jugador'));
+            const num = document.getElementById('selectNumero').value;
 
-            if(!num || num < 1 || num > 99) {
-                alert("Número de dorsal inválido");
-                return;
+            if(!num) { alert("Selecciona un número de dorsal."); return; }
+
+            const check = confirm(`¿Confirmas tu equipación?\n\nNombre: ${nom}\nNúmero: ${num}\n\nRECUERDA: Esta acción no se puede deshacer.`);
+            
+            if(check) {
+                guardarEnServidor(nom, num);
             }
+        }
 
-            // Guardar local
-            j.nomCamiseta = nom;
-            j.numDorsal = num;
-            localStorage.setItem('datos_jugador', JSON.stringify(j));
+        async function guardarEnServidor(nom, num) {
+            const j = JSON.parse(localStorage.getItem('datos_jugador'));
+            const btn = document.getElementById('btnGuardarConfig');
+            btn.innerText = "PROCESANDO...";
+            btn.disabled = true;
 
-            actualizarVistaCamiseta(nom, num);
-            document.getElementById('modalEleccion').style.display = 'none';
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=saveConfig&cedula=${j.cedula}&nomCamiseta=${nom}&numDorsal=${num}`);
+                const res = await response.json();
+
+                if(res.success) {
+                    j.nomCamiseta = nom;
+                    j.numDorsal = num;
+                    localStorage.setItem('datos_jugador', JSON.stringify(j));
+                    
+                    actualizarVistaCamiseta(nom, num);
+                    document.getElementById('modalEleccion').style.display = 'none';
+                    alert("¡Configuración guardada exitosamente!");
+                } else {
+                    alert("Error: El número ya fue tomado por otro jugador.");
+                    location.reload();
+                }
+            } catch (e) {
+                alert("Error de conexión al guardar.");
+                btn.disabled = false;
+                btn.innerText = "GUARDAR PERMANENTEMENTE";
+            }
         }
 
         function actualizarVistaCamiseta(nom, num) {
@@ -222,7 +282,6 @@
             window.location.href = 'login.html';
         }
     </script>
-
     <script src="nav.js"></script>
 </body>
 </html>
