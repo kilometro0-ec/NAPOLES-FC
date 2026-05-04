@@ -1,20 +1,35 @@
-// nav.js - Sistema de Navegación y Footer Oficial por bY Corporación 360
+/**
+ * nav.js - Sistema de Navegación y Footer Oficial
+ * Desarrollado por: bY Corporación 360
+ * Versión 2026.1.0 | Quito - Ecuador
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Detectar en qué página estamos para iluminar el botón correcto
+    // 1. Verificación de Seguridad: Solo mostrar si el jugador está aprobado
+    // Esta marca se crea en el login cuando el estado en Google Sheets es 'APROBADO'
+    const sessionActiva = localStorage.getItem('jugador_aprobado');
+
+    // Si no hay sesión activa, el script se detiene y no muestra nada
+    if (!sessionActiva) {
+        console.log("Acceso restringido: Navegación oculta hasta aprobación.");
+        return; 
+    }
+
+    // 2. Identificar la página actual para iluminar el botón
     const path = window.location.pathname;
     const paginaActual = path.split("/").pop() || "index.html";
 
-    // 2. Definir la estructura de la navegación y el pie de página
+    // 3. Estructura de la Navegación y el Pie de Página (Colores del uniforme 2026)
     const interfazHTML = `
-    <!-- Barra de Navegación Inferior -->
+    <!-- Barra de Navegación Inferior (Solo visible para aprobados) -->
     <nav class="nav-napoles">
-        <div class="nav-link ${paginaActual === 'index.html' ? 'active' : ''}" onclick="window.location.href='index.html'">
-            <span class="nav-icon">📝</span>
-            <span class="nav-text">Registro</span>
-        </div>
         <div class="nav-link ${paginaActual === 'perfil.html' ? 'active' : ''}" onclick="window.location.href='perfil.html'">
             <span class="nav-icon">⚽</span>
             <span class="nav-text">Mi Perfil</span>
+        </div>
+        <div class="nav-link ${paginaActual === 'noticias.html' ? 'active' : ''}" onclick="window.location.href='noticias.html'">
+            <span class="nav-icon">📢</span>
+            <span class="nav-text">Noticias</span>
         </div>
         <div class="nav-link ${paginaActual === 'admin.html' ? 'active' : ''}" onclick="window.location.href='admin.html'">
             <span class="nav-icon">👑</span>
@@ -32,15 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
     </footer>
 
     <style>
-        /* Estilos integrados para asegurar los colores del uniforme 2026 */
+        /* Paleta de colores Nápoles F.C. 2026 */
         :root {
             --azul-noche: #1A2B48;
             --dorado-napoles: #B59461;
-            --cardenillo: #008B94;
+            --blanco: #ffffff;
         }
 
         body {
-            margin-bottom: 80px; /* Espacio para que el menú no tape el contenido */
+            margin-bottom: 80px; /* Espacio para no tapar contenido con el nav */
         }
 
         .nav-napoles {
@@ -82,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         .nav-text {
-            color: white;
+            color: var(--blanco);
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -111,6 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </style>
     `;
 
-    // 3. Inyectar el código al final del documento
+    // 4. Inyectar la interfaz en el documento
     document.body.insertAdjacentHTML('beforeend', interfazHTML);
 });
