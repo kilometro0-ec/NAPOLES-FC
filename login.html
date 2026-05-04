@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Nápoles FC</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .contenedor-login {
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: var(--gris-suave);
+            border: 1px solid var(--dorado);
+            border-radius: 15px;
+            text-align: center;
+        }
+        .logo-login {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        .mensaje-error {
+            color: #ff4444;
+            font-size: 0.85em;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-login">
+        <div class="logo-login">⚽</div>
+        <h2>Acceso Jugadores</h2>
+        <p style="color: var(--dorado); font-size: 0.9em;">Nápoles F.C. 2026</p>
+
+        <form id="formLogin">
+            <label>Número de Cédula</label>
+            <input type="text" id="loginCedula" placeholder="Ingrese su identificación" maxlength="10" required>
+            
+            <button type="submit" id="btnEntrar" class="btn-accion">Entrar al Club</button>
+            <p id="errorLogin" class="mensaje-error">Cédula no registrada o pendiente de aprobación.</p>
+        </form>
+
+        <div style="margin-top: 20px;">
+            <a href="index.html" style="color: var(--dorado); text-decoration: none; font-size: 0.8em;">¿No estás registrado? Inscríbete aquí</a>
+        </div>
+    </div>
+
+    <script>
+        // URL de tu Web App de Google (la misma de api.js)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLctY39LIa_aVSFKCIQl306huhIk6CiZzrUC2PczfeVlTJ9-V9Vt9giq1A2mYveAHW/exec";
+
+        document.getElementById('formLogin').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const cedula = document.getElementById('loginCedula').value.trim();
+            const btn = document.getElementById('btnEntrar');
+            const errorMsg = document.getElementById('errorLogin');
+
+            btn.innerText = "VERIFICANDO...";
+            btn.disabled = true;
+            errorMsg.style.display = 'none';
+
+            try {
+                // Consultamos a Google Sheets si la cédula existe y está aprobada
+                // Enviamos una petición tipo GET para buscar datos
+                const response = await fetch(`${SCRIPT_URL}?action=login&cedula=${cedula}`);
+                const resultado = await response.json();
+
+                if (resultado.success) {
+                    // 1. Guardamos la sesión en el navegador
+                    localStorage.setItem('jugador_aprobado', 'true');
+                    localStorage.setItem('datos_jugador', JSON.stringify(resultado.datos));
+                    
+                    // 2. Redireccionamos al Perfil
+                    window.location.href = 'perfil.html';
+                } else {
+                    errorMsg.style.display = 'block';
+                    btn.innerText = "ENTRAR AL CLUB";
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error de conexión. Intente más tarde.");
+                btn.disabled = false;
+                btn.innerText = "ENTRAR AL CLUB";
+            }
+        });
+    </script>
+    <!-- Incluimos nav.js para el footer corporativo de bY Corporación 360 -->
+    <script src="nav.js"></script>
+</body>
+</html>
