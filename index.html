@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscripción | Nápoles FC</title>
-    <!-- Vinculación del CSS que acabas de proporcionar -->
     <link rel="stylesheet" href="estilos.css">
     <style>
-        /* Ajustes específicos para la experiencia de usuario */
         input { text-transform: uppercase; } 
-        #correo { text-transform: none; } /* El correo debe ser minúscula */
-        
+        #correo { text-transform: none; }
         .preview-camara { 
             width: 100%; 
             max-width: 300px; 
@@ -19,71 +16,54 @@
             margin: 10px auto; 
             border: 2px solid var(--dorado);
         }
-
-        .botones-nav {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-secundario {
-            background-color: transparent;
-            border: 1px solid var(--dorado);
-            color: var(--dorado);
-        }
+        .botones-nav { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-secundario { background-color: transparent; border: 1px solid var(--dorado); color: var(--dorado); }
+        .seccion-formulario { animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="contenedor-principal">
         <h2>Inscripción Oficial</h2>
-        <p style="text-align: center; font-size: 0.8em; color: var(--dorado);">NÁPOLES F.C. 2026</p>
+        <p style="text-align: center; font-size: 0.8em; color: var(--dorado); margin-bottom: 20px;">NÁPOLES F.C. 2026</p>
 
         <form id="formularioRegistro">
-            
-            <!-- PASO 1: Identificación -->
+            <!-- PASO 1 -->
             <div id="paso1" class="seccion-formulario">
                 <label>Nombres Completos</label>
                 <input type="text" id="nombre1" placeholder="Primer Nombre" required>
                 <input type="text" id="nombre2" placeholder="Segundo Nombre" required>
                 <input type="text" id="apellidos" placeholder="Apellidos" required>
-                
                 <label>Identificación</label>
                 <input type="text" id="cedula" placeholder="Cédula (10 dígitos)" maxlength="10" pattern="\d{10}" required>
-                
                 <button type="button" class="btn-accion" onclick="validarYPasar(1, 2)">Siguiente</button>
             </div>
 
-            <!-- PASO 2: Contacto -->
+            <!-- PASO 2 -->
             <div id="paso2" class="seccion-formulario" style="display: none;">
                 <label>Fecha de Nacimiento</label>
                 <input type="date" id="fechaNac" required>
-                
                 <label>Contacto Directo</label>
                 <input type="tel" id="telefono" placeholder="WhatsApp (Ej: 0984016027)" maxlength="10" pattern="09\d{8}" required>
                 <input type="email" id="correo" placeholder="Correo Electrónico" required>
-                
                 <div class="botones-nav">
                     <button type="button" class="btn-accion btn-secundario" onclick="irAtras(2, 1)">Atrás</button>
                     <button type="button" class="btn-accion" onclick="validarYPasar(2, 3)">Siguiente: Fotos</button>
                 </div>
             </div>
 
-            <!-- PASO 3: Documentación Visual -->
+            <!-- PASO 3 -->
             <div id="paso3" class="seccion-formulario" style="display: none;">
                 <label>Verificación de Rostro</label>
                 <video id="video" autoplay playsinline class="preview-camara"></video>
                 <canvas id="canvas" style="display:none;"></canvas>
-                
                 <button type="button" id="btnCapturar" class="btn-accion" style="background: var(--dorado); color: var(--azul-noche); margin-bottom: 10px;">
                     📷 Abrir Cámara y Capturar
                 </button>
-                
                 <img id="fotoPreview" class="preview-camara">
-                
                 <label style="margin-top: 15px; display: block;">Foto de Cédula (Imagen clara)</label>
                 <input type="file" id="fotoCedula" accept="image/*" required>
-                
                 <div class="botones-nav">
                     <button type="button" class="btn-accion btn-secundario" onclick="irAtras(3, 2)">Atrás</button>
                     <button type="submit" class="btn-accion">Finalizar Inscripción</button>
@@ -92,26 +72,22 @@
         </form>
     </div>
 
-    <!-- SCRIPTS DE FUNCIONAMIENTO INTERNO -->
     <script>
         function validarYPasar(actual, siguiente) {
             const inputs = document.querySelectorAll(`#paso${actual} [required]`);
             let todoLleno = true;
             inputs.forEach(i => { if(!i.checkValidity()) { i.reportValidity(); todoLleno = false; } });
-            
             if(todoLleno) {
                 document.getElementById(`paso${actual}`).style.display = 'none';
                 document.getElementById(`paso${siguiente}`).style.display = 'block';
                 if(siguiente === 3) iniciarCamara();
             }
         }
-
         function irAtras(actual, anterior) {
             document.getElementById(`paso${actual}`).style.display = 'none';
             document.getElementById(`paso${anterior}`).style.display = 'block';
             if(actual === 3 && stream) stream.getTracks().forEach(t => t.stop());
         }
-
         let stream;
         async function iniciarCamara() {
             const video = document.getElementById('video');
@@ -119,23 +95,20 @@
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 video.srcObject = stream;
-            } catch (e) { alert("Error al activar cámara. Verifique permisos."); }
+            } catch (e) { alert("Permita el acceso a la cámara para continuar."); }
         }
-
         document.getElementById('btnCapturar').onclick = function() {
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
-            document.getElementById('fotoPreview').src = canvas.toDataURL('image/jpeg', 0.7); // 0.7 para optimizar tamaño en Google Sheets
+            document.getElementById('fotoPreview').src = canvas.toDataURL('image/jpeg', 0.7);
             document.getElementById('fotoPreview').style.display = 'block';
             video.style.display = 'none';
             stream.getTracks().forEach(t => t.stop());
         };
     </script>
-
-    <!-- ARCHIVOS EXTERNOS -->
     <script src="api.js"></script>
     <script src="nav.js"></script>
 </body>
