@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil | Nápoles FC</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .perfil-card {
+            text-align: center;
+            padding: 20px;
+        }
+        .foto-perfil-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            border: 3px solid var(--dorado);
+            overflow: hidden;
+            background-color: var(--azul-noche);
+            box-shadow: 0 0 20px rgba(181, 148, 97, 0.4);
+        }
+        .foto-perfil-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border-bottom: 2px solid var(--cardenillo);
+        }
+        .stat-val {
+            display: block;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--dorado);
+        }
+        .stat-label {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        .badge-verificado {
+            background: var(--cardenillo);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
 
+    <div class="contenedor-principal">
+        <div class="perfil-card">
+            <div class="foto-perfil-container">
+                <img id="imgPerfil" src="https://via.placeholder.com/150" alt="Foto de Jugador">
+            </div>
+            
+            <div class="badge-verificado">JUGADOR OFICIAL</div>
+            
+            <h2 id="nombreJugador">Cargando...</h2>
+            <p id="cedulaJugador" style="color: var(--dorado); font-size: 0.9em; letter-spacing: 1px;"></p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-val">2026</span>
+                    <span class="stat-label">Temporada</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-val">Quito</span>
+                    <span class="stat-label">Sede</span>
+                </div>
+            </div>
+
+            <button class="btn-accion" style="margin-top: 30px; background: transparent; border: 1px solid #ff4444; color: #ff4444;" onclick="cerrarSesion()">
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Verificar si hay datos del jugador
+            const datosStr = localStorage.getItem('datos_jugador');
+            
+            if (!datosStr) {
+                // Si no hay datos, lo mandamos al login
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const datos = JSON.parse(datosStr);
+
+            // 2. Inyectar datos en la interfaz
+            document.getElementById('nombreJugador').innerText = datos.nombre;
+            document.getElementById('cedulaJugador').innerText = "ID: " + (datos.cedula || "N/A");
+            
+            // Si la foto existe en los datos, la ponemos
+            if (datos.foto && datos.foto.startsWith('data:image')) {
+                document.getElementById('imgPerfil').src = datos.foto;
+            }
+        });
+
+        function cerrarSesion() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <!-- nav.js inyectará automáticamente el menú inferior porque hay sesión activa -->
+    <script src="nav.js"></script>
+</body>
+</html>
