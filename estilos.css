@@ -1,0 +1,75 @@
+/* estilos.css - Identidad Visual Nápoles FC 2026 */
+
+:root {
+  /* Paleta oficial del uniforme */
+  --azul-noche: #1A2B48;      /* Fondo principal y headers */
+  --cardenillo: #008B94;      /* Botones y elementos de acción */
+  --dorado: #B59461;          /* Bordes, títulos y detalles VIP */
+  --blanco-puro: #ffffff;
+  --gris-suave: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  background-color: var(--azul-noche);
+  color: var(--blanco-puro);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Títulos con el dorado del uniforme */
+h1, h2, h3 {
+  color: var(--dorado);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Contenedores elegantes */
+.contenedor-principal {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 25px;
+  background-color: var(--gris-suave);
+  border: 1px solid var(--dorado);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Entradas de datos (Inputs) */
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid var(--dorado);
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* Botones con el color Cardenillo Eléctrico */
+.btn-accion {
+  background-color: var(--cardenillo);
+  color: white;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-accion:hover {
+  background-color: #00737a;
+  box-shadow: 0 0 15px var(--cardenillo);
+}
+
+/* Estilo para las etiquetas de los campos */
+label {
+  color: var(--dorado);
+  font-size: 0.9em;
+  font-weight: bold;
+}
