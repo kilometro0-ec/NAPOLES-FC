@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcrbN7OEBeZmUcB7zbdZWPU4wa4R1-AAT3gAHkqjo7jYbAumXvjI1ZxPOp1FD2viwq/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLctY39LIa_aVSFKCIQl306huhIk6CiZzrUC2PczfeVlTJ9-V9Vt9giq1A2mYveAHW/exec";
 
 document.getElementById('formularioRegistro').addEventListener('submit', async (e) => {
     e.preventDefault();
