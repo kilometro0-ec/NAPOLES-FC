@@ -6,119 +6,152 @@
     <title>Mi Perfil | Nápoles FC</title>
     <link rel="stylesheet" href="estilos.css">
     <style>
-        .perfil-card {
+        .tarjeta-perfil {
+            max-width: 450px;
+            margin: 20px auto;
+            background: var(--gris-suave);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--dorado);
             text-align: center;
-            padding: 20px;
+            padding-bottom: 20px;
         }
-        .foto-perfil-container {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 20px;
+        .header-ficha {
+            background: linear-gradient(135deg, var(--azul-noche), #003366);
+            padding: 30px 20px;
+            position: relative;
+        }
+        .foto-perfil {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             border: 3px solid var(--dorado);
-            overflow: hidden;
-            background-color: var(--azul-noche);
-            box-shadow: 0 0 20px rgba(181, 148, 97, 0.4);
-        }
-        .foto-perfil-container img {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
+            background: #000;
         }
-        .stats-grid {
+        .stats-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 20px;
         }
         .stat-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px 5px;
             border-radius: 10px;
-            border-bottom: 2px solid var(--cardenillo);
+            border-bottom: 2px solid var(--dorado);
         }
-        .stat-val {
-            display: block;
-            font-size: 1.2em;
-            font-weight: bold;
-            color: var(--dorado);
-        }
-        .stat-label {
-            font-size: 0.7em;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-        .badge-verificado {
-            background: var(--cardenillo);
-            color: white;
+        .stat-val { font-size: 1.5em; font-weight: bold; display: block; color: var(--dorado); }
+        .stat-lbl { font-size: 0.7em; text-transform: uppercase; color: #ccc; }
+        
+        .badge-estado {
+            display: inline-block;
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 0.8em;
-            display: inline-block;
-            margin-bottom: 10px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .estado-aprobado { background: #25D366; color: white; }
+        .estado-pendiente { background: var(--dorado); color: var(--azul-noche); }
+
+        .notificacion-area {
+            margin: 15px;
+            padding: 15px;
+            background: rgba(181, 148, 97, 0.1);
+            border-left: 4px solid var(--dorado);
+            text-align: left;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
 
     <div class="contenedor-principal">
-        <div class="perfil-card">
-            <div class="foto-perfil-container">
-                <img id="imgPerfil" src="https://via.placeholder.com/150" alt="Foto de Jugador">
-            </div>
-            
-            <div class="badge-verificado">JUGADOR OFICIAL</div>
-            
-            <h2 id="nombreJugador">Cargando...</h2>
-            <p id="cedulaJugador" style="color: var(--dorado); font-size: 0.9em; letter-spacing: 1px;"></p>
-
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <span class="stat-val">2026</span>
-                    <span class="stat-label">Temporada</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-val">Quito</span>
-                    <span class="stat-label">Sede</span>
-                </div>
+        <div class="tarjeta-perfil">
+            <div class="header-ficha">
+                <img id="pj-foto" src="https://via.placeholder.com/120" class="foto-perfil">
+                <h2 id="pj-nombre" style="margin-top: 15px; color: white;">Cargando...</h2>
+                <p id="pj-cedula" style="color: var(--dorado); font-size: 0.9em;"></p>
+                <div id="pj-estado" class="badge-estado">VERIFICANDO</div>
             </div>
 
-            <button class="btn-accion" style="margin-top: 30px; background: transparent; border: 1px solid #ff4444; color: #ff4444;" onclick="cerrarSesion()">
-                Cerrar Sesión
-            </button>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <span id="stat-goles" class="stat-val">0</span>
+                    <span class="stat-lbl">Goles</span>
+                </div>
+                <div class="stat-box">
+                    <span id="stat-amarillas" class="stat-val">0</span>
+                    <span class="stat-lbl">Amarillas</span>
+                </div>
+                <div class="stat-box">
+                    <span id="stat-rojas" class="stat-val">0</span>
+                    <span class="stat-lbl">Rojas</span>
+                </div>
+            </div>
+
+            <div class="notificacion-area">
+                <strong>📢 Mensaje del Club:</strong><br>
+                <span id="pj-notificacion">No hay notificaciones nuevas.</span>
+            </div>
+
+            <div style="padding: 0 20px;">
+                <div style="display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px; border-radius: 8px;">
+                    <span>Saldo Vocalía:</span>
+                    <span id="pj-vocalia" style="color: #ff4444; font-weight: bold;">$0.00</span>
+                </div>
+            </div>
         </div>
+        
+        <button onclick="cerrarSesion()" class="btn-accion" style="background: transparent; border: 1px solid #ff4444; color: #ff4444; width: auto; margin: 0 auto; display: block;">
+            Cerrar Sesión
+        </button>
     </div>
 
+    <script src="api.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Verificar si hay datos del jugador
-            const datosStr = localStorage.getItem('datos_jugador');
+        function cargarDatosPerfil() {
+            const rawData = localStorage.getItem('datos_jugador');
             
-            if (!datosStr) {
-                // Si no hay datos, lo mandamos al login
+            if (!rawData) {
                 window.location.href = 'login.html';
                 return;
             }
 
-            const datos = JSON.parse(datosStr);
+            const j = JSON.parse(rawData);
 
-            // 2. Inyectar datos en la interfaz
-            document.getElementById('nombreJugador').innerText = datos.nombre;
-            document.getElementById('cedulaJugador').innerText = "ID: " + (datos.cedula || "N/A");
+            // Inyectar datos en el HTML
+            document.getElementById('pj-nombre').innerText = j.nombre;
+            document.getElementById('pj-cedula').innerText = "ID: " + j.cedula;
+            document.getElementById('pj-foto').src = j.foto || 'https://via.placeholder.com/120';
             
-            // Si la foto existe en los datos, la ponemos
-            if (datos.foto && datos.foto.startsWith('data:image')) {
-                document.getElementById('imgPerfil').src = datos.foto;
+            // Estadísticas
+            document.getElementById('stat-goles').innerText = j.goles || 0;
+            document.getElementById('stat-amarillas').innerText = j.amarillas || 0;
+            document.getElementById('stat-rojas').innerText = j.rojas || 0;
+            document.getElementById('pj-vocalia').innerText = "$" + (j.vocalia || "0.00");
+            document.getElementById('pj-notificacion').innerText = j.notificacion || "Sin mensajes pendientes.";
+
+            // Estado visual
+            const divEstado = document.getElementById('pj-estado');
+            divEstado.innerText = j.estado;
+            if(j.estado === "APROBADO") {
+                divEstado.className = "badge-estado estado-aprobado";
+            } else {
+                divEstado.className = "badge-estado estado-pendiente";
             }
-        });
+        }
 
         function cerrarSesion() {
             localStorage.clear();
             window.location.href = 'login.html';
         }
+
+        // Ejecutar al cargar
+        document.addEventListener('DOMContentLoaded', cargarDatosPerfil);
     </script>
 
-    <!-- nav.js inyectará automáticamente el menú inferior porque hay sesión activa -->
     <script src="nav.js"></script>
 </body>
 </html>
