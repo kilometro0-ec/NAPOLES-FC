@@ -14,45 +14,33 @@
 
     <link rel="stylesheet" href="estilos.css">
     <style>
-        input { text-transform: uppercase; } 
+        :root { --dorado: #b59461; --azul-noche: #0a192f; }
+        body { background-color: var(--azul-noche); color: white; font-family: sans-serif; margin: 0; padding: 20px; }
+        .contenedor-principal { max-width: 500px; margin: auto; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid var(--dorado); }
+        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; text-transform: uppercase; }
         #correo { text-transform: none; }
-        .preview-camara { 
-            width: 100%; 
-            max-width: 300px; 
-            border-radius: 10px; 
-            display: none; 
-            margin: 10px auto; 
-            border: 2px solid var(--dorado);
-            background: #000;
-        }
+        label { display: block; margin-top: 15px; color: var(--dorado); font-weight: bold; }
+        .btn-accion { width: 100%; padding: 15px; background: var(--dorado); border: none; border-radius: 8px; color: var(--azul-noche); font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .preview-camara { width: 100%; max-width: 300px; border-radius: 10px; display: none; margin: 10px auto; border: 2px solid var(--dorado); background: #000; }
         .botones-nav { display: flex; gap: 10px; margin-top: 15px; }
         .btn-secundario { background-color: transparent; border: 1px solid var(--dorado); color: var(--dorado); }
         .seccion-formulario { animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Estado de carga */
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: var(--dorado);
-        }
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; color: var(--dorado); }
+        .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--dorado); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div id="loader" class="loading-overlay">
         <div class="spinner"></div>
-        <p id="loaderTexto">PROCESANDO REGISTRO...</p>
+        <p id="loaderTexto" style="margin-top: 15px;">PROCESANDO REGISTRO Y FOTOS...</p>
     </div>
 
     <div class="contenedor-principal">
-        <h2>Inscripción Oficial</h2>
+        <h2 style="text-align: center;">Inscripción Oficial</h2>
         <p style="text-align: center; font-size: 0.8em; color: var(--dorado); margin-bottom: 20px;">NÁPOLES F.C. 2026</p>
 
         <form id="formularioRegistro">
@@ -62,10 +50,8 @@
                 <input type="text" id="nombre1" placeholder="Primer Nombre" required>
                 <input type="text" id="nombre2" placeholder="Segundo Nombre" required>
                 <input type="text" id="apellidos" placeholder="Apellidos Completos" required>
-                
                 <label>Identificación</label>
                 <input type="text" id="cedula" placeholder="Cédula (10 dígitos)" maxlength="10" pattern="\d{10}" required>
-                
                 <button type="button" class="btn-accion" onclick="validarYPasar(1, 2)">Siguiente</button>
             </div>
 
@@ -73,11 +59,9 @@
             <div id="paso2" class="seccion-formulario" style="display: none;">
                 <label>Fecha de Nacimiento</label>
                 <input type="date" id="fechaNac" required>
-                
                 <label>Contacto Directo</label>
-                <input type="tel" id="telefono" placeholder="WhatsApp (Ej: 0984016027)" maxlength="10" pattern="09\d{8}" required>
+                <input type="tel" id="telefono" placeholder="WhatsApp (Ej: 0984016027)" maxlength="10" pattern="0\d{9}" required>
                 <input type="email" id="correo" placeholder="Correo Electrónico" required>
-                
                 <div class="botones-nav">
                     <button type="button" class="btn-accion btn-secundario" onclick="irAtras(2, 1)">Atrás</button>
                     <button type="button" class="btn-accion" onclick="validarYPasar(2, 3)">Siguiente: Fotos</button>
@@ -89,15 +73,13 @@
                 <label>Verificación de Rostro</label>
                 <video id="video" autoplay playsinline class="preview-camara"></video>
                 <canvas id="canvas" style="display:none;"></canvas>
-                
                 <button type="button" id="btnCapturar" class="btn-accion" style="background: var(--dorado); color: var(--azul-noche); margin-bottom: 10px;">
                     📷 Capturar Rostro
                 </button>
-                
                 <img id="fotoPreview" class="preview-camara">
                 
                 <label style="margin-top: 15px; display: block;">Foto de Cédula (Frontal)</label>
-                <input type="file" id="fotoCedula" accept="image/*" required>
+                <input type="file" id="fotoCedula" accept="image/*" required style="text-transform: none;">
                 
                 <div class="botones-nav">
                     <button type="button" class="btn-accion btn-secundario" onclick="irAtras(3, 2)">Atrás</button>
@@ -108,12 +90,14 @@
     </div>
 
     <script>
-        // --- LÓGICA DE NAVEGACIÓN ---
+        let stream;
+        let fotoRostroB64 = "";
+
+        // --- NAVEGACIÓN ---
         function validarYPasar(actual, siguiente) {
             const inputs = document.querySelectorAll(`#paso${actual} [required]`);
             let todoLleno = true;
             inputs.forEach(i => { if(!i.checkValidity()) { i.reportValidity(); todoLleno = false; } });
-            
             if(todoLleno) {
                 document.getElementById(`paso${actual}`).style.display = 'none';
                 document.getElementById(`paso${siguiente}`).style.display = 'block';
@@ -124,15 +108,10 @@
         function irAtras(actual, anterior) {
             document.getElementById(`paso${actual}`).style.display = 'none';
             document.getElementById(`paso${anterior}`).style.display = 'block';
-            if(actual === 3 && stream) {
-                stream.getTracks().forEach(t => t.stop());
-            }
+            if(actual === 3 && stream) stream.getTracks().forEach(t => t.stop());
         }
 
-        // --- LÓGICA DE CÁMARA ---
-        let stream;
-        let fotoRostroB64 = "";
-
+        // --- CÁMARA ---
         async function iniciarCamara() {
             const video = document.getElementById('video');
             video.style.display = 'block';
@@ -140,9 +119,7 @@
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 video.srcObject = stream;
-            } catch (e) { 
-                alert("Error: Debes permitir el acceso a la cámara para el registro oficial."); 
-            }
+            } catch (e) { alert("Acceso a cámara denegado."); }
         }
 
         document.getElementById('btnCapturar').onclick = function() {
@@ -151,27 +128,61 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
-            
             fotoRostroB64 = canvas.toDataURL('image/jpeg', 0.7);
             document.getElementById('fotoPreview').src = fotoRostroB64;
             document.getElementById('fotoPreview').style.display = 'block';
             video.style.display = 'none';
-            
             if(stream) stream.getTracks().forEach(t => t.stop());
         };
 
-        // --- REGISTRO PWA ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').then(reg => {
-                    console.log('PWA lista para instalar');
-                });
-            });
-        }
-    </script>
+        // --- ENVÍO DE DATOS ---
+        document.getElementById('formularioRegistro').onsubmit = function(e) {
+            e.preventDefault();
+            if(!fotoRostroB64) { alert("Por favor capture la foto de su rostro."); return; }
 
-    <!-- SCRIPTS EXTERNOS -->
-    <script src="api.js"></script>
-    <script src="nav.js"></script>
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+
+            const archivoCedula = document.getElementById('fotoCedula').files[0];
+            const reader = new FileReader();
+            
+            reader.onload = async function() {
+                const fotoCedulaB64 = reader.result;
+
+                const payload = {
+                    nombre1: document.getElementById('nombre1').value,
+                    nombre2: document.getElementById('nombre2').value,
+                    apellidos: document.getElementById('apellidos').value,
+                    cedula: document.getElementById('cedula').value,
+                    fechaNac: document.getElementById('fechaNac').value,
+                    telefono: document.getElementById('telefono').value,
+                    correo: document.getElementById('correo').value,
+                    urlFotoRostro: fotoRostroB64,
+                    urlFotoCedula: fotoCedulaB64
+                };
+
+                try {
+                    // REEMPLAZA ESTA URL POR LA TUYA
+                    const webAppUrl = "TU_URL_DE_GOOGLE_WEB_APP_AQUI"; 
+
+                    await fetch(webAppUrl, {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+
+                    loader.style.display = 'none';
+                    alert("¡REGISTRO EXITOSO! Bienvenido a Nápoles F.C.");
+                    location.reload();
+
+                } catch (err) {
+                    loader.style.display = 'none';
+                    alert("Error en el servidor. Intente más tarde.");
+                }
+            };
+            reader.readAsDataURL(archivoCedula);
+        };
+    </script>
 </body>
 </html>
