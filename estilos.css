@@ -1,10 +1,7 @@
-/* estilos.css - Identidad Visual Nápoles FC 2026 */
-
 :root {
-  /* Paleta oficial del uniforme */
-  --azul-noche: #1A2B48;      /* Fondo principal y headers */
-  --cardenillo: #008B94;      /* Botones y elementos de acción */
-  --dorado: #B59461;          /* Bordes, títulos y detalles VIP */
+  --azul-noche: #1A2B48;
+  --cardenillo: #008B94;
+  --dorado: #B59461;
   --blanco-puro: #ffffff;
   --gris-suave: rgba(255, 255, 255, 0.1);
 }
@@ -12,43 +9,36 @@
 body {
   background-color: var(--azul-noche);
   color: var(--blanco-puro);
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Segoe UI', Roboto, sans-serif;
   margin: 0;
   padding: 0;
 }
 
-/* Títulos con el dorado del uniforme */
-h1, h2, h3 {
-  color: var(--dorado);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
+h2 { color: var(--dorado); text-align: center; text-transform: uppercase; letter-spacing: 2px; }
 
-/* Contenedores elegantes */
 .contenedor-principal {
-  max-width: 500px;
+  max-width: 450px;
   margin: 40px auto;
   padding: 25px;
   background-color: var(--gris-suave);
   border: 1px solid var(--dorado);
   border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-/* Entradas de datos (Inputs) */
-input, select, textarea {
+label { color: var(--dorado); font-size: 0.9em; font-weight: bold; display: block; margin-top: 10px; }
+
+input {
   width: 100%;
   padding: 12px;
-  margin: 10px 0;
+  margin: 8px 0;
   border: 1px solid var(--dorado);
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.3);
   color: white;
   border-radius: 8px;
   box-sizing: border-box;
 }
 
-/* Botones con el color Cardenillo Eléctrico */
 .btn-accion {
   background-color: var(--cardenillo);
   color: white;
@@ -59,17 +49,8 @@ input, select, textarea {
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.3s;
+  margin-top: 10px;
 }
 
-.btn-accion:hover {
-  background-color: #00737a;
-  box-shadow: 0 0 15px var(--cardenillo);
-}
-
-/* Estilo para las etiquetas de los campos */
-label {
-  color: var(--dorado);
-  font-size: 0.9em;
-  font-weight: bold;
-}
+.btn-accion:hover { background-color: #00737a; box-shadow: 0 0 10px var(--cardenillo); }
