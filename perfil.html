@@ -6,50 +6,56 @@
     <title>Perfil Pro | Nápoles FC</title>
     <link rel="stylesheet" href="estilos.css">
     <style>
-        :root {
-            --oro-brillante: #d4af37;
-            --azul-deep: #001226;
-        }
-
         .perfil-grid {
             display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 20px;
-            max-width: 900px;
-            margin: 40px auto;
+            grid-template-columns: 1fr 340px;
+            gap: 25px;
+            max-width: 1100px;
+            margin: 30px auto;
             padding: 20px;
         }
 
-        /* DISEÑO DE LA CAMISETA */
+        /* DISEÑO DE LA CAMISETA PROFESIONAL */
         .camiseta-container {
-            background: #111;
+            background: linear-gradient(180deg, #001a33 0%, #000 100%);
             border: 2px solid var(--dorado);
-            border-radius: 15px;
-            height: 400px;
+            border-radius: 20px;
+            height: 600px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            padding-top: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             position: relative;
-            background-image: radial-gradient(circle, #1a1a1a 10%, transparent 10%);
-            background-size: 20px 20px;
         }
 
-        .numero-camiseta {
-            font-size: 120px;
-            font-weight: 900;
-            color: var(--dorado);
-            line-height: 1;
-            text-shadow: 3px 3px 0px #000;
+        .foto-camiseta {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--dorado);
+            object-fit: cover;
+            background: #222;
+            margin-bottom: 25px;
         }
 
-        .nombre-camiseta {
-            font-size: 24px;
-            font-weight: bold;
+        .nombre-estampado {
+            font-size: 28px;
+            font-weight: 800;
             color: white;
             text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-top: -10px;
+            letter-spacing: 4px;
+            font-family: 'Arial Black', sans-serif;
+            margin-bottom: 5px;
+        }
+
+        .numero-estampado {
+            font-size: 160px;
+            font-weight: 900;
+            color: var(--dorado);
+            line-height: 0.8;
+            font-family: 'Impact', sans-serif;
+            text-shadow: 5px 5px 0px rgba(0,0,0,0.8);
         }
 
         /* MODAL OBLIGATORIO */
@@ -57,37 +63,39 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
+            background: rgba(0,0,0,0.98);
+            z-index: 9999;
             justify-content: center;
             align-items: center;
         }
 
         .caja-eleccion {
             background: var(--azul-noche);
-            padding: 30px;
+            padding: 40px;
             border: 2px solid var(--dorado);
             border-radius: 20px;
             text-align: center;
-            max-width: 400px;
+            width: 90%;
+            max-width: 450px;
         }
 
-        /* ESTADÍSTICAS ESTILO CARTA */
-        .card-stats {
+        /* FICHA DE DATOS */
+        .ficha-datos {
             background: var(--gris-suave);
+            padding: 25px;
             border-radius: 15px;
-            padding: 20px;
-            border-left: 5px solid var(--dorado);
+            border-top: 4px solid var(--dorado);
         }
 
-        .stat-row {
+        .dato-fila {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 5px;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 850px) {
             .perfil-grid { grid-template-columns: 1fr; }
             .camiseta-container { order: -1; }
         }
@@ -98,40 +106,53 @@
     <!-- MODAL DE ELECCIÓN PRIMERA VEZ -->
     <div id="modalEleccion">
         <div class="caja-eleccion">
-            <h2 style="color: var(--dorado);">PERSONALIZA TU EQUIPO</h2>
-            <p>Escoge cómo aparecerás en la cancha</p>
+            <h2 style="color: var(--dorado);">CONFIGURACIÓN INICIAL</h2>
+            <p style="margin-bottom: 25px;">Selecciona los datos de tu uniforme oficial</p>
             
-            <label>Nombre en Camiseta</label>
-            <select id="selectNombre" class="btn-accion" style="background: #111; margin-bottom: 15px;"></select>
+            <label style="display: block; text-align: left; margin-bottom: 5px;">Nombre en la Camiseta (Columna B o C)</label>
+            <select id="selectNombre" class="btn-accion" style="margin-bottom: 20px; width: 100%;"></select>
             
-            <label>Número de Dorsal (1-99)</label>
-            <input type="number" id="inputNumero" min="1" max="99" placeholder="Ej: 10" class="btn-accion" style="background: #111; margin-bottom: 20px;">
+            <label style="display: block; text-align: left; margin-bottom: 5px;">Número de Dorsal</label>
+            <input type="number" id="inputNumero" min="1" max="99" placeholder="Ej: 10" class="btn-accion" style="margin-bottom: 30px; width: 100%;">
             
-            <button onclick="guardarEleccion()" class="btn-accion">GUARDAR PARA SIEMPRE</button>
+            <button onclick="guardarConfig()" class="btn-accion" style="width: 100%;">CONFIRMAR E INGRESAR</button>
         </div>
     </div>
 
     <div class="perfil-grid">
-        <!-- INFO IZQUIERDA -->
-        <div class="info-jugador">
-            <div class="card-stats">
-                <h1 id="txtNombreReal" style="margin: 0; color: white;">NOMBRE APELLIDO</h1>
-                <p id="txtCedula" style="color: var(--dorado);"></p>
+        <!-- IZQUIERDA: DATOS COMPLETOS -->
+        <div class="info-area">
+            <div class="ficha-datos">
+                <h3 style="color: var(--dorado); margin-top: 0;">DATOS DEL JUGADOR</h3>
+                <div class="dato-fila"><span>Primer Nombre:</span><strong id="txtB">---</strong></div>
+                <div class="dato-fila"><span>Segundo Nombre:</span><strong id="txtC">---</strong></div>
+                <div class="dato-fila"><span>Apellidos:</span><strong id="txtD">---</strong></div>
+                <div class="dato-fila"><span>Cédula:</span><strong id="txtCI">---</strong></div>
                 
-                <div class="stats-area" style="margin-top: 20px;">
-                    <div class="stat-row"><span>GOLES ANOTADOS</span><strong id="valGoles" style="color: var(--dorado);">0</strong></div>
-                    <div class="stat-row"><span>TARJETAS AMARILLAS</span><strong id="valAmarillas" style="color: #ffeb3b;">0</strong></div>
-                    <div class="stat-row"><span>TARJETAS ROJAS</span><strong id="valRojas" style="color: #f44336;">0</strong></div>
-                    <div class="stat-row"><span>ESTADO DEL SOCIO</span><strong id="valEstado">PENDIENTE</strong></div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+                
+                <h3 style="color: var(--dorado);">ESTADÍSTICAS</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="background: #000; padding: 15px; border-radius: 10px;">
+                        <small>GOLES</small><br><span id="valG" style="font-size: 1.5em; color: var(--dorado);">0</span>
+                    </div>
+                    <div style="background: #000; padding: 15px; border-radius: 10px;">
+                        <small>AMARILLAS</small><br><span id="valA" style="font-size: 1.5em; color: #ffcc00;">0</span>
+                    </div>
                 </div>
             </div>
+
+            <button onclick="cerrarSesion()" style="margin-top: 20px; background: none; border: 1px solid #ff4444; color: #ff4444; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                Cerrar Sesión
+            </button>
         </div>
 
-        <!-- CAMISETA DERECHA -->
+        <!-- DERECHA: CAMISETA -->
         <div class="camiseta-container">
-            <div style="position: absolute; top: 20px; font-size: 12px; color: #444;">NÁPOLES FC OFFICIAL KIT</div>
-            <div id="camNum" class="numero-camiseta">--</div>
-            <div id="camNom" class="nombre-camiseta">JUGADOR</div>
+            <img id="camImg" src="https://via.placeholder.com/150" class="foto-camiseta">
+            <div id="camNom" class="nombre-estampado">NOMBRE</div>
+            <div id="camNum" class="numero-estampado">--</div>
+            <p style="margin-top: 20px; color: var(--dorado); letter-spacing: 3px; font-size: 0.7em;">NÁPOLES FC OFFICIAL</p>
         </div>
     </div>
 
@@ -141,60 +162,67 @@
             const j = JSON.parse(localStorage.getItem('datos_jugador'));
             if(!j) { window.location.href = 'login.html'; return; }
 
-            // Llenar datos básicos
-            document.getElementById('txtNombreReal').innerText = j.nombre;
-            document.getElementById('txtCedula').innerText = "D.N.I. " + j.cedula;
-            document.getElementById('valGoles').innerText = j.goles || 0;
-            document.getElementById('valAmarillas').innerText = j.amarillas || 0;
-            document.getElementById('valRojas').innerText = j.rojas || 0;
-            document.getElementById('valEstado').innerText = j.estado;
+            // 1. Mostrar datos completos (Columnas B, C, D)
+            document.getElementById('txtB').innerText = j.nombre1 || "---";
+            document.getElementById('txtC').innerText = j.nombre2 || "---";
+            document.getElementById('txtD').innerText = j.apellidos || "---";
+            document.getElementById('txtCI').innerText = j.cedula;
+            document.getElementById('valG').innerText = j.goles || 0;
+            document.getElementById('valA').innerText = j.amarillas || 0;
+            document.getElementById('camImg').src = j.foto || 'https://via.placeholder.com/150';
 
-            // ¿Es la primera vez? (Si no tiene nombre de camiseta ni número)
-            if(!j.nombreCamiseta || !j.numeroCamiseta) {
-                mostrarModal(j);
+            // 2. Verificar si ya eligió camiseta
+            if(!j.nomCamiseta || !j.numDorsal) {
+                abrirModal(j);
             } else {
-                actualizarCamiseta(j.nombreCamiseta, j.numeroCamiseta);
+                actualizarVistaCamiseta(j.nomCamiseta, j.numDorsal);
             }
         });
 
-        function mostrarModal(j) {
+        function abrirModal(j) {
             document.getElementById('modalEleccion').style.display = 'flex';
             const select = document.getElementById('selectNombre');
             
-            // Opciones de nombre basadas en sus datos reales
-            const nombres = j.nombre.split(" "); // Asumiendo que viene "Nombre1 Apellido"
-            const opcion1 = nombres[0]; // Primer Nombre
-            const opcion2 = nombres[1] || ""; // Apellido o Segundo nombre
+            // Opciones obligatorias de Columna B o C
+            const b = j.nombre1 || "NOMBRE";
+            const c = j.nombre2 || "";
             
-            select.innerHTML = `
-                <option value="${opcion1}">${opcion1}</option>
-                <option value="${opcion2}">${opcion2}</option>
-            `;
+            let html = `<option value="${b}">${b} (1er Nombre)</option>`;
+            if(c) html += `<option value="${c}">${c} (2do Nombre)</option>`;
+            
+            select.innerHTML = html;
         }
 
-        async function guardarEleccion() {
+        function guardarConfig() {
             const nom = document.getElementById('selectNombre').value;
             const num = document.getElementById('inputNumero').value;
             const j = JSON.parse(localStorage.getItem('datos_jugador'));
 
-            if(!num || num < 1 || num > 99) { alert("Elige un número válido entre 1 y 99"); return; }
+            if(!num || num < 1 || num > 99) {
+                alert("Número de dorsal inválido");
+                return;
+            }
 
-            // Aquí enviarías a Google Sheets para guardar permanentemente
-            // Por ahora, actualizamos la vista y el local para simular éxito
-            j.nombreCamiseta = nom;
-            j.numeroCamiseta = num;
+            // Guardar local
+            j.nomCamiseta = nom;
+            j.numDorsal = num;
             localStorage.setItem('datos_jugador', JSON.stringify(j));
 
-            actualizarCamiseta(nom, num);
+            actualizarVistaCamiseta(nom, num);
             document.getElementById('modalEleccion').style.display = 'none';
-            
-            alert("¡Camiseta configurada! Bienvenido al club.");
         }
 
-        function actualizarCamiseta(nom, num) {
-            document.getElementById('camNum').innerText = num;
+        function actualizarVistaCamiseta(nom, num) {
             document.getElementById('camNom').innerText = nom;
+            document.getElementById('camNum').innerText = num;
+        }
+
+        function cerrarSesion() {
+            localStorage.clear();
+            window.location.href = 'login.html';
         }
     </script>
+
+    <script src="nav.js"></script>
 </body>
 </html>
