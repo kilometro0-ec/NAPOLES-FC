@@ -5,60 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscripción | Nápoles FC</title>
     
-    <!-- Configuración PWA Moderna -->
+    <!-- Configuración PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1A2B48">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Nápoles FC">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <!-- Iconos Locales -->
+    <!-- Iconos Locales (Asegúrate de que existan en la carpeta img) -->
     <link rel="icon" href="img/favicon.png">
-    
 
-    <!-- Enlace a tus estilos externos -->
+    <!-- Enlaces a archivos CSS -->
     <link rel="stylesheet" href="estilos.css">
     
     <style>
-        /* Animaciones adicionales para botones */
-        .btn-accion {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-        }
-
-        .btn-accion:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.1);
-            box-shadow: 0 5px 15px rgba(0, 139, 148, 0.4) !important;
-        }
-
-        .btn-accion:active {
-            transform: scale(0.95);
-        }
-
-        /* Efecto de brillo al pasar el mouse */
-        .btn-accion::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(45deg);
-            transition: 0.5s;
-            opacity: 0;
-        }
-
-        .btn-accion:hover::after {
-            left: 120%;
-            opacity: 1;
-        }
-
-        /* Pantalla de carga (Loader) */
+        /* Estilos críticos para el funcionamiento de los pasos */
         .loading-overlay {
-            display: none;
+            display: none; /* Se activa desde api.js */
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(26, 43, 72, 0.98);
@@ -78,20 +38,29 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .seccion-formulario { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        .seccion-oculta { display: none !important; }
+        
         #video { width: 100%; border-radius: 12px; border: 2px solid #B59461; background: #000; }
         .preview-camara { width: 100%; border-radius: 12px; display: none; border: 2px solid #008B94; }
-        .seccion-oculta { display: none; }
+        
+        /* Botones */
+        .btn-accion {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Pantalla de Carga -->
+    <!-- Pantalla de Carga (api.js la mostrará con ID "loader") -->
     <div id="loader" class="loading-overlay">
         <div class="spinner"></div>
-        <p style="color: #B59461; margin-top: 20px; font-weight: bold; letter-spacing: 1px;">ENVIANDO DATOS...</p>
+        <p style="color: #B59461; margin-top: 20px; font-weight: bold;">PROCESANDO INSCRIPCIÓN...</p>
     </div>
 
     <div class="contenedor-principal">
@@ -101,75 +70,75 @@
             <p style="color: #B59461; font-size: 0.8em; margin-top: -10px;">CORPORACIÓN 360 • 2026</p>
         </header>
 
+        <!-- IMPORTANTE: El ID debe ser 'formularioRegistro' para que api.js lo encuentre -->
         <form id="formularioRegistro">
             
-            <!-- PASO 1 -->
+            <!-- PASO 1: Datos Personales -->
             <div id="paso1" class="seccion-formulario">
                 <label>Primer Nombre</label>
-                <input type="text" id="nombre1" required placeholder="EJ: JUAN">
+                <input type="text" id="nombre1" name="nombre1" required placeholder="EJ: JUAN">
                 
                 <label>Segundo Nombre</label>
-                <input type="text" id="nombre2" required placeholder="EJ: CARLOS">
+                <input type="text" id="nombre2" name="nombre2" required placeholder="EJ: CARLOS">
                 
                 <label>Apellidos</label>
-                <input type="text" id="apellidos" required placeholder="EJ: PÉREZ">
+                <input type="text" id="apellidos" name="apellidos" required placeholder="EJ: PÉREZ">
                 
                 <label>Cédula de Identidad</label>
-                <input type="text" id="cedula" maxlength="10" required placeholder="10 DÍGITOS">
+                <input type="text" id="cedula" name="cedula" maxlength="10" required placeholder="10 DÍGITOS">
                 
-                <button type="button" class="btn-accion" onclick="validarYPasar(1, 2)">Siguiente</button>
+                <button type="button" class="btn-accion" style="background:#B59461; color:white;" onclick="validarYPasar(1, 2)">Siguiente</button>
             </div>
 
-            <!-- PASO 2 -->
+            <!-- PASO 2: Contacto -->
             <div id="paso2" class="seccion-formulario seccion-oculta">
                 <label>Fecha de Nacimiento</label>
-                <input type="date" id="fechaNac" required>
+                <input type="date" id="fechaNac" name="fechaNac" required>
                 
                 <label>WhatsApp</label>
-                <input type="tel" id="telefono" maxlength="10" required placeholder="0987654321">
+                <input type="tel" id="telefono" name="telefono" maxlength="10" required placeholder="0987654321">
                 
                 <label>Correo Electrónico</label>
-                <input type="email" id="correo" required placeholder="usuario@correo.com">
+                <input type="email" id="correo" name="correo" required placeholder="usuario@correo.com">
                 
                 <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-accion" style="background:#444" onclick="irAtras(2, 1)">Atrás</button>
-                    <button type="button" class="btn-accion" onclick="validarYPasar(2, 3)">Siguiente</button>
+                    <button type="button" class="btn-accion" style="background:#444; color:white;" onclick="irAtras(2, 1)">Atrás</button>
+                    <button type="button" class="btn-accion" style="background:#B59461; color:white;" onclick="validarYPasar(2, 3)">Siguiente</button>
                 </div>
             </div>
 
-            <!-- PASO 3 -->
+            <!-- PASO 3: Multimedia -->
             <div id="paso3" class="seccion-formulario seccion-oculta">
                 <label>Foto de Rostro (Verificación)</label>
                 <video id="video" autoplay playsinline></video>
                 <canvas id="canvas" style="display:none;"></canvas>
                 
-                <button type="button" id="btnCapturar" class="btn-accion" style="background: #fff; color: #1A2B48;">
+                <button type="button" id="btnCapturar" class="btn-accion" style="background: #fff; color: #1A2B48; border: 1px solid #1A2B48;">
                     📷 CAPTURAR FOTO
                 </button>
                 
-                <img id="fotoPreview" class="preview-camara">
+                <!-- La imagen donde se guarda la captura -->
+                <img id="fotoPreview" class="preview-camara" src="">
                 
                 <label style="margin-top: 20px;">Foto de Cédula (Frontal)</label>
-                <input type="file" id="fotoCedula" accept="image/*" required>
+                <!-- El ID debe ser 'fotoCedula' para api.js -->
+                <input type="file" id="fotoCedula" name="fotoCedula" accept="image/*" required>
                 
                 <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-accion" style="background:#444" onclick="irAtras(3, 2)">Atrás</button>
-                    <button type="submit" class="btn-accion">FINALIZAR INSCRIPCIÓN</button>
+                    <button type="button" class="btn-accion" style="background:#444; color:white;" onclick="irAtras(3, 2)">Atrás</button>
+                    <button type="submit" class="btn-accion" style="background:#008B94; color:white;">FINALIZAR INSCRIPCIÓN</button>
                 </div>
             </div>
 
         </form>
     </div>
 
-    <!-- Integración de tus archivos externos -->
+    <!-- CARGA DE SCRIPTS AL FINAL -->
     <script src="nav.js"></script>
     <script src="api.js"></script>
 
     <script>
-        /**
-         * Lógica de Navegación y Cámara 
-         * (Puedes mover esto a nav.js si prefieres tenerlo separado)
-         */
+        // Lógica de navegación interna (Paso a Paso)
         let stream;
 
         function validarYPasar(actual, siguiente) {
@@ -199,7 +168,7 @@
                 stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 video.srcObject = stream;
             } catch (e) {
-                alert("Para inscribirte, debes permitir el uso de la cámara.");
+                alert("Para inscribirte, activa la cámara.");
             }
         }
 
@@ -213,7 +182,7 @@
             canvas.getContext('2d').drawImage(video, 0, 0);
             
             const data = canvas.toDataURL('image/jpeg', 0.8);
-            preview.src = data;
+            preview.src = data; // ESTO ES LO QUE ENVÍA api.js
             preview.style.display = 'block';
             video.style.display = 'none';
             
