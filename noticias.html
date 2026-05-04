@@ -1,1 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias | Nápoles FC</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .noticia-card {
+            background: var(--gris-suave);
+            border-left: 4px solid var(--cardenillo);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 10px 10px 0;
+            animation: slideIn 0.5s ease;
+        }
+        .noticia-tag {
+            background: var(--dorado);
+            color: var(--azul-noche);
+            font-size: 0.7em;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .noticia-fecha {
+            font-size: 0.8em;
+            opacity: 0.6;
+            margin-left: 10px;
+        }
+        .noticia-titulo {
+            color: var(--dorado);
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        .noticia-texto {
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        #contenedor-noticias { margin-top: 20px; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
 
+    <div class="contenedor-principal">
+        <h2>Comunicados Oficiales</h2>
+        <p style="text-align: center; color: var(--dorado); font-size: 0.8em;">NÁPOLES F.C. - QUITO</p>
+
+        <div id="contenedor-noticias">
+            <p style="text-align: center;">Cargando últimas noticias...</p>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLctY39LIa_aVSFKCIQl306huhIk6CiZzrUC2PczfeVlTJ9-V9Vt9giq1A2mYveAHW/exec";
+
+        async function cargarNoticias() {
+            const contenedor = document.getElementById('contenedor-noticias');
+            
+            try {
+                // Petición al script de Google con la acción 'noticias'
+                const response = await fetch(`${SCRIPT_URL}?action=getNoticias`);
+                const noticias = await response.json();
+
+                if (noticias.length === 0) {
+                    contenedor.innerHTML = "<p>No hay noticias recientes.</p>";
+                    return;
+                }
+
+                contenedor.innerHTML = ""; // Limpiar mensaje de carga
+
+                noticias.forEach(item => {
+                    const html = `
+                        <div class="noticia-card">
+                            <div>
+                                <span class="noticia-tag">${item.categoria}</span>
+                                <span class="noticia-fecha">${item.fecha}</span>
+                            </div>
+                            <h3 class="noticia-titulo">${item.titulo}</h3>
+                            <p class="noticia-texto">${item.contenido}</p>
+                        </div>
+                    `;
+                    contenedor.innerHTML += html;
+                });
+
+            } catch (error) {
+                contenedor.innerHTML = "<p>Error al conectar con el servidor.</p>";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarNoticias);
+    </script>
+
+    <script src="nav.js"></script>
+</body>
+</html>
