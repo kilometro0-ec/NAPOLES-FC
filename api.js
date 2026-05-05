@@ -20,7 +20,7 @@ document.addEventListener("input", e=>{
     }
 });
 
-// ================= VALIDACIÓN CÉDULA =================
+// ================= VALIDAR CÉDULA =================
 function validarCedulaReal(ced){
     if(!/^\d{10}$/.test(ced)) return false;
 
@@ -40,7 +40,8 @@ function validarCedulaReal(ced){
 
 // ================= PASO 1 =================
 async function validarCedulaEstricta(){
-    const ced=document.getElementById('ced').value;
+    const cedInput=document.getElementById('ced');
+    const ced=cedInput.value;
 
     if(!validarCedulaReal(ced)){
         alert("CÉDULA INVÁLIDA");
@@ -56,12 +57,12 @@ async function validarCedulaEstricta(){
         if(data.cedulaExiste){
             alert("YA REGISTRADO");
         }else{
-            // 🔒 bloquear cédula
-            const cedInput = document.getElementById('ced');
-            cedInput.readOnly = true;
-            cedInput.style.opacity = "0.6";
-
+            // 🔥 PASA AL PASO 2
             verPaso(2);
+
+            // 🔒 BLOQUEAR CÉDULA
+            cedInput.readOnly=true;
+            cedInput.style.opacity="0.5";
         }
 
     }catch{
@@ -73,9 +74,9 @@ async function validarCedulaEstricta(){
 
 // ================= PASO 2 =================
 function validarPaso2(){
-    const n1 = document.getElementById('n1').value.trim();
-    const ape = document.getElementById('ape').value.trim();
-    const fecha = document.querySelector('[name=fechaNac]').value;
+    const n1=document.getElementById('n1').value.trim();
+    const ape=document.getElementById('ape').value.trim();
+    const fecha=document.querySelector('[name=fechaNac]').value;
 
     if(!n1 || !ape || !fecha){
         alert("COMPLETE TODOS LOS CAMPOS");
@@ -123,8 +124,8 @@ async function iniciarCamara(){
     const video=document.getElementById('video');
 
     try{
-        stream = await navigator.mediaDevices.getUserMedia({video:true});
-        video.srcObject = stream;
+        stream=await navigator.mediaDevices.getUserMedia({video:true});
+        video.srcObject=stream;
     }catch{
         alert("NO SE PUDO ACCEDER A LA CÁMARA");
     }
@@ -202,14 +203,6 @@ async function cargarDorsales(){
 
 // ================= ENVÍO =================
 async function enviarRegistro(){
-
-    const rostro=document.getElementById('fotoRostroB64').value;
-    const cedulaF=document.getElementById('fotoCedulaB64').value;
-
-    if(!rostro || !cedulaF){
-        alert("FALTAN FOTOS");
-        return;
-    }
 
     loader(true,"GUARDANDO...");
 
