@@ -202,5 +202,19 @@ input[type="file"]::file-selector-button {
         padding: 20px;
         margin-top: 20px;
     }
+    /* ... todo lo anterior ... */
+
+/* Ajustes para vistos */
+.visto-img {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 1.3rem;
+    vertical-align: middle;
+}
+
+/* Modal éxito */
+#modalExito {
+    font-family: 'Segoe UI', sans-serif;
+}
     h2 { font-size: 1.2rem; }
 }
