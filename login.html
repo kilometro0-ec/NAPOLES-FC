@@ -63,9 +63,7 @@
                 return;
             }
 
-            // Verificar estado
             if (data.estado === "APROBADO") {
-                // Guardar sesión
                 localStorage.setItem('jugador_aprobado', JSON.stringify({
                     cedula: cedula,
                     expira: Date.now() + 24 * 3600000,
