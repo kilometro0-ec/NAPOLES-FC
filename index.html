@@ -4,299 +4,258 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Nápoles F.C. - Registro Oficial</title>
-<link rel="stylesheet" href="estilos.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
 <style>
-    /* ========== RESET Y MEJORAS GLOBALES ========== */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-
     body {
-        background: linear-gradient(145deg, #0a1428 0%, #030711 100%);
-        font-family: 'Poppins', 'Segoe UI', Roboto, system-ui, sans-serif;
+        background: radial-gradient(circle at 10% 20%, #0a1928, #020c1a);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 1.5rem;
     }
-
-    /* Contenedor principal con glassmorfismo */
-    .contenedor-principal {
-        max-width: 550px;
+    .registro-container {
+        max-width: 560px;
         width: 100%;
-        margin: 1rem auto;
-        background: rgba(10, 20, 40, 0.6);
-        backdrop-filter: blur(16px);
-        border-radius: 48px;
-        border: 1px solid rgba(0, 143, 155, 0.4);
-        box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 143, 155, 0.2) inset;
-        padding: 1.8rem;
-        transition: transform 0.3s, box-shadow 0.3s;
-        animation: fadeInUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        background: rgba(12, 25, 45, 0.65);
+        backdrop-filter: blur(18px);
+        border-radius: 2.5rem;
+        border: 1px solid rgba(0, 143, 155, 0.3);
+        box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 143, 155, 0.15) inset;
+        padding: 2rem 1.8rem;
+        transition: transform 0.25s ease, box-shadow 0.3s;
     }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
+    .registro-container:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 35px 55px rgba(0, 0, 0, 0.5);
     }
-
-    /* Header */
-    header {
+    .header {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 2.2rem;
     }
-    header h2 {
-        font-size: 1.8rem;
+    .header h1 {
+        font-size: 2rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #D4AF37, #FFD966);
+        background: linear-gradient(135deg, #D4AF37, #F3D572);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-bottom: 0.25rem;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.4rem;
     }
-    header p {
-        color: rgba(255,255,255,0.8);
+    .header p {
+        color: #b0c4de;
         font-size: 0.9rem;
+        font-weight: 400;
     }
-    .subtitulo {
-        color: rgba(255,255,255,0.55);
-        font-size: 0.75rem;
-        margin-top: 5px;
-        font-style: italic;
+    .badge {
+        display: inline-block;
+        background: rgba(0, 143, 155, 0.2);
+        border-radius: 60px;
+        padding: 0.2rem 1rem;
+        font-size: 0.7rem;
+        color: #8fcbdb;
+        margin-top: 0.6rem;
     }
-
-    /* Pasos */
     .paso {
         display: none;
-        animation: fade 0.3s ease;
+        animation: fadeSlide 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     }
     .paso.activo {
         display: block;
     }
-    @keyframes fade {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeSlide {
+        0% { opacity: 0; transform: translateY(12px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
-
-    /* Inputs y selects - estilo teal (#008f9b) */
+    .campo {
+        margin-bottom: 1.2rem;
+    }
+    label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #9ab3cf;
+        margin-bottom: 0.25rem;
+    }
     input, select {
         width: 100%;
-        padding: 1rem 1.2rem;
-        margin-top: 0.75rem;
+        padding: 0.9rem 1.2rem;
         background: rgba(0, 0, 0, 0.45);
-        border: 1px solid rgba(0, 143, 155, 0.5);
-        border-radius: 40px;
+        border: 1px solid rgba(0, 143, 155, 0.6);
+        border-radius: 2rem;
         color: white;
         font-size: 1rem;
-        transition: all 0.3s;
+        font-family: 'Inter', monospace;
+        transition: all 0.25s;
         outline: none;
     }
     input:focus, select:focus {
         border-color: #008f9b;
         box-shadow: 0 0 0 3px rgba(0, 143, 155, 0.3);
         background: rgba(0, 0, 0, 0.7);
-        transform: scale(1.01);
     }
     input.error, select.error {
-        border-color: #ff5e5e;
+        border-color: #ff6b6b;
         animation: shake 0.3s ease;
     }
     @keyframes shake {
-        0%,100%{ transform: translateX(0); }
-        25%{ transform: translateX(-5px); }
-        75%{ transform: translateX(5px); }
+        0%,100% { transform: translateX(0); }
+        25% { transform: translateX(-4px); }
+        75% { transform: translateX(4px); }
     }
-
-    /* Botones teal */
-    .btn-accion {
-        background: linear-gradient(95deg, #008f9b, #005c64);
+    .help-note {
+        font-size: 0.7rem;
+        color: #8db5d0;
+        margin-top: 0.3rem;
+        margin-left: 0.8rem;
+        font-style: italic;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .btn-primary {
+        background: linear-gradient(105deg, #008f9b, #006b74);
         border: none;
-        padding: 1rem;
+        padding: 0.9rem;
         width: 100%;
-        border-radius: 60px;
+        border-radius: 3rem;
         font-weight: 700;
+        font-size: 1rem;
         text-transform: uppercase;
         letter-spacing: 1.5px;
         color: white;
-        font-size: 1rem;
         cursor: pointer;
-        margin-top: 1.8rem;
-        transition: all 0.3s;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        position: relative;
-        overflow: hidden;
+        margin-top: 1.2rem;
+        transition: all 0.25s;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
     }
-    .btn-accion:hover {
+    .btn-primary:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 143, 155, 0.5);
-        background: linear-gradient(95deg, #00aebb, #006d78);
+        background: linear-gradient(105deg, #00a5b3, #00808a);
+        box-shadow: 0 10px 20px rgba(0, 143, 155, 0.4);
     }
-    .btn-accion:disabled {
+    .btn-primary:disabled {
         opacity: 0.5;
-        transform: none;
         cursor: not-allowed;
+        transform: none;
     }
-    /* Ripple */
-    .btn-accion::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background: rgba(255,255,255,0.4);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        transition: width 0.4s, height 0.4s;
+    .foto-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
     }
-    .btn-accion:active::after {
-        width: 200px;
-        height: 200px;
-    }
-
-    /* Visto imágenes */
     .visto-img {
-        display: inline-block;
-        margin-left: 12px;
-        font-size: 1.4rem;
-        font-weight: bold;
+        font-size: 1.3rem;
         color: #2ecc71;
-        animation: pop 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+        animation: pop 0.2s ease;
     }
     @keyframes pop {
-        0% { transform: scale(0); opacity: 0; }
+        0% { transform: scale(0); }
         80% { transform: scale(1.2); }
-        100% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(1); }
     }
-
-    /* Títulos de sección */
-    h3 {
-        color: #008f9b;
-        margin: 1rem 0 0.5rem;
-        font-weight: 600;
-        letter-spacing: 1px;
-    }
-    .help-text {
-        font-size: 0.7rem;
-        color: rgba(255,255,255,0.5);
-        margin-top: 6px;
-        margin-left: 12px;
-        font-style: italic;
-    }
-
-    /* Loader teal */
     #loader {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.9);
+        background: rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(8px);
         justify-content: center;
         align-items: center;
         flex-direction: column;
         z-index: 10000;
     }
-    .spinner-balon {
-        width: 70px;
-        height: 70px;
-        border: 5px solid rgba(0, 143, 155, 0.3);
-        border-top: 5px solid #008f9b;
+    .spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(0, 143, 155, 0.25);
+        border-top: 4px solid #008f9b;
         border-radius: 50%;
-        animation: spin 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        animation: spin 0.8s linear infinite;
     }
-    @keyframes spin {
-        0% { transform: rotate(0deg) scale(1); }
-        50% { transform: rotate(180deg) scale(1.1); }
-        100% { transform: rotate(360deg) scale(1); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loader-texto {
+        margin-top: 1rem;
+        color: white;
+        font-weight: 500;
     }
-
-    /* Modal éxito teal */
     #modalExito {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(12px);
-        z-index: 100000;
         justify-content: center;
         align-items: center;
+        z-index: 20000;
     }
-    .modal-content {
-        background: linear-gradient(145deg, #0f1a2e, #081020);
+    .modal-card {
+        background: rgba(10, 25, 45, 0.95);
+        border-radius: 2rem;
         padding: 2rem;
-        border-radius: 40px;
         text-align: center;
         border: 2px solid #008f9b;
-        max-width: 320px;
-        width: 90%;
-        animation: zoom 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+        max-width: 300px;
+        width: 85%;
+        animation: zoom 0.3s ease;
     }
     @keyframes zoom {
-        from { opacity: 0; transform: scale(0.9); }
+        from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
     }
-    .modal-content h2 {
+    .modal-card h2 {
         color: #008f9b;
-        margin-bottom: 1rem;
+        margin-bottom: 0.8rem;
     }
-
-    /* Toasts mejorados (con borde teal) */
-    .toast-notification {
+    .toast {
         position: fixed;
-        bottom: 20px;
+        bottom: 25px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0,0,0,0.92);
-        backdrop-filter: blur(16px);
-        padding: 12px 28px;
-        border-radius: 50px;
+        background: #1e2a3e;
+        backdrop-filter: blur(12px);
+        padding: 0.75rem 1.5rem;
+        border-radius: 3rem;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         font-weight: 500;
         z-index: 10001;
-        animation: slideToast 0.3s ease forwards;
+        animation: toastIn 0.25s ease;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         border-left: 5px solid #008f9b;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         color: white;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         max-width: 90%;
-        word-break: break-word;
-        text-align: center;
     }
-    .toast-notification.error {
-        border-left-color: #ff5e5e;
-    }
-    .toast-notification.success {
-        border-left-color: #2ecc71;
-    }
-    @keyframes slideToast {
-        from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+    .toast.error { border-left-color: #ff6b6b; }
+    .toast.success { border-left-color: #2ecc71; }
+    @keyframes toastIn {
+        from { opacity: 0; transform: translateX(-50%) translateY(20px); }
         to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
-
-    /* Ajustes móviles */
-    @media (max-width: 500px) {
-        .contenedor-principal {
-            padding: 1.2rem;
+    @media (max-width: 550px) {
+        .registro-container {
+            padding: 1.5rem;
         }
-        header h2 {
-            font-size: 1.5rem;
+        .header h1 {
+            font-size: 1.6rem;
         }
-        input, select, .btn-accion {
+        input, select, .btn-primary {
             padding: 0.8rem 1rem;
         }
-        .toast-notification {
-            bottom: 10px;
-            padding: 8px 16px;
-            font-size: 0.8rem;
-        }
-        .help-text {
+        .help-note {
             font-size: 0.65rem;
         }
     }
@@ -304,77 +263,62 @@
 </head>
 <body>
 
-<div class="contenedor-principal">
-    <header>
-        <h2>⚽ NÁPOLES F.C.</h2>
+<div class="registro-container">
+    <div class="header">
+        <h1>NAPOLES F.C.</h1>
         <p>Formulario de registro oficial</p>
-        <p class="subtitulo">📅 lista para la temporada 2026 - 2027</p>
-    </header>
+        <div class="badge">🏆 Temporada 2026 - 2027</div>
+    </div>
 
     <form id="formRegistro">
         <!-- PASO 1: Cédula -->
         <div id="paso1" class="paso activo">
-            <input type="text" id="ced" maxlength="10" placeholder="CÉDULA (10 dígitos)" autocomplete="off">
-            <div class="help-text">🔑 INGRESA TU NÚMERO DE CÉDULA PARA EMPEZAR</div>
-            <div class="help-text">🆔 ASÍ SE VA A LLAMAR ESTA ID CARD</div>
-            <button type="button" id="btnCedula" class="btn-accion" disabled>VALIDAR</button>
+            <div class="campo">
+                <label>🔢 CÉDULA (10 dígitos)</label>
+                <input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890" autocomplete="off">
+                <div class="help-note"><span>🔑</span> Ingresa tu número de cédula para empezar</div>
+            </div>
+            <button type="button" id="btnCedula" class="btn-primary" disabled>Validar</button>
         </div>
 
         <!-- PASO 2: Datos personales -->
         <div id="paso2" class="paso">
-            <input type="text" id="n1" placeholder="PRIMER NOMBRE">
-            <input type="text" id="n2" placeholder="SEGUNDO NOMBRE">
-            <input type="text" id="ape" placeholder="APELLIDOS">
-            <input type="date" id="fecha" placeholder="dd/mm/aaaa">
-            <div class="help-text">📅 AQUÍ DEBES INGRESAR TU FECHA DE NACIMIENTO</div>
-            <div class="help-text">🆔 ESTA ID CARD SE VA A LLAMAR "TUS DATOS PERSONALES"</div>
-            <button type="button" id="btnPaso2" class="btn-accion" disabled>SIGUIENTE</button>
+            <div class="campo"><label>Primer nombre</label><input type="text" id="n1" placeholder="Ej: Darwin"></div>
+            <div class="campo"><label>Segundo nombre</label><input type="text" id="n2" placeholder="Opcional"></div>
+            <div class="campo"><label>Apellidos</label><input type="text" id="ape" placeholder="Ej: Rodríguez"></div>
+            <div class="campo"><label>Fecha de nacimiento</label><input type="date" id="fecha"></div>
+            <div class="help-note"><span>📅</span> Aquí debes ingresar tu fecha de nacimiento</div>
+            <button type="button" id="btnPaso2" class="btn-primary" disabled>Siguiente</button>
         </div>
 
         <!-- PASO 3: Contacto -->
         <div id="paso3" class="paso">
-            <input type="tel" id="tel" maxlength="10" placeholder="TELÉFONO">
-            <input type="email" id="correo" placeholder="CORREO ELECTRÓNICO">
-            <div class="help-text">📞 QUEREMOS ESTAR EN CONTACTO CONTIGO</div>
-            <div class="help-text">🆔 ESTA ID CARD SE VA A LLAMAR "CONTACTO DIRECTO"</div>
-            <button type="button" id="btnPaso3" class="btn-accion" disabled>SIGUIENTE</button>
+            <div class="campo"><label>Teléfono (10 dígitos)</label><input type="tel" id="tel" maxlength="10" placeholder="Ej: 0991234567"></div>
+            <div class="campo"><label>Correo electrónico</label><input type="email" id="correo" placeholder="tú@ejemplo.com"></div>
+            <div class="help-note"><span>📞</span> Queremos estar en contacto contigo</div>
+            <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
         </div>
 
         <!-- PASO 4: Fotos -->
         <div id="paso4" class="paso">
-            <h3>📸 FOTO PERFIL</h3>
-            <input type="file" id="rostro" accept="image/*">
-            <span id="vistoRostro" class="visto-img"></span>
-            <h3>🪪 FOTO CÉDULA</h3>
-            <input type="file" id="cedulaFile" accept="image/*">
-            <span id="vistoCedula" class="visto-img"></span>
-            <div class="help-text">🎨 PERSONALIZA TU ARMADURA CON TUS FOTOS</div>
-            <div class="help-text">🆔 ESTA ID CARD SE VA A LLAMAR "IDENTIDAD VISUAL"</div>
-            <button type="button" id="btnPaso4" class="btn-accion" disabled>SIGUIENTE</button>
+            <div class="campo"><label>📸 Foto perfil</label><input type="file" id="rostro" accept="image/jpeg,image/png"><span id="vistoRostro" class="visto-img"></span></div>
+            <div class="campo"><label>🪪 Foto cédula</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"><span id="vistoCedula" class="visto-img"></span></div>
+            <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
 
         <!-- PASO 5: Armadura -->
         <div id="paso5" class="paso">
-            <h3>⚽ ARMADURA</h3>
-            <select id="nombreCamiseta"></select>
-            <div class="help-text">🏷️ ESCOGE EL NOMBRE PARA TU DORSAL (ej. DARWIN)</div>
-            <select id="dorsal"></select>
-            <div class="help-text">🔢 TU NÚMERO PARA TU DORSAL (ej. 1, 10, 99)</div>
-            <div class="help-text">🆔 ESTA ID CARD SE VA A LLAMAR "TU ESTILO EN LA CANCHA"</div>
-            <button type="button" id="btnPaso5" class="btn-accion" disabled>SIGUIENTE</button>
+            <div class="campo"><label>🏷️ Nombre en camiseta</label><select id="nombreCamiseta"></select></div>
+            <div class="campo"><label>🔢 Número de dorsal</label><select id="dorsal"></select></div>
+            <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
         </div>
 
         <!-- PASO 6: Valores -->
         <div id="paso6" class="paso">
-            <select id="medias">
-                <option value="">MEDIAS EXTRAS (+$2)</option>
-                <option value="NO">NO</option>
-                <option value="SI">SI</option>
-            </select>
-            <input id="inscripcion" placeholder="N° TRANSACCIÓN INSCRIPCIÓN ($5)">
-            <input id="uniforme" placeholder="N° TRANSACCIÓN UNIFORME ($18 + medias)">
-            <div class="help-text">💰 ESTA ID CARD SE VA A LLAMAR "VALORES Y PAGOS"</div>
-            <button type="button" id="btnFinal" class="btn-accion" disabled>FINALIZAR</button>
+            <div class="campo"><label>🧦 Medias extras (+$2)</label><select id="medias"><option value="">Selecciona</option><option value="NO">No</option><option value="SI">Sí</option></select></div>
+            <div class="campo"><label>💰 N° transacción inscripción ($5)</label><input id="inscripcion" placeholder="Ej: PAGO-12345"></div>
+            <div class="campo"><label>👕 N° transacción uniforme ($18 + medias)</label><input id="uniforme" placeholder="Ej: PAGO-67890"></div>
+            <button type="button" id="btnFinal" class="btn-primary" disabled>Finalizar registro</button>
         </div>
 
         <input type="hidden" id="fotoRostroB64">
@@ -382,17 +326,8 @@
     </form>
 </div>
 
-<div id="loader">
-    <div class="spinner-balon"></div>
-    <h3 id="loader-texto">Procesando...</h3>
-</div>
-
-<div id="modalExito">
-    <div class="modal-content">
-        <h2>✅ ¡REGISTRO EXITOSO!</h2>
-        <p>Redirigiendo en <span id="contador">3</span> segundos...</p>
-    </div>
-</div>
+<div id="loader"><div class="spinner"></div><div id="loader-texto">Procesando...</div></div>
+<div id="modalExito"><div class="modal-card"><h2>✅ ¡Registro exitoso!</h2><p>Redirigiendo en <span id="contador">3</span> segundos...</p></div></div>
 
 <script src="frontend.js"></script>
 </body>
