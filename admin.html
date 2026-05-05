@@ -1,21 +1,23 @@
-<input id="user" placeholder="Usuario">
-<input id="pass" type="password" placeholder="Password">
-
-<button onclick="login()">Entrar</button>
+<h2>Jugadores</h2>
+<table id="tabla"></table>
 
 <script>
-async function login(){
-  const u = user.value;
-  const p = pass.value;
-
-  const res = await fetch(`TU_URL?action=login&user=${u}&pass=${p}`);
+async function cargar(){
+  const res = await fetch("TU_URL?action=getJugadores");
   const data = await res.json();
 
-  if(data.ok){
-    localStorage.setItem("rol", data.rol);
-    window.location.href = "admin.html";
-  }else{
-    alert("Credenciales incorrectas");
-  }
+  let html = "<tr><th>Cédula</th><th>Nombre</th><th>Dorsal</th></tr>";
+
+  data.slice(1).forEach(r=>{
+    html += `<tr>
+      <td>${r[1]}</td>
+      <td>${r[2]} ${r[4]}</td>
+      <td>${r[9]}</td>
+    </tr>`;
+  });
+
+  tabla.innerHTML = html;
 }
+
+cargar();
 </script>
