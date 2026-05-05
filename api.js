@@ -20,7 +20,7 @@ document.addEventListener("input", e=>{
     }
 });
 
-// ================= VALIDACIÓN CÉDULA ECUADOR =================
+// ================= VALIDACIÓN CÉDULA =================
 function validarCedulaReal(ced){
     if(!/^\d{10}$/.test(ced)) return false;
 
@@ -40,8 +40,7 @@ function validarCedulaReal(ced){
 
 // ================= PASO 1 =================
 async function validarCedulaEstricta(){
-    const cedInput = document.getElementById('ced');
-    const ced = cedInput.value;
+    const ced=document.getElementById('ced').value;
 
     if(!validarCedulaReal(ced)){
         alert("CÉDULA INVÁLIDA");
@@ -58,6 +57,7 @@ async function validarCedulaEstricta(){
             alert("YA REGISTRADO");
         }else{
             // 🔒 bloquear cédula
+            const cedInput = document.getElementById('ced');
             cedInput.readOnly = true;
             cedInput.style.opacity = "0.6";
 
@@ -103,7 +103,7 @@ function validarPaso3(){
     verPaso(4);
 }
 
-// ================= PREVIEW IMAGEN =================
+// ================= IMAGEN =================
 function previewFile(input,imgId,hiddenId){
     const file=input.files[0];
     const reader=new FileReader();
@@ -145,7 +145,6 @@ function capturarFoto(){
     document.getElementById('fotoRostroB64').value=data;
     document.getElementById('previewRostro').src=data;
 
-    // detener cámara
     if(stream){
         stream.getTracks().forEach(t=>t.stop());
     }
@@ -201,7 +200,7 @@ async function cargarDorsales(){
     }
 }
 
-// ================= ENVÍO FINAL =================
+// ================= ENVÍO =================
 async function enviarRegistro(){
 
     const rostro=document.getElementById('fotoRostroB64').value;
