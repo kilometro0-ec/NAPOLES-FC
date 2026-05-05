@@ -201,7 +201,6 @@ function validarPaso6() {
     const inscripcionValida = inscripcion.value.trim() !== "";
     const uniformeValida = uniforme.value.trim() !== "";
     btnFinal.disabled = !(mediasValida && inscripcionValida && uniformeValida);
-    // Mostrar ayudas si están vacíos pero el usuario ha intentado
     if (!mediasValida) medias.style.borderColor = "#ff5e5e";
     else medias.style.borderColor = "";
     if (!inscripcionValida) inscripcion.style.borderColor = "#ff5e5e";
@@ -213,7 +212,6 @@ function validarPaso6() {
 
 // ================= ENVÍO FINAL =================
 btnFinal.addEventListener('click', async () => {
-    // Validar nuevamente antes de enviar
     if (btnFinal.disabled) {
         mostrarToast("Completa todos los campos del paso 6", "error");
         return;
@@ -221,7 +219,6 @@ btnFinal.addEventListener('click', async () => {
 
     mostrarLoader(true, "Registrando jugador...");
 
-    // Construir FormData con los nombres correctos que espera el backend
     const formData = new FormData();
     formData.append('ced', ced.value);
     formData.append('n1', n1.value.trim());
@@ -238,7 +235,6 @@ btnFinal.addEventListener('click', async () => {
     formData.append('fotoRostroB64', fotoRostroB64.value);
     formData.append('fotoCedulaB64', fotoCedulaB64.value);
 
-    // 🔍 Depuración: ver en consola qué se envía (sin las imágenes completas para no saturar)
     console.log("Enviando datos:", {
         ced: ced.value,
         n1: n1.value,
@@ -257,22 +253,17 @@ btnFinal.addEventListener('click', async () => {
     });
 
     try {
-        const response = await fetch(URL_GAS, {
-            method: 'POST',
-            body: formData
-        });
+        const response = await fetch(URL_GAS, { method: 'POST', body: formData });
         const result = await response.json();
         console.log("Respuesta del backend:", result);
 
         if (result.ok) {
-            // Guardar sesión
             localStorage.setItem('jugador_aprobado', JSON.stringify({
                 cedula: ced.value,
                 expira: Date.now() + 24 * 3600000,
                 admin: false
             }));
             mostrarLoader(false);
-            // Mostrar modal de éxito
             modalExito.style.display = 'flex';
             let segundos = 3;
             const spanContador = document.getElementById('contador');
@@ -281,7 +272,7 @@ btnFinal.addEventListener('click', async () => {
                 if (spanContador) spanContador.innerText = segundos;
                 if (segundos <= 0) {
                     clearInterval(intervalo);
-                    window.location.href = 'perfil.html';
+                    window.location.href = 'login.html';   // ✅ Redirige a login.html
                 }
             }, 1000);
         } else {
@@ -299,10 +290,7 @@ btnFinal.addEventListener('click', async () => {
 function inyectarNav() {
     const path = window.location.pathname;
     const filename = path.split("/").pop();
-    // Si es la página de registro (index.html, raíz o index), salimos
-    if (filename === "" || filename === "index.html" || filename === "index") {
-        return;
-    }
+    if (filename === "" || filename === "index.html" || filename === "index") return;
     if (document.querySelector('.nav-napoles')) return;
 
     let sessionActiva = false;
