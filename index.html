@@ -33,7 +33,6 @@
     100%{transform:scale(1)}
 }
 
-/* cámara */
 #contenedor-camara{
     position:relative;
     width:280px;
@@ -70,7 +69,6 @@
     box-shadow:0 0 0 1000px rgba(0,0,0,0.5);
 }
 </style>
-
 </head>
 
 <body>
@@ -88,7 +86,9 @@
 <div id="paso1" class="paso activo">
 <label>Cédula</label>
 <input id="ced" maxlength="10" placeholder="10 dígitos">
-<button id="btnCedula" class="btn-accion" disabled>VALIDAR JUGADOR</button>
+<button type="button" id="btnCedula" class="btn-accion" disabled>
+VALIDAR JUGADOR
+</button>
 </div>
 
 <!-- PASO 2 -->
@@ -100,10 +100,10 @@
 <input id="n2" placeholder="Segundo Nombre">
 <input id="ape" placeholder="Apellidos">
 
-<label>Fecha de nacimiento</label>
+<label>Fecha</label>
 <input type="date" id="fecha">
 
-<button id="btnPaso2" class="btn-accion" disabled>Siguiente</button>
+<button type="button" id="btnPaso2" class="btn-accion" disabled>Siguiente</button>
 </div>
 
 <!-- PASO 3 -->
@@ -111,7 +111,7 @@
 <input id="tel" placeholder="09XXXXXXXX">
 <input id="correo" placeholder="correo@email.com">
 
-<button id="btnPaso3" class="btn-accion" disabled>Siguiente</button>
+<button type="button" id="btnPaso3" class="btn-accion" disabled>Siguiente</button>
 </div>
 
 <!-- PASO 4 -->
@@ -123,12 +123,14 @@
 <div class="guia"></div>
 </div>
 
-<button id="btnCamara" class="btn-accion">Activar Cámara</button>
-<button id="btnFoto" class="btn-accion" style="background:#B59461">Capturar Foto</button>
+<button type="button" id="btnCamara" class="btn-accion">Activar Cámara</button>
+<button type="button" id="btnFoto" class="btn-accion" style="background:#B59461">
+Capturar Foto
+</button>
 
 <input type="file" id="cedulaFile">
 
-<button id="btnPaso4" class="btn-accion" disabled>Siguiente</button>
+<button type="button" id="btnPaso4" class="btn-accion" disabled>Siguiente</button>
 </div>
 
 <!-- PASO 5 -->
@@ -143,7 +145,7 @@
 <option value="">Seleccionar Dorsal</option>
 </select>
 
-<button id="btnPaso5" class="btn-accion" disabled>Siguiente</button>
+<button type="button" id="btnPaso5" class="btn-accion" disabled>Siguiente</button>
 </div>
 
 <!-- PASO 6 -->
@@ -156,16 +158,17 @@
 </select>
 
 <label>Comprobante Inscripción ($5)</label>
-<input id="inscripcion" maxlength="10" placeholder="Ej: 0001234567">
+<input id="inscripcion" maxlength="10" placeholder="0001234567">
 
 <label>Comprobante Uniforme ($18)</label>
-<input id="uniforme" maxlength="10" placeholder="Ej: 0001234567">
+<input id="uniforme" maxlength="10" placeholder="0001234567">
 
-<button id="btnFinal" class="btn-accion" disabled>FINALIZAR</button>
+<button type="button" id="btnFinal" class="btn-accion" disabled>
+FINALIZAR
+</button>
 
 </div>
 
-<!-- hidden -->
 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
 
 </form>
@@ -180,6 +183,10 @@
 <script src="api.js"></script>
 
 <script>
+// 🔴 EVITA RECARGA (CLAVE)
+document.getElementById("formRegistro").addEventListener("submit", e=>{
+    e.preventDefault();
+});
 
 // ================= PASO 1 =================
 ced.addEventListener("input",()=>{
@@ -204,8 +211,6 @@ btnCedula.onclick = async ()=>{
     verPaso(2);
 
     ced2.value = cedula;
-    ced2.readOnly = true;
-
     ced.readOnly = true;
     ced.style.opacity = "0.6";
 
@@ -264,10 +269,6 @@ btnFinal.onclick = async ()=>{
     loader(true,"Procesando registro...");
     await enviarRegistro();
 };
-
-// ❌ NO activar SW hasta que todo funcione bien
-// navigator.serviceWorker.register('sw.js');
-
 </script>
 
 </body>
