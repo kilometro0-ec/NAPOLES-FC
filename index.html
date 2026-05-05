@@ -6,35 +6,33 @@
 <title>Nápoles F.C. - Registro</title>
 <link rel="stylesheet" href="estilos.css">
 <style>
-/* Estilos mínimos adicionales (complemento) */
+/* Estilos de respaldo en caso de que no cargue el CSS externo */
 .paso { display: none; }
 .paso.activo { display: block; animation: fade 0.3s ease; }
 @keyframes fade {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-.btn-accion:disabled, button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
+.btn-accion:disabled { opacity: 0.5; cursor: not-allowed; }
 #loader {
     display: none;
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.85);
-    color: #fff;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     z-index: 9999;
 }
-.visto-img {
-    display: inline-block;
-    margin-left: 10px;
-    font-weight: bold;
-    font-size: 1.2rem;
+.spinner-balon {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-top: 5px solid #B59461;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
+@keyframes spin { to { transform: rotate(360deg); } }
+.visto-img { display: inline-block; margin-left: 10px; color: #2ecc71; }
 </style>
 </head>
 <body>
@@ -48,33 +46,33 @@
     <form id="formRegistro">
         <!-- PASO 1 -->
         <div id="paso1" class="paso activo">
-            <input type="text" id="ced" maxlength="10" placeholder="CÉDULA (10 dígitos)" autocomplete="off">
+            <input type="text" id="ced" maxlength="10" placeholder="CÉDULA (10 dígitos)">
             <button type="button" id="btnCedula" class="btn-accion" disabled>VALIDAR</button>
         </div>
 
         <!-- PASO 2 -->
         <div id="paso2" class="paso">
             <input type="text" id="n1" placeholder="PRIMER NOMBRE">
-            <input type="text" id="n2" placeholder="SEGUNDO NOMBRE (OBLIGATORIO)">
+            <input type="text" id="n2" placeholder="SEGUNDO NOMBRE">
             <input type="text" id="ape" placeholder="APELLIDOS">
-            <input type="date" id="fecha" placeholder="FECHA DE NACIMIENTO">
+            <input type="date" id="fecha">
             <button type="button" id="btnPaso2" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
         <!-- PASO 3 -->
         <div id="paso3" class="paso">
-            <input type="tel" id="tel" maxlength="10" placeholder="TELÉFONO (10 dígitos)">
-            <input type="email" id="correo" placeholder="CORREO ELECTRÓNICO">
+            <input type="tel" id="tel" maxlength="10" placeholder="TELÉFONO">
+            <input type="email" id="correo" placeholder="CORREO">
             <button type="button" id="btnPaso3" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
         <!-- PASO 4 -->
         <div id="paso4" class="paso">
             <h3>FOTO PERFIL</h3>
-            <input type="file" id="rostro" accept="image/jpeg,image/png">
+            <input type="file" id="rostro" accept="image/*">
             <span id="vistoRostro" class="visto-img"></span>
             <h3>FOTO CÉDULA</h3>
-            <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
+            <input type="file" id="cedulaFile" accept="image/*">
             <span id="vistoCedula" class="visto-img"></span>
             <button type="button" id="btnPaso4" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
@@ -90,36 +88,29 @@
         <!-- PASO 6 -->
         <div id="paso6" class="paso">
             <select id="medias">
-                <option value="">¿MEDIAS EXTRAS? (+$2)</option>
+                <option value="">MEDIAS EXTRAS (+$2)</option>
                 <option value="NO">NO</option>
                 <option value="SI">SI</option>
             </select>
-            <input type="text" id="inscripcion" placeholder="N° TRANSACCIÓN INSCRIPCIÓN ($5)">
-            <input type="text" id="uniforme" placeholder="N° TRANSACCIÓN UNIFORME ($18 + medias)">
+            <input id="inscripcion" placeholder="N° TRANSACCIÓN INSCRIPCIÓN ($5)">
+            <input id="uniforme" placeholder="N° TRANSACCIÓN UNIFORME ($18 + medias)">
             <button type="button" id="btnFinal" class="btn-accion" disabled>FINALIZAR</button>
         </div>
 
-        <!-- Campos ocultos para imágenes base64 -->
         <input type="hidden" id="fotoRostroB64">
         <input type="hidden" id="fotoCedulaB64">
     </form>
 </div>
 
-<!-- Loader -->
 <div id="loader">
     <div class="spinner-balon"></div>
     <h3 id="loader-texto">Procesando...</h3>
 </div>
 
-<!-- Modal de éxito -->
-<div id="modalExito">
-    <div class="modal-content">
-        <h2>🎉 ¡REGISTRO EXITOSO! 🎉</h2>
-        <p>Bienvenido a Nápoles F.C.</p>
-        <p>Redirigiendo en <span id="contador">3</span> segundos...</p>
-        <div style="margin-top:20px;">
-            <div class="spinner-balon" style="width:40px; height:40px; margin:0 auto;"></div>
-        </div>
+<div id="modalExito" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:100000; justify-content:center; align-items:center;">
+    <div style="background:#1A2B48; padding:30px; border-radius:20px; text-align:center; border:2px solid #B59461;">
+        <h2 style="color:#B59461;">✅ ¡REGISTRO EXITOSO!</h2>
+        <p style="color:white;">Redirigiendo en <span id="contador">3</span> segundos...</p>
     </div>
 </div>
 
