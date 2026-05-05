@@ -1,4 +1,4 @@
-/* Configuración Global para evitar desbordamientos */
+/* CONFIGURACIÓN GLOBAL */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -17,39 +17,66 @@ body {
   color: var(--blanco-puro);
   font-family: 'Segoe UI', Roboto, sans-serif;
   margin: 0;
-  padding: 15px; /* Añadido para que no pegue al borde en móviles */
+  padding: 15px;
   min-height: 100vh;
+  margin-bottom: 80px !important; /* Espacio para el nav.js */
 }
 
-h2 { 
-  color: var(--dorado); 
-  text-align: center; 
-  text-transform: uppercase; 
-  letter-spacing: 2px;
-  font-size: 1.5rem;
-}
-
+/* CONTENEDOR Y TÍTULOS */
 .contenedor-principal {
   max-width: 450px;
-  margin: 20px auto;
-  padding: 25px;
+  margin: 10px auto;
+  padding: 20px;
   background-color: var(--gris-suave);
   border: 1px solid var(--dorado);
   border-radius: 15px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px); /* Efecto moderno de cristal */
+  backdrop-filter: blur(5px);
 }
 
-label { 
-  color: var(--dorado); 
-  font-size: 0.85em; 
-  font-weight: bold; 
-  display: block; 
+.titulo-club {
+  color: var(--dorado);
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  letter-spacing: 3px;
+}
+
+/* CONTROL DE PASOS */
+.paso-contenido { display: none; }
+.paso-activo { display: block; }
+
+/* PROGRESO (PUNTOS) */
+.progreso-puntos {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.punto {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--blanco-puro);
+  opacity: 0.3;
+}
+.punto.activo {
+  background: var(--dorado);
+  opacity: 1;
+  box-shadow: 0 0 10px var(--dorado);
+}
+
+/* FORMULARIO */
+label.tag {
+  color: var(--dorado);
+  font-size: 0.85em;
+  font-weight: bold;
+  display: block;
   margin-top: 15px;
   text-transform: uppercase;
 }
 
-input {
+input, select {
   width: 100%;
   padding: 14px;
   margin: 8px 0;
@@ -60,11 +87,7 @@ input {
   outline: none;
 }
 
-input:focus {
-  border-color: var(--cardenillo);
-  box-shadow: 0 0 5px var(--cardenillo);
-}
-
+/* BOTONES */
 .btn-accion {
   background-color: var(--cardenillo);
   color: white;
@@ -77,15 +100,51 @@ input:focus {
   cursor: pointer;
   transition: 0.3s;
   margin-top: 15px;
-  display: block;
+}
+.btn-atras { background-color: #555; }
+.flex-btns { display: flex; gap: 10px; }
+
+/* CÁMARA */
+.camara-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid var(--dorado);
+}
+video, .preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.espejo { transform: scaleX(-1); }
+.preview-img { display: none; }
+
+/* LOADERS (LO QUE ESTABA "VERGA") */
+#loader, #final-animacion {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(10, 20, 40, 0.95);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
 
-.btn-accion:hover { 
-  background-color: #00737a; 
-  box-shadow: 0 0 15px var(--cardenillo); 
+.spinner-balon, .balon-animado {
+  width: 70px;
+  height: 70px;
+  background-image: url('https://cdn-icons-png.flaticon.com/512/53/53283.png');
+  background-size: contain;
+  filter: invert(1);
+  animation: reboteYRotacion 1.2s infinite ease-in-out;
 }
 
-/* Evitar que el menú de nav.js tape el contenido */
-.seccion-formulario {
-  margin-bottom: 20px;
+@keyframes reboteYRotacion {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(180deg); }
 }
