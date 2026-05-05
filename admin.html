@@ -1,148 +1,21 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin | Nápoles FC</title>
-    <link rel="stylesheet" href="estilos.css">
-    <style>
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .buscador {
-            margin-bottom: 20px;
-            position: relative;
-        }
-        .tabla-jugadores {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85em;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .tabla-jugadores th, .tabla-jugadores td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--gris-suave);
-        }
-        .tabla-jugadores th {
-            background-color: var(--cardenillo);
-            color: white;
-            text-transform: uppercase;
-        }
-        .foto-mini {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid var(--dorado);
-        }
-        .btn-tabla {
-            padding: 5px 10px;
-            font-size: 0.8em;
-            margin: 2px;
-            border-radius: 5px;
-            cursor: pointer;
-            border: none;
-        }
-        .btn-whatsapp { background: #25D366; color: white; }
-        .btn-ver { background: var(--dorado); color: var(--azul-noche); }
-        
-        #contador {
-            font-weight: bold;
-            color: var(--dorado);
-        }
-    </style>
-</head>
-<body>
+<input id="user" placeholder="Usuario">
+<input id="pass" type="password" placeholder="Password">
 
-    <div class="contenedor-principal" style="max-width: 800px;">
-        <div class="admin-header">
-            <h2>Panel de Control</h2>
-            <span id="contador">0 Jugadores</span>
-        </div>
+<button onclick="login()">Entrar</button>
 
-        <div class="buscador">
-            <input type="text" id="inputBusqueda" placeholder="🔍 Buscar por nombre o cédula..." onkeyup="filtrarTabla()">
-        </div>
+<script>
+async function login(){
+  const u = user.value;
+  const p = pass.value;
 
-        <div style="overflow-x: auto;">
-            <table class="tabla-jugadores" id="tablaAdmin">
-                <thead>
-                    <tr>
-                        <th>Foto</th>
-                        <th>Jugador</th>
-                        <th>Cédula</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="cuerpoTabla">
-                    <!-- Los datos se cargarán aquí -->
-                </tbody>
-            </table>
-        </div>
-    </div>
+  const res = await fetch(`TU_URL?action=login&user=${u}&pass=${p}`);
+  const data = await res.json();
 
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLctY39LIa_aVSFKCIQl306huhIk6CiZzrUC2PczfeVlTJ9-V9Vt9giq1A2mYveAHW/exec";
-
-        async function cargarJugadores() {
-            const cuerpo = document.getElementById('cuerpoTabla');
-            cuerpo.innerHTML = "<tr><td colspan='4' style='text-align:center;'>Cargando base de datos...</td></tr>";
-
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=getAll`);
-                const jugadores = await response.json();
-                
-                document.getElementById('contador').innerText = `${jugadores.length} Jugadores`;
-                cuerpo.innerHTML = "";
-
-                jugadores.forEach(j => {
-                    const fila = `
-                        <tr>
-                            <td><img src="${j.foto || 'https://via.placeholder.com/40'}" class="foto-mini"></td>
-                            <td><strong>${j.nombre}</strong><br><small>${j.telefono}</small></td>
-                            <td>${j.cedula}</td>
-                            <td>
-                                <button class="btn-tabla btn-ver" onclick="verDetalles('${j.cedula}')">Ficha</button>
-                                <button class="btn-tabla btn-whatsapp" onclick="contactar('${j.telefono}')">WA</button>
-                            </td>
-                        </tr>
-                    `;
-                    cuerpo.innerHTML += fila;
-                });
-            } catch (error) {
-                cuerpo.innerHTML = "<tr><td colspan='4'>Error al cargar datos.</td></tr>";
-            }
-        }
-
-        function filtrarTabla() {
-            let input = document.getElementById("inputBusqueda").value.toUpperCase();
-            let filas = document.getElementById("cuerpoTabla").getElementsByTagName("tr");
-
-            for (let i = 0; i < filas.length; i++) {
-                let textoFila = filas[i].textContent || filas[i].innerText;
-                filas[i].style.display = textoFila.toUpperCase().indexOf(input) > -1 ? "" : "none";
-            }
-        }
-
-        function contactar(num) {
-            // Limpiar el número y abrir WhatsApp
-            const tel = num.startsWith('0') ? '593' + num.substring(1) : num;
-            window.open(`https://wa.me/${tel}`, '_blank');
-        }
-
-        function verDetalles(ced) {
-            alert("Detalles para la cédula: " + ced + "\n(Función en desarrollo para edición individual)");
-        }
-
-        document.addEventListener('DOMContentLoaded', cargarJugadores);
-    </script>
-
-    <script src="nav.js"></script>
-</body>
-</html>
+  if(data.ok){
+    localStorage.setItem("rol", data.rol);
+    window.location.href = "admin.html";
+  }else{
+    alert("Credenciales incorrectas");
+  }
+}
+</script>
