@@ -5,7 +5,7 @@
  */
 
 // CENTRALIZACIÓN DE URL: Cambia este link solo aquí y afectará a todo el proyecto.
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbycsLUl8WymidHl9IlOjeAupHIlg20PMbz5E4NsP_TFINhhCR1p9D4o6x5Afc9ATAUY/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIC8l7Hv0qNnYTNfWezucTWSrZZqzNFMV2E0fBaa85EwjjzOxDovpTosslIQiG2Bwu/exec";
 
 // ==========================================
 // 1. LÓGICA DE REGISTRO (FORMULARIO INDEX)
