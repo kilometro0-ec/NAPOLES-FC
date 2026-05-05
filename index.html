@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Evitar que el navegador guarde caché vieja -->
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    
     <title>Inscripción | Nápoles FC</title>
     
     <!-- Configuración PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1A2B48">
     
-    <!-- Iconos Locales (Asegúrate de que existan en la carpeta img) -->
+    <!-- Iconos y Estilos -->
     <link rel="icon" href="img/favicon.png">
-
-    <!-- Enlaces a archivos CSS -->
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="estilos.css?v=2026.05">
     
     <style>
-        /* Estilos críticos para el funcionamiento de los pasos */
+        /* Estilos críticos para el flujo de pasos */
         .loading-overlay {
-            display: none; /* Se activa desde api.js */
+            display: none; 
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(26, 43, 72, 0.98);
@@ -43,7 +47,6 @@
         #video { width: 100%; border-radius: 12px; border: 2px solid #B59461; background: #000; }
         .preview-camara { width: 100%; border-radius: 12px; display: none; border: 2px solid #008B94; }
         
-        /* Botones */
         .btn-accion {
             padding: 12px;
             border: none;
@@ -52,12 +55,14 @@
             font-weight: bold;
             width: 100%;
             margin-top: 10px;
+            transition: 0.3s;
         }
+        .btn-accion:disabled { background: #666 !important; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-    <!-- Pantalla de Carga (api.js la mostrará con ID "loader") -->
+    <!-- Pantalla de Carga -->
     <div id="loader" class="loading-overlay">
         <div class="spinner"></div>
         <p style="color: #B59461; margin-top: 20px; font-weight: bold;">PROCESANDO INSCRIPCIÓN...</p>
@@ -70,7 +75,7 @@
             <p style="color: #B59461; font-size: 0.8em; margin-top: -10px;">CORPORACIÓN 360 • 2026</p>
         </header>
 
-        <!-- IMPORTANTE: El ID debe ser 'formularioRegistro' para que api.js lo encuentre -->
+        <!-- Formulario principal conectado a api.js -->
         <form id="formularioRegistro">
             
             <!-- PASO 1: Datos Personales -->
@@ -117,37 +122,44 @@
                     📷 CAPTURAR FOTO
                 </button>
                 
-                <!-- La imagen donde se guarda la captura -->
                 <img id="fotoPreview" class="preview-camara" src="">
                 
                 <label style="margin-top: 20px;">Foto de Cédula (Frontal)</label>
-                <!-- El ID debe ser 'fotoCedula' para api.js -->
                 <input type="file" id="fotoCedula" name="fotoCedula" accept="image/*" required>
                 
                 <div style="display: flex; gap: 10px;">
                     <button type="button" class="btn-accion" style="background:#444; color:white;" onclick="irAtras(3, 2)">Atrás</button>
-                    <button type="submit" class="btn-accion" style="background:#008B94; color:white;">FINALIZAR INSCRIPCIÓN</button>
+                    <button type="submit" id="btnFinalizar" class="btn-accion" style="background:#008B94; color:white;">FINALIZAR INSCRIPCIÓN</button>
                 </div>
             </div>
 
         </form>
     </div>
 
-    <!-- CARGA DE SCRIPTS AL FINAL -->
-    <script src="nav.js"></script>
-    <script src="api.js"></script>
+    <!-- Carga de Scripts con control de versión para evitar caché -->
+    <script src="nav.js?v=2026.05.04"></script>
+    <script src="api.js?v=2026.05.04"></script>
 
     <script>
-        // Lógica de navegación interna (Paso a Paso)
+        /**
+         * Lógica de navegación del formulario
+         */
         let stream;
 
         function validarYPasar(actual, siguiente) {
-            const inputs = document.querySelectorAll(`#paso${actual} [required]`);
+            const pasoActual = document.getElementById(`paso${actual}`);
+            const inputs = pasoActual.querySelectorAll("[required]");
             let valido = true;
-            inputs.forEach(i => { if(!i.checkValidity()) { i.reportValidity(); valido = false; } });
+
+            inputs.forEach(i => {
+                if(!i.checkValidity()) {
+                    i.reportValidity();
+                    valido = false;
+                }
+            });
 
             if(valido) {
-                document.getElementById(`paso${actual}`).classList.add('seccion-oculta');
+                pasoActual.classList.add('seccion-oculta');
                 document.getElementById(`paso${siguiente}`).classList.remove('seccion-oculta');
                 if(siguiente === 3) iniciarCamara();
             }
@@ -156,7 +168,10 @@
         function irAtras(actual, anterior) {
             document.getElementById(`paso${actual}`).classList.add('seccion-oculta');
             document.getElementById(`paso${anterior}`).classList.remove('seccion-oculta');
-            if(actual === 3 && stream) stream.getTracks().forEach(t => t.stop());
+            // Detener cámara si se regresa del paso 3
+            if(actual === 3 && stream) {
+                stream.getTracks().forEach(t => t.stop());
+            }
         }
 
         async function iniciarCamara() {
@@ -165,10 +180,12 @@
             video.style.display = 'block';
             preview.style.display = 'none';
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "user", width: 480, height: 480 } 
+                });
                 video.srcObject = stream;
             } catch (e) {
-                alert("Para inscribirte, activa la cámara.");
+                alert("Para completar tu registro oficial, debes permitir el acceso a la cámara.");
             }
         }
 
@@ -182,7 +199,7 @@
             canvas.getContext('2d').drawImage(video, 0, 0);
             
             const data = canvas.toDataURL('image/jpeg', 0.8);
-            preview.src = data; // ESTO ES LO QUE ENVÍA api.js
+            preview.src = data; 
             preview.style.display = 'block';
             video.style.display = 'none';
             
