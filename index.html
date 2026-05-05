@@ -3,80 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscripción | Nápoles FC</title>
-    <!-- Enlace a tu archivo de estilos -->
+    <title>Registro | Nápoles FC</title>
     <link rel="stylesheet" href="estilos.css">
-    <link rel="icon" href="/NAPOLES-FC/img/favicon.png">
+    <style>
+        /* Estilos rápidos por si el CSS falla */
+        .paso-contenido { display: none; }
+        .paso-activo { display: block; }
+        .progreso { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .punto { width: 30px; height: 30px; background: #ccc; border-radius: 50%; text-align: center; line-height: 30px; color: white; }
+        .punto.activo { background: #B59461; }
+        #video { width: 100%; border-radius: 10px; background: #000; transform: scaleX(-1); }
+    </style>
 </head>
 <body>
 
-    <!-- Pantalla de carga -->
-    <div id="loader">
-        <div class="spinner"></div>
+    <div id="loader" style="display:none; position:fixed; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:1000; text-align:center; padding-top:100px;">
         <h2>⚙️ PROCESANDO REGISTRO...</h2>
-        <p>Enviando datos al sistema de Nápoles FC</p>
     </div>
 
-    <div class="contenedor-principal" id="contenido">
-        <header>
-            <img src="/NAPOLES-FC/img/logo.png" alt="Logo Nápoles" class="logo">
-            <h2>NÁPOLES F.C.</h2>
-            <p class="subtitulo">Registro Oficial de Jugadores 2026</p>
+    <div class="contenedor-principal">
+        <header style="text-align:center;">
+            <h2 style="color:#1A2B48;">NÁPOLES F.C.</h2>
+            <div class="progreso">
+                <div id="p1" class="punto activo">1</div>
+                <div id="p2" class="punto">2</div>
+                <div id="p3" class="punto">3</div>
+            </div>
         </header>
 
         <form id="formRegistro">
-            <!-- PASO 1: Datos Personales -->
-            <div id="paso1" class="seccion-paso">
-                <h3>Paso 1: Información Personal</h3>
+            <!-- PASO 1 -->
+            <div id="step1" class="paso-contenido paso-activo">
                 <input type="text" name="nombre1" placeholder="Primer Nombre" required>
                 <input type="text" name="nombre2" placeholder="Segundo Nombre" required>
-                <input type="text" name="apellidos" placeholder="Apellidos Completos" required>
-                <input type="text" name="cedula" placeholder="Número de Cédula" maxlength="10" required>
-                <button type="button" class="btn-sig" onclick="irA(2)">SIGUIENTE</button>
+                <input type="text" name="apellidos" placeholder="Apellidos" required>
+                <input type="text" name="cedula" placeholder="Cédula" required>
+                <button type="button" class="btn-sig" onclick="verPaso(2)">SIGUIENTE</button>
             </div>
 
-            <!-- PASO 2: Contacto y Uniforme -->
-            <div id="paso2" class="seccion-paso seccion-oculta">
-                <h3>Paso 2: Contacto y Uniforme</h3>
-                <label>Fecha de Nacimiento:</label>
+            <!-- PASO 2 -->
+            <div id="step2" class="paso-contenido">
                 <input type="date" name="fechaNac" required>
-                <input type="tel" name="telefono" placeholder="WhatsApp (Ej: 0991234567)" required>
-                <input type="email" name="correo" placeholder="Correo Electrónico" required>
-                <input type="text" name="nombreCamiseta" placeholder="Nombre en la Camiseta">
-                <input type="number" name="dorsal" placeholder="Número de Dorsal Preferido">
-                <div class="botones-flex">
-                    <button type="button" class="btn-atras" onclick="irA(1)">ATRÁS</button>
-                    <button type="button" class="btn-sig" onclick="irA(3)">SIGUIENTE</button>
+                <input type="tel" name="telefono" placeholder="WhatsApp" required>
+                <input type="email" name="correo" placeholder="Correo" required>
+                <input type="text" name="nombreCamiseta" placeholder="Nombre en Camiseta">
+                <input type="number" name="dorsal" placeholder="Dorsal">
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="verPaso(1)">ATRÁS</button>
+                    <button type="button" class="btn-sig" onclick="verPaso(3)">SIGUIENTE</button>
                 </div>
             </div>
 
-            <!-- PASO 3: Validación Facial -->
-            <div id="paso3" class="seccion-paso seccion-oculta">
-                <h3>Paso 3: Foto de Registro</h3>
-                <div class="camara-box">
+            <!-- PASO 3 -->
+            <div id="step3" class="paso-contenido">
+                <div class="camara-area">
                     <video id="video" autoplay playsinline></video>
                     <canvas id="canvas" style="display:none;"></canvas>
                     <img id="preview" style="display:none; width:100%; border-radius:10px;">
                 </div>
-                
-                <button type="button" id="btnFoto" class="btn-foto">📷 CAPTURAR FOTO</button>
-                
-                <!-- Campo oculto para la foto -->
+                <button type="button" id="btnCapturar" style="background:#444; color:#fff;">📷 CAPTURAR FOTO</button>
                 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
                 
-                <div class="botones-flex">
-                    <button type="button" class="btn-atras" onclick="irA(2)">ATRÁS</button>
-                    <button type="submit" class="btn-fin">FINALIZAR REGISTRO</button>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button type="button" onclick="verPaso(2)">ATRÁS</button>
+                    <button type="submit" class="btn-fin" style="background:#008B94; color:#fff;">FINALIZAR</button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- SCRIPTS EXTERNOS -->
-    <!-- 1. El que maneja los pasos (Siguiente/Atrás) -->
+    <!-- CARGAMOS TUS ARCHIVOS EXTERNOS -->
     <script src="nav.js"></script>
-    <!-- 2. El que maneja la cámara y el envío a Google -->
     <script src="api.js"></script>
 
+    <script>
+        // LÓGICA DE LA CÁMARA (Para que no falle al estar en archivo aparte)
+        let stream;
+        async function iniciarCamara() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                document.getElementById('video').srcObject = stream;
+            } catch (e) { alert("Error con la cámara: " + e); }
+        }
+
+        function verPaso(n) {
+            document.querySelectorAll('.paso-contenido').forEach(p => p.classList.remove('paso-activo'));
+            document.querySelectorAll('.punto').forEach(p => p.classList.remove('activo'));
+            document.getElementById('step' + n).classList.add('paso-activo');
+            document.getElementById('p' + n).classList.add('activo');
+            if(n === 3) iniciarCamara();
+        }
+
+        document.getElementById('btnCapturar').onclick = () => {
+            const v = document.getElementById('video');
+            const c = document.getElementById('canvas');
+            const p = document.getElementById('preview');
+            c.width = v.videoWidth; c.height = v.videoHeight;
+            c.getContext('2d').drawImage(v, 0, 0);
+            const data = c.toDataURL('image/jpeg', 0.8);
+            document.getElementById('fotoRostroB64').value = data;
+            p.src = data; p.style.display = 'block'; v.style.display = 'none';
+            if(stream) stream.getTracks().forEach(t => t.stop());
+        };
+    </script>
 </body>
 </html>
