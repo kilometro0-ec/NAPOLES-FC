@@ -3,45 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Registro | Nápoles FC</title>
-    
-    <!-- Enlaces a tus archivos -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="estilos.css">
-    
+    <title>Registro Nápoles FC</title>
+    <link rel="stylesheet" href="estilos.css?v=1.5">
     <style>
-        /* Clases de utilidad para la lógica de pasos que no estaban en tu CSS */
         .paso-contenido { display: none; }
         .paso-activo { display: block; animation: fadeIn 0.4s ease; }
-        
-        .progreso-puntos { 
-            display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; 
-        }
-        .punto { 
-            width: 10px; height: 10px; border-radius: 50%; background: var(--gris-suave); 
-            border: 1px solid var(--dorado); 
-        }
+        .progreso-puntos { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .punto { width: 10px; height: 10px; border-radius: 50%; background: var(--gris-suave); border: 1px solid var(--dorado); }
         .punto.activo { background: var(--dorado); transform: scale(1.2); }
-
-        #video, #preview { 
-            width: 100%; border-radius: 10px; border: 1px solid var(--dorado); 
-            background: #000; margin-top: 10px; transform: scaleX(-1);
-        }
-
-        #loader {
-            display: none; position: fixed; inset: 0; 
-            background: rgba(26, 43, 72, 0.95); z-index: 9999;
-            text-align: center; padding-top: 40vh;
-        }
-
+        #video, .preview-img { width: 100%; border-radius: 10px; border: 1px solid var(--dorado); background: #000; margin-top: 10px; }
+        .preview-img { display: none; }
+        select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid var(--dorado); background: rgba(0, 0, 0, 0.5); color: white; border-radius: 8px; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <h2 style="color: var(--blanco-puro);">ENVIANDO DATOS...</h2>
-        <p style="color: var(--dorado);">Espera un momento</p>
+        <h2>PROCESANDO...</h2>
+        <p id="loader-msg">Validando dorsales disponibles</p>
     </div>
 
     <div class="contenedor-principal">
@@ -51,29 +31,36 @@
                 <div id="p1" class="punto activo"></div>
                 <div id="p2" class="punto"></div>
                 <div id="p3" class="punto"></div>
+                <div id="p4" class="punto"></div>
             </div>
         </header>
 
         <form id="formRegistro">
-            
-            <!-- PASO 1: Identidad -->
+            <!-- PASO 1: Nombres -->
             <div id="step1" class="paso-contenido paso-activo">
-                <label>Información Personal</label>
-                <input type="text" name="nombre1" placeholder="Primer Nombre" required>
-                <input type="text" name="nombre2" placeholder="Segundo Nombre">
+                <label>Identidad</label>
+                <input type="text" id="n1" name="nombre1" placeholder="Primer Nombre" required oninput="actualizarOpcionesNombre()">
+                <input type="text" id="n2" name="nombre2" placeholder="Segundo Nombre" oninput="actualizarOpcionesNombre()">
                 <input type="text" name="apellidos" placeholder="Apellidos Completos" required>
-                <input type="text" name="cedula" placeholder="Cédula de Identidad" required>
-                
+                <input type="text" name="cedula" placeholder="Cédula" required>
                 <button type="button" class="btn-accion" onclick="verPaso(2)">Siguiente</button>
             </div>
 
-            <!-- PASO 2: Deporte -->
+            <!-- PASO 2: Personalización Camiseta -->
             <div id="step2" class="paso-contenido">
-                <label>Datos Deportivos</label>
-                <input type="date" name="fechaNac" required>
-                <input type="tel" name="telefono" placeholder="WhatsApp (Ej: 0987654321)" required>
-                <input type="text" name="nombreCamiseta" placeholder="Nombre en Camiseta">
-                <input type="number" name="dorsal" placeholder="Número de Dorsal">
+                <label>Tu Armadura</label>
+                
+                <p style="font-size: 0.8rem; color: var(--dorado); margin-bottom: 5px;">Nombre en Camiseta:</p>
+                <select name="nombreCamiseta" id="selectNombreCamiseta">
+                    <option value="">Escribe tus nombres primero...</option>
+                </select>
+
+                <p style="font-size: 0.8rem; color: var(--dorado); margin: 15px 0 5px;">Dorsal (Solo disponibles):</p>
+                <select name="dorsal" id="selectDorsal" required>
+                    <option value="">Cargando números...</option>
+                </select>
+
+                <input type="tel" name="telefono" placeholder="WhatsApp" required style="margin-top:15px;">
                 
                 <div style="display: flex; gap: 10px;">
                     <button type="button" class="btn-accion" style="background: #444;" onclick="verPaso(1)">Atrás</button>
@@ -81,76 +68,97 @@
                 </div>
             </div>
 
-            <!-- PASO 3: Foto -->
+            <!-- PASO 3: Foto Rostro -->
             <div id="step3" class="paso-contenido">
-                <label>Foto Oficial</label>
-                <video id="video" autoplay playsinline></video>
-                <canvas id="canvas" style="display:none;"></canvas>
-                <img id="preview" style="display:none;">
-                
-                <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
-                
-                <button type="button" id="btnCapturar" class="btn-accion" style="background: var(--dorado);">📷 CAPTURAR FOTO</button>
-                
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-accion" style="background: #444;" onclick="verPaso(2)">Atrás</button>
-                    <button type="submit" class="btn-accion">FINALIZAR</button>
+                <label>Foto del Rostro</label>
+                <div class="camara-box">
+                    <video id="videoRostro" autoplay playsinline style="transform: scaleX(-1); width:100%; border-radius:10px;"></video>
+                    <img id="prevRostro" class="preview-img">
                 </div>
+                <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
+                <button type="button" id="btnCapRostro" class="btn-accion" style="background: var(--dorado);">📸 CAPTURAR ROSTRO</button>
+                <button type="button" class="btn-accion" onclick="verPaso(4)">Siguiente</button>
+            </div>
+
+            <!-- PASO 4: Foto Cédula -->
+            <div id="step4" class="paso-contenido">
+                <label>Foto de la Cédula</label>
+                <div class="camara-box">
+                    <video id="videoCedula" autoplay playsinline style="width:100%; border-radius:10px;"></video>
+                    <img id="prevCedula" class="preview-img">
+                </div>
+                <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
+                <button type="button" id="btnCapCedula" class="btn-accion" style="background: var(--dorado);">📸 CAPTURAR CÉDULA</button>
+                
+                <button type="submit" class="btn-accion">FINALIZAR REGISTRO</button>
             </div>
         </form>
     </div>
 
-    <!-- Scripts -->
-    <script src="nav.js"></script>
-    <script src="api.js"></script>
-
     <script>
-        let stream;
+        let currentStream;
 
-        async function iniciarCamara() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                document.getElementById('video').srcObject = stream;
-            } catch (e) { alert("Cámara no disponible."); }
+        // 1. Lógica de Nombres Dinámicos
+        function actualizarOpcionesNombre() {
+            const n1 = document.getElementById('n1').value.toUpperCase();
+            const n2 = document.getElementById('n2').value.toUpperCase();
+            const select = document.getElementById('selectNombreCamiseta');
+            select.innerHTML = '';
+            if(n1) select.add(new Option(n1, n1));
+            if(n2) select.add(new Option(n2, n2));
         }
 
-        function verPaso(n) {
+        // 2. Control de Pasos y Cámaras
+        async function verPaso(n) {
+            if (currentStream) currentStream.getTracks().forEach(t => t.stop());
+            
             document.querySelectorAll('.paso-contenido').forEach(p => p.classList.remove('paso-activo'));
             document.querySelectorAll('.punto').forEach(p => p.classList.remove('activo'));
-            
             document.getElementById('step' + n).classList.add('paso-activo');
             document.getElementById('p' + n).classList.add('activo');
-            
-            if(n === 3) iniciarCamara();
+
+            if(n === 3) iniciarCamara('videoRostro', 'user');
+            if(n === 4) iniciarCamara('videoCedula', 'environment');
         }
 
-        document.getElementById('btnCapturar').onclick = () => {
-            const v = document.getElementById('video');
-            const c = document.getElementById('canvas');
-            const p = document.getElementById('preview');
-            const b = document.getElementById('btnCapturar');
+        async function iniciarCamara(idElemento, modo) {
+            try {
+                currentStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: modo } 
+                });
+                document.getElementById(idElemento).srcObject = currentStream;
+            } catch (e) { alert("Error cámara: " + e); }
+        }
 
-            c.width = v.videoWidth; c.height = v.videoHeight;
-            c.getContext('2d').drawImage(v, 0, 0);
-            const data = c.toDataURL('image/jpeg', 0.8);
-            
-            document.getElementById('fotoRostroB64').value = data;
-            p.src = data;
-            p.style.display = 'block';
-            v.style.display = 'none';
-            b.innerText = "🔄 REPETIR FOTO";
-            
-            if(stream) stream.getTracks().forEach(t => t.stop());
-            
-            b.onclick = () => { 
-                p.style.display = 'none'; 
-                v.style.display = 'block'; 
-                b.innerText = "📷 CAPTURAR FOTO";
-                iniciarCamara();
-                // Re-asignar el click original
-                location.reload(); 
+        // 3. Capturadores
+        function configurarCaptura(btnId, videoId, prevId, inputId) {
+            document.getElementById(btnId).onclick = () => {
+                const v = document.getElementById(videoId);
+                const p = document.getElementById(prevId);
+                const canvas = document.createElement('canvas');
+                canvas.width = v.videoWidth; canvas.height = v.videoHeight;
+                canvas.getContext('2d').drawImage(v, 0, 0);
+                const data = canvas.toDataURL('image/jpeg', 0.7);
+                document.getElementById(inputId).value = data;
+                p.src = data; p.style.display = 'block'; v.style.display = 'none';
             };
+        }
+
+        configurarCaptura('btnCapRostro', 'videoRostro', 'prevRostro', 'fotoRostroB64');
+        configurarCaptura('btnCapCedula', 'videoCedula', 'prevCedula', 'fotoCedulaB64');
+
+        // 4. Cargar Dorsales al iniciar (Llama a una función en api.js)
+        window.onload = () => {
+            if(typeof obtenerDorsalesLibres === 'function') {
+                obtenerDorsalesLibres();
+            } else {
+                // Fallback manual si api.js no carga
+                const select = document.getElementById('selectDorsal');
+                select.innerHTML = '<option value="">Selecciona número</option>';
+                for(let i=1; i<=99; i++) select.add(new Option(i, i));
+            }
         };
     </script>
+    <script src="api.js?v=1.5"></script>
 </body>
 </html>
