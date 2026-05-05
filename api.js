@@ -1,5 +1,5 @@
 // api.js
-const URL_GAS = 'https://script.google.com/macros/s/AKfycbyC0ZftX6QL6_5DVCGfdWj9OPw8kDOE9W6w_4xbGhzcSAHrPxaTOgWh6JDUj6hRPD-7/exec';
+const URL_GAS = 'https://script.google.com/macros/s/AKfycbzsnMsvSiBIwLPG8yW7qdi6AvyT7Cs3cjTD0gCppx5sXeVS7RpJCqadKT0CPqgWXm13/exec';
 
 // 1. ESTA ES LA FUNCIÓN QUE LLAMA EL BOTÓN DEL PASO 1
 async function validarPaso1() {
