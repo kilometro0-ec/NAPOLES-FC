@@ -1,146 +1,163 @@
 const URL_GAS = 'https://script.google.com/macros/s/AKfycbxB7NezJt9SzVasnD20sEsj3t0kjlIZS_7_t5qGCfFTIPIq9a4WEQwVvE4Ey27jgnsl/exec';
 
-// CAMBIAR PASOS
-function verPaso(n) {
-    for (let i = 1; i <= 6; i++) {
-        const p = document.getElementById('paso' + i);
-        if (p) p.style.display = (i === n) ? 'block' : 'none';
-    }
+
+
+// UI
+function verPaso(n){
+    document.querySelectorAll('.paso').forEach(p=>p.classList.remove('activo'));
+    document.getElementById('paso'+n).classList.add('activo');
+    window.scrollTo(0,0);
 }
 
-// VALIDAR CÉDULA
-async function validarCedulaEstricta() {
-    const ced = document.getElementById('ced').value;
+function loader(on,text="Cargando..."){
+    const l=document.getElementById('loader');
+    document.getElementById('loader-texto').innerText=text;
+    l.style.display= on ? 'flex':'none';
+}
 
-    if (ced.length !== 10) {
-        alert("Cédula inválida");
+// VALIDACIÓN CÉDULA ECUADOR
+function validarCedulaReal(ced){
+    if(ced.length!==10) return false;
+    let total=0;
+    for(let i=0;i<9;i++){
+        let num=parseInt(ced[i]);
+        if(i%2===0){ num*=2; if(num>9) num-=9; }
+        total+=num;
+    }
+    let dec= (10-(total%10))%10;
+    return dec===parseInt(ced[9]);
+}
+
+// VALIDAR
+async function validarCedulaEstricta(){
+    const ced=document.getElementById('ced').value;
+
+    if(!validarCedulaReal(ced)){
+        alert("Cédula inválida Ecuador");
         return;
     }
 
-    document.getElementById('loader').style.display = 'block';
+    loader(true,"Validando...");
 
-    try {
-        const res = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced}`);
-        const data = await res.json();
+    try{
+        const res=await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced}`);
+        const data=await res.json();
 
-        if (data.cedulaExiste) {
+        if(data.cedulaExiste){
             alert("Ya registrado");
-        } else {
+        }else{
             verPaso(2);
         }
 
-    } catch (e) {
+    }catch{
         alert("Error conexión");
     }
 
-    document.getElementById('loader').style.display = 'none';
+    loader(false);
 }
 
-// BASE64
-function aBase64(input, idDestino) {
-    const file = input.files[0];
-    const reader = new FileReader();
+// FILE PREVIEW
+function previewFile(input,imgId,hiddenId){
+    const file=input.files[0];
+    const reader=new FileReader();
 
-    reader.onload = () => {
-        document.getElementById(idDestino).value = reader.result;
+    reader.onload=()=>{
+        document.getElementById(imgId).src=reader.result;
+        document.getElementById(hiddenId).value=reader.result;
     };
 
-    if (file) reader.readAsDataURL(file);
+    if(file) reader.readAsDataURL(file);
 }
 
 // CÁMARA
 let stream;
 
-async function iniciarCamara() {
-    const video = document.getElementById('video');
-
-    stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    video.srcObject = stream;
+async function iniciarCamara(){
+    const video=document.getElementById('video');
+    stream=await navigator.mediaDevices.getUserMedia({video:true});
+    video.srcObject=stream;
 }
 
-function capturarFoto() {
-    const canvas = document.getElementById('canvas');
-    const video = document.getElementById('video');
+function capturarFoto(){
+    const video=document.getElementById('video');
+    const canvas=document.createElement('canvas');
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width=video.videoWidth;
+    canvas.height=video.videoHeight;
 
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0);
+    const ctx=canvas.getContext('2d');
+    ctx.drawImage(video,0,0);
 
-    const data = canvas.toDataURL('image/jpeg');
-    document.getElementById('fotoRostroB64').value = data;
+    const data=canvas.toDataURL('image/jpeg');
 
-    alert("Foto capturada");
+    document.getElementById('fotoRostroB64').value=data;
+    document.getElementById('previewRostro').src=data;
 }
 
 // ARMADURA
-async function abrirArmadura() {
-    const n1 = document.getElementById('n1').value.toUpperCase();
-    const n2 = document.getElementById('n2').value.toUpperCase();
+async function abrirArmadura(){
+    const n1=document.getElementById('n1').value.toUpperCase();
+    const n2=document.getElementById('n2').value.toUpperCase();
 
-    const select = document.getElementById('selectNombreCamiseta');
-    select.innerHTML = "";
-
-    select.add(new Option(n1, n1));
-    if (n2) select.add(new Option(n2, n2));
+    const sel=document.getElementById('selectNombreCamiseta');
+    sel.innerHTML="";
+    sel.add(new Option(n1,n1));
+    if(n2) sel.add(new Option(n2,n2));
 
     await cargarDorsales();
-
     verPaso(5);
 }
 
-async function cargarDorsales() {
-    const select = document.getElementById('selectDorsal');
+async function cargarDorsales(){
+    const sel=document.getElementById('selectDorsal');
 
-    try {
-        const res = await fetch(`${URL_GAS}?action=getDorsales`);
-        const ocupados = await res.json();
+    try{
+        const res=await fetch(`${URL_GAS}?action=getDorsales`);
+        const ocupados=await res.json();
 
-        select.innerHTML = "";
+        sel.innerHTML="";
 
-        for (let i = 1; i <= 99; i++) {
-            if (!ocupados.includes(i)) {
-                select.add(new Option("Dorsal " + i, i));
+        for(let i=1;i<=99;i++){
+            if(!ocupados.includes(i)){
+                sel.add(new Option("Dorsal "+i,i));
             }
         }
-
-    } catch {
-        for (let i = 1; i <= 99; i++) {
-            select.add(new Option("Dorsal " + i, i));
+    }catch{
+        for(let i=1;i<=99;i++){
+            sel.add(new Option("Dorsal "+i,i));
         }
     }
 }
 
 // ENVÍO
-async function enviarRegistro() {
+async function enviarRegistro(){
 
-    const rostro = document.getElementById('fotoRostroB64').value;
-    const cedulaF = document.getElementById('fotoCedulaB64').value;
+    const rostro=document.getElementById('fotoRostroB64').value;
+    const cedulaF=document.getElementById('fotoCedulaB64').value;
 
-    if (!rostro || !cedulaF) {
+    if(!rostro || !cedulaF){
         alert("Faltan fotos");
         return;
     }
 
-    document.getElementById('loader').style.display = 'block';
+    loader(true,"Guardando...");
 
-    const form = document.getElementById('formRegistro');
-    const data = new URLSearchParams(new FormData(form));
+    const form=document.getElementById('formRegistro');
+    const data=new URLSearchParams(new FormData(form));
 
-    try {
-        await fetch(URL_GAS, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: data
+    try{
+        await fetch(URL_GAS,{
+            method:'POST',
+            mode:'no-cors',
+            body:data
         });
 
-        alert("Registro exitoso");
+        alert("Registro exitoso 🔥");
         location.reload();
 
-    } catch {
+    }catch{
         alert("Error al enviar");
     }
 
-    document.getElementById('loader').style.display = 'none';
+    loader(false);
 }
