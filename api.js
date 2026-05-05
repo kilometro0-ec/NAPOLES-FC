@@ -1,65 +1,70 @@
 const URL_GOOGLE = 'https://script.google.com/macros/s/AKfycbyC0ZftX6QL6_5DVCGfdWj9OPw8kDOE9W6w_4xbGhzcSAHrPxaTOgWh6JDUj6hRPD-7/exec';
 
-// 1. CARGAR DORSALES (Esto se queda igual)
-async function obtenerDorsalesLibres() {
-    const select = document.getElementById('selectDorsal');
-    if (!select) return;
+// 1. VALIDACIÓN PASO 1 (Cédula y Transacción)
+async function validarDatosIniciales() {
+    const ced = document.getElementById('ced').value;
+    const trans = document.getElementById('trans').value;
+
+    if (ced.length !== 10 || !trans) {
+        alert("Pilas: La cédula debe tener 10 dígitos y debes poner el número de transacción.");
+        return;
+    }
+
+    document.getElementById('loader').style.display = 'flex';
+
     try {
-        const respuesta = await fetch(`${URL_GOOGLE}?action=getDorsales`);
-        const ocupados = await respuesta.json(); 
-        select.innerHTML = '<option value="">SELECCIONA UN NÚMERO</option>';
-        for (let i = 1; i <= 99; i++) {
-            if (!ocupados.map(String).includes(String(i))) {
-                select.add(new Option(`DORSAL ${i}`, i));
-            }
+        const resp = await fetch(`${URL_GOOGLE}?action=validarRegistro&cedula=${ced}&transaccion=${trans}`);
+        const data = await resp.json();
+
+        if (data.cedulaExiste) {
+            alert("¡ERROR! Esta cédula ya está registrada.");
+            document.getElementById('loader').style.display = 'none';
+        } else if (data.transaccionExiste) {
+            alert("¡ERROR! Este número de transacción ya fue usado.");
+            document.getElementById('loader').style.display = 'none';
+        } else {
+            document.getElementById('loader').style.display = 'none';
+            actualizarOpcionesNombre(); // Llenar nombres para la camiseta
+            obtenerDorsalesLibres();
+            verPaso(2); // RECIÉN AQUÍ PERMITE SEGUIR
         }
-    } catch (e) { console.error("Error dorsales:", e); }
+    } catch (e) {
+        console.error(e);
+        document.getElementById('loader').style.display = 'none';
+        alert("Error de conexión al validar. Revisa tu internet.");
+    }
 }
 
-// 2. FUNCIÓN DE ENVÍO (CORREGIDA PARA TU SCRIPT ACTUAL)
-async function enviarADatabase() {
-    const form = document.getElementById('formRegistro');
+// 2. FUNCIÓN DE ENVÍO FINAL (Reparada para que lleguen las fotos)
+async function enviarTodo() {
+    document.getElementById('final-animacion').style.display = 'flex';
     
-    // IMPORTANTE: Tu script espera e.parameter, por eso usamos URLSearchParams
+    const form = document.getElementById('formRegistro');
     const formData = new FormData(form);
     const params = new URLSearchParams();
 
-    for (const [key, value] of formData.entries()) {
-        // Mantenemos fotos y correo igual, el resto a MAYÚSCULAS
+    formData.forEach((value, key) => {
         if (key.includes('foto') || key === 'correo') {
             params.append(key, value);
         } else {
             params.append(key, typeof value === 'string' ? value.toUpperCase() : value);
         }
-    }
+    });
 
     try {
-        // Mostramos el balón de carga
-        document.getElementById('final-animacion').style.display = 'flex';
-
         await fetch(URL_GOOGLE, {
             method: 'POST',
-            mode: 'no-cors', // Necesario para evitar bloqueos
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString() // Convertimos los datos al formato que e.parameter entiende
+            mode: 'no-cors',
+            body: params.toString()
         });
 
-        // Espera de 3 segundos porque las fotos son pesadas y Google tarda en procesar
-        await new Promise(resolve => setTimeout(resolve, 3500));
-        
-        // Si todo va bien, avisamos
-        alert("¡REGISTRO ENVIADO CON ÉXITO!");
-        window.location.reload(); 
-        return true;
-
+        setTimeout(() => {
+            document.getElementById('final-status').innerText = "¡REGISTRO EXITOSO!";
+            document.getElementById('final-mensaje').innerText = "Bienvenido a la familia del Nápoles F.C.";
+            setTimeout(() => { window.location.href = "login.html"; }, 3000);
+        }, 3000);
     } catch (e) {
-        console.error("Error en envío:", e);
-        alert("ERROR DE CONEXIÓN");
+        alert("Error al guardar.");
         document.getElementById('final-animacion').style.display = 'none';
-        return false;
     }
 }
-
-document.addEventListener('DOMContentLoaded', obtenerDorsalesLibres);
