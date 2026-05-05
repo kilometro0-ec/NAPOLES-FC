@@ -1,111 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Nápoles F.C.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nápoles F.C. - Registro</title>
 
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0a0a">
 
-    <!-- Estilos -->
-    <link rel="stylesheet" href="estilos.css">
+<link rel="stylesheet" href="estilos.css">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #0a0a0a, #0f172a);
+    color: white;
+    font-family: 'Roboto';
+}
+
+.contenedor-principal {
+    max-width: 420px;
+    margin: auto;
+    padding: 20px;
+}
+
+.paso {
+    display: none;
+    animation: fade 0.4s ease;
+}
+
+.paso.activo {
+    display: block;
+}
+
+@keyframes fade {
+    from {opacity:0; transform: translateY(10px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+}
+
+#loader {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #333;
+    border-top: 5px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.preview {
+    width: 100px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+</style>
+
 </head>
-
 <body>
 
 <div class="contenedor-principal">
 
-    <header>
-        <div class="texto-logo">NAPOLES F.C.</div>
-        <h2>Ficha de Inscripción</h2>
-    </header>
+<h2 style="font-family:Orbitron;">NAPOLES F.C.</h2>
 
-    <form id="formRegistro">
+<form id="formRegistro">
 
-        <!-- PASO 1 -->
-        <div id="paso1">
-            <h3>Paso 1: Validación</h3>
-            <input type="number" id="ced" name="cedula" placeholder="Cédula (10 dígitos)" required>
-            <button type="button" onclick="validarCedulaEstricta()">Validar</button>
-        </div>
+<div id="paso1" class="paso activo">
+<input type="number" id="ced" name="cedula" placeholder="Cédula" required>
+<button type="button" onclick="validarCedulaEstricta()">Validar</button>
+</div>
 
-        <!-- PASO 2 -->
-        <div id="paso2" style="display:none;">
-            <h3>Datos</h3>
-            <input type="text" id="n1" name="nombre1" placeholder="Primer Nombre" required>
-            <input type="text" id="n2" name="nombre2" placeholder="Segundo Nombre">
-            <input type="text" id="ape" name="apellidos" placeholder="Apellidos" required>
-            <input type="date" name="fechaNac" required>
-            <button type="button" onclick="verPaso(3)">Siguiente</button>
-        </div>
+<div id="paso2" class="paso">
+<input id="n1" name="nombre1" placeholder="Primer Nombre" required>
+<input id="n2" name="nombre2" placeholder="Segundo Nombre">
+<input name="apellidos" placeholder="Apellidos" required>
+<input type="date" name="fechaNac" required>
+<button type="button" onclick="verPaso(3)">Siguiente</button>
+</div>
 
-        <!-- PASO 3 -->
-        <div id="paso3" style="display:none;">
-            <h3>Contacto</h3>
-            <input type="tel" name="telefono" placeholder="WhatsApp" required>
-            <input type="email" name="correo" placeholder="Correo" required>
-            <button type="button" onclick="verPaso(4)">Siguiente</button>
-        </div>
+<div id="paso3" class="paso">
+<input name="telefono" placeholder="WhatsApp" required>
+<input name="correo" placeholder="Correo" required>
+<button type="button" onclick="verPaso(4)">Siguiente</button>
+</div>
 
-        <!-- PASO 4 -->
-        <div id="paso4" style="display:none;">
-            <h3>Fotos</h3>
+<div id="paso4" class="paso">
+<video id="video" autoplay></video>
+<button type="button" onclick="iniciarCamara()">Activar Cámara</button>
+<button type="button" onclick="capturarFoto()">Capturar</button>
 
-            <div id="contenedor-camara">
-                <video id="video" autoplay playsinline></video>
-                <div class="guia-circular"></div>
-            </div>
+<img id="previewRostro" class="preview">
 
-            <button type="button" onclick="iniciarCamara()">Activar Cámara</button>
-            <button type="button" onclick="capturarFoto()">Tomar Foto</button>
+<input type="file" onchange="previewFile(this,'previewCedula','fotoCedulaB64')" required>
+<img id="previewCedula" class="preview">
 
-            <canvas id="canvas" style="display:none;"></canvas>
-            <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
+<input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
+<input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
 
-            <input type="file" accept="image/*" onchange="aBase64(this,'fotoCedulaB64')" required>
-            <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
+<button type="button" onclick="abrirArmadura()">Siguiente</button>
+</div>
 
-            <button type="button" onclick="abrirArmadura()">Siguiente</button>
-        </div>
+<div id="paso5" class="paso">
+<select id="selectNombreCamiseta" name="nombreCamiseta"></select>
+<select id="selectDorsal" name="dorsal"></select>
+<button onclick="verPaso(6)" type="button">Siguiente</button>
+</div>
 
-        <!-- PASO 5 -->
-        <div id="paso5" style="display:none;">
-            <h3>Uniforme</h3>
-            <select id="selectNombreCamiseta" name="nombreCamiseta"></select>
-            <select id="selectDorsal" name="dorsal"></select>
-            <button type="button" onclick="verPaso(6)">Siguiente</button>
-        </div>
+<div id="paso6" class="paso">
+<select name="mediasExtras" required>
+<option value="">Medias</option>
+<option value="NO">NO</option>
+<option value="SI">SI</option>
+</select>
 
-        <!-- PASO 6 -->
-        <div id="paso6" style="display:none;">
-            <h3>Pago</h3>
+<input name="transaccionInscripcion" placeholder="Comprobante inscripción" required>
+<input name="transaccionUniforme" placeholder="Comprobante uniforme" required>
 
-            <select name="mediasExtras" id="mediasExtras" required>
-                <option value="">Medias extras</option>
-                <option value="NO">NO</option>
-                <option value="SI">SI (+$2)</option>
-            </select>
+<button type="button" onclick="enviarRegistro()">FINALIZAR</button>
+</div>
 
-            <input type="text" name="transaccionInscripcion" placeholder="Comprobante inscripción" required>
-            <input type="text" name="transaccionUniforme" placeholder="Comprobante uniforme" required>
-
-            <button type="button" onclick="enviarRegistro()">Finalizar</button>
-        </div>
-
-    </form>
+</form>
 
 </div>
 
 <div id="loader">
-    <p id="loader-texto">Cargando...</p>
+<div class="spinner"></div>
+<p id="loader-texto">Procesando...</p>
 </div>
 
-<!-- Scripts -->
 <script src="api.js"></script>
 <script src="nav.js"></script>
 
