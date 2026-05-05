@@ -47,6 +47,12 @@ align-items:center;
 flex-direction:column;
 color:#fff;
 }
+
+.preview{
+font-size:13px;
+opacity:.8;
+margin-top:5px;
+}
 </style>
 </head>
 
@@ -55,43 +61,45 @@ color:#fff;
 <div class="contenedor-principal">
 
 <header>
-<h2>NAPOLES F.C.</h2>
-<p>Ficha de inscripción - Temporada 2026</p>
+<h2>NÁPOLES F.C.</h2>
+<p>Ficha de inscripción 2026</p>
 </header>
 
 <form id="formRegistro">
 
 <!-- PASO 1 -->
 <div id="paso1" class="paso activo">
-<input id="ced" name="cedula" maxlength="10" placeholder="CÉDULA (10 dígitos)">
+<input id="ced" maxlength="10" placeholder="CÉDULA">
 <button type="button" id="btnCedula" class="btn-accion" disabled>VALIDAR</button>
 </div>
 
 <!-- PASO 2 -->
 <div id="paso2" class="paso">
-<input id="ced2" readonly>
-<input id="n1" placeholder="PRIMER NOMBRE">
-<input id="n2" placeholder="SEGUNDO NOMBRE">
-<input id="ape" placeholder="APELLIDOS">
+<input id="n1" placeholder="NOMBRE">
+<input id="ape" placeholder="APELLIDO">
 <input type="date" id="fecha">
 <button type="button" id="btnPaso2" class="btn-accion" disabled>SIGUIENTE</button>
 </div>
 
 <!-- PASO 3 -->
 <div id="paso3" class="paso">
-<input id="tel" placeholder="09XXXXXXXX">
-<input id="correo" placeholder="correo@email.com">
+<input id="tel" placeholder="TELÉFONO">
+<input id="correo" placeholder="CORREO">
 <button type="button" id="btnPaso3" class="btn-accion" disabled>SIGUIENTE</button>
 </div>
 
-<!-- PASO 4 (SIN CÁMARA) -->
+<!-- PASO 4 -->
 <div id="paso4" class="paso">
 
-<h3>📷 SUBE TU FOTO DE CÉDULA</h3>
+<h3>📷 FOTO DE PERFIL</h3>
+<input type="file" id="rostroFile" accept="image/*">
+<div id="txtRostro" class="preview">Sin imagen</div>
 
+<br>
+
+<h3>🪪 FOTO DE CÉDULA</h3>
 <input type="file" id="cedulaFile" accept="image/*">
-
-<p id="fotoEstado">No has seleccionado imagen</p>
+<div id="txtCedula" class="preview">Sin imagen</div>
 
 <button type="button" id="btnPaso4" class="btn-accion" disabled>SIGUIENTE</button>
 
@@ -99,11 +107,9 @@ color:#fff;
 
 <!-- PASO 5 -->
 <div id="paso5" class="paso">
-<h3>⚔️ ARMA TU ARMADURA</h3>
-
+<h3>ARMADURA</h3>
 <select id="nombreCamiseta"></select>
 <select id="dorsal"></select>
-
 <button type="button" id="btnPaso5" class="btn-accion" disabled>SIGUIENTE</button>
 </div>
 
@@ -111,20 +117,21 @@ color:#fff;
 <div id="paso6" class="paso">
 
 <select id="medias">
-<option value="">Medias extras ($2)</option>
+<option value="">Medias ($2)</option>
 <option value="NO">NO</option>
 <option value="SI">SI</option>
 </select>
 
-<input id="inscripcion" maxlength="10" placeholder="Pago inscripción ($5)">
-<input id="uniforme" maxlength="10" placeholder="Pago uniforme ($18)">
+<input id="inscripcion" placeholder="Pago inscripción">
+<input id="uniforme" placeholder="Pago uniforme">
 
 <button type="button" id="btnFinal" class="btn-accion" disabled>FINALIZAR</button>
 
 </div>
 
-<input type="hidden" id="fotoRostroB64">
-<input type="hidden" id="fotoCedulaB64">
+<!-- HIDDEN -->
+<input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
+<input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
 
 </form>
 
@@ -134,147 +141,124 @@ color:#fff;
 <p>Procesando...</p>
 </div>
 
-<!-- APK -->
-<script>
-const APK_URL = "https://kilometro0-ec.github.io/NAPOLES-FC/apk/miapp.apk";
-</script>
-
 <script src="api.js"></script>
 
 <script>
 
-// evitar submit
 formRegistro.onsubmit = e => e.preventDefault();
 
-/* =======================
-   PASO 1 CÉDULA
-======================= */
+/* ======================
+   PASO 1
+====================== */
 ced.oninput = () => {
-  ced.value = ced.value.replace(/\D/g, "");
-  if (ced.value.length > 10) ced.value = ced.value.slice(0, 10);
+  ced.value = ced.value.replace(/\D/g,"");
   btnCedula.disabled = ced.value.length !== 10;
 };
 
-/* =======================
-   VALIDAR CÉDULA
-======================= */
 btnCedula.onclick = async () => {
-
-  btnCedula.classList.add("loading");
-
   const r = await validarCedulaServidor(ced.value);
-
-  if (!r.ok) {
-    alert(r.msg);
-    btnCedula.classList.remove("loading");
-    return;
-  }
-
-  ced2.value = ced.value;
-  ced.readOnly = true;
-
+  if (!r.ok) return alert(r.msg);
   verPaso(2);
-
-  btnCedula.classList.remove("loading");
 };
 
-/* =======================
+/* ======================
    PASO 2
-======================= */
-document.querySelectorAll("#paso2 input").forEach(i => {
-  i.oninput = () => {
-    btnPaso2.disabled = !(n1.value && ape.value && fecha.value);
-  };
+====================== */
+document.querySelectorAll("#paso2 input").forEach(i=>{
+i.oninput = ()=>{
+btnPaso2.disabled = !(n1.value && ape.value && fecha.value);
+};
 });
 
-btnPaso2.onclick = () => verPaso(3);
+btnPaso2.onclick = ()=>verPaso(3);
 
-/* =======================
+/* ======================
    PASO 3
-======================= */
-document.querySelectorAll("#paso3 input").forEach(i => {
-  i.oninput = () => {
-    btnPaso3.disabled = !(
-      /^09\d{8}$/.test(tel.value) &&
-      /^\S+@\S+\.\S+$/.test(correo.value)
-    );
-  };
+====================== */
+document.querySelectorAll("#paso3 input").forEach(i=>{
+i.oninput = ()=>{
+btnPaso3.disabled = !(tel.value && correo.value);
+};
 });
 
-btnPaso3.onclick = () => verPaso(4);
+btnPaso3.onclick = ()=>verPaso(4);
 
-/* =======================
-   PASO 4 FOTO GALERÍA
-======================= */
-cedulaFile.onchange = (e) => {
+/* ======================
+   FOTO ROSTRO
+====================== */
+let okR = false;
+let okC = false;
 
-  const file = e.target.files[0];
-
-  if (!file) return;
-
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    fotoCedulaB64.value = reader.result;
-    document.getElementById("fotoEstado").innerText = "Imagen cargada ✔";
-    btnPaso4.disabled = false;
-  };
-
-  reader.readAsDataURL(file);
+rostroFile.onchange = e=>{
+const r = new FileReader();
+r.onload = ()=>{
+fotoRostroB64.value = r.result;
+txtRostro.innerText = "✔ cargada";
+okR = true;
+validar4();
+};
+r.readAsDataURL(e.target.files[0]);
 };
 
-btnPaso4.onclick = async () => {
-  await cargarArmadura();
-  verPaso(5);
+cedulaFile.onchange = e=>{
+const r = new FileReader();
+r.onload = ()=>{
+fotoCedulaB64.value = r.result;
+txtCedula.innerText = "✔ cargada";
+okC = true;
+validar4();
+};
+r.readAsDataURL(e.target.files[0]);
 };
 
-/* =======================
+function validar4(){
+btnPaso4.disabled = !(okR && okC);
+}
+
+btnPaso4.onclick = ()=>verPaso(5);
+
+/* ======================
    PASO 5
-======================= */
-document.querySelectorAll("#paso5 select").forEach(s => {
-  s.onchange = () => {
-    btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
-  };
+====================== */
+document.querySelectorAll("#paso5 select").forEach(s=>{
+s.onchange = ()=>{
+btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+};
 });
 
-btnPaso5.onclick = () => verPaso(6);
+btnPaso5.onclick = ()=>verPaso(6);
 
-/* =======================
+/* ======================
    PASO 6
-======================= */
-document.querySelectorAll("#paso6 input,#paso6 select").forEach(i => {
-  i.oninput = () => {
-    btnFinal.disabled = !(
-      medias.value &&
-      inscripcion.value.length >= 4 &&
-      uniforme.value.length >= 4
-    );
-  };
+====================== */
+document.querySelectorAll("#paso6 input,#paso6 select").forEach(i=>{
+i.oninput = ()=>{
+btnFinal.disabled = !(medias.value && inscripcion.value && uniforme.value);
+};
 });
 
-/* =======================
-   FINALIZAR
-======================= */
+/* ======================
+   FINAL
+====================== */
 btnFinal.onclick = async () => {
 
-  loader.style.display = "flex";
+btnFinal.disabled = true;
+loader.style.display = "flex";
 
-  await enviarRegistro();
+await enviarRegistro();
 
-  loader.style.display = "none";
+loader.style.display = "none";
 
-  // DESCARGA APK
-  const link = document.createElement("a");
-  link.href = APK_URL;
-  link.download = "NapolesFC.apk";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+/* APK */
+const a = document.createElement("a");
+a.href = APK_URL;
+a.download = "NapolesFC.apk";
+a.click();
 
-  // LOGIN
-  setTimeout(() => {
-    window.location.href = "login.html";
-  }, 1200);
+/* LOGIN */
+setTimeout(()=>{
+window.location.href="login.html";
+},1200);
 
 };
 
@@ -282,4 +266,3 @@ btnFinal.onclick = async () => {
 
 </body>
 </html>
-
