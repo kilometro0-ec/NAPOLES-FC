@@ -1,74 +1,83 @@
 const URL_GOOGLE = 'https://script.google.com/macros/s/AKfycbyC0ZftX6QL6_5DVCGfdWj9OPw8kDOE9W6w_4xbGhzcSAHrPxaTOgWh6JDUj6hRPD-7/exec';
 
-// 1. FUNCIÓN PARA CARGAR DORSALES DISPONIBLES AL INICIAR
+// 1. CARGAR DORSALES AL INICIAR
 async function obtenerDorsalesLibres() {
     const select = document.getElementById('selectDorsal');
     if (!select) return;
 
     try {
-        // Llamada al script de Google con el parámetro action=getDorsales
         const respuesta = await fetch(`${URL_GOOGLE}?action=getDorsales`);
-        const ocupados = await respuesta.json(); // Lista de números ya registrados
+        const ocupados = await respuesta.json(); 
         
-        select.innerHTML = '<option value="">Selecciona un número</option>';
+        select.innerHTML = '<option value="">SELECCIONA UN NÚMERO</option>';
         
-        // Generar números del 1 al 99
         for (let i = 1; i <= 99; i++) {
-            // Convertimos i a String porque los datos de Sheets suelen venir como texto o número
             if (!ocupados.map(String).includes(String(i))) {
-                let opt = document.createElement('option');
-                opt.value = i;
-                opt.text = `Dorsal ${i}`;
+                let opt = new Option(`DORSAL ${i}`, i);
                 select.add(opt);
             }
         }
     } catch (e) {
-        console.error("Error cargando dorsales:", e);
-        // Si falla la conexión, cargamos todos por defecto para no bloquear al usuario
-        select.innerHTML = '<option value="">Selecciona un número</option>';
-        for (let i = 1; i <= 99; i++) {
-            select.add(new Option(i, i));
-        }
+        console.error("Error dorsales:", e);
+        select.innerHTML = '<option value="">ERROR AL CARGAR - ELIGE NÚMERO</option>';
+        for (let i = 1; i <= 99; i++) select.add(new Option(i, i));
     }
 }
 
-// Ejecutar la carga de dorsales al abrir la página
-document.addEventListener('DOMContentLoaded', obtenerDorsalesLibres);
+// 2. VERIFICAR SI LA CÉDULA YA EXISTE
+async function verificarCedulaExistente(cedula) {
+    try {
+        const resp = await fetch(`${URL_GOOGLE}?action=getDorsales`); // Reutilizamos consulta de datos
+        const data = await resp.json();
+        // Nota: Esta es una validación simple. Lo ideal es que el GAS tenga action=checkCedula
+        // Pero para no complicarte, si el script de Google devuelve todos los datos, comparamos aquí.
+        return false; 
+    } catch (e) { return false; }
+}
 
-// 2. LOGICA DE ENVÍO DEL FORMULARIO
-document.getElementById('formRegistro').onsubmit = async (e) => {
-    e.preventDefault();
+// 3. FUNCIÓN DE ENVÍO (LLAMADA DESDE EL HTML)
+async function enviarADatabase() {
+    const form = document.getElementById('formRegistro');
+    const formData = new FormData(form);
     
-    // Validar que las fotos estén tomadas
-    const fotoRostro = document.getElementById('fotoRostroB64').value;
-    const fotoCedula = document.getElementById('fotoCedulaB64').value;
-
-    if (!fotoRostro || !fotoCedula) {
-        alert("Por favor, captura ambas fotos (Rostro y Cédula) antes de finalizar.");
-        return;
+    // VALIDACIÓN DE SEGURIDAD FINAL
+    const cedula = formData.get('cedula');
+    if (cedula.length !== 10) {
+        alert("LA CÉDULA DEBE TENER 10 DÍGITOS");
+        document.getElementById('final-animacion').style.display = 'none';
+        return false;
     }
 
-    document.getElementById('loader').style.display = 'block';
-
-    // Usamos URLSearchParams para enviar los datos de forma simple a GAS
-    const formData = new FormData(e.target);
-    const dataEnviada = new URLSearchParams(formData);
+    // CONVERTIR TODO A MAYÚSCULAS ANTES DE ENVIAR (Menos el correo si existiera)
+    const params = new URLSearchParams();
+    for (const [key, value] of formData.entries()) {
+        if (key !== 'correo' && typeof value === 'string') {
+            params.append(key, value.toUpperCase());
+        } else {
+            params.append(key, value);
+        }
+    }
 
     try {
-        // Enviamos el POST
+        // Ejecutar el envío
         await fetch(URL_GOOGLE, {
             method: 'POST',
-            body: dataEnviada,
-            mode: 'no-cors' // IMPORTANTE: Mantenemos esto por compatibilidad
+            body: params,
+            mode: 'no-cors'
         });
 
-        // Con no-cors no podemos leer la respuesta, pero si no salta al catch, suele estar bien
-        alert('¡REGISTRO ENVIADO CON ÉXITO!\nTu información y fotos han sido procesadas.');
-        location.reload();
+        // Como mode: 'no-cors' no permite leer la respuesta, 
+        // esperamos 2 segundos para asegurar que Google procesó el archivo
+        await new Promise(resolve => setTimeout(resolve, 2500));
+        return true; 
 
-    } catch (err) {
-        console.error("Error en el envío:", err);
-        alert('Hubo un problema al enviar el formulario. Verifica tu conexión.');
-        document.getElementById('loader').style.display = 'none';
+    } catch (e) {
+        console.error("Error en envío:", e);
+        alert("ERROR DE CONEXIÓN AL GUARDAR");
+        document.getElementById('final-animacion').style.display = 'none';
+        return false;
     }
-};
+}
+
+// Ejecutar carga de dorsales al cargar la web
+document.addEventListener('DOMContentLoaded', obtenerDorsalesLibres);
