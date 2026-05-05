@@ -4,18 +4,22 @@
   "description": "App Oficial de Gestión - Nápoles F.C.",
   "start_url": "index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#001a33",
   "theme_color": "#b59461",
+  "scope": "/",
   "icons": [
     {
-      "src": "https://via.placeholder.com/192",
+      "src": "img/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "https://via.placeholder.com/512",
+      "src": "img/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
