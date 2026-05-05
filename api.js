@@ -1,105 +1,146 @@
 const URL_GAS = 'https://script.google.com/macros/s/AKfycbxB7NezJt9SzVasnD20sEsj3t0kjlIZS_7_t5qGCfFTIPIq9a4WEQwVvE4Ey27jgnsl/exec';
 
+// CAMBIAR PASOS
+function verPaso(n) {
+    for (let i = 1; i <= 6; i++) {
+        const p = document.getElementById('paso' + i);
+        if (p) p.style.display = (i === n) ? 'block' : 'none';
+    }
+}
 
-// --- PASO 1: VALIDACIÓN ---
+// VALIDAR CÉDULA
 async function validarCedulaEstricta() {
     const ced = document.getElementById('ced').value;
-    if (ced.length !== 10) { alert("La cédula debe tener 10 dígitos."); return; }
 
-    document.getElementById('loader').style.display = 'flex';
+    if (ced.length !== 10) {
+        alert("Cédula inválida");
+        return;
+    }
+
+    document.getElementById('loader').style.display = 'block';
+
     try {
-        const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced}`);
-        const data = await resp.json();
-        
+        const res = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced}`);
+        const data = await res.json();
+
         if (data.cedulaExiste) {
-            alert("¡ERROR! Esta cédula ya está registrada.");
-            document.getElementById('loader').style.display = 'none';
+            alert("Ya registrado");
         } else {
-            document.getElementById('loader').style.display = 'none';
             verPaso(2);
         }
+
     } catch (e) {
-        alert("Error de conexión. Reintente.");
-        document.getElementById('loader').style.display = 'none';
+        alert("Error conexión");
     }
+
+    document.getElementById('loader').style.display = 'none';
 }
 
-// --- PASO 4: PROCESAR FOTOS ---
+// BASE64
 function aBase64(input, idDestino) {
     const file = input.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            document.getElementById(idDestino).value = reader.result;
-            console.log("Foto procesada: " + idDestino);
-        };
-        reader.readAsDataURL(file);
-    }
+    const reader = new FileReader();
+
+    reader.onload = () => {
+        document.getElementById(idDestino).value = reader.result;
+    };
+
+    if (file) reader.readAsDataURL(file);
 }
 
-// --- PASO 5: ARMADURA ---
+// CÁMARA
+let stream;
+
+async function iniciarCamara() {
+    const video = document.getElementById('video');
+
+    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = stream;
+}
+
+function capturarFoto() {
+    const canvas = document.getElementById('canvas');
+    const video = document.getElementById('video');
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0);
+
+    const data = canvas.toDataURL('image/jpeg');
+    document.getElementById('fotoRostroB64').value = data;
+
+    alert("Foto capturada");
+}
+
+// ARMADURA
 async function abrirArmadura() {
-    const n1 = document.getElementById('n1').value.trim().toUpperCase();
-    const n2 = document.getElementById('n2').value.trim().toUpperCase();
-    const selectNom = document.getElementById('selectNombreCamiseta');
+    const n1 = document.getElementById('n1').value.toUpperCase();
+    const n2 = document.getElementById('n2').value.toUpperCase();
 
-    if (!n1) { alert("Por favor complete sus nombres primero."); verPaso(2); return; }
+    const select = document.getElementById('selectNombreCamiseta');
+    select.innerHTML = "";
 
-    selectNom.innerHTML = "";
-    selectNom.add(new Option(n1, n1));
-    if (n2) selectNom.add(new Option(n2, n2));
+    select.add(new Option(n1, n1));
+    if (n2) select.add(new Option(n2, n2));
+
+    await cargarDorsales();
 
     verPaso(5);
-    await cargarDorsales(); // Llamada a la función que faltaba
 }
 
 async function cargarDorsales() {
-    const selectD = document.getElementById('selectDorsal');
+    const select = document.getElementById('selectDorsal');
+
     try {
         const res = await fetch(`${URL_GAS}?action=getDorsales`);
         const ocupados = await res.json();
-        selectD.innerHTML = '<option value="">-- Elige un dorsal --</option>';
+
+        select.innerHTML = "";
+
         for (let i = 1; i <= 99; i++) {
-            if (!ocupados.map(String).includes(String(i))) {
-                selectD.add(new Option(`Dorsal ${i}`, i));
+            if (!ocupados.includes(i)) {
+                select.add(new Option("Dorsal " + i, i));
             }
         }
-    } catch (e) {
-        // En caso de error, cargar todos por defecto para no bloquear al usuario
-        for (let i = 1; i <= 99; i++) selectD.add(new Option(`Dorsal ${i}`, i));
+
+    } catch {
+        for (let i = 1; i <= 99; i++) {
+            select.add(new Option("Dorsal " + i, i));
+        }
     }
 }
 
-// --- PASO 6: ENVÍO FINAL ---
+// ENVÍO
 async function enviarRegistro() {
+
     const rostro = document.getElementById('fotoRostroB64').value;
     const cedulaF = document.getElementById('fotoCedulaB64').value;
-    const medias = document.getElementById('mediasExtras').value;
 
-    if (!rostro || !cedulaF) { alert("Las fotos son obligatorias."); return; }
-    if (!medias) { alert("Seleccione si desea medias extras."); return; }
+    if (!rostro || !cedulaF) {
+        alert("Faltan fotos");
+        return;
+    }
 
-    document.getElementById('loader').style.display = 'flex';
-    document.getElementById('loader-texto').innerText = "GUARDANDO REGISTRO...";
+    document.getElementById('loader').style.display = 'block';
 
     const form = document.getElementById('formRegistro');
-    const formData = new URLSearchParams(new FormData(form));
+    const data = new URLSearchParams(new FormData(form));
 
     try {
-        await fetch(URL_GAS, { method: 'POST', mode: 'no-cors', body: formData.toString() });
-        alert("¡REGISTRO EXITOSO! Bienvenido a Nápoles F.C.");
-        location.reload();
-    } catch (e) {
-        alert("Error al guardar. Revisa tu internet.");
-        document.getElementById('loader').style.display = 'none';
-    }
-}
+        await fetch(URL_GAS, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: data
+        });
 
-// Auxiliar para cambiar de vista
-function verPaso(n) {
-    for(let i=1; i<=6; i++) {
-        const p = document.getElementById('paso'+i);
-        if(p) p.style.display = (i === n) ? 'block' : 'none';
+        alert("Registro exitoso");
+        location.reload();
+
+    } catch {
+        alert("Error al enviar");
     }
-    window.scrollTo(0,0);
+
+    document.getElementById('loader').style.display = 'none';
 }
