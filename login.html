@@ -24,12 +24,6 @@
             padding: 8px;
             border-radius: 20px;
         }
-        .debug-info {
-            font-size: 0.7rem;
-            margin-top: 15px;
-            color: #aaa;
-            word-break: break-all;
-        }
     </style>
 </head>
 <body>
@@ -40,82 +34,46 @@
     <button id="btnLogin" class="btn-accion" disabled>INGRESAR</button>
     <p style="margin-top: 1rem;">¿No tienes cuenta? <a href="index.html" style="color: var(--dorado);">Regístrate aquí</a></p>
     <div id="mensajeError" class="mensaje-error"></div>
-    <div id="debugInfo" class="debug-info"></div>
 </div>
 
-<!-- Importamos frontend.js para usar URL_GAS y mostrarToast -->
 <script src="frontend.js"></script>
-
 <script>
-    // Esperamos a que el DOM esté cargado y también a que frontend.js haya definido URL_GAS
     document.addEventListener('DOMContentLoaded', () => {
-        // Verificar que la variable URL_GAS existe (definida en frontend.js)
         if (typeof URL_GAS === 'undefined') {
-            console.error("URL_GAS no definida. Asegúrate de que frontend.js esté cargado.");
-            document.getElementById('mensajeError').innerText = "Error de configuración. Contacta al administrador.";
+            document.getElementById('mensajeError').innerText = "Error de configuración.";
             return;
         }
-
         const cedulaInput = document.getElementById('loginCedula');
         const btnLogin = document.getElementById('btnLogin');
         const mensajeError = document.getElementById('mensajeError');
-        const debugInfo = document.getElementById('debugInfo');
 
         cedulaInput.addEventListener('input', () => {
             cedulaInput.value = cedulaInput.value.replace(/\D/g, '').slice(0,10);
             btnLogin.disabled = cedulaInput.value.length !== 10;
             mensajeError.innerText = '';
-            debugInfo.innerText = '';
         });
 
         btnLogin.addEventListener('click', async () => {
             const cedula = cedulaInput.value;
             mensajeError.innerText = '';
-            debugInfo.innerText = 'Verificando...';
             btnLogin.disabled = true;
             btnLogin.innerText = 'VERIFICANDO...';
 
             try {
-                const url = `${URL_GAS}?action=validarRegistro&cedula=${cedula}`;
-                debugInfo.innerText = `Consultando: ${url}`;
-                const resp = await fetch(url);
+                const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${cedula}`);
                 const data = await resp.json();
-                debugInfo.innerText = `Respuesta: ${JSON.stringify(data)}`;
-
                 if (!data.cedulaExiste) {
-                    mensajeError.innerText = "❌ Cédula no registrada. Debes registrarte primero.";
-                    // También podemos mostrar un toast
-                    if (typeof mostrarToast === 'function') {
-                        mostrarToast("Cédula no registrada", "error");
-                    }
+                    mensajeError.innerText = "❌ Cédula no registrada.";
                     return;
                 }
-
                 if (data.estado === "APROBADO") {
-                    localStorage.setItem('jugador_aprobado', JSON.stringify({
-                        cedula: cedula,
-                        expira: Date.now() + 24 * 3600000,
-                        admin: false
-                    }));
-                    if (typeof mostrarToast === 'function') {
-                        mostrarToast("Acceso concedido. Redirigiendo...", "success");
-                    }
-                    setTimeout(() => {
-                        window.location.href = 'perfil.html';
-                    }, 500);
+                    localStorage.setItem('jugador_aprobado', JSON.stringify({ cedula, expira: Date.now() + 86400000, admin: false }));
+                    window.location.href = 'perfil.html';
                 } else {
-                    mensajeError.innerText = `⏳ Tu cuenta está "${data.estado}". Espera a que un administrador la active (cámbiala a APROBADO en la hoja de cálculo).`;
-                    if (typeof mostrarToast === 'function') {
-                        mostrarToast(`Estado: ${data.estado} - No autorizado`, "error");
-                    }
+                    mensajeError.innerText = "⏳ Tu cuenta está PENDIENTE de aprobación.";
                 }
             } catch (error) {
-                console.error(error);
-                mensajeError.innerText = "Error de conexión. Revisa la URL del backend o tu red.";
-                debugInfo.innerText = `Error: ${error.message}`;
-                if (typeof mostrarToast === 'function') {
-                    mostrarToast("Error de conexión con el servidor", "error");
-                }
+                mensajeError.innerText = "Error de conexión.";
             } finally {
                 btnLogin.disabled = false;
                 btnLogin.innerText = 'INGRESAR';
