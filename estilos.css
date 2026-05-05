@@ -30,7 +30,7 @@ body {
 .contenedor-principal {
     max-width: 450px;
     width: 100%;
-    margin: 40px auto 120px auto; /* Margen extra abajo para el nav */
+    margin: 40px auto 120px auto;
     padding: 30px;
     background-color: var(--gris-suave);
     border: 1px solid var(--dorado);
@@ -45,13 +45,6 @@ header {
     margin-bottom: 25px;
 }
 
-.logo-equipo {
-    width: 80px;
-    height: auto;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 0 5px var(--dorado));
-}
-
 h2 { 
     color: var(--dorado); 
     text-transform: uppercase; 
@@ -61,10 +54,6 @@ h2 {
 }
 
 /* 3. FORMULARIO E INPUTS */
-.seccion-formulario {
-    animation: fadeIn 0.5s ease-in-out;
-}
-
 label { 
     color: var(--dorado); 
     font-size: 0.75rem; 
@@ -94,14 +83,30 @@ input:focus, select:focus {
     background: rgba(0, 0, 0, 0.6);
 }
 
-/* Estilo especial para el select */
 select option {
     background: var(--azul-noche);
     color: white;
 }
 
+/* Inputs tipo file */
+input[type="file"] {
+    padding: 10px;
+    background: var(--negro-trans);
+    border: 1px dashed var(--dorado);
+    cursor: pointer;
+}
+input[type="file"]::file-selector-button {
+    background: var(--cardenillo);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
 /* 4. BOTONES */
-.btn-accion {
+.btn-accion, button:not([class*="nav"]) {
     background: linear-gradient(135deg, var(--cardenillo), #005f66);
     color: white;
     border: none;
@@ -125,9 +130,15 @@ select option {
     box-shadow: 0 0 20px rgba(0, 139, 148, 0.6); 
 }
 
-/* 5. ANIMACIÓN DE CARGA Y ÉXITO (PROFESIONAL) */
-#loader, #final-animacion {
-    display: none; /* Controlado por JS */
+.btn-accion:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 5. LOADER Y SPINNER */
+#loader {
+    display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(26, 43, 72, 0.98);
@@ -139,7 +150,7 @@ select option {
     padding: 20px;
 }
 
-.spinner-balon, .balon-animado {
+.spinner-balon {
     width: 70px;
     height: 70px;
     border: 5px solid var(--gris-suave);
@@ -155,29 +166,37 @@ select option {
     100% { transform: rotate(360deg); }
 }
 
-#final-status {
-    color: var(--dorado);
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+/* 6. NAVEGACIÓN (se inyecta dinámicamente) */
+.nav-napoles {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--azul-noche);
+    border-top: 2px solid var(--dorado);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 20px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+.nav-napoles div {
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+.nav-napoles div:hover {
+    transform: translateY(-3px);
+    filter: drop-shadow(0 0 8px var(--dorado));
 }
 
-#final-mensaje {
-    color: var(--blanco-puro);
-    font-size: 1rem;
-    margin-top: 10px;
-    opacity: 0.9;
-    max-width: 300px;
-}
-
-/* 6. UTILIDADES */
+/* 7. UTILIDADES */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Ajustes para móviles pequeños */
 @media (max-width: 380px) {
     .contenedor-principal {
         padding: 20px;
