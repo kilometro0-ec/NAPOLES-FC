@@ -40,7 +40,8 @@ function validarCedulaReal(ced){
 
 // ================= PASO 1 =================
 async function validarCedulaEstricta(){
-    const ced=document.getElementById('ced').value;
+    const cedInput = document.getElementById('ced');
+    const ced = cedInput.value;
 
     if(!validarCedulaReal(ced)){
         alert("CÉDULA INVÁLIDA");
@@ -56,6 +57,10 @@ async function validarCedulaEstricta(){
         if(data.cedulaExiste){
             alert("YA REGISTRADO");
         }else{
+            // 🔒 bloquear cédula
+            cedInput.readOnly = true;
+            cedInput.style.opacity = "0.6";
+
             verPaso(2);
         }
 
@@ -140,7 +145,7 @@ function capturarFoto(){
     document.getElementById('fotoRostroB64').value=data;
     document.getElementById('previewRostro').src=data;
 
-    // 🔴 detener cámara
+    // detener cámara
     if(stream){
         stream.getTracks().forEach(t=>t.stop());
     }
