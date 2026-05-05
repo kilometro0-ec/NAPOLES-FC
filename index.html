@@ -24,17 +24,44 @@
 
 @keyframes pulse{
     0%{transform:scale(1)}
-    50%{transform:scale(0.97)}
+    50%{transform:scale(0.96)}
     100%{transform:scale(1)}
 }
 
+/* LOADER PRO */
+#loader{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(26,43,72,0.95);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+.spinner-balon{
+    width:60px;
+    height:60px;
+    border:5px solid rgba(255,255,255,0.2);
+    border-top:5px solid #B59461;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin-bottom:15px;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+/* CAMARA */
 #contenedor-camara{
     position:relative;
     width:280px;
     height:280px;
     margin:20px auto;
-    overflow:hidden;
     border-radius:20px;
+    overflow:hidden;
     border:2px solid #B59461;
 }
 
@@ -65,7 +92,9 @@
 <!-- PASO 1 -->
 <div id="paso1" class="paso activo">
 <input id="ced" maxlength="10" placeholder="Cédula (10 dígitos)">
-<button type="button" id="btnCedula" class="btn-accion" disabled>VALIDAR</button>
+<button type="button" id="btnCedula" class="btn-accion" disabled>
+VALIDAR JUGADOR
+</button>
 </div>
 
 <!-- PASO 2 -->
@@ -98,7 +127,9 @@
 </div>
 
 <button type="button" id="btnCamara" class="btn-accion">Activar Cámara</button>
-<button type="button" id="btnFoto" class="btn-accion" style="background:#B59461">Capturar</button>
+<button type="button" id="btnFoto" class="btn-accion" style="background:#B59461">
+Capturar Foto
+</button>
 
 <input type="file" id="cedulaFile">
 
@@ -128,16 +159,20 @@
 <input id="inscripcion" maxlength="10" placeholder="Comprobante ($5)">
 <input id="uniforme" maxlength="10" placeholder="Comprobante ($18)">
 
-<button type="button" id="btnFinal" class="btn-accion" disabled>FINALIZAR</button>
+<button type="button" id="btnFinal" class="btn-accion" disabled>
+FINALIZAR
+</button>
 
 </div>
 
-<input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
+<input type="hidden" id="fotoRostroB64">
 
 </form>
 </div>
 
-<div id="loader" style="display:none;text-align:center">
+<!-- LOADER -->
+<div id="loader">
+<div class="spinner-balon"></div>
 <p id="loader-texto">Procesando...</p>
 </div>
 
@@ -145,8 +180,10 @@
 
 <script>
 
-// evitar reload
-formRegistro.addEventListener("submit", e=>e.preventDefault());
+// evitar recarga
+formRegistro.addEventListener("submit",e=>e.preventDefault());
+
+let fotoCapturada = false;
 
 // ================= PASO 1 =================
 ced.oninput = ()=>{
@@ -154,23 +191,31 @@ ced.oninput = ()=>{
 };
 
 btnCedula.onclick = async ()=>{
-    const c = ced.value;
 
-    loader(true,"Validando...");
+    btnCedula.classList.add("loading");
+    loader(true,"Validando cédula...");
 
-    const r = await validarCedulaServidor(c);
+    const r = await validarCedulaServidor(ced.value);
 
     if(!r.ok){
-        alert(r.msg);
+        alert("❌ " + r.msg);
         loader(false);
+        btnCedula.classList.remove("loading");
         return;
     }
 
-    ced2.value = c;
-    ced.readOnly = true;
+    loader(true,"Cédula validada ✔");
 
-    verPaso(2);
-    loader(false);
+    setTimeout(()=>{
+        ced2.value = ced.value;
+        ced.readOnly = true;
+        ced.style.opacity = "0.6";
+
+        verPaso(2);
+
+        loader(false);
+        btnCedula.classList.remove("loading");
+    },800);
 };
 
 // ================= PASO 2 =================
@@ -187,19 +232,25 @@ btnPaso2.onclick = ()=>verPaso(3);
 });
 btnPaso3.onclick = ()=>verPaso(4);
 
-// ================= CÁMARA =================
+// ================= CAMARA =================
 btnCamara.onclick = iniciarCamara;
 
 btnFoto.onclick = ()=>{
     capturarFoto();
+
     previewCamara.style.display="block";
     video.style.display="none";
+
+    fotoCapturada = true;
+    validarPaso4();
 };
 
 // ================= PASO 4 =================
-cedulaFile.onchange = ()=>{
-    btnPaso4.disabled = !(previewCamara.src && cedulaFile.files.length);
-};
+function validarPaso4(){
+    btnPaso4.disabled = !(fotoCapturada && cedulaFile.files.length > 0);
+}
+
+cedulaFile.onchange = validarPaso4;
 
 btnPaso4.onclick = async ()=>{
     await cargarArmadura();
@@ -208,15 +259,17 @@ btnPaso4.onclick = async ()=>{
 
 // ================= PASO 5 =================
 [nombreCamiseta,dorsal].forEach(s=>{
-    s.onchange = ()=>btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+    s.onchange = ()=>{
+        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+    };
 });
 btnPaso5.onclick = ()=>verPaso(6);
 
 // ================= PASO 6 =================
 [medias,inscripcion,uniforme].forEach(i=>{
     i.oninput = ()=>{
-        btnFinal.disabled = !(medias.value && inscripcion.value.length==10 && uniforme.value.length==10);
-    }
+        btnFinal.disabled = !(medias.value && inscripcion.value.length===10 && uniforme.value.length===10);
+    };
 });
 
 btnFinal.onclick = ()=>enviarRegistro();
