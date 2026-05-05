@@ -3,248 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Nápoles F.C. - Registro</title>
-
 <link rel="stylesheet" href="estilos.css">
-
 <style>
-.paso{display:none;}
-.paso.activo{display:block;animation:fade .3s ease;}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1;transform:translateY(0)}
+/* estilos adicionales mínimos (opcional) */
+.paso { display: none; }
+.paso.activo { display: block; animation: fade 0.3s ease; }
+@keyframes fade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-
-.btn-accion:disabled{opacity:.4;pointer-events:none;}
-
-#loader{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.7);
-color:#fff;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:9999;
+.btn-accion:disabled, button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+#loader {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
 }
 </style>
-
 </head>
-
 <body>
 
 <div class="contenedor-principal">
+    <header>
+        <h2>NÁPOLES F.C.</h2>
+        <p>Registro oficial</p>
+    </header>
 
-<header>
-<h2>NÁPOLES F.C.</h2>
-<p>Registro oficial</p>
-</header>
+    <form id="formRegistro">
+        <!-- PASO 1 -->
+        <div id="paso1" class="paso activo">
+            <input type="text" id="ced" maxlength="10" placeholder="CÉDULA (10 dígitos)" autocomplete="off">
+            <button type="button" id="btnCedula" class="btn-accion" disabled>VALIDAR</button>
+        </div>
 
-<form id="formRegistro">
+        <!-- PASO 2 -->
+        <div id="paso2" class="paso">
+            <input type="text" id="n1" placeholder="PRIMER NOMBRE">
+            <input type="text" id="n2" placeholder="SEGUNDO NOMBRE (opcional)">
+            <input type="text" id="ape" placeholder="APELLIDOS">
+            <input type="date" id="fecha">
+            <button type="button" id="btnPaso2" class="btn-accion" disabled>SIGUIENTE</button>
+        </div>
 
-<!-- PASO 1 -->
-<div id="paso1" class="paso activo">
-<input id="ced" maxlength="10" placeholder="CÉDULA">
-<button type="button" id="btnCedula" disabled>VALIDAR</button>
-</div>
+        <!-- PASO 3 -->
+        <div id="paso3" class="paso">
+            <input type="tel" id="tel" maxlength="10" placeholder="TELÉFONO (10 dígitos)">
+            <input type="email" id="correo" placeholder="CORREO ELECTRÓNICO">
+            <button type="button" id="btnPaso3" class="btn-accion" disabled>SIGUIENTE</button>
+        </div>
 
-<!-- PASO 2 -->
-<div id="paso2" class="paso">
-<input id="n1" placeholder="PRIMER NOMBRE">
-<input id="n2" placeholder="SEGUNDO NOMBRE">
-<input id="ape" placeholder="APELLIDOS">
-<input type="date" id="fecha">
-<button type="button" id="btnPaso2" disabled>SIGUIENTE</button>
-</div>
+        <!-- PASO 4 -->
+        <div id="paso4" class="paso">
+            <h3>FOTO PERFIL</h3>
+            <input type="file" id="rostro" accept="image/jpeg,image/png">
+            <h3>FOTO CÉDULA</h3>
+            <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
+            <button type="button" id="btnPaso4" class="btn-accion" disabled>SIGUIENTE</button>
+        </div>
 
-<!-- PASO 3 -->
-<div id="paso3" class="paso">
-<input id="tel" placeholder="TELÉFONO">
-<input id="correo" placeholder="CORREO">
-<button type="button" id="btnPaso3" disabled>SIGUIENTE</button>
-</div>
+        <!-- PASO 5 -->
+        <div id="paso5" class="paso">
+            <h3>ARMADURA</h3>
+            <select id="nombreCamiseta"></select>
+            <select id="dorsal"></select>
+            <button type="button" id="btnPaso5" class="btn-accion" disabled>SIGUIENTE</button>
+        </div>
 
-<!-- PASO 4 -->
-<div id="paso4" class="paso">
+        <!-- PASO 6 -->
+        <div id="paso6" class="paso">
+            <select id="medias">
+                <option value="">¿MEDIAS EXTRAS?</option>
+                <option value="NO">NO</option>
+                <option value="SI">SI</option>
+            </select>
+            <input type="text" id="inscripcion" placeholder="N° TRANSACCIÓN INSCRIPCIÓN">
+            <input type="text" id="uniforme" placeholder="N° TRANSACCIÓN UNIFORME">
+            <button type="button" id="btnFinal" class="btn-accion" disabled>FINALIZAR</button>
+        </div>
 
-<h3>FOTO PERFIL</h3>
-<input type="file" id="rostro">
-
-<h3>FOTO CÉDULA</h3>
-<input type="file" id="cedulaFile">
-
-<button type="button" id="btnPaso4" disabled>SIGUIENTE</button>
-</div>
-
-<!-- PASO 5 -->
-<div id="paso5" class="paso">
-<h3>ARMADURA</h3>
-
-<select id="nombreCamiseta"></select>
-<select id="dorsal"></select>
-
-<button type="button" id="btnPaso5" disabled>SIGUIENTE</button>
-</div>
-
-<!-- PASO 6 -->
-<div id="paso6" class="paso">
-
-<select id="medias">
-<option value="">Medias</option>
-<option value="NO">NO</option>
-<option value="SI">SI</option>
-</select>
-
-<input id="inscripcion" placeholder="Inscripción">
-<input id="uniforme" placeholder="Uniforme">
-
-<button type="button" id="btnFinal" disabled>FINALIZAR</button>
-
-</div>
-
-<input type="hidden" id="fotoRostroB64">
-<input type="hidden" id="fotoCedulaB64">
-
-</form>
-
+        <!-- campos ocultos para imágenes en base64 -->
+        <input type="hidden" id="fotoRostroB64">
+        <input type="hidden" id="fotoCedulaB64">
+    </form>
 </div>
 
 <div id="loader">
-<h3 id="loader-texto">Procesando...</h3>
+    <div class="spinner-balon"></div>
+    <h3 id="loader-texto">Procesando...</h3>
 </div>
 
-<script src="api.js"></script>
-
-<script>
-const URL_GAS = "https://script.google.com/macros/s/AKfycbyOZObCnKnnbwwuwTO8CULGvh1-c9hiUqAhBs15N3ceMYaFQaiHtTQWGJgugbodinP6/exec";
-
-/* ================= UI ================= */
-function verPaso(n){
-document.querySelectorAll(".paso").forEach(p=>p.classList.remove("activo"));
-document.getElementById("paso"+n).classList.add("activo");
-}
-
-function loader(on,text){
-loader.style.display = on ? "flex":"none";
-document.getElementById("loader-texto").innerText=text;
-}
-
-/* ================= PASO 1 ================= */
-ced.oninput=()=>{
-ced.value=ced.value.replace(/\D/g,"");
-btnCedula.disabled=ced.value.length!==10;
-};
-
-btnCedula.onclick=async()=>{
-
-loader(true,"Validando...");
-
-try{
-const r = await fetch(URL_GAS+"?action=validarRegistro&cedula="+ced.value);
-const d = await r.json();
-
-if(d.cedulaExiste){
-loader(false);
-alert("Ya registrado");
-return;
-}
-
-verPaso(2);
-
-}catch(e){
-alert("Error conexión");
-}
-
-loader(false);
-};
-
-/* ================= PASO 2 ================= */
-function check2(){
-btnPaso2.disabled = !(n1.value && ape.value && fecha.value);
-}
-
-[n1,n2,ape,fecha].forEach(i=>i.oninput=check2);
-
-btnPaso2.onclick=()=>verPaso(3);
-
-/* ================= PASO 3 ================= */
-function check3(){
-btnPaso3.disabled = !(tel.value.length>=10 && correo.value.includes("@"));
-}
-
-[tel,correo].forEach(i=>i.oninput=check3);
-
-btnPaso3.onclick=()=>verPaso(4);
-
-/* ================= PASO 4 ================= */
-rostro.onchange=e=>{
-const r=new FileReader();
-r.onload=()=>fotoRostroB64.value=r.result;
-r.readAsDataURL(e.target.files[0]);
-};
-
-cedulaFile.onchange=e=>{
-const r=new FileReader();
-r.onload=()=>fotoCedulaB64.value=r.result;
-r.readAsDataURL(e.target.files[0]);
-btnPaso4.disabled=false;
-};
-
-btnPaso4.onclick=async()=>{
-
-nombreCamiseta.innerHTML="";
-dorsal.innerHTML="";
-
-nombreCamiseta.add(new Option(n1.value,n1.value));
-if(n2.value) nombreCamiseta.add(new Option(n2.value,n2.value));
-
-const r=await fetch(URL_GAS+"?action=getDorsales");
-const usados=await r.json();
-
-for(let i=1;i<=99;i++){
-if(!usados.includes(String(i))){
-dorsal.add(new Option(i,i));
-}
-}
-
-verPaso(5);
-};
-
-/* ================= PASO 5 ================= */
-function check5(){
-btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
-}
-
-nombreCamiseta.onchange=check5;
-dorsal.onchange=check5;
-
-btnPaso5.onclick=()=>verPaso(6);
-
-/* ================= PASO 6 ================= */
-function check6(){
-btnFinal.disabled = !(medias.value && inscripcion.value && uniforme.value);
-}
-
-[medias,inscripcion,uniforme].forEach(i=>i.oninput=check6);
-
-/* ================= FINAL ================= */
-btnFinal.onclick=async()=>{
-
-loader(true,"Guardando...");
-
-const data=new FormData(formRegistro);
-
-await fetch(URL_GAS,{method:"POST",body:data});
-
-loader(false);
-
-alert("Registrado");
-
-};
-</script>
-
+<script src="frontend.js"></script>
 </body>
 </html>
