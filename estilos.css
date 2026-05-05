@@ -1,112 +1,153 @@
-/* Configuración Global para evitar desbordamientos */
+/* 1. CONFIGURACIÓN GLOBAL */
 * {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
 }
 
 :root {
-  --azul-noche: #1A2B48;
-  --cardenillo: #008B94;
-  --dorado: #B59461;
-  --blanco-puro: #ffffff;
-  --gris-suave: rgba(255, 255, 255, 0.1);
+    --azul-noche: #1A2B48;
+    --cardenillo: #008B94;
+    --dorado: #B59461;
+    --blanco-puro: #ffffff;
+    --gris-suave: rgba(255, 255, 255, 0.1);
+    --negro-trans: rgba(0, 0, 0, 0.4);
 }
 
 body {
-  background-color: var(--azul-noche);
-  color: var(--blanco-puro);
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  margin: 0;
-  padding: 15px; /* Añadido para que no pegue al borde en móviles */
-  min-height: 100vh;
+    background-color: var(--azul-noche);
+    color: var(--blanco-puro);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 2. CONTENEDOR PRINCIPAL */
+.contenedor-principal {
+    max-width: 450px;
+    width: 100%;
+    margin: 40px auto 120px auto; /* Margen extra abajo para el nav */
+    padding: 30px;
+    background-color: var(--gris-suave);
+    border: 1px solid var(--dorado);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo-equipo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 5px var(--dorado));
 }
 
 h2 { 
-  color: var(--dorado); 
-  text-align: center; 
-  text-transform: uppercase; 
-  letter-spacing: 2px;
-  font-size: 1.5rem;
+    color: var(--dorado); 
+    text-transform: uppercase; 
+    letter-spacing: 3px;
+    font-size: 1.4rem;
+    font-weight: 700;
 }
 
-.contenedor-principal {
-  max-width: 450px;
-  margin: 20px auto;
-  padding: 25px;
-  background-color: var(--gris-suave);
-  border: 1px solid var(--dorado);
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px); /* Efecto moderno de cristal */
+/* 3. FORMULARIO E INPUTS */
+.seccion-formulario {
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 label { 
-  color: var(--dorado); 
-  font-size: 0.85em; 
-  font-weight: bold; 
-  display: block; 
-  margin-top: 15px;
-  text-transform: uppercase;
+    color: var(--dorado); 
+    font-size: 0.75rem; 
+    font-weight: bold; 
+    display: block; 
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 8px 0;
-  border: 1px solid var(--dorado);
-  background: rgba(0, 0, 0, 0.3);
-  color: white;
-  border-radius: 8px;
-  outline: none;
+input, select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 8px;
+    border: 1px solid rgba(181, 148, 97, 0.5);
+    background: var(--negro-trans);
+    color: white;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-input:focus {
-  border-color: var(--cardenillo);
-  box-shadow: 0 0 5px var(--cardenillo);
+input:focus, select:focus {
+    border-color: var(--cardenillo);
+    box-shadow: 0 0 8px rgba(0, 139, 148, 0.4);
+    outline: none;
+    background: rgba(0, 0, 0, 0.6);
 }
 
+/* Estilo especial para el select */
+select option {
+    background: var(--azul-noche);
+    color: white;
+}
+
+/* 4. BOTONES */
 .btn-accion {
-  background-color: var(--cardenillo);
-  color: white;
-  border: none;
-  padding: 15px;
-  width: 100%;
-  border-radius: 8px;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: 0.3s;
-  margin-top: 15px;
-  display: block;
+    background: linear-gradient(135deg, var(--cardenillo), #005f66);
+    color: white;
+    border: none;
+    padding: 16px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-accion:active {
+    transform: scale(0.98);
 }
 
 .btn-accion:hover { 
-  background-color: #00737a; 
-  box-shadow: 0 0 15px var(--cardenillo); 
+    box-shadow: 0 0 20px rgba(0, 139, 148, 0.6); 
 }
 
-/* Evitar que el menú de nav.js tape el contenido */
-.seccion-formulario { /* ANIMACIÓN PROFESIONAL DE CARGA */
+/* 5. ANIMACIÓN DE CARGA Y ÉXITO (PROFESIONAL) */
 #loader, #final-animacion {
-    display: none;
+    display: none; /* Controlado por JS */
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(26, 43, 72, 0.98); /* Azul Noche */
-    z-index: 10000;
+    background: rgba(26, 43, 72, 0.98);
+    z-index: 99999;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    backdrop-filter: blur(10px);
+    text-align: center;
+    padding: 20px;
 }
 
 .spinner-balon, .balon-animado {
-    width: 60px;
-    height: 60px;
-    border: 4px solid var(--gris-suave);
-    border-top: 4px solid var(--dorado); /* Color Dorado */
+    width: 70px;
+    height: 70px;
+    border: 5px solid var(--gris-suave);
+    border-top: 5px solid var(--dorado);
     border-radius: 50%;
-    animation: spinNapoles 1s linear infinite;
-    margin-bottom: 20px;
+    animation: spinNapoles 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    margin-bottom: 25px;
+    box-shadow: 0 0 15px rgba(181, 148, 97, 0.3);
 }
 
 @keyframes spinNapoles {
@@ -116,20 +157,31 @@ input:focus {
 
 #final-status {
     color: var(--dorado);
-    font-weight: bold;
-    letter-spacing: 3px;
-    margin-top: 10px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 #final-mensaje {
     color: var(--blanco-puro);
-    font-size: 0.9rem;
-    opacity: 0.8;
+    font-size: 1rem;
+    margin-top: 10px;
+    opacity: 0.9;
+    max-width: 300px;
 }
 
-/* Evitar desbordes en el contenedor */
-.contenedor-principal {
-    margin-bottom: 100px; /* Para que el nav no lo tape */
+/* 6. UTILIDADES */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-  margin-bottom: 20px;
+
+/* Ajustes para móviles pequeños */
+@media (max-width: 380px) {
+    .contenedor-principal {
+        padding: 20px;
+        margin-top: 20px;
+    }
+    h2 { font-size: 1.2rem; }
 }
