@@ -1,5 +1,5 @@
 // Configuración
-const URL_GAS = "https://script.google.com/macros/s/AKfycbyOZObCnKnnbwwuwTO8CULGvh1-c9hiUqAhBs15N3ceMYaFQaiHtTQWGJgugbodinP6/exec";
+const URL_GAS = "https://script.google.com/macros/s/AKfycbxjs260s4ZEh4ERrSRh7s99GjkqCZK-k5aEd7FO3dLlvO1FKHMo6gnKW_Jz2hPTwjP_/exec";
 
 // Elementos DOM
 const loaderDiv = document.getElementById('loader');
