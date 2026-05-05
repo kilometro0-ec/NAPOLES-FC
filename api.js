@@ -1,6 +1,6 @@
 const URL_GAS = 'https://script.google.com/macros/s/AKfycbxB7NezJt9SzVasnD20sEsj3t0kjlIZS_7_t5qGCfFTIPIq9a4WEQwVvE4Ey27jgnsl/exec';
 
-// ================= UI =================
+// UI
 function verPaso(n){
     document.querySelectorAll('.paso').forEach(p=>p.classList.remove('activo'));
     document.getElementById('paso'+n).classList.add('activo');
@@ -13,14 +13,7 @@ function loader(on,text="PROCESANDO..."){
     l.style.display= on ? 'flex':'none';
 }
 
-// ================= MAYÚSCULAS =================
-document.addEventListener("input", e=>{
-    if(e.target.id !== "correo"){
-        e.target.value = e.target.value.toUpperCase();
-    }
-});
-
-// ================= VALIDAR CÉDULA =================
+// VALIDAR CÉDULA
 function validarCedulaReal(ced){
     if(!/^\d{10}$/.test(ced)) return false;
 
@@ -38,7 +31,7 @@ function validarCedulaReal(ced){
     return dec===parseInt(ced[9]);
 }
 
-// ================= VALIDAR EN GOOGLE =================
+// VALIDAR EN SERVIDOR
 async function validarCedulaServidor(cedula){
 
     if(!validarCedulaReal(cedula)){
@@ -60,7 +53,7 @@ async function validarCedulaServidor(cedula){
     }
 }
 
-// ================= CÁMARA =================
+// CÁMARA
 let stream;
 
 async function iniciarCamara(){
@@ -94,7 +87,7 @@ function capturarFoto(){
     }
 }
 
-// ================= ENVÍO =================
+// ENVÍO
 async function enviarRegistro(){
 
     loader(true,"Guardando información...");
@@ -109,11 +102,11 @@ async function enviarRegistro(){
             body:data
         });
 
-        alert("✅ Registro exitoso. Bienvenido al club.");
+        alert("✅ Registro exitoso");
         window.location.href="login.html";
 
     }catch{
-        alert("❌ Error al guardar.");
+        alert("❌ Error al guardar");
     }
 
     loader(false);
