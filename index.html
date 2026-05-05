@@ -4,119 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Registro - Nápoles F.C.</title>
+    
+    <!-- Vinculación del Manifiesto para PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Vinculación de tus Estilos Externos -->
     <link rel="stylesheet" href="estilos.css">
-    <!-- Google Fonts para un look más Pro -->
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="contenedor-principal">
         <header>
-            <img src="logo-napoles.png" alt="Logo Nápoles FC" class="logo-equipo">
+            <img src="logo-napoles.png" alt="NAPOLES FC" id="logo-club">
             <h2>Registro de Jugador</h2>
         </header>
 
         <form id="formRegistro" onsubmit="event.preventDefault();">
             
-            <!-- PASO 1: VALIDACIÓN INICIAL -->
-            <div id="paso1" class="seccion-formulario">
-                <label>Cédula de Identidad (10 dígitos)</label>
-                <input type="number" id="ced" name="cedula" placeholder="Ej: 17255..." required>
-
-                <label>Número de Transacción (Comprobante)</label>
-                <input type="text" id="trans" name="transaccion" placeholder="Código de depósito/transferencia" required>
-
-                <button type="button" class="btn-accion" onclick="validarDatosIniciales()">Verificar y Continuar</button>
+            <!-- PASO 1: VALIDACIÓN (Cédula y Transacción) -->
+            <div id="paso1">
+                <label>Cédula de Identidad</label>
+                <input type="number" id="ced" name="cedula" placeholder="10 dígitos" required>
+                
+                <label>Número de Transacción</label>
+                <input type="text" id="trans" name="transaccion" placeholder="Código de comprobante" required>
+                
+                <button type="button" class="btn-accion" onclick="validarPaso1()">Verificar Datos</button>
             </div>
 
             <!-- PASO 2: DATOS PERSONALES -->
-            <div id="paso2" class="seccion-formulario" style="display:none;">
+            <div id="paso2" style="display:none;">
                 <label>Primer Nombre</label>
                 <input type="text" id="n1" name="nombre1" required>
-
                 <label>Segundo Nombre</label>
                 <input type="text" id="n2" name="nombre2">
-
                 <label>Apellidos Completos</label>
                 <input type="text" id="ape" name="apellidos" required>
-
                 <label>Fecha de Nacimiento</label>
                 <input type="date" name="fechaNac" required>
-
-                <label>Teléfono de Contacto</label>
-                <input type="tel" name="telefono" placeholder="099..." required>
-
+                <label>Teléfono</label>
+                <input type="tel" name="telefono" placeholder="09..." required>
                 <label>Correo Electrónico</label>
                 <input type="email" id="correo" name="correo" required>
-
-                <button type="button" class="btn-accion" onclick="verPaso(3)">Siguiente Paso</button>
+                <button type="button" class="btn-accion" onclick="procesarNombres()">Siguiente</button>
             </div>
 
-            <!-- PASO 3: EQUIPACIÓN Y DORSAL -->
-            <div id="paso3" class="seccion-formulario" style="display:none;">
+            <!-- PASO 3: DORSAL -->
+            <div id="paso3" style="display:none;">
                 <label>Nombre en la Camiseta</label>
-                <select id="selectNombreCamiseta" name="nombreCamiseta" class="input-select">
-                    <!-- Se llena automáticamente con JS -->
-                </select>
-
-                <label>Selecciona tu Dorsal</label>
-                <select id="selectDorsal" name="dorsal" required class="input-select">
-                    <option value="">Cargando números disponibles...</option>
-                </select>
-
-                <button type="button" class="btn-accion" onclick="verPaso(4)">Último Paso: Fotos</button>
+                <select id="selectNombreCamiseta" name="nombreCamiseta"></select>
+                <label>Dorsal Preferido</label>
+                <select id="selectDorsal" name="dorsal"></select>
+                <button type="button" class="btn-accion" onclick="verPaso(4)">Siguiente</button>
             </div>
 
-            <!-- PASO 4: SEGURIDAD (FOTOS) -->
-            <div id="paso4" class="seccion-formulario" style="display:none;">
-                <label>Foto del Rostro (Claridad frontal)</label>
-                <input type="file" accept="image/*" capture="user" onchange="procesarFoto(this, 'fotoRostroB64')">
+            <!-- PASO 4: FOTOS -->
+            <div id="paso4" style="display:none;">
+                <label>Foto del Jugador (Rostro)</label>
+                <input type="file" accept="image/*" capture="user" onchange="aBase64(this, 'fotoRostroB64')">
                 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
 
-                <label>Foto de la Cédula (Lado frontal)</label>
-                <input type="file" accept="image/*" onchange="procesarFoto(this, 'fotoCedulaB64')">
+                <label>Foto de la Cédula</label>
+                <input type="file" accept="image/*" onchange="aBase64(this, 'fotoCedulaB64')">
                 <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
 
-                <button type="button" class="btn-accion" onclick="enviarTodo()">Finalizar Registro</button>
+                <button type="button" class="btn-accion" onclick="enviarRegistro()">Finalizar Registro</button>
             </div>
-
-            <!-- Campo oculto para el estado -->
-            <input type="hidden" name="estado" value="PENDIENTE">
         </form>
     </div>
 
-    <!-- PANTALLA DE CARGA PROFESIONAL -->
-    <div id="loader">
-        <div class="spinner-balon"></div>
-        <p>Validando con el Club...</p>
-    </div>
-
-    <!-- ANIMACIÓN FINAL DE ÉXITO -->
+    <!-- Pantallas de Carga -->
+    <div id="loader"><div class="spinner-balon"></div><p>Validando en Base de Datos...</p></div>
     <div id="final-animacion">
-        <div class="balon-animado"></div>
+        <div class="spinner-balon"></div>
         <h3 id="final-status">PROCESANDO...</h3>
-        <p id="final-mensaje">Estamos guardando tus datos en la base del Nápoles F.C.</p>
+        <p id="final-mensaje">Guardando en la familia Nápoles F.C.</p>
     </div>
 
-    <!-- SCRIPTS -->
-    <script src="script.js"></script>
+    <!-- Carga de tus archivos JavaScript externos -->
+    <script src="nav.js"></script>
     <script src="api.js"></script>
+    
     <script>
-        // Función simple para cambiar entre pasos en el HTML
-        function verPaso(paso) {
-            document.querySelectorAll('.seccion-formulario').forEach(div => div.style.display = 'none');
-            document.getElementById('paso' + paso).style.display = 'block';
-            window.scrollTo(0,0);
-        }
-
-        // Función para convertir fotos a Base64 antes de enviar
-        function procesarFoto(input, targetId) {
-            const file = input.files[0];
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                document.getElementById(targetId).value = reader.result;
-            }
-            if (file) reader.readAsDataURL(file);
+        // Registro del Service Worker para que funcione como PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW registrado', reg))
+                .catch(err => console.warn('Error al registrar SW', err));
         }
     </script>
 </body>
