@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Registro - Nápoles F.C.</title>
     
+    <!-- FAVICON CORREGIDO: Apunta a la carpeta img -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    
     <!-- Vinculación del Manifiesto para PWA -->
     <link rel="manifest" href="manifest.json">
     
@@ -13,11 +16,29 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS para ocultar el menú de navegación inferior solo en esta página */
+        .nav-napoles, #nav-inferior, nav {
+            display: none !important;
+        }
+        
+        /* Ajuste para que el formulario ocupe el espacio completo */
+        body {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        .contenedor-principal {
+            padding-bottom: 20px; /* Espacio estético al final */
+        }
+    </style>
 </head>
 <body>
 
     <div class="contenedor-principal">
         <header>
+            <!-- LOGO: Revisa si debe ser img/logo-napoles.png si está en esa carpeta -->
             <img src="logo-napoles.png" alt="NAPOLES FC" id="logo-club">
             <h2>Registro de Jugador</h2>
         </header>
@@ -85,15 +106,16 @@
     </div>
 
     <!-- Carga de tus archivos JavaScript externos -->
+    <!-- Nota: Asegúrate de que estos archivos estén en la misma carpeta que este index.html -->
     <script src="nav.js"></script>
     <script src="api.js"></script>
     
     <script>
-        // Registro del Service Worker para que funcione como PWA
+        // Registro del Service Worker para funcionamiento Offline/PWA
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('SW registrado', reg))
-                .catch(err => console.warn('Error al registrar SW', err));
+                .then(reg => console.log('PWA: Service Worker activo', reg.scope))
+                .catch(err => console.warn('PWA: Error en Service Worker', err));
         }
     </script>
 </body>
