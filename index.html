@@ -23,7 +23,7 @@
         padding: 1.5rem;
     }
 
-    /* Contenedor principal con glassmorfismo y animación */
+    /* Contenedor principal con glassmorfismo */
     .contenedor-principal {
         max-width: 550px;
         width: 100%;
@@ -31,7 +31,7 @@
         background: rgba(10, 20, 40, 0.6);
         backdrop-filter: blur(16px);
         border-radius: 48px;
-        border: 1px solid rgba(0, 143, 155, 0.3);
+        border: 1px solid rgba(0, 143, 155, 0.4);
         box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 143, 155, 0.2) inset;
         padding: 1.8rem;
         transition: transform 0.3s, box-shadow 0.3s;
@@ -39,14 +39,8 @@
     }
 
     @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     /* Header */
@@ -57,7 +51,7 @@
     header h2 {
         font-size: 1.8rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #008f9b, #00c2d0);
+        background: linear-gradient(135deg, #D4AF37, #FFD966);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
@@ -66,11 +60,17 @@
         margin-bottom: 0.25rem;
     }
     header p {
-        color: rgba(255,255,255,0.7);
+        color: rgba(255,255,255,0.8);
         font-size: 0.9rem;
     }
+    .subtitulo {
+        color: rgba(255,255,255,0.55);
+        font-size: 0.75rem;
+        margin-top: 5px;
+        font-style: italic;
+    }
 
-    /* Estilos para los pasos */
+    /* Pasos */
     .paso {
         display: none;
         animation: fade 0.3s ease;
@@ -83,7 +83,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Inputs y selects - estilo moderno */
+    /* Inputs y selects - estilo teal (#008f9b) */
     input, select {
         width: 100%;
         padding: 1rem 1.2rem;
@@ -112,7 +112,7 @@
         75%{ transform: translateX(5px); }
     }
 
-    /* Botones con diseño plano pero llamativo */
+    /* Botones teal */
     .btn-accion {
         background: linear-gradient(95deg, #008f9b, #005c64);
         border: none;
@@ -133,7 +133,7 @@
     }
     .btn-accion:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 143, 155, 0.4);
+        box-shadow: 0 10px 25px rgba(0, 143, 155, 0.5);
         background: linear-gradient(95deg, #00aebb, #006d78);
     }
     .btn-accion:disabled {
@@ -141,7 +141,7 @@
         transform: none;
         cursor: not-allowed;
     }
-    /* Efecto ripple */
+    /* Ripple */
     .btn-accion::after {
         content: '';
         position: absolute;
@@ -149,7 +149,7 @@
         left: 50%;
         width: 0;
         height: 0;
-        background: rgba(255,255,255,0.3);
+        background: rgba(255,255,255,0.4);
         border-radius: 50%;
         transform: translate(-50%, -50%);
         transition: width 0.4s, height 0.4s;
@@ -159,7 +159,7 @@
         height: 200px;
     }
 
-    /* Visto para imágenes */
+    /* Visto imágenes */
     .visto-img {
         display: inline-block;
         margin-left: 12px;
@@ -181,8 +181,15 @@
         font-weight: 600;
         letter-spacing: 1px;
     }
+    .help-text {
+        font-size: 0.7rem;
+        color: rgba(255,255,255,0.5);
+        margin-top: 6px;
+        margin-left: 12px;
+        font-style: italic;
+    }
 
-    /* Loader */
+    /* Loader teal */
     #loader {
         display: none;
         position: fixed;
@@ -197,7 +204,7 @@
     .spinner-balon {
         width: 70px;
         height: 70px;
-        border: 5px solid rgba(0,143,155,0.3);
+        border: 5px solid rgba(0, 143, 155, 0.3);
         border-top: 5px solid #008f9b;
         border-radius: 50%;
         animation: spin 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
@@ -208,7 +215,7 @@
         100% { transform: rotate(360deg) scale(1); }
     }
 
-    /* Modal de éxito */
+    /* Modal éxito teal */
     #modalExito {
         display: none;
         position: fixed;
@@ -238,6 +245,41 @@
         margin-bottom: 1rem;
     }
 
+    /* Toasts mejorados (con borde teal) */
+    .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.92);
+        backdrop-filter: blur(16px);
+        padding: 12px 28px;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        z-index: 10001;
+        animation: slideToast 0.3s ease forwards;
+        border-left: 5px solid #008f9b;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        color: white;
+        font-size: 0.9rem;
+        max-width: 90%;
+        word-break: break-word;
+        text-align: center;
+    }
+    .toast-notification.error {
+        border-left-color: #ff5e5e;
+    }
+    .toast-notification.success {
+        border-left-color: #2ecc71;
+    }
+    @keyframes slideToast {
+        from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+        to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
     /* Ajustes móviles */
     @media (max-width: 500px) {
         .contenedor-principal {
@@ -249,6 +291,14 @@
         input, select, .btn-accion {
             padding: 0.8rem 1rem;
         }
+        .toast-notification {
+            bottom: 10px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+        .help-text {
+            font-size: 0.65rem;
+        }
     }
 </style>
 </head>
@@ -256,14 +306,17 @@
 
 <div class="contenedor-principal">
     <header>
-        <h2>NÁPOLES F.C.</h2>
+        <h2>⚽ NÁPOLES F.C.</h2>
         <p>Formulario de registro oficial</p>
+        <p class="subtitulo">📅 lista para la temporada 2026 - 2027</p>
     </header>
 
     <form id="formRegistro">
-        <!-- PASO 1: Cédula (resaltada con color) -->
+        <!-- PASO 1: Cédula -->
         <div id="paso1" class="paso activo">
-            <input type="text" id="ced" maxlength="10" placeholder="CÉDULA (10 dígitos)" autocomplete="off" style="border-color: #008f9b; box-shadow: 0 0 5px rgba(0,143,155,0.5);">
+            <input type="text" id="ced" maxlength="10" placeholder="CÉDULA (10 dígitos)" autocomplete="off">
+            <div class="help-text">🔑 INGRESA TU NÚMERO DE CÉDULA PARA EMPEZAR</div>
+            <div class="help-text">🆔 ASÍ SE VA A LLAMAR ESTA ID CARD</div>
             <button type="button" id="btnCedula" class="btn-accion" disabled>VALIDAR</button>
         </div>
 
@@ -272,7 +325,9 @@
             <input type="text" id="n1" placeholder="PRIMER NOMBRE">
             <input type="text" id="n2" placeholder="SEGUNDO NOMBRE">
             <input type="text" id="ape" placeholder="APELLIDOS">
-            <input type="date" id="fecha">
+            <input type="date" id="fecha" placeholder="dd/mm/aaaa">
+            <div class="help-text">📅 AQUÍ DEBES INGRESAR TU FECHA DE NACIMIENTO</div>
+            <div class="help-text">🆔 ESTA ID CARD SE VA A LLAMAR "TUS DATOS PERSONALES"</div>
             <button type="button" id="btnPaso2" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
@@ -280,6 +335,8 @@
         <div id="paso3" class="paso">
             <input type="tel" id="tel" maxlength="10" placeholder="TELÉFONO">
             <input type="email" id="correo" placeholder="CORREO ELECTRÓNICO">
+            <div class="help-text">📞 QUEREMOS ESTAR EN CONTACTO CONTIGO</div>
+            <div class="help-text">🆔 ESTA ID CARD SE VA A LLAMAR "CONTACTO DIRECTO"</div>
             <button type="button" id="btnPaso3" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
@@ -291,6 +348,8 @@
             <h3>🪪 FOTO CÉDULA</h3>
             <input type="file" id="cedulaFile" accept="image/*">
             <span id="vistoCedula" class="visto-img"></span>
+            <div class="help-text">🎨 PERSONALIZA TU ARMADURA CON TUS FOTOS</div>
+            <div class="help-text">🆔 ESTA ID CARD SE VA A LLAMAR "IDENTIDAD VISUAL"</div>
             <button type="button" id="btnPaso4" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
@@ -298,11 +357,14 @@
         <div id="paso5" class="paso">
             <h3>⚽ ARMADURA</h3>
             <select id="nombreCamiseta"></select>
+            <div class="help-text">🏷️ ESCOGE EL NOMBRE PARA TU DORSAL (ej. DARWIN)</div>
             <select id="dorsal"></select>
+            <div class="help-text">🔢 TU NÚMERO PARA TU DORSAL (ej. 1, 10, 99)</div>
+            <div class="help-text">🆔 ESTA ID CARD SE VA A LLAMAR "TU ESTILO EN LA CANCHA"</div>
             <button type="button" id="btnPaso5" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
-        <!-- PASO 6: Extras y finalización -->
+        <!-- PASO 6: Valores -->
         <div id="paso6" class="paso">
             <select id="medias">
                 <option value="">MEDIAS EXTRAS (+$2)</option>
@@ -311,6 +373,7 @@
             </select>
             <input id="inscripcion" placeholder="N° TRANSACCIÓN INSCRIPCIÓN ($5)">
             <input id="uniforme" placeholder="N° TRANSACCIÓN UNIFORME ($18 + medias)">
+            <div class="help-text">💰 ESTA ID CARD SE VA A LLAMAR "VALORES Y PAGOS"</div>
             <button type="button" id="btnFinal" class="btn-accion" disabled>FINALIZAR</button>
         </div>
 
