@@ -3,46 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Registro - Nápoles F.C.</title>
 
 <link rel="icon" href="favicon.png">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#1A2B48">
 
 <link rel="stylesheet" href="estilos.css">
 
+<!-- Fuente -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
-body{background:#0a0a0a;color:#fff;font-family:sans-serif}
-.contenedor-principal{max-width:420px;margin:auto;padding:20px}
-.paso{display:none}
-.paso.activo{display:block}
-
-input,select{
-    width:100%;
-    padding:10px;
-    margin:6px 0;
-    border-radius:8px;
-    border:none;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    background:#2563eb;
-    color:#fff;
-    border:none;
-    border-radius:10px;
-    font-weight:bold;
-}
+/* SOLO ajustes mínimos, no rompe tu CSS */
+.nav-napoles{display:none !important;}
 
 #contenedor-camara{
     position:relative;
-    width:260px;
-    height:260px;
-    margin:auto;
+    width:280px;
+    height:280px;
+    margin:20px auto;
     overflow:hidden;
-    border-radius:15px;
-    border:2px solid #2563eb;
+    border-radius:20px;
+    border:2px solid var(--dorado);
 }
 
 #video{
@@ -57,114 +41,139 @@ button{
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    width:180px;
-    height:180px;
-    border:3px dashed #fff;
+    width:200px;
+    height:200px;
+    border:3px dashed white;
     border-radius:50%;
-    box-shadow:0 0 0 1000px rgba(0,0,0,0.6);
+    box-shadow:0 0 0 1000px rgba(0,0,0,0.5);
 }
 
-.preview{width:90px;margin-top:10px;border-radius:8px}
-
-#loader{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:#000c;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
+.preview{
+    width:90px;
+    margin-top:10px;
+    border-radius:10px;
 }
 </style>
 
 </head>
+
 <body>
 
 <div class="contenedor-principal">
 
-<h2>NAPOLES F.C.</h2>
+<header>
+    <div class="texto-logo">NAPOLES F.C.</div>
+    <h2>Ficha de Inscripción</h2>
+</header>
 
 <form id="formRegistro">
 
 <!-- PASO 1 -->
-<div id="paso1" class="paso activo">
-<input id="ced" name="cedula" placeholder="CÉDULA (10 DÍGITOS)" maxlength="10" required>
-<button type="button" onclick="validarCedulaEstricta()">VALIDAR</button>
+<div id="paso1" class="paso activo seccion-formulario">
+<label>Cédula</label>
+<input id="ced" name="cedula" maxlength="10" placeholder="10 dígitos" required>
+<button type="button" class="btn-accion" onclick="validarCedulaEstricta()">VALIDAR</button>
 </div>
 
 <!-- PASO 2 -->
-<div id="paso2" class="paso">
-<input id="n1" name="nombre1" placeholder="PRIMER NOMBRE" required>
-<input id="n2" name="nombre2" placeholder="SEGUNDO NOMBRE">
-<input id="ape" name="apellidos" placeholder="APELLIDOS" required>
+<div id="paso2" class="paso seccion-formulario">
+<input id="n1" name="nombre1" placeholder="Primer Nombre" required>
+<input id="n2" name="nombre2" placeholder="Segundo Nombre">
+<input id="ape" name="apellidos" placeholder="Apellidos" required>
 
-<label>FECHA DE NACIMIENTO</label>
+<label>Fecha de Nacimiento</label>
 <input type="date" name="fechaNac" required>
 
-<button type="button" onclick="validarPaso2()">SIGUIENTE</button>
+<button type="button" class="btn-accion" onclick="validarPaso2()">Siguiente</button>
 </div>
 
 <!-- PASO 3 -->
-<div id="paso3" class="paso">
+<div id="paso3" class="paso seccion-formulario">
 <input name="telefono" placeholder="09XXXXXXXX" maxlength="10" required>
-<input name="correo" placeholder="correo@email.com" required>
+<input name="correo" placeholder="Correo electrónico" required>
 
-<button type="button" onclick="validarPaso3()">SIGUIENTE</button>
+<button type="button" class="btn-accion" onclick="validarPaso3()">Siguiente</button>
 </div>
 
 <!-- PASO 4 -->
-<div id="paso4" class="paso">
+<div id="paso4" class="paso seccion-formulario">
 
 <div id="contenedor-camara">
 <video id="video" autoplay playsinline></video>
 <div class="guia"></div>
 </div>
 
-<button type="button" onclick="iniciarCamara()">ACTIVAR CÁMARA</button>
-<button type="button" onclick="capturarFoto()">CAPTURAR</button>
+<button type="button" class="btn-accion" onclick="iniciarCamara()">Activar Cámara</button>
+<button type="button" class="btn-accion" onclick="capturarFoto()">Capturar</button>
 
 <img id="previewRostro" class="preview">
 
+<label>Foto de Cédula</label>
 <input type="file" accept="image/*" onchange="previewFile(this,'previewCedula','fotoCedulaB64')" required>
 <img id="previewCedula" class="preview">
 
 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
 <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
 
-<button type="button" onclick="validarPaso4()">SIGUIENTE</button>
+<button type="button" class="btn-accion" onclick="validarPaso4()">Siguiente</button>
 </div>
 
 <!-- PASO 5 -->
-<div id="paso5" class="paso">
+<div id="paso5" class="paso seccion-formulario">
+<label>Nombre en Camiseta</label>
 <select id="selectNombreCamiseta" name="nombreCamiseta" required></select>
+
+<label>Dorsal</label>
 <select id="selectDorsal" name="dorsal" required></select>
-<button type="button" onclick="verPaso(6)">SIGUIENTE</button>
+
+<button type="button" class="btn-accion" onclick="verPaso(6)">Siguiente</button>
 </div>
 
 <!-- PASO 6 -->
-<div id="paso6" class="paso">
+<div id="paso6" class="paso seccion-formulario">
+
+<label>Medias Extras</label>
 <select name="mediasExtras" required>
-<option value="">MEDIAS</option>
+<option value="">Seleccione</option>
 <option value="NO">NO</option>
-<option value="SI">SI</option>
+<option value="SI">SI (+$2)</option>
 </select>
 
-<input name="transaccionInscripcion" placeholder="COMPROBANTE INSCRIPCIÓN" required>
-<input name="transaccionUniforme" placeholder="COMPROBANTE UNIFORME" required>
+<input name="transaccionInscripcion" placeholder="Comprobante Inscripción" required>
+<input name="transaccionUniforme" placeholder="Comprobante Uniforme" required>
 
-<button type="button" onclick="enviarRegistro()">FINALIZAR</button>
+<button type="button" class="btn-accion" onclick="enviarRegistro()">Finalizar Registro</button>
+
 </div>
 
 </form>
 </div>
 
-<div id="loader"><p id="loader-texto">PROCESANDO...</p></div>
+<!-- LOADER -->
+<div id="loader">
+<div class="spinner-balon"></div>
+<p id="loader-texto">Procesando...</p>
+</div>
 
 <script src="api.js"></script>
 
 <script>
+// ✅ REGISTRAR SW
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
+}
+
+// 🔥 BLOQUEAR CÉDULA DESPUÉS DE VALIDAR
+async function validarCedulaEstricta(){
+    const cedInput = document.getElementById('ced');
+
+    await window.validarCedulaEstrictaOriginal?.(); // fallback si existe
+
+    // si pasó al paso 2 → bloquear
+    if(document.getElementById('paso2').classList.contains('activo')){
+        cedInput.readOnly = true;
+        cedInput.style.opacity = "0.6";
+    }
 }
 </script>
 
