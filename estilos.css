@@ -85,7 +85,7 @@ h2 {
     }
 }
 
-/* Inputs y selects con transición */
+/* Inputs y selects */
 input, select {
     width: 100%;
     padding: 14px 16px;
@@ -106,7 +106,7 @@ input:focus, select:focus {
     background: rgba(0, 0, 0, 0.7);
 }
 
-/* Efecto de error en inputs */
+/* Error en inputs */
 input.error, select.error {
     border-color: var(--rojo-error);
     animation: shake 0.3s ease-in-out;
@@ -118,7 +118,7 @@ input.error, select.error {
     75% { transform: translateX(5px); }
 }
 
-/* Botones con ripple y hover mejorado */
+/* Botones */
 .btn-accion, button:not([class*="nav"]) {
     background: linear-gradient(135deg, var(--cardenillo), #005f66);
     color: white;
@@ -181,7 +181,7 @@ input.error, select.error {
     100% { transform: scale(1); opacity: 1; }
 }
 
-/* Loader mejorado */
+/* Loader */
 #loader {
     display: none;
     position: fixed;
@@ -249,7 +249,7 @@ input.error, select.error {
     }
 }
 
-/* Modal de éxito mejorado */
+/* Modal de éxito */
 #modalExito {
     display: none;
     position: fixed;
@@ -293,7 +293,7 @@ input.error, select.error {
     font-size: 1.1rem;
 }
 
-/* Navegación mejorada */
+/* Navegación */
 .nav-napoles {
     position: fixed;
     bottom: 0;
