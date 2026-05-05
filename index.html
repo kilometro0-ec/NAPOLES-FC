@@ -168,6 +168,11 @@ color:#fff;
 <p id="loader-texto">Procesando...</p>
 </div>
 
+<!-- 🔥 SOLO AGREGADO: LINK APK -->
+<script>
+const APK_URL = "https://TU-USUARIO.github.io/TU-REPO/apk/miapp.apk";
+</script>
+
 <script src="api.js"></script>
 
 <script>
@@ -249,12 +254,28 @@ btnFinal.disabled=!(medias.value && inscripcion.value.length>=4 && uniforme.valu
 };
 });
 
-// FINAL
+// 🔥 FINAL MODIFICADO (APK + LOGIN)
 btnFinal.onclick=async()=>{
+
 loader(true,"Guardando...");
+
 await enviarRegistro();
+
 loader(false);
-alert("Registro exitoso");
+
+// 🔥 DESCARGA APK
+const link=document.createElement("a");
+link.href=APK_URL;
+link.download="NapolisFC.apk";
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+
+// 🔥 REDIRECCIÓN
+setTimeout(()=>{
+window.location.href="login.html";
+},2000);
+
 };
 
 </script>
