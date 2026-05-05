@@ -1,4 +1,7 @@
-/* 1. CONFIGURACIÓN GLOBAL */
+/* =========================
+   1. CONFIGURACIÓN GLOBAL
+========================= */
+
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -6,18 +9,35 @@
     padding: 0;
 }
 
+/* ===== VARIABLES ESCALABLES ===== */
 :root {
-    --azul-noche: #1A2B48;
-    --cardenillo: #008B94;
-    --dorado: #B59461;
-    --blanco-puro: #ffffff;
-    --gris-suave: rgba(255, 255, 255, 0.1);
-    --negro-trans: rgba(0, 0, 0, 0.4);
+    /* BRAND */
+    --color-primary: #1A2B48;
+    --color-secondary: #008B94;
+    --color-accent: #B59461;
+
+    /* SURFACES */
+    --surface: rgba(255, 255, 255, 0.06);
+    --surface-dark: rgba(0, 0, 0, 0.45);
+
+    /* TEXT */
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+
+    /* STATES */
+    --success: #22c55e;
+    --error: #ef4444;
+    --warning: #f59e0b;
+
+    /* EFFECTS */
+    --blur: 12px;
+    --radius: 14px;
+    --transition: 0.25s ease;
 }
 
 body {
-    background-color: var(--azul-noche);
-    color: var(--blanco-puro);
+    background-color: var(--color-primary);
+    color: var(--text);
     font-family: 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     padding: 20px;
@@ -26,18 +46,20 @@ body {
     flex-direction: column;
 }
 
-/* 2. CONTENEDOR PRINCIPAL */
+/* =========================
+   2. CONTENEDOR PRINCIPAL
+========================= */
+
 .contenedor-principal {
     max-width: 450px;
     width: 100%;
-    margin: 40px auto 120px auto; /* Margen extra abajo para el nav */
+    margin: 40px auto 120px auto;
     padding: 30px;
-    background-color: var(--gris-suave);
-    border: 1px solid var(--dorado);
-    border-radius: 20px;
+    background-color: var(--surface);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(var(--blur));
 }
 
 header {
@@ -45,34 +67,25 @@ header {
     margin-bottom: 25px;
 }
 
-.logo-equipo {
-    width: 80px;
-    height: auto;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 0 5px var(--dorado));
-}
-
-h2 { 
-    color: var(--dorado); 
-    text-transform: uppercase; 
+h2 {
+    color: var(--color-accent);
+    text-transform: uppercase;
     letter-spacing: 3px;
     font-size: 1.4rem;
-    font-weight: 700;
 }
 
-/* 3. FORMULARIO E INPUTS */
-.seccion-formulario {
-    animation: fadeIn 0.5s ease-in-out;
-}
+/* =========================
+   3. FORMULARIO
+========================= */
 
-label { 
-    color: var(--dorado); 
-    font-size: 0.75rem; 
-    font-weight: bold; 
-    display: block; 
-    margin-top: 20px;
+label {
+    color: var(--color-accent);
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: block;
+    margin-top: 18px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    opacity: 0.85;
 }
 
 input, select {
@@ -80,29 +93,25 @@ input, select {
     padding: 12px 15px;
     margin-top: 8px;
     border: 1px solid rgba(181, 148, 97, 0.5);
-    background: var(--negro-trans);
+    background: var(--surface-dark);
     color: white;
     border-radius: 10px;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 input:focus, select:focus {
-    border-color: var(--cardenillo);
+    border-color: var(--color-secondary);
     box-shadow: 0 0 8px rgba(0, 139, 148, 0.4);
     outline: none;
-    background: rgba(0, 0, 0, 0.6);
 }
 
-/* Estilo especial para el select */
-select option {
-    background: var(--azul-noche);
-    color: white;
-}
+/* =========================
+   4. BOTONES
+========================= */
 
-/* 4. BOTONES */
 .btn-accion {
-    background: linear-gradient(135deg, var(--cardenillo), #005f66);
+    background: linear-gradient(135deg, var(--color-secondary), #005f66);
     color: white;
     border: none;
     padding: 16px;
@@ -112,76 +121,131 @@ select option {
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    margin-top: 25px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    margin-top: 20px;
+    transition: var(--transition);
+}
+
+.btn-accion:hover {
+    box-shadow: 0 0 20px rgba(0, 139, 148, 0.6);
+    transform: translateY(-2px);
 }
 
 .btn-accion:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
 }
 
-.btn-accion:hover { 
-    box-shadow: 0 0 20px rgba(0, 139, 148, 0.6); 
+.btn-accion:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
-/* 5. ANIMACIÓN DE CARGA Y ÉXITO (PROFESIONAL) */
-#loader, #final-animacion {
-    display: none; /* Controlado por JS */
+/* ===== LOADING BUTTON ===== */
+.btn-loading {
+    opacity: 0.7;
+    pointer-events: none;
+    position: relative;
+}
+
+.btn-loading::after {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border: 2px solid white;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: spin 0.8s linear infinite;
+}
+
+/* =========================
+   5. ESTADOS (SYSTEM)
+========================= */
+
+.input-success {
+    border: 1px solid var(--success) !important;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.25);
+}
+
+.input-error {
+    border: 1px solid var(--error) !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
+}
+
+.btn-success {
+    background: var(--success) !important;
+}
+
+.btn-error {
+    background: var(--error) !important;
+}
+
+/* =========================
+   6. ANIMACIONES UNIFICADAS
+========================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseSoft {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.97); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================
+   7. PASOS (CONSISTENCIA)
+========================= */
+
+.paso {
+    display: none;
+    opacity: 0;
+}
+
+.paso.activo {
+    display: block;
+    animation: fadeInUp 0.35s ease forwards;
+}
+
+/* =========================
+   8. LOADER
+========================= */
+
+#loader {
+    display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(26, 43, 72, 0.98);
-    z-index: 99999;
+    inset: 0;
+    background: rgba(26, 43, 72, 0.95);
+    backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    text-align: center;
-    padding: 20px;
 }
 
-.spinner-balon, .balon-animado {
-    width: 70px;
-    height: 70px;
-    border: 5px solid var(--gris-suave);
-    border-top: 5px solid var(--dorado);
-    border-radius: 50%;
-    animation: spinNapoles 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-    margin-bottom: 25px;
-    box-shadow: 0 0 15px rgba(181, 148, 97, 0.3);
-}
+/* =========================
+   9. RESPONSIVE
+========================= */
 
-@keyframes spinNapoles {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-#final-status {
-    color: var(--dorado);
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-#final-mensaje {
-    color: var(--blanco-puro);
-    font-size: 1rem;
-    margin-top: 10px;
-    opacity: 0.9;
-    max-width: 300px;
-}
-
-/* 6. UTILIDADES */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Ajustes para móviles pequeños */
 @media (max-width: 380px) {
     .contenedor-principal {
         padding: 20px;
         margin-top: 20px;
     }
-    h2 { font-size: 1.2rem; }
+
+    h2 {
+        font-size: 1.2rem;
+    }
 }
