@@ -4,18 +4,30 @@ const URL_GAS = "https://script.google.com/macros/s/AKfycbxjs260s4ZEh4ERrSRh7s99
 // Elementos DOM
 const loaderDiv = document.getElementById('loader');
 const loaderTexto = document.getElementById('loader-texto');
+const modalExito = document.getElementById('modalExito');
 
-// Helper mostrar/ocultar loader
+// Helper loader
 function mostrarLoader(visible, texto = "Procesando...") {
     loaderDiv.style.display = visible ? "flex" : "none";
     if (texto) loaderTexto.innerText = texto;
 }
 
-// Cambiar de paso
+// Cambiar paso
 function verPaso(n) {
     document.querySelectorAll(".paso").forEach(p => p.classList.remove("activo"));
     document.getElementById(`paso${n}`).classList.add("activo");
 }
+
+// Convertir a mayúsculas (excepto correo)
+function mayusculasExceptoEmail(e) {
+    if (e.target.id === 'correo') return;
+    e.target.value = e.target.value.toUpperCase();
+}
+
+// Asignar evento de mayúsculas a inputs de texto
+document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
+    inp.addEventListener('input', mayusculasExceptoEmail);
+});
 
 // ================= PASO 1 =================
 const ced = document.getElementById('ced');
@@ -53,7 +65,7 @@ const btnPaso2 = document.getElementById('btnPaso2');
 
 function validarPaso2() {
     const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
-    btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fechaValida);
+    btnPaso2.disabled = !(n1.value.trim() && n2.value.trim() && ape.value.trim() && fechaValida);
 }
 
 [n1, n2, ape, fecha].forEach(el => el.addEventListener('input', validarPaso2));
@@ -80,13 +92,16 @@ const cedulaFile = document.getElementById('cedulaFile');
 const fotoRostroB64 = document.getElementById('fotoRostroB64');
 const fotoCedulaB64 = document.getElementById('fotoCedulaB64');
 const btnPaso4 = document.getElementById('btnPaso4');
+const vistoRostro = document.getElementById('vistoRostro');
+const vistoCedula = document.getElementById('vistoCedula');
 
-function archivoABase64(file, inputHidden) {
+function archivoABase64(file, inputHidden, vistoSpan) {
     return new Promise((resolve, reject) => {
         if (!file) return resolve(null);
         const reader = new FileReader();
         reader.onload = () => {
             inputHidden.value = reader.result;
+            if (vistoSpan) vistoSpan.innerHTML = '✓';
             resolve(true);
         };
         reader.onerror = reject;
@@ -95,7 +110,9 @@ function archivoABase64(file, inputHidden) {
 }
 
 function verificarFotos() {
-    btnPaso4.disabled = !(fotoRostroB64.value && fotoCedulaB64.value);
+    const rostroOk = fotoRostroB64.value !== '';
+    const cedulaOk = fotoCedulaB64.value !== '';
+    btnPaso4.disabled = !(rostroOk && cedulaOk);
 }
 
 rostro.addEventListener('change', async (e) => {
@@ -103,14 +120,16 @@ rostro.addEventListener('change', async (e) => {
     if (file && !file.type.startsWith('image/')) {
         alert("Solo imágenes (JPG, PNG)");
         rostro.value = '';
+        vistoRostro.innerHTML = '';
         return;
     }
     if (file && file.size > 2 * 1024 * 1024) {
         alert("La imagen no debe superar 2MB");
         rostro.value = '';
+        vistoRostro.innerHTML = '';
         return;
     }
-    await archivoABase64(file, fotoRostroB64);
+    await archivoABase64(file, fotoRostroB64, vistoRostro);
     verificarFotos();
 });
 
@@ -119,43 +138,43 @@ cedulaFile.addEventListener('change', async (e) => {
     if (file && !file.type.startsWith('image/')) {
         alert("Solo imágenes (JPG, PNG)");
         cedulaFile.value = '';
+        vistoCedula.innerHTML = '';
         return;
     }
     if (file && file.size > 2 * 1024 * 1024) {
         alert("La imagen no debe superar 2MB");
         cedulaFile.value = '';
+        vistoCedula.innerHTML = '';
         return;
     }
-    await archivoABase64(file, fotoCedulaB64);
+    await archivoABase64(file, fotoCedulaB64, vistoCedula);
     verificarFotos();
 });
 
 btnPaso4.addEventListener('click', async () => {
     mostrarLoader(true, "Cargando dorsales...");
-    // Limpiar y cargar selects del paso 5
+    // Llenar selects del paso 5
     const selectNombre = document.getElementById('nombreCamiseta');
     const selectDorsal = document.getElementById('dorsal');
     selectNombre.innerHTML = '';
     selectDorsal.innerHTML = '';
 
-    // Opciones de nombre en camiseta
     const primerNombre = n1.value.trim();
     const segundoNombre = n2.value.trim();
     selectNombre.add(new Option(primerNombre, primerNombre));
     if (segundoNombre) selectNombre.add(new Option(segundoNombre, segundoNombre));
 
-    // Cargar dorsales ocupados desde el backend
     try {
         const resp = await fetch(`${URL_GAS}?action=getDorsales`);
-        const ocupados = await resp.json(); // array de strings
+        const ocupados = await resp.json();
         for (let i = 1; i <= 99; i++) {
             if (!ocupados.includes(String(i))) {
                 selectDorsal.add(new Option(i, i));
             }
         }
     } catch (error) {
-        console.error("Error cargando dorsales", error);
-        alert("No se pudieron cargar los dorsales. Contacta al administrador.");
+        console.error(error);
+        alert("No se pudieron cargar los dorsales.");
         mostrarLoader(false);
         return;
     }
@@ -190,7 +209,6 @@ function validarPaso6() {
 btnFinal.addEventListener('click', async () => {
     mostrarLoader(true, "Registrando jugador...");
 
-    // Construir FormData con los campos esperados por el backend
     const formData = new FormData();
     formData.append('ced', ced.value);
     formData.append('n1', n1.value.trim());
@@ -198,7 +216,7 @@ btnFinal.addEventListener('click', async () => {
     formData.append('ape', ape.value.trim());
     formData.append('fecha', fecha.value);
     formData.append('tel', tel.value.replace(/\D/g, ''));
-    formData.append('correo', correo.value.trim());
+    formData.append('correo', correo.value.trim().toLowerCase()); // correo en minúsculas
     formData.append('medias', medias.value);
     formData.append('dorsal', dorsal.value);
     formData.append('nombreCamiseta', nombreCamiseta.value);
@@ -208,34 +226,42 @@ btnFinal.addEventListener('click', async () => {
     formData.append('fotoCedulaB64', fotoCedulaB64.value);
 
     try {
-        const response = await fetch(URL_GAS, {
-            method: 'POST',
-            body: formData
-        });
+        const response = await fetch(URL_GAS, { method: 'POST', body: formData });
         const result = await response.json();
 
         if (result.ok) {
-            alert("✅ ¡Registro exitoso! Serás redirigido al inicio.");
+            // Guardar sesión
             localStorage.setItem('jugador_aprobado', JSON.stringify({
                 cedula: ced.value,
                 expira: Date.now() + 24 * 3600000,
                 admin: false
             }));
-            window.location.href = 'perfil.html';
+            // Mostrar modal moderno
+            mostrarLoader(false);
+            modalExito.style.display = 'flex';
+            let segundos = 3;
+            const spanContador = document.getElementById('contador');
+            const intervalo = setInterval(() => {
+                segundos--;
+                spanContador.innerText = segundos;
+                if (segundos <= 0) {
+                    clearInterval(intervalo);
+                    window.location.href = 'perfil.html';
+                }
+            }, 1000);
         } else {
+            mostrarLoader(false);
             alert("❌ Error: " + (result.msg || result.error || "Intenta de nuevo"));
         }
     } catch (error) {
+        mostrarLoader(false);
         console.error(error);
         alert("Error de red. Revisa tu conexión.");
-    } finally {
-        mostrarLoader(false);
     }
 });
 
 // ================= INYECCIÓN DE NAVEGACIÓN =================
 function inyectarNav() {
-    // Evitar en index.html (registro)
     const pagina = location.pathname.split("/").pop();
     if (pagina === "index.html") return;
     if (document.querySelector('.nav-napoles')) return;
@@ -286,5 +312,4 @@ function inyectarNav() {
     document.body.appendChild(nav);
 }
 
-// Ejecutar navegación al cargar la página
 document.addEventListener('DOMContentLoaded', inyectarNav);
