@@ -1,36 +1,43 @@
-const CACHE_NAME = 'napoles-v3';
+const CACHE_NAME = 'napoles-dynamic-v1';
 
 const urlsToCache = [
   './',
   './index.html',
   './estilos.css',
   './api.js',
-  './favicon.png',
-  './manifest.json'
+  './nav.js'
 ];
 
-// INSTALAR
-self.addEventListener('install', event => {
+// instalar
+self.addEventListener('install', e=>{
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache=>cache.addAll(urlsToCache))
   );
 });
 
-// ACTIVAR
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(names =>
-      Promise.all(
-        names.map(n => n !== CACHE_NAME ? caches.delete(n) : null)
-      )
-    )
+// activar y limpiar
+self.addEventListener('activate', e=>{
+  e.waitUntil(
+    caches.keys().then(keys=>{
+      return Promise.all(
+        keys.map(k=>{
+          if(k !== CACHE_NAME) return caches.delete(k);
+        })
+      );
+    })
   );
 });
 
-// FETCH (NETWORK FIRST)
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
+// 🔥 NETWORK FIRST SIEMPRE
+self.addEventListener('fetch', e=>{
+  e.respondWith(
+    fetch(e.request)
+      .then(res=>{
+        const copy = res.clone();
+        caches.open(CACHE_NAME).then(cache=>cache.put(e.request, copy));
+        return res;
+      })
+      .catch(()=>caches.match(e.request))
   );
 });
