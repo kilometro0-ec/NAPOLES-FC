@@ -4,24 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Registro Nápoles FC</title>
-    <link rel="stylesheet" href="estilos.css?v=1.5">
+    <link rel="stylesheet" href="estilos.css?v=2.0">
     <style>
+        :root { --dorado: #c5a059; --oscuro: #0a0a0a; }
         .paso-contenido { display: none; }
         .paso-activo { display: block; animation: fadeIn 0.4s ease; }
-        .progreso-puntos { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
-        .punto { width: 10px; height: 10px; border-radius: 50%; background: var(--gris-suave); border: 1px solid var(--dorado); }
-        .punto.activo { background: var(--dorado); transform: scale(1.2); }
-        #video, .preview-img { width: 100%; border-radius: 10px; border: 1px solid var(--dorado); background: #000; margin-top: 10px; }
-        .preview-img { display: none; }
-        select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid var(--dorado); background: rgba(0, 0, 0, 0.5); color: white; border-radius: 8px; }
+        
+        /* Recuadro de cámara */
+        .camara-box { position: relative; overflow: hidden; border-radius: 15px; border: 2px solid var(--dorado); }
+        .guia-camara { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            border: 2px dashed rgba(197, 160, 89, 0.6); pointer-events: none;
+        }
+        .guia-rostro { width: 60%; height: 70%; border-radius: 50%; }
+        .guia-cedula { width: 80%; height: 50%; border-radius: 10px; }
+
+        /* Animación Balón */
+        #final-animacion { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--oscuro); z-index: 9999; text-align: center; color: white; padding-top: 20%;
+        }
+        .balon { width: 100px; animation: bounce 1s infinite; margin-bottom: 20px; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(180deg); }
+        }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Mayúsculas automáticas */
+        input:not([type="email"]) { text-transform: uppercase; }
+        
+        .error-msj { color: #ff4d4d; font-size: 0.75rem; display: none; margin-top: -5px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <h2>PROCESANDO...</h2>
-        <p id="loader-msg">Validando dorsales disponibles</p>
+    <!-- Animación Final -->
+    <div id="final-animacion">
+        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png" class="balon" alt="balon" style="filter: invert(1);">
+        <h2 id="final-status">GUARDANDO TU INFORMACIÓN...</h2>
+        <p id="final-mensaje">Preparando tu llegada al equipo.</p>
+    </div>
+
+    <div id="loader" style="display:none;">
+        <div class="spinner"></div>
+        <p>VALIDANDO...</p>
     </div>
 
     <div class="contenedor-principal">
@@ -36,61 +63,75 @@
         </header>
 
         <form id="formRegistro">
-            <!-- PASO 1: Nombres -->
+            <!-- PASO 1: Identidad -->
             <div id="step1" class="paso-contenido paso-activo">
                 <label>Identidad</label>
-                <input type="text" id="n1" name="nombre1" placeholder="Primer Nombre" required oninput="actualizarOpcionesNombre()">
-                <input type="text" id="n2" name="nombre2" placeholder="Segundo Nombre" oninput="actualizarOpcionesNombre()">
-                <input type="text" name="apellidos" placeholder="Apellidos Completos" required>
-                <input type="text" name="cedula" placeholder="Cédula" required>
-                <button type="button" class="btn-accion" onclick="verPaso(2)">Siguiente</button>
+                <input type="text" id="n1" name="nombre1" placeholder="PRIMER NOMBRE" required oninput="this.value = this.value.toUpperCase(); actualizarOpcionesNombre()">
+                <input type="text" id="n2" name="nombre2" placeholder="SEGUNDO NOMBRE" oninput="this.value = this.value.toUpperCase(); actualizarOpcionesNombre()">
+                <input type="text" id="ape" name="apellidos" placeholder="APELLIDOS COMPLETOS" required oninput="this.value = this.value.toUpperCase()">
+                
+                <input type="tel" id="ced" name="cedula" placeholder="CÉDULA (10 DÍGITOS)" maxlength="10" required>
+                <p id="error-ced" class="error-msj">La cédula debe tener 10 dígitos y ser válida.</p>
+                
+                <button type="button" class="btn-accion" onclick="validarPaso1()">SIGUIENTE</button>
             </div>
 
-            <!-- PASO 2: Personalización Camiseta -->
+            <!-- PASO 2: Camiseta -->
             <div id="step2" class="paso-contenido">
                 <label>Tu Armadura</label>
-                
-                <p style="font-size: 0.8rem; color: var(--dorado); margin-bottom: 5px;">Nombre en Camiseta:</p>
-                <select name="nombreCamiseta" id="selectNombreCamiseta">
-                    <option value="">Escribe tus nombres primero...</option>
-                </select>
+                <p class="tag">NOMBRE EN CAMISETA:</p>
+                <select name="nombreCamiseta" id="selectNombreCamiseta" required></select>
 
-                <p style="font-size: 0.8rem; color: var(--dorado); margin: 15px 0 5px;">Dorsal (Solo disponibles):</p>
+                <p class="tag">DORSAL DISPONIBLE:</p>
                 <select name="dorsal" id="selectDorsal" required>
-                    <option value="">Cargando números...</option>
+                    <option value="">CARGANDO NÚMEROS...</option>
                 </select>
 
-                <input type="tel" name="telefono" placeholder="WhatsApp" required style="margin-top:15px;">
+                <input type="tel" id="wha" name="telefono" placeholder="WHATSAPP (09XXXXXXXX)" maxlength="10" required style="margin-top:15px;">
+                <p id="error-wha" class="error-msj">Debe empezar con 09 y tener 10 dígitos.</p>
                 
                 <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-accion" style="background: #444;" onclick="verPaso(1)">Atrás</button>
-                    <button type="button" class="btn-accion" onclick="verPaso(3)">Siguiente</button>
+                    <button type="button" class="btn-accion" style="background: #444;" onclick="verPaso(1)">ATRÁS</button>
+                    <button type="button" class="btn-accion" onclick="validarPaso2()">SIGUIENTE</button>
                 </div>
             </div>
 
-            <!-- PASO 3: Foto Rostro -->
+            <!-- PASO 3: Rostro -->
             <div id="step3" class="paso-contenido">
                 <label>Foto del Rostro</label>
                 <div class="camara-box">
-                    <video id="videoRostro" autoplay playsinline style="transform: scaleX(-1); width:100%; border-radius:10px;"></video>
-                    <img id="prevRostro" class="preview-img">
+                    <video id="videoRostro" autoplay playsinline style="transform: scaleX(-1); width:100%;"></video>
+                    <img id="prevRostro" class="preview-img" style="display:none; width:100%;">
+                    <div class="guia-camara guia-rostro" id="guiaR"></div>
                 </div>
                 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
-                <button type="button" id="btnCapRostro" class="btn-accion" style="background: var(--dorado);">📸 CAPTURAR ROSTRO</button>
-                <button type="button" class="btn-accion" onclick="verPaso(4)">Siguiente</button>
+                
+                <div id="controlesRostro">
+                    <button type="button" id="btnCapRostro" class="btn-accion" style="background: var(--dorado);">📸 CAPTURAR</button>
+                </div>
+                <div id="reintentarRostro" style="display:none; gap:10px;">
+                    <button type="button" class="btn-accion" style="background: #cc4444;" onclick="reintentarFoto('Rostro')">VOLVER A TOMAR</button>
+                    <button type="button" class="btn-accion" onclick="verPaso(4)">CONTINUAR</button>
+                </div>
             </div>
 
-            <!-- PASO 4: Foto Cédula -->
+            <!-- PASO 4: Cédula -->
             <div id="step4" class="paso-contenido">
                 <label>Foto de la Cédula</label>
                 <div class="camara-box">
-                    <video id="videoCedula" autoplay playsinline style="width:100%; border-radius:10px;"></video>
-                    <img id="prevCedula" class="preview-img">
+                    <video id="videoCedula" autoplay playsinline style="width:100%;"></video>
+                    <img id="prevCedula" class="preview-img" style="display:none; width:100%;">
+                    <div class="guia-camara guia-cedula" id="guiaC"></div>
                 </div>
                 <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
-                <button type="button" id="btnCapCedula" class="btn-accion" style="background: var(--dorado);">📸 CAPTURAR CÉDULA</button>
-                
-                <button type="submit" class="btn-accion">FINALIZAR REGISTRO</button>
+
+                <div id="controlesCedula">
+                    <button type="button" id="btnCapCedula" class="btn-accion" style="background: var(--dorado);">📸 CAPTURAR</button>
+                </div>
+                <div id="reintentarCedula" style="display:none; gap:10px;">
+                    <button type="button" class="btn-accion" style="background: #cc4444;" onclick="reintentarFoto('Cedula')">VOLVER A TOMAR</button>
+                    <button type="button" class="btn-submit" onclick="enviarFormulario()">FINALIZAR REGISTRO</button>
+                </div>
             </div>
         </form>
     </div>
@@ -98,20 +139,35 @@
     <script>
         let currentStream;
 
-        // 1. Lógica de Nombres Dinámicos
-        function actualizarOpcionesNombre() {
-            const n1 = document.getElementById('n1').value.toUpperCase();
-            const n2 = document.getElementById('n2').value.toUpperCase();
-            const select = document.getElementById('selectNombreCamiseta');
-            select.innerHTML = '';
-            if(n1) select.add(new Option(n1, n1));
-            if(n2) select.add(new Option(n2, n2));
+        // --- VALIDACIONES ---
+        function validarPaso1() {
+            const n1 = document.getElementById('n1').value;
+            const ape = document.getElementById('ape').value;
+            const ced = document.getElementById('ced').value;
+            
+            if(!n1 || !ape || ced.length !== 10) {
+                document.getElementById('error-ced').style.display = 'block';
+                return;
+            }
+            document.getElementById('error-ced').style.display = 'none';
+            // Aquí llamarías a una función en api.js para verificar si la cédula existe
+            verPaso(2);
         }
 
-        // 2. Control de Pasos y Cámaras
+        function validarPaso2() {
+            const wha = document.getElementById('wha').value;
+            const dor = document.getElementById('selectDorsal').value;
+            if(!wha.startsWith('09') || wha.length !== 10 || !dor) {
+                document.getElementById('error-wha').style.display = 'block';
+                return;
+            }
+            document.getElementById('error-wha').style.display = 'none';
+            verPaso(3);
+        }
+
+        // --- CÁMARA Y CAPTURA ---
         async function verPaso(n) {
             if (currentStream) currentStream.getTracks().forEach(t => t.stop());
-            
             document.querySelectorAll('.paso-contenido').forEach(p => p.classList.remove('paso-activo'));
             document.querySelectorAll('.punto').forEach(p => p.classList.remove('activo'));
             document.getElementById('step' + n).classList.add('paso-activo');
@@ -121,44 +177,68 @@
             if(n === 4) iniciarCamara('videoCedula', 'environment');
         }
 
-        async function iniciarCamara(idElemento, modo) {
+        async function iniciarCamara(id, modo) {
             try {
-                currentStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: modo } 
-                });
-                document.getElementById(idElemento).srcObject = currentStream;
+                currentStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: modo } });
+                document.getElementById(id).srcObject = currentStream;
             } catch (e) { alert("Error cámara: " + e); }
         }
 
-        // 3. Capturadores
-        function configurarCaptura(btnId, videoId, prevId, inputId) {
+        function configurarCaptura(btnId, videoId, prevId, inputId, controlsId, retryId, guiaId) {
             document.getElementById(btnId).onclick = () => {
                 const v = document.getElementById(videoId);
-                const p = document.getElementById(prevId);
                 const canvas = document.createElement('canvas');
                 canvas.width = v.videoWidth; canvas.height = v.videoHeight;
                 canvas.getContext('2d').drawImage(v, 0, 0);
                 const data = canvas.toDataURL('image/jpeg', 0.7);
+                
                 document.getElementById(inputId).value = data;
-                p.src = data; p.style.display = 'block'; v.style.display = 'none';
+                document.getElementById(prevId).src = data;
+                document.getElementById(prevId).style.display = 'block';
+                v.style.display = 'none';
+                document.getElementById(guiaId).style.display = 'none';
+                document.getElementById(controlsId).style.display = 'none';
+                document.getElementById(retryId).style.display = 'flex';
             };
         }
 
-        configurarCaptura('btnCapRostro', 'videoRostro', 'prevRostro', 'fotoRostroB64');
-        configurarCaptura('btnCapCedula', 'videoCedula', 'prevCedula', 'fotoCedulaB64');
+        configurarCaptura('btnCapRostro', 'videoRostro', 'prevRostro', 'fotoRostroB64', 'controlesRostro', 'reintentarRostro', 'guiaR');
+        configurarCaptura('btnCapCedula', 'videoCedula', 'prevCedula', 'fotoCedulaB64', 'controlesCedula', 'reintentarCedula', 'guiaC');
 
-        // 4. Cargar Dorsales al iniciar (Llama a una función en api.js)
-        window.onload = () => {
-            if(typeof obtenerDorsalesLibres === 'function') {
-                obtenerDorsalesLibres();
-            } else {
-                // Fallback manual si api.js no carga
-                const select = document.getElementById('selectDorsal');
-                select.innerHTML = '<option value="">Selecciona número</option>';
-                for(let i=1; i<=99; i++) select.add(new Option(i, i));
+        function reintentarFoto(tipo) {
+            document.getElementById('prev' + tipo).style.display = 'none';
+            document.getElementById('video' + tipo).style.display = 'block';
+            document.getElementById('guia' + (tipo === 'Rostro' ? 'R' : 'C')).style.display = 'block';
+            document.getElementById('controles' + tipo).style.display = 'block';
+            document.getElementById('reintentar' + tipo).style.display = 'none';
+            iniciarCamara('video' + tipo, tipo === 'Rostro' ? 'user' : 'environment');
+        }
+
+        function actualizarOpcionesNombre() {
+            const n1 = document.getElementById('n1').value.toUpperCase();
+            const n2 = document.getElementById('n2').value.toUpperCase();
+            const select = document.getElementById('selectNombreCamiseta');
+            select.innerHTML = '';
+            if(n1) select.add(new Option(n1, n1));
+            if(n2) select.add(new Option(n2, n2));
+        }
+
+        // --- ENVÍO FINAL ---
+        async function enviarFormulario() {
+            document.getElementById('final-animacion').style.display = 'block';
+            
+            // Aquí se integra con la función de api.js
+            const success = await enviarADatabase(); // Esta función debe estar en api.js
+            
+            if(success) {
+                document.getElementById('final-status').innerText = "¡REGISTRO EXITOSO!";
+                document.getElementById('final-mensaje').innerText = "Gracias por ser parte de nuestro equipo.";
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 3000);
             }
-        };
+        }
     </script>
-    <script src="api.js?v=1.5"></script>
+    <script src="api.js?v=2.0"></script>
 </body>
 </html>
