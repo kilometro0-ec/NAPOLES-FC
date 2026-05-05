@@ -1,32 +1,52 @@
-// Configuración
-const URL_GAS = "https://script.google.com/macros/s/AKfycbxjs260s4ZEh4ERrSRh7s99GjkqCZK-k5aEd7FO3dLlvO1FKHMo6gnKW_Jz2hPTwjP_/exec";
+// Configuración (cambia por tu URL de Google Apps Script)
+const URL_GAS = "https://script.google.com/macros/s/AKfycbyOZObCnKnnbwwuwTO8CULGvh1-c9hiUqAhBs15N3ceMYaFQaiHtTQWGJgugbodinP6/exec";
+
+// ========== SISTEMA DE TOASTS ==========
+function mostrarToast(mensaje, tipo = 'info', duracion = 3000) {
+    const toastAnterior = document.querySelector('.toast-notification');
+    if (toastAnterior) toastAnterior.remove();
+    
+    const toast = document.createElement('div');
+    toast.className = `toast-notification ${tipo}`;
+    toast.innerHTML = `
+        <span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️'}</span>
+        <span>${mensaje}</span>
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'toastSlideUp 0.3s reverse forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, duracion);
+}
+
+// Marcar input con error y mostrar toast
+function marcarErrorInput(input, mensaje) {
+    input.classList.add('error');
+    mostrarToast(mensaje, 'error', 2500);
+    setTimeout(() => input.classList.remove('error'), 500);
+}
 
 // Elementos DOM
 const loaderDiv = document.getElementById('loader');
 const loaderTexto = document.getElementById('loader-texto');
 const modalExito = document.getElementById('modalExito');
 
-// Helper loader
 function mostrarLoader(visible, texto = "Procesando...") {
     loaderDiv.style.display = visible ? "flex" : "none";
     if (texto) loaderTexto.innerText = texto;
 }
 
-// Cambiar paso
 function verPaso(n) {
     document.querySelectorAll(".paso").forEach(p => p.classList.remove("activo"));
     document.getElementById(`paso${n}`).classList.add("activo");
 }
 
-// Convertir a mayúsculas (excepto correo)
-function mayusculasExceptoEmail(e) {
-    if (e.target.id === 'correo') return;
-    e.target.value = e.target.value.toUpperCase();
-}
-
-// Asignar evento de mayúsculas a inputs de texto
+// Convertir a mayúsculas excepto email
 document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
-    inp.addEventListener('input', mayusculasExceptoEmail);
+    inp.addEventListener('input', function(e) {
+        if (this.id !== 'correo') this.value = this.value.toUpperCase();
+    });
 });
 
 // ================= PASO 1 =================
@@ -44,13 +64,13 @@ btnCedula.addEventListener('click', async () => {
         const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
         const data = await resp.json();
         if (data.cedulaExiste) {
-            alert("⚠️ Esta cédula ya está registrada.");
+            mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
             mostrarLoader(false);
             return;
         }
         verPaso(2);
     } catch (error) {
-        alert("Error de conexión. Intenta de nuevo.");
+        mostrarToast("Error de conexión. Intenta de nuevo.", "error");
         console.error(error);
     }
     mostrarLoader(false);
@@ -65,7 +85,15 @@ const btnPaso2 = document.getElementById('btnPaso2');
 
 function validarPaso2() {
     const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
-    btnPaso2.disabled = !(n1.value.trim() && n2.value.trim() && ape.value.trim() && fechaValida);
+    if (n1.value.trim() && n2.value.trim() && ape.value.trim() && fechaValida) {
+        btnPaso2.disabled = false;
+    } else {
+        btnPaso2.disabled = true;
+        if (!n1.value.trim()) marcarErrorInput(n1, "Primer nombre obligatorio");
+        else if (!n2.value.trim()) marcarErrorInput(n2, "Segundo nombre obligatorio");
+        else if (!ape.value.trim()) marcarErrorInput(ape, "Apellidos obligatorios");
+        else if (!fechaValida) marcarErrorInput(fecha, "Fecha de nacimiento inválida");
+    }
 }
 
 [n1, n2, ape, fecha].forEach(el => el.addEventListener('input', validarPaso2));
@@ -80,6 +108,8 @@ function validarPaso3() {
     const telOk = tel.value.replace(/\D/g, '').length >= 10;
     const emailOk = correo.value.includes('@') && correo.value.includes('.');
     btnPaso3.disabled = !(telOk && emailOk);
+    if (!telOk && tel.value.length > 0) marcarErrorInput(tel, "Teléfono debe tener 10 dígitos");
+    if (!emailOk && correo.value.length > 0) marcarErrorInput(correo, "Correo electrónico inválido");
 }
 
 [tel, correo].forEach(el => el.addEventListener('input', validarPaso3));
@@ -113,18 +143,20 @@ function verificarFotos() {
     const rostroOk = fotoRostroB64.value !== '';
     const cedulaOk = fotoCedulaB64.value !== '';
     btnPaso4.disabled = !(rostroOk && cedulaOk);
+    if (!rostroOk && rostro.files.length > 0) marcarErrorInput(rostro, "Error al cargar foto perfil");
+    if (!cedulaOk && cedulaFile.files.length > 0) marcarErrorInput(cedulaFile, "Error al cargar foto cédula");
 }
 
 rostro.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (file && !file.type.startsWith('image/')) {
-        alert("Solo imágenes (JPG, PNG)");
+        mostrarToast("Solo imágenes JPG o PNG", "error");
         rostro.value = '';
         vistoRostro.innerHTML = '';
         return;
     }
     if (file && file.size > 2 * 1024 * 1024) {
-        alert("La imagen no debe superar 2MB");
+        mostrarToast("La imagen no debe superar 2MB", "error");
         rostro.value = '';
         vistoRostro.innerHTML = '';
         return;
@@ -136,13 +168,13 @@ rostro.addEventListener('change', async (e) => {
 cedulaFile.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (file && !file.type.startsWith('image/')) {
-        alert("Solo imágenes (JPG, PNG)");
+        mostrarToast("Solo imágenes JPG o PNG", "error");
         cedulaFile.value = '';
         vistoCedula.innerHTML = '';
         return;
     }
     if (file && file.size > 2 * 1024 * 1024) {
-        alert("La imagen no debe superar 2MB");
+        mostrarToast("La imagen no debe superar 2MB", "error");
         cedulaFile.value = '';
         vistoCedula.innerHTML = '';
         return;
@@ -153,7 +185,6 @@ cedulaFile.addEventListener('change', async (e) => {
 
 btnPaso4.addEventListener('click', async () => {
     mostrarLoader(true, "Cargando dorsales...");
-    // Llenar selects del paso 5
     const selectNombre = document.getElementById('nombreCamiseta');
     const selectDorsal = document.getElementById('dorsal');
     selectNombre.innerHTML = '';
@@ -173,8 +204,8 @@ btnPaso4.addEventListener('click', async () => {
             }
         }
     } catch (error) {
+        mostrarToast("No se pudieron cargar los dorsales.", "error");
         console.error(error);
-        alert("No se pudieron cargar los dorsales.");
         mostrarLoader(false);
         return;
     }
@@ -202,6 +233,9 @@ const btnFinal = document.getElementById('btnFinal');
 
 function validarPaso6() {
     btnFinal.disabled = !(medias.value && inscripcion.value.trim() && uniforme.value.trim());
+    if (medias.value === "") marcarErrorInput(medias, "Seleccione si necesita medias extras");
+    if (!inscripcion.value.trim()) marcarErrorInput(inscripcion, "Número de transacción de inscripción requerido");
+    if (!uniforme.value.trim()) marcarErrorInput(uniforme, "Número de transacción de uniforme requerido");
 }
 [medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
 
@@ -216,7 +250,7 @@ btnFinal.addEventListener('click', async () => {
     formData.append('ape', ape.value.trim());
     formData.append('fecha', fecha.value);
     formData.append('tel', tel.value.replace(/\D/g, ''));
-    formData.append('correo', correo.value.trim().toLowerCase()); // correo en minúsculas
+    formData.append('correo', correo.value.trim().toLowerCase());
     formData.append('medias', medias.value);
     formData.append('dorsal', dorsal.value);
     formData.append('nombreCamiseta', nombreCamiseta.value);
@@ -230,13 +264,11 @@ btnFinal.addEventListener('click', async () => {
         const result = await response.json();
 
         if (result.ok) {
-            // Guardar sesión
             localStorage.setItem('jugador_aprobado', JSON.stringify({
                 cedula: ced.value,
                 expira: Date.now() + 24 * 3600000,
                 admin: false
             }));
-            // Mostrar modal moderno
             mostrarLoader(false);
             modalExito.style.display = 'flex';
             let segundos = 3;
@@ -251,12 +283,12 @@ btnFinal.addEventListener('click', async () => {
             }, 1000);
         } else {
             mostrarLoader(false);
-            alert("❌ Error: " + (result.msg || result.error || "Intenta de nuevo"));
+            mostrarToast("❌ Error: " + (result.msg || result.error || "Intenta de nuevo"), "error");
         }
     } catch (error) {
         mostrarLoader(false);
         console.error(error);
-        alert("Error de red. Revisa tu conexión.");
+        mostrarToast("Error de red. Revisa tu conexión.", "error");
     }
 });
 
