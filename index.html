@@ -1,24 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Registro - Nápoles F.C.</title>
+
+<link rel="icon" href="favicon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1A2B48">
+
+<link rel="stylesheet" href="estilos.css">
+
+<style>
+/* SOLO lógica visual, NO rompe tu diseño */
+.paso{display:none;}
+.paso.activo{display:block;}
+
+.btn-accion:disabled{
+    opacity:0.4;
+    pointer-events:none;
+}
+
+.btn-accion.loading{
+    animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(0.96)}
+    100%{transform:scale(1)}
+}
+</style>
+</head>
+
 <body>
 
 <div class="contenedor-principal">
 
-<!-- 🟦 CARD PRINCIPAL -->
-<div style="background:#111;border-radius:20px;padding:20px;box-shadow:0 10px 30px #000">
-
-<h1 style="text-align:center;color:#fff;margin:0">NAPOLES F.C.</h1>
-<p style="text-align:center;color:#ccc;margin:5px 0">Ficha de Inscripción</p>
-<p style="text-align:center;color:gold;margin-bottom:15px">Temporada 2026 - 2027</p>
+<header style="text-align:center">
+<h2>NAPOLES F.C.</h2>
+<p>Ficha de Inscripción</p>
+<p style="color:gold">Temporada 2026 - 2027</p>
+</header>
 
 <form id="formRegistro">
 
 <!-- PASO 1 -->
 <div id="paso1" class="paso activo">
 
-<label>Cédula de Identidad</label>
-<input id="ced" maxlength="10" placeholder="Ej: 1723456789">
+<label>Cédula de identidad</label>
+<input id="ced" maxlength="10" placeholder="Ingrese 10 dígitos">
 
 <button type="button" id="btnCedula" class="btn-accion" disabled>
-Validar Jugador
+Validar jugador
 </button>
 
 </div>
@@ -29,11 +64,11 @@ Validar Jugador
 <label>Cédula</label>
 <input id="ced2" readonly>
 
-<input id="n1" placeholder="PRIMER NOMBRE">
-<input id="n2" placeholder="SEGUNDO NOMBRE">
-<input id="ape" placeholder="APELLIDOS">
+<input id="n1" placeholder="Primer Nombre">
+<input id="n2" placeholder="Segundo Nombre">
+<input id="ape" placeholder="Apellidos">
 
-<label>Fecha de Nacimiento</label>
+<label>Fecha de nacimiento</label>
 <input type="date" id="fecha">
 
 <button type="button" id="btnPaso2" class="btn-accion" disabled>Siguiente</button>
@@ -43,8 +78,8 @@ Validar Jugador
 <!-- PASO 3 -->
 <div id="paso3" class="paso">
 
-<input id="tel" placeholder="TELÉFONO (09XXXXXXXX)">
-<input id="correo" placeholder="CORREO ELECTRÓNICO">
+<input id="tel" placeholder="Teléfono (09XXXXXXXX)">
+<input id="correo" placeholder="Correo electrónico">
 
 <button type="button" id="btnPaso3" class="btn-accion" disabled>Siguiente</button>
 
@@ -53,12 +88,9 @@ Validar Jugador
 <!-- PASO 4 -->
 <div id="paso4" class="paso">
 
-<p style="text-align:center;color:#ccc">Captura tu foto y sube tu cédula</p>
-
 <div id="contenedor-camara">
 <video id="video" autoplay></video>
 <img id="previewCamara">
-<div class="guia"></div>
 </div>
 
 <button type="button" id="btnCamara" class="btn-accion">Activar Cámara</button>
@@ -66,80 +98,81 @@ Validar Jugador
 Capturar Foto
 </button>
 
-<label>Subir Foto de Cédula</label>
+<label>Foto de cédula</label>
 <input type="file" id="cedulaFile">
 
-<button type="button" id="btnPaso4" class="btn-accion" disabled>
-Siguiente
-</button>
+<button type="button" id="btnPaso4" class="btn-accion" disabled>Siguiente</button>
 
 </div>
 
 <!-- PASO 5 -->
 <div id="paso5" class="paso">
 
-<h3 style="color:gold;text-align:center">⚔️ Arma tu Armadura</h3>
+<h3>⚔️ Arma tu armadura</h3>
 
-<label>Nombre en camiseta</label>
-<select id="nombreCamiseta"></select>
+<select id="nombreCamiseta">
+<option value="">Selecciona nombre</option>
+</select>
 
-<label>Dorsal</label>
-<select id="dorsal"></select>
+<select id="dorsal">
+<option value="">Selecciona dorsal</option>
+</select>
 
-<button id="btnPaso5" class="btn-accion" disabled>Siguiente</button>
+<button type="button" id="btnPaso5" class="btn-accion" disabled>Siguiente</button>
 
 </div>
 
 <!-- PASO 6 -->
 <div id="paso6" class="paso">
 
-<label>¿Deseas agregar medias extras?</label>
+<label>¿Desea medias extras?</label>
 <select id="medias">
-<option value="">Seleccionar</option>
+<option value="">Seleccione</option>
 <option value="NO">NO ($0)</option>
 <option value="SI">SI (+$2)</option>
 </select>
 
-<label>Comprobante Inscripción ($5)</label>
+<label>Comprobante inscripción ($5)</label>
 <input id="inscripcion" maxlength="12" placeholder="Ej: 0001234567">
 
-<label>Comprobante Uniforme ($18)</label>
+<label>Comprobante uniforme ($18)</label>
 <input id="uniforme" maxlength="12" placeholder="Ej: 0001234567">
 
-<button id="btnFinal" class="btn-accion" disabled>Finalizar Registro</button>
+<button type="button" id="btnFinal" class="btn-accion" disabled>
+Finalizar registro
+</button>
 
 </div>
+
+<input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
+<input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
 
 </form>
 </div>
-</div>
 
-<!-- LOADER PRO -->
-<div id="loader">
-<div style="width:60px;height:60px;border:5px solid #fff;border-top:5px solid gold;border-radius:50%;animation:spin 1s linear infinite"></div>
+<!-- LOADER -->
+<div id="loader" style="display:none;position:fixed;inset:0;background:#000c;align-items:center;justify-content:center;flex-direction:column;">
 <p id="loader-texto">Procesando...</p>
 </div>
-
-<style>
-@keyframes spin{
-0%{transform:rotate(0)}
-100%{transform:rotate(360deg)}
-}
-</style>
 
 <script src="api.js"></script>
 
 <script>
 
-// 🔥 MAYÚSCULAS AUTOMÁTICAS
+// ================= BLOQUEAR RECARGA =================
+formRegistro.addEventListener("submit",e=>e.preventDefault());
+
+// ================= MAYÚSCULAS =================
 document.addEventListener("input",e=>{
-    if(e.target.id !== "correo"){
+    if(e.target.type !== "email"){
         e.target.value = e.target.value.toUpperCase();
     }
 });
 
-// PASO 1
-ced.oninput = ()=> btnCedula.disabled = ced.value.length !== 10;
+// ================= PASO 1 =================
+ced.oninput = ()=>{
+    btnCedula.disabled = ced.value.length !== 10;
+};
 
 btnCedula.onclick = async ()=>{
     btnCedula.classList.add("loading");
@@ -163,21 +196,23 @@ btnCedula.onclick = async ()=>{
     btnCedula.classList.remove("loading");
 };
 
-// PASO 2
-document.querySelectorAll("#paso2 input").forEach(i=>{
-    i.oninput = ()=> btnPaso2.disabled = !n1.value || !ape.value || !fecha.value;
+// ================= PASO 2 =================
+[n1,ape,fecha].forEach(i=>{
+    i.oninput = ()=>{
+        btnPaso2.disabled = !(n1.value && ape.value && fecha.value);
+    };
 });
 btnPaso2.onclick = ()=>verPaso(3);
 
-// PASO 3
-document.querySelectorAll("#paso3 input").forEach(i=>{
+// ================= PASO 3 =================
+[tel,correo].forEach(i=>{
     i.oninput = ()=>{
         btnPaso3.disabled = !( /^09\d{8}$/.test(tel.value) && /\S+@\S+\.\S+/.test(correo.value) );
-    }
+    };
 });
 btnPaso3.onclick = ()=>verPaso(4);
 
-// CÁMARA
+// ================= CÁMARA =================
 btnCamara.onclick = iniciarCamara;
 
 btnFoto.onclick = ()=>{
@@ -186,47 +221,70 @@ btnFoto.onclick = ()=>{
     video.style.display="none";
 };
 
-// PASO 4
+// ================= PASO 4 =================
 cedulaFile.onchange = ()=>{
-    const reader = new FileReader();
-    reader.onload = ()=> fotoCedulaB64.value = reader.result;
-    reader.readAsDataURL(cedulaFile.files[0]);
-
     btnPaso4.disabled = !(previewCamara.src && cedulaFile.files.length);
 };
 
 btnPaso4.onclick = async ()=>{
-    loader(true,"Procesando imágenes...");
-    await cargarDorsales();
-    cargarNombres();
+    loader(true,"Preparando armadura...");
+    await cargarArmadura();
     loader(false);
     verPaso(5);
 };
 
-// PASO 5
-document.querySelectorAll("#paso5 select").forEach(s=>{
-    s.onchange = ()=> btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+// ================= ARMADURA =================
+async function cargarArmadura(){
+
+    nombreCamiseta.innerHTML = `<option value="">Selecciona</option>`;
+    dorsal.innerHTML = `<option value="">Cargando...</option>`;
+
+    // nombres
+    nombreCamiseta.add(new Option(n1.value,n1.value));
+    if(n2.value) nombreCamiseta.add(new Option(n2.value,n2.value));
+
+    // dorsales
+    try{
+        const res = await fetch(`${URL_GAS}?action=getDorsales`);
+        const usados = await res.json();
+
+        dorsal.innerHTML = `<option value="">Selecciona</option>`;
+
+        for(let i=1;i<=99;i++){
+            if(!usados.includes(i)){
+                dorsal.add(new Option("Dorsal "+i,i));
+            }
+        }
+
+    }catch{
+        for(let i=1;i<=99;i++){
+            dorsal.add(new Option("Dorsal "+i,i));
+        }
+    }
+}
+
+// ================= PASO 5 =================
+[nombreCamiseta,dorsal].forEach(s=>{
+    s.onchange = ()=>{
+        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+    };
 });
 btnPaso5.onclick = ()=>verPaso(6);
 
-// PASO 6
-document.querySelectorAll("#paso6 input, #paso6 select").forEach(i=>{
+// ================= PASO 6 =================
+[medias,inscripcion,uniforme].forEach(i=>{
     i.oninput = ()=>{
         btnFinal.disabled = !(medias.value && inscripcion.value.length>=4 && uniforme.value.length>=4);
-    }
+    };
 });
 
-// FINAL
+// ================= FINAL =================
 btnFinal.onclick = async ()=>{
     loader(true,"Guardando información...");
-
     await enviarRegistro();
-
-    loader(false);
-
-    alert("✅ Registro completado correctamente.\nBienvenido a Nápoles F.C.");
 };
 
 </script>
 
 </body>
+</html>
