@@ -1,4 +1,4 @@
-const URL_GOOGLE = 'https://script.google.com/macros/s/AKfycbyK27YBACRw8eVXpy5wZuajJ_YScuVFSJRKDXAPPnoUN61PFeMclEdaG1bwPiPJPA8R/exec';
+const URL_GOOGLE = 'https://script.google.com/macros/s/AKfycbylwN3KaHZB4YWtYDvEPxdpAdciIWWGPCzQMHi8eDLmpI8znCPjYlfnmEFtK9T93FYJ/exec';
 
 // 1. VALIDACIÓN PASO 1 (Cédula y Transacción)
 async function validarDatosIniciales() {
