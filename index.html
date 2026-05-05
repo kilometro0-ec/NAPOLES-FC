@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Registro Nápoles FC</title>
-    <link rel="stylesheet" href="estilos.css">
-    <style>
-        /* Estilos rápidos para asegurar que el sistema de pasos funcione */
-        .paso-contenido { display: none; animation: fadeIn 0.4s; }
-        .paso-activo { display: block !important; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+    <link rel="stylesheet" href="estilos.css?v=4.0">
 </head>
 <body>
 
-    <!-- Pantalla de Carga -->
-    <div id="loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;">
+    <!-- Animación Final de Éxito -->
+    <div id="final-animacion">
+        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png" class="balon-animado" alt="balon">
+        <h2 id="final-status">PROCESANDO...</h2>
+        <p id="final-mensaje">Guardando tu información en el club.</p>
+    </div>
+
+    <!-- Pantalla de Carga (Loader) -->
+    <div id="loader">
         <div class="spinner-balon"></div>
-        <p style="color: gold; margin-top: 15px;">PROCESANDO...</p>
+        <p>VALIDANDO DATOS...</p>
     </div>
 
     <div class="contenedor-principal">
@@ -32,148 +33,87 @@
         </header>
 
         <form id="formRegistro">
-            <!-- PASO 1 -->
+            <!-- PASO 1: Datos y Validación de Pago -->
             <div id="step1" class="paso-contenido paso-activo">
                 <label class="tag">DATOS DE IDENTIDAD</label>
                 <input type="text" id="n1" name="nombre1" placeholder="PRIMER NOMBRE" required oninput="this.value = this.value.toUpperCase()">
+                <input type="text" id="n2" name="nombre2" placeholder="SEGUNDO NOMBRE" oninput="this.value = this.value.toUpperCase()">
                 <input type="text" id="ape" name="apellidos" placeholder="APELLIDOS COMPLETOS" required oninput="this.value = this.value.toUpperCase()">
+                
                 <input type="tel" id="ced" name="cedula" placeholder="CÉDULA (10 DÍGITOS)" maxlength="10" required>
                 
                 <label class="tag">VALIDACIÓN DE PAGO ($5.00)</label>
                 <input type="text" id="trans" name="transaccion" placeholder="Nº DE TRANSACCIÓN" required oninput="this.value = this.value.toUpperCase()">
                 
-                <button type="button" class="btn-accion" onclick="validarPaso1()">SIGUIENTE</button>
+                <button type="button" class="btn-siguiente" onclick="validarDatosIniciales()">SIGUIENTE</button>
             </div>
 
-            <!-- PASO 2 -->
+            <!-- PASO 2: Datos Adicionales y Camiseta -->
             <div id="step2" class="paso-contenido">
-                <label class="tag">DORSAL Y CONTACTO</label>
-                <input type="email" name="correo" placeholder="CORREO ELECTRÓNICO" required>
-                <input type="tel" name="telefono" placeholder="WHATSAPP (09XXXXXXXX)" maxlength="10" required>
+                <label class="tag">FECHA DE NACIMIENTO</label>
+                <input type="date" name="fechaNac" required>
                 
+                <label class="tag">CORREO (MINÚSCULAS)</label>
+                <input type="email" name="correo" placeholder="ejemplo@correo.com" required>
+
                 <label class="tag">DORSAL DISPONIBLE</label>
-                <select name="dorsal" id="selectDorsal">
-                    <option value="10">10 - DISPONIBLE</option>
-                    <option value="7">7 - DISPONIBLE</option>
-                </select>
+                <select name="dorsal" id="selectDorsal" required></select>
+
+                <label class="tag">NOMBRE EN CAMISETA</label>
+                <select name="nombreCamiseta" id="selectNombreCamiseta" required></select>
+
+                <input type="tel" id="wha" name="telefono" placeholder="WHATSAPP (09XXXXXXXX)" maxlength="10" required>
+                
+                <input type="hidden" name="estado" value="PENDIENTE">
 
                 <div class="flex-btns">
-                    <button type="button" class="btn-accion btn-atras" onclick="verPaso(1)">ATRÁS</button>
-                    <button type="button" class="btn-accion" onclick="verPaso(3)">SIGUIENTE</button>
+                    <button type="button" class="btn-atras" onclick="verPaso(1)">ATRÁS</button>
+                    <button type="button" class="btn-siguiente" onclick="validarPaso2()">SIGUIENTE</button>
                 </div>
             </div>
 
-            <!-- PASO 3: FOTO ROSTRO -->
+            <!-- PASO 3: Foto Rostro (Espejo) -->
             <div id="step3" class="paso-contenido">
-                <label class="tag">FOTO DEL ROSTRO</label>
+                <label class="tag">FOTO DEL ROSTRO (TIPO ESPEJO)</label>
                 <div class="camara-box">
-                    <video id="videoRostro" autoplay playsinline class="espejo" style="width:100%; height:100%; object-fit:cover;"></video>
-                    <canvas id="canvasRostro" style="display:none;"></canvas>
-                    <img id="prevRostro" class="preview-img" style="display:none; width:100%;">
+                    <video id="videoRostro" autoplay playsinline class="espejo"></video>
+                    <img id="prevRostro" class="preview-img">
+                    <div class="guia-rostro"></div>
                 </div>
                 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
                 
-                <button type="button" id="btnCapRostro" class="btn-accion" onclick="capturarFoto('Rostro')">📸 CAPTURAR</button>
-                <div class="flex-btns">
-                    <button type="button" class="btn-accion btn-atras" onclick="verPaso(2)">ATRÁS</button>
-                    <button type="button" class="btn-accion" onclick="verPaso(4)">SIGUIENTE</button>
+                <div id="controlesRostro">
+                    <button type="button" class="btn-foto" onclick="capturar('Rostro')">📸 CAPTURAR</button>
+                </div>
+                <div id="reintentarRostro" class="flex-btns" style="display:none;">
+                    <button type="button" class="btn-atras" onclick="reintentar('Rostro')">REPETIR</button>
+                    <button type="button" class="btn-siguiente" onclick="verPaso(4)">SIGUIENTE</button>
                 </div>
             </div>
 
-            <!-- PASO 4: FOTO CÉDULA -->
+            <!-- PASO 4: Foto Cédula -->
             <div id="step4" class="paso-contenido">
                 <label class="tag">FOTO DE CÉDULA</label>
                 <div class="camara-box">
-                    <video id="videoCedula" autoplay playsinline style="width:100%; height:100%; object-fit:cover;"></video>
-                    <canvas id="canvasCedula" style="display:none;"></canvas>
-                    <img id="prevCedula" class="preview-img" style="display:none; width:100%;">
+                    <video id="videoCedula" autoplay playsinline></video>
+                    <img id="prevCedula" class="preview-img">
+                    <div class="guia-cedula"></div>
                 </div>
                 <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
 
-                <button type="button" id="btnCapCedula" class="btn-accion" onclick="capturarFoto('Cedula')">📸 CAPTURAR</button>
-                <div class="flex-btns">
-                    <button type="button" class="btn-atras btn-accion" onclick="verPaso(3)">ATRÁS</button>
-                    <button type="button" class="btn-accion" style="background: gold; color: black;" onclick="enviarFormulario()">FINALIZAR REGISTRO</button>
+                <div id="controlesCedula">
+                    <button type="button" class="btn-foto" onclick="capturar('Cedula')">📸 CAPTURAR</button>
+                </div>
+                <div id="reintentarCedula" class="flex-btns" style="display:none;">
+                    <button type="button" class="btn-atras" onclick="reintentar('Cedula')">REPETIR</button>
+                    <button type="button" class="btn-finalizar" onclick="enviarTodo()">FINALIZAR</button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- TODO EL JAVASCRIPT AQUÍ -->
-    <script>
-        let streamActual = null;
-
-        // 1. FUNCIÓN PARA CAMBIAR DE PASO
-        function verPaso(nPaso) {
-            // Ocultar todos
-            document.querySelectorAll('.paso-contenido').forEach(p => p.classList.remove('paso-activo'));
-            // Mostrar actual
-            document.getElementById('step' + nPaso).classList.add('paso-activo');
-            
-            // Actualizar puntos
-            document.querySelectorAll('.punto').forEach((p, index) => {
-                p.classList.toggle('activo', index < nPaso);
-            });
-
-            // Manejar Cámaras
-            detenerCamara();
-            if (nPaso === 3) iniciarCamara('videoRostro', 'user');
-            if (nPaso === 4) iniciarCamara('videoCedula', 'environment');
-        }
-
-        // 2. LÓGICA DE CÁMARA
-        async function iniciarCamara(idVideo, modo) {
-            try {
-                streamActual = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: modo }, 
-                    audio: false 
-                });
-                const video = document.getElementById(idVideo);
-                video.srcObject = streamActual;
-            } catch (err) {
-                alert("Error al abrir cámara: " + err);
-            }
-        }
-
-        function detenerCamara() {
-            if (streamActual) {
-                streamActual.getTracks().forEach(track => track.stop());
-            }
-        }
-
-        function capturarFoto(tipo) {
-            const video = document.getElementById('video' + tipo);
-            const canvas = document.getElementById('canvas' + tipo);
-            const preview = document.getElementById('prev' + tipo);
-            const input = document.getElementById('foto' + tipo + 'B64');
-
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-            input.value = dataUrl;
-            
-            preview.src = dataUrl;
-            preview.style.display = 'block';
-            video.style.display = 'none';
-        }
-
-        // 3. VALIDACIÓN Y ENVÍO
-        function validarPaso1() {
-            const c = document.getElementById('ced').value;
-            if(c.length < 10) return alert("Cédula incompleta");
-            verPaso(2);
-        }
-
-        async function enviarFormulario() {
-            document.getElementById('loader').style.display = 'flex';
-            // Aquí iría tu fetch al Google Apps Script
-            setTimeout(() => {
-                alert("¡REGISTRO EXITOSO!");
-                document.getElementById('loader').style.display = 'none';
-            }, 2000);
-        }
-    </script>
+    <!-- Scripts en orden -->
+    <script src="api.js?v=4.0"></script>
+    <script src="script.js?v=4.0"></script>
 </body>
 </html>
