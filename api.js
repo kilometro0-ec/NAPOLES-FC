@@ -1,4 +1,4 @@
-const URL_GAS = 'https://script.google.com/macros/s/AKfycbxNY8xRUKBfx7zOW6Na1hG1p6tXvKOhR08W9oVlsEzDahP7OdSXLvjV1AkzLl6mqLK6/exec';
+const URL_GAS = 'https://script.google.com/macros/s/AKfycbxRZxFuo1g6c3oLN7zK5Ay4cJ4TgplSqvV4U4RPk2fLpw6wlBWmG69lOETJuO0G4HJb/exec';
 
 // Paso 1: Validar Cédula
 async function validarPaso1() {
