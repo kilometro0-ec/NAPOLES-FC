@@ -4,80 +4,98 @@ const URL_GOOGLE = 'https://script.google.com/macros/s/AKfycbyC0ZftX6QL6_5DVCGfd
 async function obtenerDorsalesLibres() {
     const select = document.getElementById('selectDorsal');
     if (!select) return;
-
     try {
         const respuesta = await fetch(`${URL_GOOGLE}?action=getDorsales`);
         const ocupados = await respuesta.json(); 
-        
         select.innerHTML = '<option value="">SELECCIONA UN NÚMERO</option>';
-        
         for (let i = 1; i <= 99; i++) {
             if (!ocupados.map(String).includes(String(i))) {
-                let opt = new Option(`DORSAL ${i}`, i);
-                select.add(opt);
+                select.add(new Option(`DORSAL ${i}`, i));
             }
         }
     } catch (e) {
         console.error("Error dorsales:", e);
-        select.innerHTML = '<option value="">ERROR AL CARGAR - ELIGE NÚMERO</option>';
-        for (let i = 1; i <= 99; i++) select.add(new Option(i, i));
+        select.innerHTML = '<option value="">ERROR AL CARGAR</option>';
     }
 }
 
-// 2. VERIFICAR SI LA CÉDULA YA EXISTE
-async function verificarCedulaExistente(cedula) {
+// 2. VALIDAR CÉDULA Y TRANSACCIÓN (Paso 1)
+async function validarDatosIniciales() {
+    const ced = document.getElementById('ced').value;
+    const trans = document.getElementById('trans').value;
+
+    if (ced.length !== 10 || !trans) {
+        alert("REVISA LA CÉDULA (10 DÍGITOS) Y EL NÚMERO DE TRANSACCIÓN.");
+        return;
+    }
+
+    document.getElementById('loader').style.display = 'flex';
+
     try {
-        const resp = await fetch(`${URL_GOOGLE}?action=getDorsales`); // Reutilizamos consulta de datos
+        // Esta acción debe estar programada en tu Google Apps Script
+        const resp = await fetch(`${URL_GOOGLE}?action=validarRegistro&cedula=${ced}&transaccion=${trans}`);
         const data = await resp.json();
-        // Nota: Esta es una validación simple. Lo ideal es que el GAS tenga action=checkCedula
-        // Pero para no complicarte, si el script de Google devuelve todos los datos, comparamos aquí.
-        return false; 
-    } catch (e) { return false; }
+
+        if (data.cedulaExiste) {
+            alert("ESTA CÉDULA YA ESTÁ REGISTRADA.");
+            document.getElementById('loader').style.display = 'none';
+        } else if (data.transaccionExiste) {
+            alert("ESTA TRANSACCIÓN YA FUE USADA.");
+            document.getElementById('loader').style.display = 'none';
+        } else {
+            document.getElementById('loader').style.display = 'none';
+            actualizarOpcionesNombre();
+            verPaso(2);
+        }
+    } catch (e) {
+        console.error(e);
+        document.getElementById('loader').style.display = 'none';
+        verPaso(2); // Dejamos pasar si falla la red, pero lo ideal es validar
+    }
 }
 
-// 3. FUNCIÓN DE ENVÍO (LLAMADA DESDE EL HTML)
-async function enviarADatabase() {
+// 3. FUNCIÓN DE ENVÍO FINAL (JSON para que soporten las fotos)
+async function enviarTodo() {
+    // Mostrar animación del balón
+    document.getElementById('final-animacion').style.display = 'flex';
+    
     const form = document.getElementById('formRegistro');
     const formData = new FormData(form);
-    
-    // VALIDACIÓN DE SEGURIDAD FINAL
-    const cedula = formData.get('cedula');
-    if (cedula.length !== 10) {
-        alert("LA CÉDULA DEBE TENER 10 DÍGITOS");
-        document.getElementById('final-animacion').style.display = 'none';
-        return false;
-    }
+    const datosFinales = {};
 
-    // CONVERTIR TODO A MAYÚSCULAS ANTES DE ENVIAR (Menos el correo si existiera)
-    const params = new URLSearchParams();
-    for (const [key, value] of formData.entries()) {
-        if (key !== 'correo' && typeof value === 'string') {
-            params.append(key, value.toUpperCase());
+    // Convertimos FormData a un Objeto JSON
+    formData.forEach((value, key) => {
+        // No tocamos fotos ni correo, el resto a MAYÚSCULAS
+        if (key.includes('foto') || key === 'correo') {
+            datosFinales[key] = value;
         } else {
-            params.append(key, value);
+            datosFinales[key] = typeof value === 'string' ? value.toUpperCase() : value;
         }
-    }
+    });
 
     try {
-        // Ejecutar el envío
+        // Enviamos como JSON stringified
         await fetch(URL_GOOGLE, {
             method: 'POST',
-            body: params,
-            mode: 'no-cors'
+            mode: 'no-cors',
+            body: JSON.stringify(datosFinales) 
         });
 
-        // Como mode: 'no-cors' no permite leer la respuesta, 
-        // esperamos 2 segundos para asegurar que Google procesó el archivo
-        await new Promise(resolve => setTimeout(resolve, 2500));
-        return true; 
+        // Tiempo de espera para que Google procese las fotos pesadas
+        setTimeout(() => {
+            document.getElementById('final-status').innerText = "¡REGISTRO EXITOSO!";
+            document.getElementById('final-mensaje').innerText = "Bienvenido al Nápoles F.C.";
+            
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 3000);
+        }, 3000);
 
     } catch (e) {
-        console.error("Error en envío:", e);
-        alert("ERROR DE CONEXIÓN AL GUARDAR");
+        console.error("Error:", e);
+        alert("ERROR AL GUARDAR. REVISA TU INTERNET.");
         document.getElementById('final-animacion').style.display = 'none';
-        return false;
     }
 }
 
-// Ejecutar carga de dorsales al cargar la web
 document.addEventListener('DOMContentLoaded', obtenerDorsalesLibres);
