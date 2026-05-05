@@ -1,7 +1,6 @@
 const URL_GAS = 'https://script.google.com/macros/s/AKfycbxB7NezJt9SzVasnD20sEsj3t0kjlIZS_7_t5qGCfFTIPIq9a4WEQwVvE4Ey27jgnsl/exec';
 
 
-
 // UI
 function verPaso(n){
     document.querySelectorAll('.paso').forEach(p=>p.classList.remove('activo'));
@@ -9,54 +8,90 @@ function verPaso(n){
     window.scrollTo(0,0);
 }
 
-function loader(on,text="Cargando..."){
+function loader(on,text="PROCESANDO..."){
     const l=document.getElementById('loader');
     document.getElementById('loader-texto').innerText=text;
     l.style.display= on ? 'flex':'none';
 }
 
-// VALIDACIÓN CÉDULA ECUADOR
+// MAYÚSCULAS AUTOMÁTICAS
+document.addEventListener("input", e=>{
+    if(e.target.name && e.target.name !== "correo"){
+        e.target.value = e.target.value.toUpperCase();
+    }
+});
+
+// VALIDAR CÉDULA ECUADOR
 function validarCedulaReal(ced){
-    if(ced.length!==10) return false;
+    if(!/^\d{10}$/.test(ced)) return false;
     let total=0;
     for(let i=0;i<9;i++){
         let num=parseInt(ced[i]);
         if(i%2===0){ num*=2; if(num>9) num-=9; }
         total+=num;
     }
-    let dec= (10-(total%10))%10;
+    let dec=(10-(total%10))%10;
     return dec===parseInt(ced[9]);
 }
 
-// VALIDAR
+// PASO 1
 async function validarCedulaEstricta(){
     const ced=document.getElementById('ced').value;
 
     if(!validarCedulaReal(ced)){
-        alert("Cédula inválida Ecuador");
+        alert("CÉDULA INVÁLIDA");
         return;
     }
 
-    loader(true,"Validando...");
+    loader(true,"VALIDANDO...");
 
     try{
         const res=await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced}`);
         const data=await res.json();
 
         if(data.cedulaExiste){
-            alert("Ya registrado");
+            alert("YA REGISTRADO");
         }else{
             verPaso(2);
         }
-
     }catch{
-        alert("Error conexión");
+        alert("ERROR DE CONEXIÓN");
     }
 
     loader(false);
 }
 
-// FILE PREVIEW
+// PASO 2
+function validarPaso2(){
+    const n1=document.getElementById('n1').value.trim();
+    const ape=document.getElementById('ape').value.trim();
+
+    if(!n1 || !ape){
+        alert("COMPLETE LOS CAMPOS");
+        return;
+    }
+    verPaso(3);
+}
+
+// PASO 3
+function validarPaso3(){
+    const tel=document.querySelector('[name=telefono]').value;
+    const correo=document.querySelector('[name=correo]').value;
+
+    if(!/^09\d{8}$/.test(tel)){
+        alert("TELÉFONO INVÁLIDO");
+        return;
+    }
+
+    if(!/^\S+@\S+\.\S+$/.test(correo)){
+        alert("CORREO INVÁLIDO");
+        return;
+    }
+
+    verPaso(4);
+}
+
+// PREVIEW
 function previewFile(input,imgId,hiddenId){
     const file=input.files[0];
     const reader=new FileReader();
@@ -94,6 +129,19 @@ function capturarFoto(){
     document.getElementById('previewRostro').src=data;
 }
 
+// PASO 4
+function validarPaso4(){
+    const r=document.getElementById('fotoRostroB64').value;
+    const c=document.getElementById('fotoCedulaB64').value;
+
+    if(!r || !c){
+        alert("SUBA LAS FOTOS");
+        return;
+    }
+
+    abrirArmadura();
+}
+
 // ARMADURA
 async function abrirArmadura(){
     const n1=document.getElementById('n1').value.toUpperCase();
@@ -101,6 +149,7 @@ async function abrirArmadura(){
 
     const sel=document.getElementById('selectNombreCamiseta');
     sel.innerHTML="";
+
     sel.add(new Option(n1,n1));
     if(n2) sel.add(new Option(n2,n2));
 
@@ -119,28 +168,20 @@ async function cargarDorsales(){
 
         for(let i=1;i<=99;i++){
             if(!ocupados.includes(i)){
-                sel.add(new Option("Dorsal "+i,i));
+                sel.add(new Option("DORSAL "+i,i));
             }
         }
     }catch{
         for(let i=1;i<=99;i++){
-            sel.add(new Option("Dorsal "+i,i));
+            sel.add(new Option("DORSAL "+i,i));
         }
     }
 }
 
-// ENVÍO
+// ENVÍO FINAL
 async function enviarRegistro(){
 
-    const rostro=document.getElementById('fotoRostroB64').value;
-    const cedulaF=document.getElementById('fotoCedulaB64').value;
-
-    if(!rostro || !cedulaF){
-        alert("Faltan fotos");
-        return;
-    }
-
-    loader(true,"Guardando...");
+    loader(true,"GUARDANDO...");
 
     const form=document.getElementById('formRegistro');
     const data=new URLSearchParams(new FormData(form));
@@ -152,11 +193,11 @@ async function enviarRegistro(){
             body:data
         });
 
-        alert("Registro exitoso 🔥");
-        location.reload();
+        alert("REGISTRO EXITOSO 🔥");
+        window.location.href="login.html";
 
     }catch{
-        alert("Error al enviar");
+        alert("ERROR AL ENVIAR");
     }
 
     loader(false);
