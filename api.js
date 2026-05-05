@@ -1,4 +1,4 @@
-const URL_GAS = "https://script.google.com/macros/s/AKfycbwit_SN-IXxyA4DBnN8iWAZ_g0UExXmMdqCapz2e09eSs8yPrd4T52H2qQGUXGbxkw/exec";
+const URL_GAS = "https://script.google.com/macros/s/AKfycbyOZObCnKnnbwwuwTO8CULGvh1-c9hiUqAhBs15N3ceMYaFQaiHtTQWGJgugbodinP6/exec";
 
 // UI
 function verPaso(n){
