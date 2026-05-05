@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Control estricto de caché para asegurar que los cambios se vean de inmediato -->
+    
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="Last-Modified" content="0">
     <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
     <meta http-equiv="Pragma" content="no-cache">
     
     <title>Inscripción | Nápoles FC</title>
+
+    <link rel="shortcut icon" href="/NAPOLES-FC/img/favicon.png" type="image/png">
+    <link rel="icon" href="/NAPOLES-FC/img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/NAPOLES-FC/img/favicon.png">
     
-    <!-- Configuración PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1A2B48">
     
-    <!-- Enlace a estilos con versionado -->
-    <link rel="stylesheet" href="estilos.css?v=1.0.2">
+    <link rel="stylesheet" href="estilos.css?v=1.0.3">
     
     <style>
         /* Estilos base para el funcionamiento del flujo */
@@ -61,7 +63,6 @@
 </head>
 <body>
 
-    <!-- Pantalla de carga para el envío de datos -->
     <div id="loader" class="loading-overlay">
         <div class="spinner"></div>
         <p style="color: #B59461; margin-top: 20px; font-weight: bold; letter-spacing: 1px;">PROCESANDO REGISTRO...</p>
@@ -77,7 +78,6 @@
 
         <form id="formularioRegistro">
             
-            <!-- PASO 1: Identidad -->
             <div id="paso1" class="seccion-formulario">
                 <label>Primer Nombre</label>
                 <input type="text" id="nombre1" name="nombre1" required placeholder="Escriba su nombre">
@@ -94,7 +94,6 @@
                 <button type="button" class="btn-accion" style="background:#B59461; color:white;" onclick="validarYPasar(1, 2)">SIGUIENTE</button>
             </div>
 
-            <!-- PASO 2: Contacto y Nacimiento -->
             <div id="paso2" class="seccion-formulario seccion-oculta">
                 <label>Fecha de Nacimiento</label>
                 <input type="date" id="fechaNac" name="fechaNac" required>
@@ -111,7 +110,6 @@
                 </div>
             </div>
 
-            <!-- PASO 3: Fotos y Finalización -->
             <div id="paso3" class="seccion-formulario seccion-oculta">
                 <label>Foto de Rostro (Verificación)</label>
                 <video id="video" autoplay playsinline></video>
@@ -135,9 +133,8 @@
         </form>
     </div>
 
-    <!-- Scripts con versión actualizada para forzar descarga -->
-    <script src="nav.js?v=1.0.2"></script>
-    <script src="api.js?v=1.0.2"></script>
+    <script src="nav.js?v=1.0.3"></script>
+    <script src="api.js?v=1.0.3"></script>
 
     <script>
         let stream;
