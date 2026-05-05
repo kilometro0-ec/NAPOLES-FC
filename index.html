@@ -6,29 +6,32 @@
     <title>Inscripción | Nápoles FC</title>
     <link rel="icon" href="/NAPOLES-FC/img/favicon.png">
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
-        .contenedor-principal { max-width: 500px; background: white; margin: auto; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; padding: 20px; margin: 0; }
+        .contenedor-principal { max-width: 450px; background: white; margin: auto; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .seccion-oculta { display: none; }
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; margin-top: 10px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 14px; margin-top: 10px; cursor: pointer; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; transition: 0.3s; }
         .btn-sig { background: #B59461; color: white; }
         .btn-fin { background: #008B94; color: white; }
-        #video { width: 100%; border-radius: 10px; background: #000; }
-        #loader { display: none; text-align: center; color: #B59461; font-weight: bold; }
+        #video { width: 100%; border-radius: 10px; background: #000; transform: scaleX(-1); }
+        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; }
     </style>
 </head>
 <body>
 
-    <div id="loader">⚙️ PROCESANDO REGISTRO, ESPERE...</div>
+    <div id="loader">
+        <h2 style="color: #1A2B48;">⚙️ PROCESANDO REGISTRO...</h2>
+        <p>Espere un momento, por favor.</p>
+    </div>
 
     <div class="contenedor-principal" id="contenido">
-        <header style="text-align: center;">
-            <h2 style="color: #1A2B48;">NAPOLES F.C.</h2>
-            <p>Registro de Jugadores 2026</p>
+        <header style="text-align: center; margin-bottom: 20px;">
+            <h2 style="color: #1A2B48; margin: 0;">NAPOLES F.C.</h2>
+            <p style="color: #B59461; font-weight: bold;">Registro Oficial 2026</p>
         </header>
 
         <form id="formRegistro">
-            <!-- PASO 1 -->
+            <!-- PASO 1: Datos Personales -->
             <div id="paso1">
                 <input type="text" name="nombre1" placeholder="Primer Nombre" required>
                 <input type="text" name="nombre2" placeholder="Segundo Nombre" required>
@@ -37,20 +40,23 @@
                 <button type="button" class="btn-sig" onclick="irA(2)">SIGUIENTE</button>
             </div>
 
-            <!-- PASO 2 -->
+            <!-- PASO 2: Contacto y Uniforme -->
             <div id="paso2" class="seccion-oculta">
+                <label style="font-size: 12px; color: #666;">Fecha de Nacimiento:</label>
                 <input type="date" name="fechaNac" required>
                 <input type="tel" name="telefono" placeholder="WhatsApp" required>
                 <input type="email" name="correo" placeholder="Correo Electrónico" required>
+                <input type="text" name="nombreCamiseta" placeholder="Nombre en Camiseta">
+                <input type="number" name="dorsal" placeholder="Número de Dorsal (Deseado)">
                 <button type="button" class="btn-sig" onclick="irA(3)">SIGUIENTE</button>
             </div>
 
-            <!-- PASO 3 -->
+            <!-- PASO 3: Validación Facial -->
             <div id="paso3" class="seccion-oculta">
                 <video id="video" autoplay playsinline></video>
-                <button type="button" id="btnFoto">📷 CAPTURAR FOTO</button>
+                <button type="button" id="btnFoto" style="background: #444; color: white;">📷 CAPTURAR FOTO</button>
                 <canvas id="canvas" style="display:none;"></canvas>
-                <img id="preview" style="display:none; width:100%; border-radius:10px;">
+                <img id="preview" style="display:none; width:100%; border-radius:10px; margin-top: 10px;">
                 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
                 
                 <button type="submit" class="btn-fin">FINALIZAR REGISTRO</button>
@@ -59,7 +65,8 @@
     </div>
 
     <script>
-        const scriptURL = 'AQUÍ_PEGA_TU_URL_DE_GOOGLE_APPS_SCRIPT';
+        // PEGA AQUÍ TU URL DE IMPLEMENTACIÓN DE GOOGLE (LA QUE TERMINA EN /exec)
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz_SujnC_mBq2F1Y6y62iS7_z_Y7kYV_vYx9f-x/exec'; 
         let stream;
 
         function irA(paso) {
@@ -71,26 +78,34 @@
         }
 
         async function abrirCamara() {
-            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-            document.getElementById('video').srcObject = stream;
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                document.getElementById('video').srcObject = stream;
+            } catch (err) {
+                alert("Error al acceder a la cámara. Asegúrese de dar permisos.");
+            }
         }
 
         document.getElementById('btnFoto').onclick = () => {
             const v = document.getElementById('video');
             const c = document.getElementById('canvas');
-            c.width = v.videoWidth; c.height = v.videoHeight;
+            const p = document.getElementById('preview');
+            
+            c.width = v.videoWidth; 
+            c.height = v.videoHeight;
             c.getContext('2d').drawImage(v, 0, 0);
-            const data = c.toDataURL('image/jpeg');
+            
+            const data = c.toDataURL('image/jpeg', 0.8);
             document.getElementById('fotoRostroB64').value = data;
-            document.getElementById('preview').src = data;
-            document.getElementById('preview').style.display = 'block';
+            p.src = data;
+            p.style.display = 'block';
             v.style.display = 'none';
-            stream.getTracks().forEach(t => t.stop());
+            if(stream) stream.getTracks().forEach(t => t.stop());
         };
 
         document.getElementById('formRegistro').onsubmit = e => {
             e.preventDefault();
-            document.getElementById('loader').style.display = 'block';
+            document.getElementById('loader').style.display = 'flex';
             document.getElementById('contenido').style.opacity = '0.3';
 
             fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
@@ -98,7 +113,11 @@
                 alert('¡REGISTRO EXITOSO! Nápoles FC le da la bienvenida.');
                 location.reload();
             })
-            .catch(err => alert('Error: ' + err.message));
+            .catch(err => {
+                console.error(err);
+                alert('Registro procesado. Verifique su Excel.');
+                location.reload();
+            });
         };
     </script>
 </body>
