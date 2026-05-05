@@ -1,44 +1,187 @@
-:root{
---azul:#1A2B48;
---verde:#008B94;
---dorado:#B59461;
+/* 1. CONFIGURACIÓN GLOBAL */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
 }
 
-body{
-background:var(--azul);
-color:white;
-font-family:Arial;
+:root {
+    --azul-noche: #1A2B48;
+    --cardenillo: #008B94;
+    --dorado: #B59461;
+    --blanco-puro: #ffffff;
+    --gris-suave: rgba(255, 255, 255, 0.1);
+    --negro-trans: rgba(0, 0, 0, 0.4);
 }
 
-.contenedor-principal{
-max-width:450px;
-margin:auto;
-padding:20px;
-background:rgba(255,255,255,.05);
-border-radius:20px;
+body {
+    background-color: var(--azul-noche);
+    color: var(--blanco-puro);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-input,select{
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:10px;
-border:1px solid var(--dorado);
-background:rgba(0,0,0,.3);
-color:white;
+/* 2. CONTENEDOR PRINCIPAL */
+.contenedor-principal {
+    max-width: 450px;
+    width: 100%;
+    margin: 40px auto 120px auto; /* Margen extra abajo para el nav */
+    padding: 30px;
+    background-color: var(--gris-suave);
+    border: 1px solid var(--dorado);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-.btn-accion{
-width:100%;
-padding:14px;
-background:var(--verde);
-border:none;
-border-radius:10px;
-color:white;
-font-weight:bold;
-cursor:pointer;
+header {
+    text-align: center;
+    margin-bottom: 25px;
 }
 
-.btn-accion:disabled{
-opacity:.4;
+.logo-equipo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 5px var(--dorado));
+}
+
+h2 { 
+    color: var(--dorado); 
+    text-transform: uppercase; 
+    letter-spacing: 3px;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+/* 3. FORMULARIO E INPUTS */
+.seccion-formulario {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+label { 
+    color: var(--dorado); 
+    font-size: 0.75rem; 
+    font-weight: bold; 
+    display: block; 
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 8px;
+    border: 1px solid rgba(181, 148, 97, 0.5);
+    background: var(--negro-trans);
+    color: white;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: var(--cardenillo);
+    box-shadow: 0 0 8px rgba(0, 139, 148, 0.4);
+    outline: none;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* Estilo especial para el select */
+select option {
+    background: var(--azul-noche);
+    color: white;
+}
+
+/* 4. BOTONES */
+.btn-accion {
+    background: linear-gradient(135deg, var(--cardenillo), #005f66);
+    color: white;
+    border: none;
+    padding: 16px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-accion:active {
+    transform: scale(0.98);
+}
+
+.btn-accion:hover { 
+    box-shadow: 0 0 20px rgba(0, 139, 148, 0.6); 
+}
+
+/* 5. ANIMACIÓN DE CARGA Y ÉXITO (PROFESIONAL) */
+#loader, #final-animacion {
+    display: none; /* Controlado por JS */
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(26, 43, 72, 0.98);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner-balon, .balon-animado {
+    width: 70px;
+    height: 70px;
+    border: 5px solid var(--gris-suave);
+    border-top: 5px solid var(--dorado);
+    border-radius: 50%;
+    animation: spinNapoles 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    margin-bottom: 25px;
+    box-shadow: 0 0 15px rgba(181, 148, 97, 0.3);
+}
+
+@keyframes spinNapoles {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#final-status {
+    color: var(--dorado);
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+#final-mensaje {
+    color: var(--blanco-puro);
+    font-size: 1rem;
+    margin-top: 10px;
+    opacity: 0.9;
+    max-width: 300px;
+}
+
+/* 6. UTILIDADES */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajustes para móviles pequeños */
+@media (max-width: 380px) {
+    .contenedor-principal {
+        padding: 20px;
+        margin-top: 20px;
+    }
+    h2 { font-size: 1.2rem; }
 }
