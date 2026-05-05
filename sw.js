@@ -1,4 +1,4 @@
-const CACHE_NAME = 'napoles-v42'; // CAMBIA versión SIEMPRE
+const CACHE_NAME = 'napoles-v43'; // CAMBIA versión SIEMPRE
 
 self.addEventListener('install', e=>{
   self.skipWaiting();
