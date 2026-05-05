@@ -6,19 +6,26 @@
 
 <title>Registro - Nápoles F.C.</title>
 
+<!-- PWA -->
 <link rel="icon" href="favicon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1A2B48">
 
+<!-- CSS GLOBAL (TU DISEÑO PRO) -->
 <link rel="stylesheet" href="estilos.css">
 
-<!-- Fuente -->
+<!-- FUENTES -->
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-/* SOLO ajustes mínimos, no rompe tu CSS */
+/* 🔴 OCULTAR NAV SOLO AQUÍ */
 .nav-napoles{display:none !important;}
 
+/* 🔥 CONTROL DE PASOS */
+.paso{display:none;}
+.paso.activo{display:block;}
+
+/* 📷 CÁMARA PRO */
 #contenedor-camara{
     position:relative;
     width:280px;
@@ -68,14 +75,14 @@
 
 <form id="formRegistro">
 
-<!-- PASO 1 -->
+<!-- ================= PASO 1 ================= -->
 <div id="paso1" class="paso activo seccion-formulario">
-<label>Cédula</label>
+<label>Cédula de Identidad</label>
 <input id="ced" name="cedula" maxlength="10" placeholder="10 dígitos" required>
-<button type="button" class="btn-accion" onclick="validarCedulaEstricta()">VALIDAR</button>
+<button type="button" class="btn-accion" onclick="validarCedulaEstricta()">Validar Jugador</button>
 </div>
 
-<!-- PASO 2 -->
+<!-- ================= PASO 2 ================= -->
 <div id="paso2" class="paso seccion-formulario">
 <input id="n1" name="nombre1" placeholder="Primer Nombre" required>
 <input id="n2" name="nombre2" placeholder="Segundo Nombre">
@@ -87,7 +94,7 @@
 <button type="button" class="btn-accion" onclick="validarPaso2()">Siguiente</button>
 </div>
 
-<!-- PASO 3 -->
+<!-- ================= PASO 3 ================= -->
 <div id="paso3" class="paso seccion-formulario">
 <input name="telefono" placeholder="09XXXXXXXX" maxlength="10" required>
 <input name="correo" placeholder="Correo electrónico" required>
@@ -95,16 +102,16 @@
 <button type="button" class="btn-accion" onclick="validarPaso3()">Siguiente</button>
 </div>
 
-<!-- PASO 4 -->
+<!-- ================= PASO 4 ================= -->
 <div id="paso4" class="paso seccion-formulario">
 
 <div id="contenedor-camara">
-<video id="video" autoplay playsinline></video>
-<div class="guia"></div>
+    <video id="video" autoplay playsinline></video>
+    <div class="guia"></div>
 </div>
 
 <button type="button" class="btn-accion" onclick="iniciarCamara()">Activar Cámara</button>
-<button type="button" class="btn-accion" onclick="capturarFoto()">Capturar</button>
+<button type="button" class="btn-accion" onclick="capturarFoto()">Capturar Foto</button>
 
 <img id="previewRostro" class="preview">
 
@@ -118,31 +125,35 @@
 <button type="button" class="btn-accion" onclick="validarPaso4()">Siguiente</button>
 </div>
 
-<!-- PASO 5 -->
+<!-- ================= PASO 5 ================= -->
 <div id="paso5" class="paso seccion-formulario">
+
 <label>Nombre en Camiseta</label>
 <select id="selectNombreCamiseta" name="nombreCamiseta" required></select>
 
-<label>Dorsal</label>
+<label>Número de Dorsal</label>
 <select id="selectDorsal" name="dorsal" required></select>
 
 <button type="button" class="btn-accion" onclick="verPaso(6)">Siguiente</button>
 </div>
 
-<!-- PASO 6 -->
+<!-- ================= PASO 6 ================= -->
 <div id="paso6" class="paso seccion-formulario">
 
-<label>Medias Extras</label>
+<label>¿Desea Medias Extras?</label>
 <select name="mediasExtras" required>
 <option value="">Seleccione</option>
 <option value="NO">NO</option>
 <option value="SI">SI (+$2)</option>
 </select>
 
-<input name="transaccionInscripcion" placeholder="Comprobante Inscripción" required>
-<input name="transaccionUniforme" placeholder="Comprobante Uniforme" required>
+<label>Comprobante Inscripción</label>
+<input name="transaccionInscripcion" required>
 
-<button type="button" class="btn-accion" onclick="enviarRegistro()">Finalizar Registro</button>
+<label>Comprobante Uniforme</label>
+<input name="transaccionUniforme" required>
+
+<button type="button" class="btn-accion" onclick="enviarRegistro()">Finalizar Inscripción</button>
 
 </div>
 
@@ -151,29 +162,17 @@
 
 <!-- LOADER -->
 <div id="loader">
-<div class="spinner-balon"></div>
-<p id="loader-texto">Procesando...</p>
+    <div class="spinner-balon"></div>
+    <p id="loader-texto">Procesando...</p>
 </div>
 
+<!-- JS -->
 <script src="api.js"></script>
 
 <script>
-// ✅ REGISTRAR SW
+// 🔥 SERVICE WORKER (OBLIGATORIO PARA PWA)
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
-}
-
-// 🔥 BLOQUEAR CÉDULA DESPUÉS DE VALIDAR
-async function validarCedulaEstricta(){
-    const cedInput = document.getElementById('ced');
-
-    await window.validarCedulaEstrictaOriginal?.(); // fallback si existe
-
-    // si pasó al paso 2 → bloquear
-    if(document.getElementById('paso2').classList.contains('activo')){
-        cedInput.readOnly = true;
-        cedInput.style.opacity = "0.6";
-    }
 }
 </script>
 
