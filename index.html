@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<div class="badge">🏆 Temporada 2026 - 2027</div> ESTO MAS GRANDE <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -26,8 +26,8 @@
         background: rgba(12, 25, 45, 0.65);
         backdrop-filter: blur(18px);
         border-radius: 2.5rem;
-        border: 1px solid #D4AF37;  /* Borde dorado más fino para la ID card */
-        box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(212, 175, 55, 0.1) inset;
+        border: 1px solid rgba(0, 143, 155, 0.3);
+        box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 143, 155, 0.15) inset;
         padding: 2rem 1.8rem;
         transition: transform 0.25s ease, box-shadow 0.3s;
     }
@@ -56,11 +56,11 @@
     }
     .badge {
         display: inline-block;
-        background: rgba(212, 175, 55, 0.2);
+        background: rgba(0, 143, 155, 0.2);
         border-radius: 60px;
         padding: 0.2rem 1rem;
         font-size: 0.7rem;
-        color: #f3d572;
+        color: #8fcbdb;
         margin-top: 0.6rem;
     }
     .paso {
@@ -90,7 +90,7 @@
         width: 100%;
         padding: 0.9rem 1.2rem;
         background: rgba(0, 0, 0, 0.45);
-        border: 1px solid rgba(212, 175, 55, 0.5);
+        border: 1px solid rgba(0, 143, 155, 0.6);
         border-radius: 2rem;
         color: white;
         font-size: 1rem;
@@ -99,8 +99,8 @@
         outline: none;
     }
     input:focus, select:focus {
-        border-color: #D4AF37;
-        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+        border-color: #008f9b;
+        box-shadow: 0 0 0 3px rgba(0, 143, 155, 0.3);
         background: rgba(0, 0, 0, 0.7);
     }
     input.error, select.error {
@@ -123,7 +123,7 @@
         gap: 6px;
     }
     .btn-primary {
-        background: linear-gradient(105deg, #D4AF37, #b8942e);
+        background: linear-gradient(105deg, #008f9b, #006b74);
         border: none;
         padding: 0.9rem;
         width: 100%;
@@ -132,7 +132,7 @@
         font-size: 1rem;
         text-transform: uppercase;
         letter-spacing: 1.5px;
-        color: #1a2b48;
+        color: white;
         cursor: pointer;
         margin-top: 1.2rem;
         transition: all 0.25s;
@@ -140,8 +140,8 @@
     }
     .btn-primary:hover:not(:disabled) {
         transform: translateY(-2px);
-        background: linear-gradient(105deg, #e5c158, #c9a330);
-        box-shadow: 0 10px 20px rgba(212, 175, 55, 0.4);
+        background: linear-gradient(105deg, #00a5b3, #00808a);
+        box-shadow: 0 10px 20px rgba(0, 143, 155, 0.4);
     }
     .btn-primary:disabled {
         opacity: 0.5;
@@ -179,8 +179,8 @@
     .spinner {
         width: 60px;
         height: 60px;
-        border: 4px solid rgba(212, 175, 55, 0.25);
-        border-top: 4px solid #D4AF37;
+        border: 4px solid rgba(0, 143, 155, 0.25);
+        border-top: 4px solid #008f9b;
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
     }
@@ -205,7 +205,7 @@
         border-radius: 2rem;
         padding: 2rem;
         text-align: center;
-        border: 1px solid #D4AF37;
+        border: 2px solid #008f9b;
         max-width: 300px;
         width: 85%;
         animation: zoom 0.3s ease;
@@ -215,7 +215,7 @@
         to { opacity: 1; transform: scale(1); }
     }
     .modal-card h2 {
-        color: #D4AF37;
+        color: #008f9b;
         margin-bottom: 0.8rem;
     }
     .toast {
@@ -234,7 +234,7 @@
         z-index: 10001;
         animation: toastIn 0.25s ease;
         box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        border-left: 5px solid #D4AF37;
+        border-left: 5px solid #008f9b;
         color: white;
         font-size: 0.85rem;
         max-width: 90%;
@@ -301,8 +301,8 @@
 
         <!-- PASO 4: Fotos -->
         <div id="paso4" class="paso">
-            <div class="campo"><label>📸 Foto perfil</label><input type="file" id="rostro" accept="image/jpeg,image/png"><span id="vistoRostro" class="visto-img"></span></div>
-            <div class="campo"><label>🪪 Foto cédula</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"><span id="vistoCedula" class="visto-img"></span></div>
+            <div class="campo"><label>📸 Foto perfil... Sonrie</label><input type="file" id="rostro" accept="image/jpeg,image/png"><span id="vistoRostro" class="visto-img"></span></div>
+            <div class="campo"><label>🪪 Foto de tú cédula (L. Frontal)</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"><span id="vistoCedula" class="visto-img"></span></div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
 
@@ -317,7 +317,7 @@
         <div id="paso6" class="paso">
             <div class="campo"><label>🧦 Quieres Medias extras (+$2)</label><select id="medias"><option value="">Selecciona</option><option value="NO">No</option><option value="SI">Sí</option></select></div>
             <div class="campo"><label>💰 N° transacción valor de inscripción ($5)</label><input id="inscripcion" placeholder="Ej: PAGO-12345"></div>
-            <div class="campo"><label>👕 N° transacción valor de uniforme ($18 + medias)</label><input id="uniforme" placeholder="Ej: PAGO-67890"></div>
+            <div class="campo"><label>👕 N° transacción valor de uniforme (abono 75% + medias)</label><input id="uniforme" placeholder="Ej: PAGO-67890"></div>
             <button type="button" id="btnFinal" class="btn-primary" disabled>Finalizar registro</button>
         </div>
 
