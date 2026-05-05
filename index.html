@@ -58,10 +58,11 @@
         display: inline-block;
         background: rgba(0, 143, 155, 0.2);
         border-radius: 60px;
-        padding: 0.2rem 1rem;
-        font-size: 0.7rem;
+        padding: 0.4rem 1.5rem;      /* más grande */
+        font-size: 0.9rem;           /* más grande */
         color: #8fcbdb;
         margin-top: 0.6rem;
+        font-weight: 500;
     }
     .paso {
         display: none;
@@ -165,6 +166,39 @@
         80% { transform: scale(1.2); }
         100% { transform: scale(1); }
     }
+    /* Estilos para grupo de pago uniforme */
+    .radio-group {
+        display: flex;
+        gap: 1.5rem;
+        margin: 0.5rem 0 0.2rem;
+    }
+    .radio-group label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.9rem;
+        text-transform: none;
+        font-weight: normal;
+        color: #b0c4de;
+        cursor: pointer;
+    }
+    .radio-group input {
+        width: auto;
+        margin: 0;
+        transform: scale(1.1);
+    }
+    .condicional {
+        margin-top: 0.8rem;
+        transition: all 0.2s;
+    }
+    .aviso-pago {
+        background: rgba(0, 0, 0, 0.4);
+        border-left: 3px solid #ffb347;
+        padding: 0.6rem 1rem;
+        border-radius: 1rem;
+        font-size: 0.8rem;
+        color: #f3d572;
+    }
     #loader {
         display: none;
         position: fixed;
@@ -258,6 +292,9 @@
         .help-note {
             font-size: 0.65rem;
         }
+        .radio-group {
+            gap: 1rem;
+        }
     }
 </style>
 </head>
@@ -313,11 +350,30 @@
             <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 6: Valores -->
+        <!-- PASO 6: Valores con pago de uniforme mejorado -->
         <div id="paso6" class="paso">
-            <div class="campo"><label>🧦 Quieres Medias extras (+$2)</label><select id="medias"><option value="">Selecciona</option><option value="NO">No</option><option value="SI">Sí</option></select></div>
-            <div class="campo"><label>💰 N° transacción valor de inscripción ($5)</label><input id="inscripcion" placeholder="Ej: PAGO-12345"></div>
-            <div class="campo"><label>👕 N° transacción valor de uniforme (abono 75% + medias)</label><input id="uniforme" placeholder="Ej: PAGO-67890"></div>
+            <div class="campo"><label>🧦 Medias extras (+$2)</label>
+                <select id="medias">
+                    <option value="">Selecciona</option>
+                    <option value="NO">No</option>
+                    <option value="SI">Sí</option>
+                </select>
+            </div>
+            <div class="campo"><label>💰 N° transacción valor de inscripción ($5)</label>
+                <input id="inscripcion" placeholder="Ej: PAGO-12345">
+            </div>
+
+            <!-- UNIFORME: Pregunta si pagó o no -->
+            <div class="campo">
+                <label>👕 Pago del uniforme (abono 75% + medias)</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="pagoUniforme" value="si"> Sí, ya pagué</label>
+                    <label><input type="radio" name="pagoUniforme" value="no"> No, aún no pago</label>
+                </div>
+                <div id="uniformeCondicional" class="condicional"></div>
+                <input type="hidden" id="uniforme" value="">
+            </div>
+
             <button type="button" id="btnFinal" class="btn-primary" disabled>Finalizar registro</button>
         </div>
 
@@ -328,6 +384,95 @@
 
 <div id="loader"><div class="spinner"></div><div id="loader-texto">Procesando...</div></div>
 <div id="modalExito"><div class="modal-card"><h2>✅ ¡Registro exitoso!</h2><p>Redirigiendo en <span id="contador">3</span> segundos...</p></div></div>
+
+<script>
+    // Lógica para mostrar campos condicionales del uniforme
+    const radios = document.querySelectorAll('input[name="pagoUniforme"]');
+    const condicionalDiv = document.getElementById('uniformeCondicional');
+    const uniformeHidden = document.getElementById('uniforme');
+
+    function actualizarCampoUniforme() {
+        const selected = document.querySelector('input[name="pagoUniforme"]:checked');
+        if (!selected) {
+            condicionalDiv.innerHTML = '';
+            uniformeHidden.value = '';
+            return;
+        }
+        if (selected.value === 'si') {
+            condicionalDiv.innerHTML = `
+                <div style="margin-top: 8px;">
+                    <input type="text" id="transaccionUniforme" class="campo-uniforme-input" placeholder="Número de transacción del pago" style="width:100%;">
+                </div>
+            `;
+            const inputTx = document.getElementById('transaccionUniforme');
+            if (inputTx) {
+                inputTx.addEventListener('input', () => {
+                    uniformeHidden.value = inputTx.value;
+                });
+                uniformeHidden.value = inputTx.value || '';
+            }
+        } else {
+            condicionalDiv.innerHTML = `
+                <div class="aviso-pago">
+                    ⚠️ Debes abonar <strong>$10</strong> hasta el <strong>viernes 8 de mayo</strong>.<br>
+                    ¿Qué día vas a pagar?
+                    <select id="diaPago" style="margin-top: 8px;">
+                        <option value="">Selecciona un día</option>
+                        <option value="Viernes 8 de mayo">Viernes 8 de mayo</option>
+                        <option value="Sábado 9 de mayo">Sábado 9 de mayo</option>
+                        <option value="Lunes 11 de mayo">Lunes 11 de mayo</option>
+                        <option value="Martes 12 de mayo">Martes 12 de mayo</option>
+                    </select>
+                </div>
+            `;
+            const selectDia = document.getElementById('diaPago');
+            if (selectDia) {
+                selectDia.addEventListener('change', () => {
+                    uniformeHidden.value = `PAGO PENDIENTE - pagará el ${selectDia.value}`;
+                });
+                uniformeHidden.value = `PAGO PENDIENTE - pagará el ${selectDia.value || '?'}`;
+            }
+        }
+    }
+
+    radios.forEach(radio => radio.addEventListener('change', actualizarCampoUniforme));
+
+    // Función para validar el paso 6 (checkbox o radio, y que los campos correspondientes estén llenos)
+    const medias = document.getElementById('medias');
+    const inscripcion = document.getElementById('inscripcion');
+    const btnFinal = document.getElementById('btnFinal');
+
+    function validarPaso6() {
+        const mediasOk = medias.value !== "";
+        const inscripcionOk = inscripcion.value.trim() !== "";
+        const pagoSeleccionado = document.querySelector('input[name="pagoUniforme"]:checked');
+        let uniformeOk = false;
+        if (pagoSeleccionado) {
+            if (pagoSeleccionado.value === 'si') {
+                const txInput = document.getElementById('transaccionUniforme');
+                uniformeOk = txInput && txInput.value.trim() !== "";
+            } else {
+                const diaSelect = document.getElementById('diaPago');
+                uniformeOk = diaSelect && diaSelect.value !== "";
+            }
+        }
+        btnFinal.disabled = !(mediasOk && inscripcionOk && pagoSeleccionado && uniformeOk);
+    }
+
+    medias.addEventListener('change', validarPaso6);
+    inscripcion.addEventListener('input', validarPaso6);
+    // También escuchar cambios en los campos dinámicos (se agregan al crearlos)
+    document.addEventListener('input', (e) => {
+        if (e.target.id === 'transaccionUniforme' || e.target.id === 'diaPago') validarPaso6();
+    });
+    document.addEventListener('change', (e) => {
+        if (e.target.id === 'diaPago') validarPaso6();
+    });
+
+    // También incluir la validación cuando se crean los campos dinámicos
+    const observer = new MutationObserver(() => validarPaso6());
+    observer.observe(condicionalDiv, { childList: true, subtree: true });
+</script>
 
 <script src="frontend.js"></script>
 </body>
