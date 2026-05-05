@@ -1,4 +1,4 @@
-const URL_GAS = 'https://script.google.com/macros/s/AKfycbxRZxFuo1g6c3oLN7zK5Ay4cJ4TgplSqvV4U4RPk2fLpw6wlBWmG69lOETJuO0G4HJb/exec';
+const URL_GAS = 'https://script.google.com/macros/s/AKfycbxB7NezJt9SzVasnD20sEsj3t0kjlIZS_7_t5qGCfFTIPIq9a4WEQwVvE4Ey27jgnsl/exec';
 // VALIDACIÓN ESTRICTA: No deja pasar si el servidor dice que existe
 async function validarCedulaEstricta() {
     const ced = document.getElementById('ced').value;
