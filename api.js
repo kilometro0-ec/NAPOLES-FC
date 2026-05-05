@@ -1,4 +1,4 @@
-const URL_GOOGLE = 'https://script.google.com/macros/s/AKfycbzTLrOa6vxQO_5d88-YqCp1Y_lDFGMVViE1WByiR_3b9wnTBCf24-KDJxwKb3zSozX6/exec'; // <--- Pégala aquí
+const URL_GOOGLE = 'https://script.google.com/macros/s/AKfycbx3L0U_Pfw2OCdh8KPXDZrRTRkQvAeoRab3sO5nsdUhwTSEnbxbD7YrCqfFyZkMLU4K/exec'; // <--- Pégala aquí
 
 document.getElementById('formRegistro').onsubmit = async (e) => {
     e.preventDefault();
