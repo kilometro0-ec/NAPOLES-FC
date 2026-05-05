@@ -13,12 +13,14 @@
     --blanco-puro: #ffffff;
     --gris-suave: rgba(255, 255, 255, 0.1);
     --negro-trans: rgba(0, 0, 0, 0.4);
+    --rojo-error: #e74c3c;
+    --verde-exito: #2ecc71;
 }
 
 body {
-    background-color: var(--azul-noche);
+    background: linear-gradient(135deg, var(--azul-noche) 0%, #0f1a2e 100%);
     color: var(--blanco-puro);
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Segoe UI', 'Poppins', Roboto, sans-serif;
     line-height: 1.6;
     padding: 20px;
     min-height: 100vh;
@@ -26,195 +28,319 @@ body {
     flex-direction: column;
 }
 
-/* 2. CONTENEDOR PRINCIPAL */
+/* Contenedor principal con animación de entrada */
 .contenedor-principal {
     max-width: 450px;
     width: 100%;
     margin: 40px auto 120px auto;
     padding: 30px;
-    background-color: var(--gris-suave);
-    border: 1px solid var(--dorado);
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(26, 43, 72, 0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(181, 148, 97, 0.4);
+    border-radius: 28px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(181, 148, 97, 0.2) inset;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.contenedor-principal:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 header {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
-h2 { 
-    color: var(--dorado); 
-    text-transform: uppercase; 
-    letter-spacing: 3px;
-    font-size: 1.4rem;
-    font-weight: 700;
-}
-
-/* 3. FORMULARIO E INPUTS */
-label { 
-    color: var(--dorado); 
-    font-size: 0.75rem; 
-    font-weight: bold; 
-    display: block; 
-    margin-top: 20px;
+h2 {
+    color: var(--dorado);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 4px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    animation: fadeInDown 0.5s ease;
 }
 
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Inputs y selects con transición */
 input, select {
     width: 100%;
-    padding: 12px 15px;
+    padding: 14px 16px;
     margin-top: 8px;
     border: 1px solid rgba(181, 148, 97, 0.5);
-    background: var(--negro-trans);
+    background: rgba(0, 0, 0, 0.5);
     color: white;
-    border-radius: 10px;
+    border-radius: 14px;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease-in-out;
+    outline: none;
 }
 
 input:focus, select:focus {
     border-color: var(--cardenillo);
-    box-shadow: 0 0 8px rgba(0, 139, 148, 0.4);
-    outline: none;
-    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 0 3px rgba(0, 139, 148, 0.3);
+    transform: scale(1.01);
+    background: rgba(0, 0, 0, 0.7);
 }
 
-select option {
-    background: var(--azul-noche);
-    color: white;
+/* Efecto de error en inputs */
+input.error, select.error {
+    border-color: var(--rojo-error);
+    animation: shake 0.3s ease-in-out;
 }
 
-/* Inputs tipo file */
-input[type="file"] {
-    padding: 10px;
-    background: var(--negro-trans);
-    border: 1px dashed var(--dorado);
-    cursor: pointer;
-}
-input[type="file"]::file-selector-button {
-    background: var(--cardenillo);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-right: 10px;
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
 
-/* 4. BOTONES */
+/* Botones con ripple y hover mejorado */
 .btn-accion, button:not([class*="nav"]) {
     background: linear-gradient(135deg, var(--cardenillo), #005f66);
     color: white;
     border: none;
     padding: 16px;
     width: 100%;
-    border-radius: 12px;
+    border-radius: 40px;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     cursor: pointer;
     margin-top: 25px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-accion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 139, 148, 0.5);
+    background: linear-gradient(135deg, #009ea8, #004d52);
 }
 
 .btn-accion:active {
-    transform: scale(0.98);
+    transform: translateY(1px);
 }
 
-.btn-accion:hover { 
-    box-shadow: 0 0 20px rgba(0, 139, 148, 0.6); 
+/* Efecto ripple */
+.btn-accion::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
 }
 
-.btn-accion:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
+.btn-accion:active::after {
+    width: 200px;
+    height: 200px;
 }
 
-/* 5. LOADER Y SPINNER */
+/* Visto animado */
+.visto-img {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Loader mejorado */
 #loader {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(26, 43, 72, 0.98);
-    z-index: 99999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    text-align: center;
-    padding: 20px;
+    gap: 20px;
 }
 
 .spinner-balon {
-    width: 70px;
-    height: 70px;
-    border: 5px solid var(--gris-suave);
+    width: 80px;
+    height: 80px;
+    border: 5px solid rgba(181, 148, 97, 0.3);
     border-top: 5px solid var(--dorado);
     border-radius: 50%;
-    animation: spinNapoles 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-    margin-bottom: 25px;
-    box-shadow: 0 0 15px rgba(181, 148, 97, 0.3);
+    animation: spinBalon 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
 }
 
-@keyframes spinNapoles {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes spinBalon {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
 }
 
-/* 6. NAVEGACIÓN (se inyecta dinámicamente) */
+/* Toasts (notificaciones flotantes) */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 60px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10001;
+    animation: toastSlideUp 0.3s ease forwards;
+    border-left: 5px solid var(--dorado);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.toast-notification.error {
+    border-left-color: var(--rojo-error);
+}
+.toast-notification.success {
+    border-left-color: var(--verde-exito);
+}
+
+@keyframes toastSlideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Modal de éxito mejorado */
+#modalExito {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10002;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #1A2B48, #0f1a2e);
+    padding: 40px;
+    border-radius: 40px;
+    text-align: center;
+    border: 2px solid var(--dorado);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    animation: modalZoom 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@keyframes modalZoom {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-content h2 {
+    color: var(--dorado);
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: white;
+    font-size: 1.1rem;
+}
+
+/* Navegación mejorada */
 .nav-napoles {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--azul-noche);
-    border-top: 2px solid var(--dorado);
+    background: rgba(26, 43, 72, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(181, 148, 97, 0.5);
     display: flex;
     justify-content: space-around;
     padding: 12px 20px;
     z-index: 1000;
-    backdrop-filter: blur(10px);
+    animation: navSlideUp 0.4s ease;
 }
+
+@keyframes navSlideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
 .nav-napoles div {
     font-size: 1.8rem;
     cursor: pointer;
-    transition: transform 0.2s, filter 0.2s;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: all 0.2s ease;
+    padding: 8px;
+    border-radius: 50%;
+    width: 50px;
+    text-align: center;
 }
+
 .nav-napoles div:hover {
-    transform: translateY(-3px);
-    filter: drop-shadow(0 0 8px var(--dorado));
+    transform: translateY(-5px);
+    text-shadow: 0 0 12px var(--dorado);
+    background: rgba(255,255,255,0.1);
 }
 
-/* 7. UTILIDADES */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 380px) {
+/* Responsive */
+@media (max-width: 480px) {
     .contenedor-principal {
         padding: 20px;
         margin-top: 20px;
     }
-    /* ... todo lo anterior ... */
-
-/* Ajustes para vistos */
-.visto-img {
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 1.3rem;
-    vertical-align: middle;
-}
-
-/* Modal éxito */
-#modalExito {
-    font-family: 'Segoe UI', sans-serif;
-}
-    h2 { font-size: 1.2rem; }
+    h2 {
+        font-size: 1.3rem;
+    }
 }
