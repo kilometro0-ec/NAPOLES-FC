@@ -1,4 +1,4 @@
-const CACHE_NAME = 'napoles-v10';
+const CACHE_NAME = 'napoles-v5'; // CAMBIA versión SIEMPRE
 
 self.addEventListener('install', e=>{
   self.skipWaiting();
@@ -7,12 +7,14 @@ self.addEventListener('install', e=>{
 self.addEventListener('activate', e=>{
   e.waitUntil(
     caches.keys().then(keys=>{
-      return Promise.all(keys.map(k=>caches.delete(k)));
+      return Promise.all(keys.map(k=>{
+        if(k !== CACHE_NAME) return caches.delete(k);
+      }));
     })
   );
+  self.clients.claim();
 });
 
-// 🚀 SIEMPRE RED (NUNCA CACHE VIEJO)
 self.addEventListener('fetch', e=>{
-  e.respondWith(fetch(e.request));
+  e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
 });
