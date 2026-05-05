@@ -13,6 +13,7 @@
 
 <style>
 body{background:#0a0a0a;color:#fff;font-family:sans-serif}
+.contenedor-principal{max-width:420px;margin:auto;padding:20px}
 .paso{display:none}
 .paso.activo{display:block}
 
@@ -157,14 +158,11 @@ button{
 </form>
 </div>
 
-<div id="loader"><p>PROCESANDO...</p></div>
+<div id="loader"><p id="loader-texto">PROCESANDO...</p></div>
 
 <script src="api.js"></script>
 
 <script>
-// ❌ NO cargar nav en registro
-// script nav eliminado intencionalmente
-
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
 }
