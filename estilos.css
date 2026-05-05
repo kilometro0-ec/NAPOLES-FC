@@ -1,3 +1,9 @@
+/* Configuración Global para evitar desbordamientos */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
 :root {
   --azul-noche: #1A2B48;
   --cardenillo: #008B94;
@@ -11,32 +17,52 @@ body {
   color: var(--blanco-puro);
   font-family: 'Segoe UI', Roboto, sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 15px; /* Añadido para que no pegue al borde en móviles */
+  min-height: 100vh;
 }
 
-h2 { color: var(--dorado); text-align: center; text-transform: uppercase; letter-spacing: 2px; }
+h2 { 
+  color: var(--dorado); 
+  text-align: center; 
+  text-transform: uppercase; 
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+}
 
 .contenedor-principal {
   max-width: 450px;
-  margin: 40px auto;
+  margin: 20px auto;
   padding: 25px;
   background-color: var(--gris-suave);
   border: 1px solid var(--dorado);
   border-radius: 15px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px); /* Efecto moderno de cristal */
 }
 
-label { color: var(--dorado); font-size: 0.9em; font-weight: bold; display: block; margin-top: 10px; }
+label { 
+  color: var(--dorado); 
+  font-size: 0.85em; 
+  font-weight: bold; 
+  display: block; 
+  margin-top: 15px;
+  text-transform: uppercase;
+}
 
 input {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   margin: 8px 0;
   border: 1px solid var(--dorado);
   background: rgba(0, 0, 0, 0.3);
   color: white;
   border-radius: 8px;
-  box-sizing: border-box;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--cardenillo);
+  box-shadow: 0 0 5px var(--cardenillo);
 }
 
 .btn-accion {
@@ -50,7 +76,16 @@ input {
   text-transform: uppercase;
   cursor: pointer;
   transition: 0.3s;
-  margin-top: 10px;
+  margin-top: 15px;
+  display: block;
 }
 
-.btn-accion:hover { background-color: #00737a; box-shadow: 0 0 10px var(--cardenillo); }
+.btn-accion:hover { 
+  background-color: #00737a; 
+  box-shadow: 0 0 15px var(--cardenillo); 
+}
+
+/* Evitar que el menú de nav.js tape el contenido */
+.seccion-formulario {
+  margin-bottom: 20px;
+}
