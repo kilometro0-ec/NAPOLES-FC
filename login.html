@@ -1,181 +1,140 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Jugadores | Nápoles FC</title>
+    
+    <!-- Configuración PWA para instalación directa -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#b59461">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-<title>Registro - Nápoles F.C.</title>
-
-<link rel="icon" href="favicon.png">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1A2B48">
-
-<link rel="stylesheet" href="estilos.css">
-
-<!-- Fuente -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-/* SOLO ajustes mínimos, no rompe tu CSS */
-.nav-napoles{display:none !important;}
-
-#contenedor-camara{
-    position:relative;
-    width:280px;
-    height:280px;
-    margin:20px auto;
-    overflow:hidden;
-    border-radius:20px;
-    border:2px solid var(--dorado);
-}
-
-#video{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    transform:scaleX(-1);
-}
-
-.guia{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:200px;
-    height:200px;
-    border:3px dashed white;
-    border-radius:50%;
-    box-shadow:0 0 0 1000px rgba(0,0,0,0.5);
-}
-
-.preview{
-    width:90px;
-    margin-top:10px;
-    border-radius:10px;
-}
-</style>
-
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .contenedor-login {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: var(--gris-suave);
+            border: 1px solid var(--dorado);
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .logo-login {
+            font-size: 60px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px var(--dorado));
+        }
+        .mensaje-error {
+            color: #ff4444;
+            font-size: 0.85em;
+            margin-top: 15px;
+            display: none;
+            background: rgba(255, 68, 68, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .loader-login {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--azul-noche);
+            border-top: 3px solid var(--dorado);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
-
 <body>
 
-<div class="contenedor-principal">
+    <div class="contenedor-login">
+        <div class="logo-login">⚽</div>
+        <h2 style="color: white; margin-bottom: 5px;">Acceso Jugadores</h2>
+        <p style="color: var(--dorado); font-size: 0.9em; margin-bottom: 25px; letter-spacing: 1px;">NÁPOLES F.C. 2026</p>
 
-<header>
-    <div class="texto-logo">NAPOLES F.C.</div>
-    <h2>Ficha de Inscripción</h2>
-</header>
+        <form id="formLogin">
+            <label style="display: block; text-align: left; margin-bottom: 8px;">Número de Cédula</label>
+            <input type="text" id="loginCedula" placeholder="Ej: 172XXXXXXX" maxlength="10" pattern="\d{10}" required 
+                   style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--dorado); background: #1a1a1a; color: white;">
+            
+            <button type="submit" id="btnEntrar" class="btn-accion" style="width: 100%;">
+                <span id="textBtn">ENTRAR AL CLUB</span>
+                <div id="loaderBtn" class="loader-login"></div>
+            </button>
+            
+            <p id="errorLogin" class="mensaje-error">⚠️ Cédula no registrada o en proceso de validación.</p>
+        </form>
 
-<form id="formRegistro">
+        <div style="margin-top: 25px; border-top: 1px solid rgba(181, 148, 97, 0.2); padding-top: 20px;">
+            <a href="index.html" style="color: var(--dorado); text-decoration: none; font-size: 0.85em;">¿Eres nuevo? <strong>Regístrate aquí</strong></a>
+        </div>
+    </div>
 
-<!-- PASO 1 -->
-<div id="paso1" class="paso activo seccion-formulario">
-<label>Cédula</label>
-<input id="ced" name="cedula" maxlength="10" placeholder="10 dígitos" required>
-<button type="button" class="btn-accion" onclick="validarCedulaEstricta()">VALIDAR</button>
-</div>
+    <script>
+        // URL de tu Script de Google (la misma de api.js)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLctY39LIa_aVSFKCIQl306huhIk6CiZzrUC2PczfeVlTJ9-V9Vt9giq1A2mYveAHW/exec";
 
-<!-- PASO 2 -->
-<div id="paso2" class="paso seccion-formulario">
-<input id="n1" name="nombre1" placeholder="Primer Nombre" required>
-<input id="n2" name="nombre2" placeholder="Segundo Nombre">
-<input id="ape" name="apellidos" placeholder="Apellidos" required>
+        document.getElementById('formLogin').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const cedula = document.getElementById('loginCedula').value.trim();
+            const btn = document.getElementById('btnEntrar');
+            const textBtn = document.getElementById('textBtn');
+            const loaderBtn = document.getElementById('loaderBtn');
+            const errorMsg = document.getElementById('errorLogin');
 
-<label>Fecha de Nacimiento</label>
-<input type="date" name="fechaNac" required>
+            // Estado de carga
+            textBtn.style.display = 'none';
+            loaderBtn.style.display = 'block';
+            btn.disabled = true;
+            errorMsg.style.display = 'none';
 
-<button type="button" class="btn-accion" onclick="validarPaso2()">Siguiente</button>
-</div>
+            try {
+                // Petición al servidor (Google Sheets)
+                const response = await fetch(`${SCRIPT_URL}?action=login&cedula=${cedula}`);
+                const resultado = await response.json();
 
-<!-- PASO 3 -->
-<div id="paso3" class="paso seccion-formulario">
-<input name="telefono" placeholder="09XXXXXXXX" maxlength="10" required>
-<input name="correo" placeholder="Correo electrónico" required>
+                if (resultado.success) {
+                    // 1. Guardamos la sesión localmente
+                    localStorage.setItem('jugador_aprobado', 'true');
+                    localStorage.setItem('datos_jugador', JSON.stringify(resultado.datos));
+                    
+                    // 2. Redirección inmediata al perfil
+                    window.location.href = 'perfil.html';
+                } else {
+                    // Cédula no encontrada
+                    errorMsg.style.display = 'block';
+                    resetBtn();
+                }
+            } catch (error) {
+                console.error("Error de Login:", error);
+                alert("Problema de conexión. Verifica tu internet e intenta de nuevo.");
+                resetBtn();
+            }
+        });
 
-<button type="button" class="btn-accion" onclick="validarPaso3()">Siguiente</button>
-</div>
+        function resetBtn() {
+            const btn = document.getElementById('btnEntrar');
+            const textBtn = document.getElementById('textBtn');
+            const loaderBtn = document.getElementById('loaderBtn');
+            textBtn.style.display = 'block';
+            loaderBtn.style.display = 'none';
+            btn.disabled = false;
+        }
 
-<!-- PASO 4 -->
-<div id="paso4" class="paso seccion-formulario">
+        // Registro de PWA para instalación desde navegador
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error', err));
+            });
+        }
+    </script>
 
-<div id="contenedor-camara">
-<video id="video" autoplay playsinline></video>
-<div class="guia"></div>
-</div>
-
-<button type="button" class="btn-accion" onclick="iniciarCamara()">Activar Cámara</button>
-<button type="button" class="btn-accion" onclick="capturarFoto()">Capturar</button>
-
-<img id="previewRostro" class="preview">
-
-<label>Foto de Cédula</label>
-<input type="file" accept="image/*" onchange="previewFile(this,'previewCedula','fotoCedulaB64')" required>
-<img id="previewCedula" class="preview">
-
-<input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
-<input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
-
-<button type="button" class="btn-accion" onclick="validarPaso4()">Siguiente</button>
-</div>
-
-<!-- PASO 5 -->
-<div id="paso5" class="paso seccion-formulario">
-<label>Nombre en Camiseta</label>
-<select id="selectNombreCamiseta" name="nombreCamiseta" required></select>
-
-<label>Dorsal</label>
-<select id="selectDorsal" name="dorsal" required></select>
-
-<button type="button" class="btn-accion" onclick="verPaso(6)">Siguiente</button>
-</div>
-
-<!-- PASO 6 -->
-<div id="paso6" class="paso seccion-formulario">
-
-<label>Medias Extras</label>
-<select name="mediasExtras" required>
-<option value="">Seleccione</option>
-<option value="NO">NO</option>
-<option value="SI">SI (+$2)</option>
-</select>
-
-<input name="transaccionInscripcion" placeholder="Comprobante Inscripción" required>
-<input name="transaccionUniforme" placeholder="Comprobante Uniforme" required>
-
-<button type="button" class="btn-accion" onclick="enviarRegistro()">Finalizar Registro</button>
-
-</div>
-
-</form>
-</div>
-
-<!-- LOADER -->
-<div id="loader">
-<div class="spinner-balon"></div>
-<p id="loader-texto">Procesando...</p>
-</div>
-
-<script src="api.js"></script>
-
-<script>
-// ✅ REGISTRAR SW
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-}
-
-// 🔥 BLOQUEAR CÉDULA DESPUÉS DE VALIDAR
-async function validarCedulaEstricta(){
-    const cedInput = document.getElementById('ced');
-
-    await window.validarCedulaEstrictaOriginal?.(); // fallback si existe
-
-    // si pasó al paso 2 → bloquear
-    if(document.getElementById('paso2').classList.contains('activo')){
-        cedInput.readOnly = true;
-        cedInput.style.opacity = "0.6";
-    }
-}
-</script>
-
+    <!-- Scripts de soporte -->
+    <script src="api.js"></script>
+    <script src="nav.js"></script>
 </body>
 </html>
