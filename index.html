@@ -58,8 +58,8 @@
         display: inline-block;
         background: rgba(0, 143, 155, 0.2);
         border-radius: 60px;
-        padding: 0.4rem 1.5rem;
-        font-size: 0.9rem;
+        padding: 0.4rem 1.5rem;      /* más grande */
+        font-size: 0.9rem;           /* más grande */
         color: #8fcbdb;
         margin-top: 0.6rem;
         font-weight: 500;
@@ -149,18 +149,24 @@
         cursor: not-allowed;
         transform: none;
     }
+    .foto-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
     .visto-img {
         font-size: 1.3rem;
         color: #2ecc71;
         animation: pop 0.2s ease;
-        display: inline-block;
-        margin-left: 8px;
     }
     @keyframes pop {
         0% { transform: scale(0); }
         80% { transform: scale(1.2); }
         100% { transform: scale(1); }
     }
+    /* Estilos para grupo de pago uniforme */
     .radio-group {
         display: flex;
         gap: 1.5rem;
@@ -193,8 +199,33 @@
         font-size: 0.8rem;
         color: #f3d572;
     }
-    #loader, #modalExito { display: none; }
+    #loader {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 10000;
+    }
+    .spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(0, 143, 155, 0.25);
+        border-top: 4px solid #008f9b;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loader-texto {
+        margin-top: 1rem;
+        color: white;
+        font-weight: 500;
+    }
     #modalExito {
+        display: none;
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.8);
@@ -217,7 +248,10 @@
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
     }
-    .modal-card h2 { color: #008f9b; margin-bottom: 0.8rem; }
+    .modal-card h2 {
+        color: #008f9b;
+        margin-bottom: 0.8rem;
+    }
     .toast {
         position: fixed;
         bottom: 25px;
@@ -246,9 +280,21 @@
         to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
     @media (max-width: 550px) {
-        .registro-container { padding: 1.5rem; }
-        .header h1 { font-size: 1.6rem; }
-        input, select, .btn-primary { padding: 0.8rem 1rem; }
+        .registro-container {
+            padding: 1.5rem;
+        }
+        .header h1 {
+            font-size: 1.6rem;
+        }
+        input, select, .btn-primary {
+            padding: 0.8rem 1rem;
+        }
+        .help-note {
+            font-size: 0.65rem;
+        }
+        .radio-group {
+            gap: 1rem;
+        }
     }
 </style>
 </head>
@@ -293,18 +339,18 @@
         <!-- PASO 4: Fotos -->
         <div id="paso4" class="paso">
             <div class="campo"><label>📸 Foto perfil... Sonrie</label><input type="file" id="rostro" accept="image/jpeg,image/png"><span id="vistoRostro" class="visto-img"></span></div>
-            <div class="campo"><label>🪪 Foto de tu cédula (L. Frontal)</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"><span id="vistoCedula" class="visto-img"></span></div>
+            <div class="campo"><label>🪪 Foto de tú cédula (L. Frontal)</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"><span id="vistoCedula" class="visto-img"></span></div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
 
         <!-- PASO 5: Armadura -->
         <div id="paso5" class="paso">
-            <div class="campo"><label>🏷️ Nombre en tu camiseta</label><select id="nombreCamiseta"></select></div>
-            <div class="campo"><label>🔢 Número de tu dorsal</label><select id="dorsal"></select></div>
+            <div class="campo"><label>🏷️ Nombre en tú camiseta</label><select id="nombreCamiseta"></select></div>
+            <div class="campo"><label>🔢 Número de tú dorsal</label><select id="dorsal"></select></div>
             <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 6: Valores con pago de uniforme -->
+        <!-- PASO 6: Valores con pago de uniforme mejorado -->
         <div id="paso6" class="paso">
             <div class="campo"><label>🧦 Medias extras (+$2)</label>
                 <select id="medias">
@@ -316,6 +362,8 @@
             <div class="campo"><label>💰 N° transacción valor de inscripción ($5)</label>
                 <input id="inscripcion" placeholder="Ej: PAGO-12345">
             </div>
+
+            <!-- UNIFORME: Pregunta si pagó o no -->
             <div class="campo">
                 <label>👕 Pago del uniforme (abono 75% + medias)</label>
                 <div class="radio-group">
@@ -325,6 +373,7 @@
                 <div id="uniformeCondicional" class="condicional"></div>
                 <input type="hidden" id="uniforme" value="">
             </div>
+
             <button type="button" id="btnFinal" class="btn-primary" disabled>Finalizar registro</button>
         </div>
 
@@ -333,23 +382,11 @@
     </form>
 </div>
 
-<div id="loader"><div class="spinner" style="width:60px;height:60px;border:4px solid rgba(0,143,155,0.25);border-top:4px solid #008f9b;border-radius:50%;animation:spin 0.8s linear infinite;"></div><div id="loader-texto">Procesando...</div></div>
+<div id="loader"><div class="spinner"></div><div id="loader-texto">Procesando...</div></div>
 <div id="modalExito"><div class="modal-card"><h2>✅ ¡Registro exitoso!</h2><p>Redirigiendo en <span id="contador">3</span> segundos...</p></div></div>
 
 <script>
-    // ========== FIX BOTÓN VALIDAR CÉDULA ==========
-    // Activa el botón cuando la cédula tenga 10 dígitos (solo números)
-    const cedInput = document.getElementById('ced');
-    const btnValidar = document.getElementById('btnCedula');
-    if (cedInput && btnValidar) {
-        cedInput.addEventListener('input', function(e) {
-            // Solo números y máximo 10 caracteres
-            this.value = this.value.replace(/\D/g, '').slice(0, 10);
-            btnValidar.disabled = (this.value.length !== 10);
-        });
-    }
-
-    // ========== LÓGICA PARA EL PAGO DEL UNIFORME (Sí/No) ==========
+    // Lógica para mostrar campos condicionales del uniforme
     const radios = document.querySelectorAll('input[name="pagoUniforme"]');
     const condicionalDiv = document.getElementById('uniformeCondicional');
     const uniformeHidden = document.getElementById('uniforme');
@@ -363,24 +400,23 @@
         }
         if (selected.value === 'si') {
             condicionalDiv.innerHTML = `
-                <div style="margin-top:8px;">
-                    <input type="text" id="transaccionUniforme" placeholder="Número de transacción del pago" style="width:100%; padding:0.8rem 1rem; border-radius:2rem; border:1px solid rgba(0,143,155,0.6); background:rgba(0,0,0,0.45); color:white;">
+                <div style="margin-top: 8px;">
+                    <input type="text" id="transaccionUniforme" class="campo-uniforme-input" placeholder="Número de transacción del pago" style="width:100%;">
                 </div>
             `;
-            const txInput = document.getElementById('transaccionUniforme');
-            if (txInput) {
-                txInput.addEventListener('input', () => {
-                    uniformeHidden.value = txInput.value;
-                    validarPaso6();
+            const inputTx = document.getElementById('transaccionUniforme');
+            if (inputTx) {
+                inputTx.addEventListener('input', () => {
+                    uniformeHidden.value = inputTx.value;
                 });
-                uniformeHidden.value = txInput.value || '';
+                uniformeHidden.value = inputTx.value || '';
             }
         } else {
             condicionalDiv.innerHTML = `
                 <div class="aviso-pago">
                     ⚠️ Debes abonar <strong>$10</strong> hasta el <strong>viernes 8 de mayo</strong>.<br>
                     ¿Qué día vas a pagar?
-                    <select id="diaPago" style="margin-top:8px; padding:0.5rem; border-radius:1rem; background:#1e2a3e; color:white;">
+                    <select id="diaPago" style="margin-top: 8px;">
                         <option value="">Selecciona un día</option>
                         <option value="Viernes 8 de mayo">Viernes 8 de mayo</option>
                         <option value="Sábado 9 de mayo">Sábado 9 de mayo</option>
@@ -393,17 +429,15 @@
             if (selectDia) {
                 selectDia.addEventListener('change', () => {
                     uniformeHidden.value = `PAGO PENDIENTE - pagará el ${selectDia.value}`;
-                    validarPaso6();
                 });
                 uniformeHidden.value = `PAGO PENDIENTE - pagará el ${selectDia.value || '?'}`;
             }
         }
-        validarPaso6();
     }
 
     radios.forEach(radio => radio.addEventListener('change', actualizarCampoUniforme));
 
-    // Validación del paso 6 para habilitar el botón final
+    // Función para validar el paso 6 (checkbox o radio, y que los campos correspondientes estén llenos)
     const medias = document.getElementById('medias');
     const inscripcion = document.getElementById('inscripcion');
     const btnFinal = document.getElementById('btnFinal');
@@ -427,21 +461,19 @@
 
     medias.addEventListener('change', validarPaso6);
     inscripcion.addEventListener('input', validarPaso6);
-    
-    // Escuchar cambios en los campos dinámicos (se agregan después)
+    // También escuchar cambios en los campos dinámicos (se agregan al crearlos)
     document.addEventListener('input', (e) => {
         if (e.target.id === 'transaccionUniforme' || e.target.id === 'diaPago') validarPaso6();
     });
     document.addEventListener('change', (e) => {
         if (e.target.id === 'diaPago') validarPaso6();
     });
-    
-    // Observador para cuando se crean los campos dinámicos
+
+    // También incluir la validación cuando se crean los campos dinámicos
     const observer = new MutationObserver(() => validarPaso6());
     observer.observe(condicionalDiv, { childList: true, subtree: true });
 </script>
 
-<!-- Aquí cargamos frontend.js si existe, para el resto de funciones (pasos, imágenes, dorsales, envío) -->
 <script src="frontend.js"></script>
 </body>
 </html>
