@@ -1,63 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nápoles F.C. - Perfil</title>
-<link rel="stylesheet" href="estilos.css">
-<style>
-/* Estilos específicos para perfil */
-.perfil-container {
-    max-width: 500px;
-    margin: 80px auto 100px;
-    background: rgba(10, 20, 40, 0.6);
-    backdrop-filter: blur(16px);
-    border-radius: 48px;
-    padding: 2rem;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    text-align: center;
-}
-.perfil-avatar {
-    font-size: 5rem;
-    margin-bottom: 1rem;
-}
-.perfil-dato {
-    margin: 1rem 0;
-    padding: 0.8rem;
-    background: rgba(0,0,0,0.4);
-    border-radius: 60px;
-    text-align: left;
-    padding-left: 1.5rem;
-}
-.perfil-dato strong {
-    color: var(--dorado);
-    display: inline-block;
-    width: 120px;
-}
-.btn-cerrar-sesion {
-    background: linear-gradient(95deg, #e74c3c, #c0392b);
-    margin-top: 1.5rem;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nápoles F.C. - Mi Perfil</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .perfil-dato {
+            background: rgba(0,0,0,0.3);
+            border-radius: 30px;
+            padding: 12px 20px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .perfil-dato strong { color: var(--dorado); }
+        .fotos-perfil {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .foto-item {
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 10px;
+            width: 180px;
+        }
+        .foto-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid var(--dorado);
+        }
+        .foto-item p {
+            margin-top: 8px;
+            color: var(--dorado);
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-
-<div class="perfil-container">
-    <div class="perfil-avatar">⚽</div>
-    <h2 style="color: var(--dorado);">Mi Perfil</h2>
-    
-    <div class="perfil-dato"><strong>Nombre:</strong> <span id="perfilNombre">Cargando...</span></div>
-    <div class="perfil-dato"><strong>Cédula:</strong> <span id="perfilCedula">---</span></div>
-    <div class="perfil-dato"><strong>Correo:</strong> <span id="perfilCorreo">---</span></div>
-    <div class="perfil-dato"><strong>Teléfono:</strong> <span id="perfilTelefono">---</span></div>
-    <div class="perfil-dato"><strong>Dorsal:</strong> <span id="perfilDorsal">---</span></div>
-    
-    <button id="cerrarSesionBtn" class="btn-accion btn-cerrar-sesion">🚪 CERRAR SESIÓN</button>
+<div class="contenedor-principal" style="max-width: 550px;">
+    <h2 style="text-align:center;">⚽ MI PERFIL ⚽</h2>
+    <div id="perfilContent">
+        <div class="fotos-perfil" id="fotosContainer">
+            <div class="foto-item"><p>📸 FOTO PERFIL</p><img id="fotoRostro" src="" alt="Foto rostro"></div>
+            <div class="foto-item"><p>🪪 FOTO CÉDULA</p><img id="fotoCedula" src="" alt="Foto cédula"></div>
+        </div>
+        <div class="perfil-dato"><strong>Cédula:</strong> <span id="perfilCedula">---</span></div>
+        <div class="perfil-dato"><strong>Nombre completo:</strong> <span id="perfilNombre">---</span></div>
+        <div class="perfil-dato"><strong>Fecha de nacimiento:</strong> <span id="perfilFecha">---</span></div>
+        <div class="perfil-dato"><strong>Teléfono:</strong> <span id="perfilTelefono">---</span></div>
+        <div class="perfil-dato"><strong>Correo:</strong> <span id="perfilCorreo">---</span></div>
+        <div class="perfil-dato"><strong>Dorsal:</strong> <span id="perfilDorsal">---</span></div>
+        <div class="perfil-dato"><strong>Nombre en camiseta:</strong> <span id="perfilCamiseta">---</span></div>
+        <button id="cerrarSesion" class="btn-accion">🚪 CERRAR SESIÓN</button>
+    </div>
 </div>
 
 <script>
-// Perfil: cargar datos desde localStorage (lo que guardó el registro)
-document.addEventListener('DOMContentLoaded', () => {
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbyOZObCnKnnbwwuwTO8CULGvh1-c9hiUqAhBs15N3ceMYaFQaiHtTQWGJgugbodinP6/exec";
+
+    async function cargarPerfil(cedula) {
+        try {
+            const resp = await fetch(`${URL_GAS}?action=obtenerJugador&cedula=${cedula}`);
+            const data = await resp.json();
+            if (data.ok) {
+                document.getElementById('perfilCedula').innerText = data.cedula;
+                document.getElementById('perfilNombre').innerText = `${data.nombre1} ${data.nombre2} ${data.apellidos}`;
+                document.getElementById('perfilFecha').innerText = data.fechaNac;
+                document.getElementById('perfilTelefono').innerText = data.telefono;
+                document.getElementById('perfilCorreo').innerText = data.correo;
+                document.getElementById('perfilDorsal').innerText = data.dorsal;
+                document.getElementById('perfilCamiseta').innerText = data.nombreCamiseta;
+                if (data.urlRostro) document.getElementById('fotoRostro').src = data.urlRostro;
+                if (data.urlCedula) document.getElementById('fotoCedula').src = data.urlCedula;
+            } else {
+                alert("No se pudieron cargar los datos.");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Error al cargar perfil.");
+        }
+    }
+
+    // Verificar sesión
     let session = null;
     try {
         const raw = localStorage.getItem('jugador_aprobado');
@@ -69,69 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     } catch(e) {}
-    
-    if (!session) {
-        // No hay sesión, redirigir al registro
-        window.location.href = 'index.html';
-        return;
+
+    if (!session || !session.cedula) {
+        window.location.href = 'login.html';
+    } else {
+        cargarPerfil(session.cedula);
     }
-    
-    // Intentar cargar datos completos desde el backend (opcional)
-    // Por ahora mostramos lo que tenemos en sesión (solo cédula)
-    document.getElementById('perfilCedula').innerText = session.cedula || '---';
-    document.getElementById('perfilNombre').innerText = session.nombre || 'Jugador Nápoles';
-    document.getElementById('perfilCorreo').innerText = session.correo || 'pendiente@napoles.com';
-    document.getElementById('perfilTelefono').innerText = session.telefono || '---';
-    document.getElementById('perfilDorsal').innerText = session.dorsal || '---';
-    
-    // Si quieres mostrar más datos, podrías hacer un fetch al backend con la cédula
-    // para obtener nombre, dorsal, etc. Pero al menos no da error.
-});
 
-// Cerrar sesión
-document.getElementById('cerrarSesionBtn')?.addEventListener('click', () => {
-    localStorage.removeItem('jugador_aprobado');
-    window.location.href = 'index.html';
-});
-</script>
-
-<!-- Inyectar navegación (la misma función del frontend.js pero aquí también) -->
-<script>
-function inyectarNavPerfil() {
-    if (document.querySelector('.nav-napoles')) return;
-    let sessionActiva = false, esAdmin = false;
-    try {
-        const raw = localStorage.getItem('jugador_aprobado');
-        if (raw) {
-            const s = JSON.parse(raw);
-            sessionActiva = Date.now() < s.expira;
-            esAdmin = s.admin === true;
-        }
-    } catch(e) {}
-    const nav = document.createElement('nav');
-    nav.className = 'nav-napoles';
-    const items = [
-        { href: 'index.html', icono: '🏠', label: 'Inicio' },
-        { href: 'perfil.html', icono: '⚽', label: 'Perfil' },
-        { href: 'noticias.html', icono: '📢', label: 'Noticias' }
-    ];
-    if (sessionActiva && esAdmin) items.push({ href: 'admin.html', icono: '👑', label: 'Admin' });
-    if (sessionActiva) items.push({ href: '#', icono: '🚪', label: 'Salir', accion: 'logout' });
-    items.forEach(item => {
-        const div = document.createElement('div');
-        div.textContent = item.icono;
-        div.setAttribute('aria-label', item.label);
-        div.setAttribute('title', item.label);
-        if (item.accion === 'logout') {
-            div.onclick = () => { localStorage.removeItem('jugador_aprobado'); location.href = 'index.html'; };
-        } else {
-            div.onclick = () => location.href = item.href;
-        }
-        nav.appendChild(div);
+    document.getElementById('cerrarSesion').addEventListener('click', () => {
+        localStorage.removeItem('jugador_aprobado');
+        window.location.href = 'login.html';
     });
-    document.body.appendChild(nav);
-}
-document.addEventListener('DOMContentLoaded', inyectarNavPerfil);
 </script>
 </body>
 </html>
