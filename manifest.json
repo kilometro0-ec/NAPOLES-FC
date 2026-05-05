@@ -1,12 +1,15 @@
 {
-  "name": "Nápoles F.C. Oficial",
-  "short_name": "Nápoles FC",
-  "description": "App Oficial de Gestión - Nápoles F.C.",
+  "name": "Napoles FC",
+  "short_name": "Napoles",
   "start_url": "index.html",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#001a33",
-  "theme_color": "#b59461",
-  "scope": "/",
-
+  "background_color": "#1A2B48",
+  "theme_color": "#1A2B48",
+  "icons": [
+    {
+      "src": "img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
 }
