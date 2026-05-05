@@ -1,16 +1,14 @@
-const URL_GAS = 'https://script.google.com/macros/s/AKfycby5tgeQNUNvL4O8h5zJiX2tYT4Zo_tZ7a9Mc9zOIlfQGNYC7D1uBAHReDeah_OEQRJ5/exec';
+const URL_GAS = "TU_URL_AQUI";
 
 // UI
 function verPaso(n){
     document.querySelectorAll('.paso').forEach(p=>p.classList.remove('activo'));
     document.getElementById('paso'+n).classList.add('activo');
-    window.scrollTo(0,0);
 }
 
-function loader(on,text="PROCESANDO..."){
-    const l=document.getElementById('loader');
-    document.getElementById('loader-texto').innerText=text;
-    l.style.display= on ? 'flex':'none';
+function loader(on,text){
+    loader_texto.innerText=text;
+    loader.style.display = on ? "flex":"none";
 }
 
 // VALIDAR CÉDULA
@@ -27,15 +25,13 @@ function validarCedulaReal(ced){
         total+=num;
     }
 
-    let dec=(10-(total%10))%10;
-    return dec===parseInt(ced[9]);
+    return ((10-(total%10))%10)===parseInt(ced[9]);
 }
 
-// VALIDAR EN SERVIDOR
 async function validarCedulaServidor(cedula){
 
     if(!validarCedulaReal(cedula)){
-        return {ok:false,msg:"CÉDULA INVÁLIDA"};
+        return {ok:false,msg:"Cédula inválida"};
     }
 
     try{
@@ -43,68 +39,89 @@ async function validarCedulaServidor(cedula){
         const data = await res.json();
 
         if(data.cedulaExiste){
-            return {ok:false,msg:"YA REGISTRADO"};
+            return {ok:false,msg:"Ya registrado"};
         }
 
         return {ok:true};
 
     }catch{
-        return {ok:false,msg:"ERROR DE CONEXIÓN"};
+        return {ok:false,msg:"Error de conexión"};
     }
 }
 
-// CÁMARA
+// ARMADURA
+async function cargarArmadura(){
+
+    nombreCamiseta.innerHTML='<option value="">Seleccionar Nombre</option>';
+    dorsal.innerHTML='<option value="">Seleccionar Dorsal</option>';
+
+    if(n1.value) nombreCamiseta.add(new Option(n1.value,n1.value));
+    if(n2.value) nombreCamiseta.add(new Option(n2.value,n2.value));
+
+    try{
+        const res = await fetch(`${URL_GAS}?action=getDorsales`);
+        const ocupados = await res.json();
+
+        for(let i=1;i<=99;i++){
+            if(!ocupados.includes(i)){
+                dorsal.add(new Option("DORSAL "+i,i));
+            }
+        }
+    }catch{
+        for(let i=1;i<=99;i++){
+            dorsal.add(new Option("DORSAL "+i,i));
+        }
+    }
+}
+
+// CAMARA
 let stream;
 
 async function iniciarCamara(){
-    const video=document.getElementById('video');
-
-    try{
-        stream = await navigator.mediaDevices.getUserMedia({video:true});
-        video.srcObject = stream;
-    }catch{
-        alert("No se pudo acceder a la cámara");
-    }
+    stream = await navigator.mediaDevices.getUserMedia({video:true});
+    video.srcObject = stream;
 }
 
 function capturarFoto(){
-    const video=document.getElementById('video');
     const canvas=document.createElement('canvas');
-
     canvas.width=video.videoWidth;
     canvas.height=video.videoHeight;
 
     const ctx=canvas.getContext('2d');
     ctx.drawImage(video,0,0);
 
-    const data=canvas.toDataURL('image/jpeg');
+    const data=canvas.toDataURL("image/jpeg");
 
-    document.getElementById('previewCamara').src=data;
-    document.getElementById('fotoRostroB64').value=data;
+    previewCamara.src=data;
+    fotoRostroB64.value=data;
 
-    if(stream){
-        stream.getTracks().forEach(t=>t.stop());
-    }
+    if(stream) stream.getTracks().forEach(t=>t.stop());
 }
 
-// ENVÍO
+// ENVIAR
 async function enviarRegistro(){
 
     loader(true,"Guardando información...");
 
-    const form=document.getElementById('formRegistro');
-    const data=new URLSearchParams(new FormData(form));
+    const data=new URLSearchParams();
+
+    data.append("cedula",ced.value);
+    data.append("nombre1",n1.value);
+    data.append("nombre2",n2.value);
+    data.append("apellidos",ape.value);
+    data.append("fechaNac",fecha.value);
+    data.append("telefono",tel.value);
+    data.append("correo",correo.value);
+    data.append("nombreCamiseta",nombreCamiseta.value);
+    data.append("dorsal",dorsal.value);
+    data.append("mediasExtras",medias.value);
+    data.append("transaccionInscripcion",inscripcion.value);
+    data.append("transaccionUniforme",uniforme.value);
+    data.append("fotoRostroB64",fotoRostroB64.value);
 
     try{
-        await fetch(URL_GAS,{
-            method:'POST',
-            mode:'no-cors',
-            body:data
-        });
-
+        await fetch(URL_GAS,{method:"POST",body:data});
         alert("✅ Registro exitoso");
-        window.location.href="login.html";
-
     }catch{
         alert("❌ Error al guardar");
     }
