@@ -3,106 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro | Nápoles FC</title>
+    <title>Registro Oficial | Nápoles FC</title>
+    
+    <!-- Enlaces a PWA y Estilos -->
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="estilos.css">
+    <link rel="icon" href="/NAPOLES-FC/img/favicon.png">
+    <meta name="theme-color" content="#1A2B48">
+
     <style>
-        /* Estilos rápidos por si el CSS falla */
-        .paso-contenido { display: none; }
+        /* Estilos críticos para asegurar el diseño si el CSS externo tarda */
+        :root { --azul: #1A2B48; --dorado: #B59461; --blanco: #ffffff; }
+        body { background-color: #f0f2f5; margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+        
+        .contenedor-principal { 
+            max-width: 480px; margin: 20px auto; background: var(--blanco); 
+            border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header-registro { background: var(--azul); color: var(--blanco); padding: 30px 20px; text-align: center; }
+        .header-registro h2 { margin: 0; letter-spacing: 2px; font-size: 24px; }
+        
+        .progreso-bar { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .dot { width: 12px; height: 12px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
+        .dot.activo { background: var(--dorado); transform: scale(1.3); }
+
+        .form-body { padding: 30px; }
+        .paso-contenido { display: none; animation: fadeIn 0.4s ease; }
         .paso-activo { display: block; }
-        .progreso { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .punto { width: 30px; height: 30px; background: #ccc; border-radius: 50%; text-align: center; line-height: 30px; color: white; }
-        .punto.activo { background: #B59461; }
-        #video { width: 100%; border-radius: 10px; background: #000; transform: scaleX(-1); }
+
+        input { 
+            width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #ddd; 
+            border-radius: 10px; box-sizing: border-box; font-size: 16px;
+        }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        button { 
+            flex: 1; padding: 15px; border: none; border-radius: 10px; 
+            font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px;
+        }
+
+        .btn-sig { background: var(--dorado); color: white; }
+        .btn-atras { background: #e0e0e0; color: #666; }
+        .btn-fin { background: #008B94; color: white; }
+
+        .camara-container { background: #000; border-radius: 15px; overflow: hidden; position: relative; margin-bottom: 15px; min-height: 300px; }
+        #video { width: 100%; display: block; transform: scaleX(-1); }
+        #preview { width: 100%; display: none; border-radius: 15px; }
+
+        #loader { 
+            display: none; position: fixed; inset: 0; background: rgba(26, 43, 72, 0.95); 
+            z-index: 9999; color: white; text-align: center; justify-content: center; 
+            align-items: center; flex-direction: column; 
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="loader" style="display:none; position:fixed; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:1000; text-align:center; padding-top:100px;">
-        <h2>⚙️ PROCESANDO REGISTRO...</h2>
+    <!-- Loader Profesional -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <h2 style="margin-top:20px;">PROCESANDO REGISTRO</h2>
+        <p>Enviando ficha a Nápoles FC...</p>
     </div>
 
     <div class="contenedor-principal">
-        <header style="text-align:center;">
-            <h2 style="color:#1A2B48;">NÁPOLES F.C.</h2>
-            <div class="progreso">
-                <div id="p1" class="punto activo">1</div>
-                <div id="p2" class="punto">2</div>
-                <div id="p3" class="punto">3</div>
+        <header class="header-registro">
+            <h2>NÁPOLES F.C.</h2>
+            <p style="color: var(--dorado); margin: 5px 0 0; font-size: 12px; font-weight: bold;">INSCRIPCIÓN 2026</p>
+            <div class="progreso-bar">
+                <div id="d1" class="dot activo"></div>
+                <div id="d2" class="dot"></div>
+                <div id="d3" class="dot"></div>
             </div>
         </header>
 
-        <form id="formRegistro">
-            <!-- PASO 1 -->
+        <form id="formRegistro" class="form-body">
+            
+            <!-- PASO 1: Identidad -->
             <div id="step1" class="paso-contenido paso-activo">
-                <input type="text" name="nombre1" placeholder="Primer Nombre" required>
-                <input type="text" name="nombre2" placeholder="Segundo Nombre" required>
-                <input type="text" name="apellidos" placeholder="Apellidos" required>
-                <input type="text" name="cedula" placeholder="Cédula" required>
+                <label style="font-weight: bold; color: var(--azul);">Datos Personales</label>
+                <div style="margin-top: 15px;">
+                    <input type="text" name="nombre1" placeholder="Primer Nombre" required>
+                    <input type="text" name="nombre2" placeholder="Segundo Nombre">
+                    <input type="text" name="apellidos" placeholder="Apellidos Completos" required>
+                    <input type="text" name="cedula" placeholder="Número de Cédula" maxlength="10" required>
+                </div>
                 <button type="button" class="btn-sig" onclick="verPaso(2)">SIGUIENTE</button>
             </div>
 
-            <!-- PASO 2 -->
+            <!-- PASO 2: Contacto y Deporte -->
             <div id="step2" class="paso-contenido">
-                <input type="date" name="fechaNac" required>
-                <input type="tel" name="telefono" placeholder="WhatsApp" required>
-                <input type="email" name="correo" placeholder="Correo" required>
-                <input type="text" name="nombreCamiseta" placeholder="Nombre en Camiseta">
-                <input type="number" name="dorsal" placeholder="Dorsal">
-                <div style="display:flex; gap:10px;">
-                    <button type="button" onclick="verPaso(1)">ATRÁS</button>
+                <label style="font-weight: bold; color: var(--azul);">Contacto y Preferencias</label>
+                <div style="margin-top: 15px;">
+                    <label style="font-size: 12px; color: #888;">Fecha de Nacimiento</label>
+                    <input type="date" name="fechaNac" required>
+                    <input type="tel" name="telefono" placeholder="WhatsApp" required>
+                    <input type="email" name="correo" placeholder="Correo Electrónico">
+                    <input type="text" name="nombreCamiseta" placeholder="Nombre en Camiseta (EJ: 'JUAN')">
+                    <input type="number" name="dorsal" placeholder="Número de Dorsal Preferido">
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn-atras" onclick="verPaso(1)">ATRÁS</button>
                     <button type="button" class="btn-sig" onclick="verPaso(3)">SIGUIENTE</button>
                 </div>
             </div>
 
-            <!-- PASO 3 -->
+            <!-- PASO 3: Foto -->
             <div id="step3" class="paso-contenido">
-                <div class="camara-area">
+                <label style="font-weight: bold; color: var(--azul);">Foto para Carnet Oficial</label>
+                <div class="camara-container" style="margin-top: 15px;">
                     <video id="video" autoplay playsinline></video>
                     <canvas id="canvas" style="display:none;"></canvas>
-                    <img id="preview" style="display:none; width:100%; border-radius:10px;">
+                    <img id="preview" alt="Vista previa">
                 </div>
-                <button type="button" id="btnCapturar" style="background:#444; color:#fff;">📷 CAPTURAR FOTO</button>
+                
+                <button type="button" id="btnCapturar" style="background:#333; color:white; margin-bottom: 10px;">📷 CAPTURAR FOTO</button>
                 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
                 
-                <div style="display:flex; gap:10px; margin-top:10px;">
-                    <button type="button" onclick="verPaso(2)">ATRÁS</button>
-                    <button type="submit" class="btn-fin" style="background:#008B94; color:#fff;">FINALIZAR</button>
+                <div class="btn-group">
+                    <button type="button" class="btn-atras" id="btnRecapturar" onclick="recapturar()" style="display:none;">REPETIR</button>
+                    <button type="submit" class="btn-fin">FINALIZAR REGISTRO</button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- CARGAMOS TUS ARCHIVOS EXTERNOS -->
+    <!-- Scripts Externos -->
     <script src="nav.js"></script>
     <script src="api.js"></script>
+    <script src="sw.js"></script>
 
     <script>
-        // LÓGICA DE LA CÁMARA (Para que no falle al estar en archivo aparte)
+        // Registrar Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
         let stream;
+
         async function iniciarCamara() {
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 document.getElementById('video').srcObject = stream;
-            } catch (e) { alert("Error con la cámara: " + e); }
+            } catch (e) { alert("Acceso a cámara denegado o no disponible."); }
         }
 
         function verPaso(n) {
             document.querySelectorAll('.paso-contenido').forEach(p => p.classList.remove('paso-activo'));
-            document.querySelectorAll('.punto').forEach(p => p.classList.remove('activo'));
+            document.querySelectorAll('.dot').forEach(d => d.classList.remove('activo'));
+            
             document.getElementById('step' + n).classList.add('paso-activo');
-            document.getElementById('p' + n).classList.add('activo');
+            document.getElementById('d' + n).classList.add('activo');
+            
             if(n === 3) iniciarCamara();
+            else if (stream) {
+                stream.getTracks().forEach(t => t.stop());
+            }
+        }
+
+        function recapturar() {
+            document.getElementById('preview').style.display = 'none';
+            document.getElementById('video').style.display = 'block';
+            document.getElementById('btnRecapturar').style.display = 'none';
+            document.getElementById('btnCapturar').style.display = 'block';
+            iniciarCamara();
         }
 
         document.getElementById('btnCapturar').onclick = () => {
             const v = document.getElementById('video');
             const c = document.getElementById('canvas');
             const p = document.getElementById('preview');
+            const b = document.getElementById('btnCapturar');
+            const r = document.getElementById('btnRecapturar');
+
             c.width = v.videoWidth; c.height = v.videoHeight;
             c.getContext('2d').drawImage(v, 0, 0);
-            const data = c.toDataURL('image/jpeg', 0.8);
+            
+            const data = c.toDataURL('image/jpeg', 0.7);
             document.getElementById('fotoRostroB64').value = data;
-            p.src = data; p.style.display = 'block'; v.style.display = 'none';
+            
+            p.src = data;
+            p.style.display = 'block';
+            v.style.display = 'none';
+            b.style.display = 'none';
+            r.style.display = 'block';
+            
             if(stream) stream.getTracks().forEach(t => t.stop());
         };
     </script>
