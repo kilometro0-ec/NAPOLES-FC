@@ -4,41 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Registro - Nápoles F.C.</title>
-    <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="stylesheet" href="estilos.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .nav-napoles, #nav-inferior, nav { display: none !important; }
-        body { margin-bottom: 0 !important; }
+        .nav-napoles { display: none !important; }
+        /* Guía circular para la foto */
+        #contenedor-camara { position: relative; width: 300px; height: 300px; margin: 10px auto; display: none; overflow: hidden; border-radius: 15px; border: 2px solid #0056b3; }
+        #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        .guia-circular { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; height: 220px; border: 3px dashed white; border-radius: 50%; pointer-events: none; box-shadow: 0 0 0 1000px rgba(0,0,0,0.4); }
+        .texto-logo { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 24px; text-shadow: 2px 2px #000; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <div class="contenedor-principal">
         <header>
-            <img src="img/logo-napoles.png" alt="NAPOLES FC" id="logo-club">
-            <h2>Registro Oficial</h2>
+            <div class="texto-logo">NAPOLES F.C.</div>
+            <h2>Ficha de Inscripción</h2>
         </header>
 
-        <form id="formRegistro" onsubmit="event.preventDefault();">
-            
-            <!-- PASO 1: VALIDACIÓN -->
+        <form id="formRegistro">
+            <!-- PASO 1: VALIDACIÓN (FORZOSA) -->
             <div id="paso1">
                 <h3>Paso 1: Validación</h3>
                 <label>Cédula de Identidad</label>
                 <input type="number" id="ced" name="cedula" placeholder="10 dígitos" required>
-                <button type="button" class="btn-accion" onclick="validarPaso1()">Verificar Cédula</button>
+                <button type="button" class="btn-accion" onclick="validarCedulaEstricta()">Validar Jugador</button>
             </div>
 
             <!-- PASO 2: DATOS PERSONALES -->
             <div id="paso2" style="display:none;">
                 <h3>Paso 2: Datos Personales</h3>
-                <label>Primer Nombre</label>
-                <input type="text" id="n1" name="nombre1" required>
-                <label>Segundo Nombre</label>
-                <input type="text" id="n2" name="nombre2">
-                <label>Apellidos Completos</label>
-                <input type="text" id="ape" name="apellidos" required>
+                <input type="text" id="n1" name="nombre1" placeholder="Primer Nombre" required>
+                <input type="text" id="n2" name="nombre2" placeholder="Segundo Nombre">
+                <input type="text" id="ape" name="apellidos" placeholder="Apellidos" required>
                 <label>Fecha de Nacimiento</label>
                 <input type="date" name="fechaNac" required>
                 <button type="button" class="btn-accion" onclick="verPaso(3)">Siguiente</button>
@@ -47,71 +46,61 @@
             <!-- PASO 3: CONTACTO -->
             <div id="paso3" style="display:none;">
                 <h3>Paso 3: Contacto</h3>
-                <label>Teléfono WhatsApp</label>
-                <input type="tel" name="telefono" placeholder="09XXXXXXXX" required>
-                <label>Correo Electrónico</label>
-                <input type="email" name="correo" required>
+                <input type="tel" name="telefono" placeholder="WhatsApp (09XXXXXXXX)" required>
+                <input type="email" name="correo" placeholder="Correo Electrónico" required>
                 <button type="button" class="btn-accion" onclick="verPaso(4)">Siguiente</button>
             </div>
 
-            <!-- PASO 4: FOTOS -->
+            <!-- PASO 4: FOTOS CON GUÍA -->
             <div id="paso4" style="display:none;">
-                <h3>Paso 4: Documentación</h3>
-                <label>Foto del Rostro (Selfie)</label>
-                <input type="file" accept="image/*" capture="user" onchange="aBase64(this, 'fotoRostroB64')">
+                <h3>Paso 4: Fotos</h3>
+                <p>Encuadra tu rostro en el círculo:</p>
+                <div id="contenedor-camara">
+                    <video id="video" autoplay playsinline></video>
+                    <div class="guia-circular"></div>
+                </div>
+                <button type="button" id="btn-captura" class="btn-accion" onclick="capturarFoto()">Tomar Foto Rostro</button>
+                <canvas id="canvas" style="display:none;"></canvas>
                 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
 
-                <label>Foto de la Cédula</label>
-                <input type="file" accept="image/*" onchange="aBase64(this, 'fotoCedulaB64')">
+                <label>Foto de Cédula (Subir archivo)</label>
+                <input type="file" accept="image/*" onchange="aBase64(this, 'fotoCedulaB64')" required>
                 <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
-                <button type="button" class="btn-accion" onclick="abrirArmadura()">Siguiente</button>
+                <button type="button" id="btn-sig-fotos" class="btn-accion" onclick="abrirArmadura()" style="display:none;">Siguiente</button>
             </div>
 
             <!-- PASO 5: ARMADURA -->
             <div id="paso5" style="display:none;">
                 <h3>Paso 5: Armadura</h3>
-                <label>Nombre en la Camiseta</label>
-                <select id="selectNombreCamiseta" name="nombreCamiseta"></select>
-                <label>Dorsal Disponible</label>
-                <select id="selectDorsal" name="dorsal"></select>
-                <button type="button" class="btn-accion" onclick="verPaso(6)">Ir a Pagos</button>
+                <label>Nombre en Camiseta</label>
+                <select id="selectNombreCamiseta" name="nombreCamiseta" required></select>
+                <label>Número de Dorsal</label>
+                <select id="selectDorsal" name="dorsal" required></select>
+                <button type="button" class="btn-accion" onclick="verPaso(6)">Siguiente</button>
             </div>
 
             <!-- PASO 6: PAGOS -->
             <div id="paso6" style="display:none;">
-                <h3>Paso 6: Pagos</h3>
-                <div class="pago-box">
-                    <p><b>Inscripción: $5.00</b></p>
-                    <input type="text" name="transaccionInscripcion" placeholder="N° Transacción Inscripción">
-                </div>
-                <div class="pago-box">
-                    <p><b>Uniforme: $18.00</b></p>
-                    <input type="text" name="transaccionUniforme" placeholder="N° Transacción Uniforme">
-                </div>
-                <label class="check-label">
-                    <input type="checkbox" name="mediasExtras" value="2"> ¿Medias Extras? (+$2.00)
-                </label>
-                <button type="button" class="btn-accion" onclick="enviarRegistro()">Finalizar Todo</button>
+                <h3>Paso 6: Pagos y Medias</h3>
+                <label>¿Desea Medias Extras? ($2.00)</label>
+                <select name="mediasExtras" id="mediasExtras" required>
+                    <option value="">-- Seleccione --</option>
+                    <option value="NO">NO (Solo Uniforme)</option>
+                    <option value="SI">SI (Añadir $2.00)</option>
+                </select>
+
+                <p><b>Inscripción ($5.00)</b></p>
+                <input type="text" name="transaccionInscripcion" placeholder="N° Comprobante" required>
+                
+                <p><b>Uniforme</b></p>
+                <input type="text" name="transaccionUniforme" placeholder="N° Comprobante" required>
+                
+                <button type="button" class="btn-accion" onclick="enviarRegistro()">Finalizar Inscripción</button>
             </div>
         </form>
     </div>
 
-    <div id="loader"><div class="spinner-balon"></div><p>Cargando...</p></div>
-    <div id="final-animacion">
-        <div class="spinner-balon"></div>
-        <h3 id="final-status">GUARDANDO...</h3>
-        <p id="final-mensaje">Bienvenido a la familia.</p>
-    </div>
-
+    <div id="loader"><div class="spinner-balon"></div><p id="loader-texto">Validando...</p></div>
     <script src="api.js"></script>
-    <script>
-        function verPaso(n) {
-            for(let i=1; i<=6; i++) {
-                const p = document.getElementById('paso'+i);
-                if(p) p.style.display = (i === n) ? 'block' : 'none';
-            }
-            window.scrollTo(0,0);
-        }
-    </script>
 </body>
 </html>
