@@ -2,37 +2,254 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nápoles F.C. - Registro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Nápoles F.C. - Registro Oficial</title>
 <link rel="stylesheet" href="estilos.css">
 <style>
-/* Estilos de respaldo en caso de que no cargue el CSS externo */
-.paso { display: none; }
-.paso.activo { display: block; animation: fade 0.3s ease; }
-@keyframes fade {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.btn-accion:disabled { opacity: 0.5; cursor: not-allowed; }
-#loader {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-.spinner-balon {
-    width: 60px;
-    height: 60px;
-    border: 5px solid rgba(255,255,255,0.3);
-    border-top: 5px solid #B59461;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.visto-img { display: inline-block; margin-left: 10px; color: #2ecc71; }
+    /* ========== RESET Y MEJORAS GLOBALES ========== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(145deg, #0a1428 0%, #030711 100%);
+        font-family: 'Poppins', 'Segoe UI', Roboto, system-ui, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+    }
+
+    /* Contenedor principal con glassmorfismo y animación */
+    .contenedor-principal {
+        max-width: 550px;
+        width: 100%;
+        margin: 1rem auto;
+        background: rgba(10, 20, 40, 0.6);
+        backdrop-filter: blur(16px);
+        border-radius: 48px;
+        border: 1px solid rgba(0, 143, 155, 0.3);
+        box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 143, 155, 0.2) inset;
+        padding: 1.8rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+        animation: fadeInUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Header */
+    header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    header h2 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #008f9b, #00c2d0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 0.25rem;
+    }
+    header p {
+        color: rgba(255,255,255,0.7);
+        font-size: 0.9rem;
+    }
+
+    /* Estilos para los pasos */
+    .paso {
+        display: none;
+        animation: fade 0.3s ease;
+    }
+    .paso.activo {
+        display: block;
+    }
+    @keyframes fade {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Inputs y selects - estilo moderno */
+    input, select {
+        width: 100%;
+        padding: 1rem 1.2rem;
+        margin-top: 0.75rem;
+        background: rgba(0, 0, 0, 0.45);
+        border: 1px solid rgba(0, 143, 155, 0.5);
+        border-radius: 40px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s;
+        outline: none;
+    }
+    input:focus, select:focus {
+        border-color: #008f9b;
+        box-shadow: 0 0 0 3px rgba(0, 143, 155, 0.3);
+        background: rgba(0, 0, 0, 0.7);
+        transform: scale(1.01);
+    }
+    input.error, select.error {
+        border-color: #ff5e5e;
+        animation: shake 0.3s ease;
+    }
+    @keyframes shake {
+        0%,100%{ transform: translateX(0); }
+        25%{ transform: translateX(-5px); }
+        75%{ transform: translateX(5px); }
+    }
+
+    /* Botones con diseño plano pero llamativo */
+    .btn-accion {
+        background: linear-gradient(95deg, #008f9b, #005c64);
+        border: none;
+        padding: 1rem;
+        width: 100%;
+        border-radius: 60px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 1.8rem;
+        transition: all 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-accion:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 143, 155, 0.4);
+        background: linear-gradient(95deg, #00aebb, #006d78);
+    }
+    .btn-accion:disabled {
+        opacity: 0.5;
+        transform: none;
+        cursor: not-allowed;
+    }
+    /* Efecto ripple */
+    .btn-accion::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255,255,255,0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.4s, height 0.4s;
+    }
+    .btn-accion:active::after {
+        width: 200px;
+        height: 200px;
+    }
+
+    /* Visto para imágenes */
+    .visto-img {
+        display: inline-block;
+        margin-left: 12px;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #2ecc71;
+        animation: pop 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    @keyframes pop {
+        0% { transform: scale(0); opacity: 0; }
+        80% { transform: scale(1.2); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Títulos de sección */
+    h3 {
+        color: #008f9b;
+        margin: 1rem 0 0.5rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    /* Loader */
+    #loader {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.9);
+        backdrop-filter: blur(8px);
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 10000;
+    }
+    .spinner-balon {
+        width: 70px;
+        height: 70px;
+        border: 5px solid rgba(0,143,155,0.3);
+        border-top: 5px solid #008f9b;
+        border-radius: 50%;
+        animation: spin 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg) scale(1); }
+        50% { transform: rotate(180deg) scale(1.1); }
+        100% { transform: rotate(360deg) scale(1); }
+    }
+
+    /* Modal de éxito */
+    #modalExito {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: blur(12px);
+        z-index: 100000;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        background: linear-gradient(145deg, #0f1a2e, #081020);
+        padding: 2rem;
+        border-radius: 40px;
+        text-align: center;
+        border: 2px solid #008f9b;
+        max-width: 320px;
+        width: 90%;
+        animation: zoom 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    @keyframes zoom {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    .modal-content h2 {
+        color: #008f9b;
+        margin-bottom: 1rem;
+    }
+
+    /* Ajustes móviles */
+    @media (max-width: 500px) {
+        .contenedor-principal {
+            padding: 1.2rem;
+        }
+        header h2 {
+            font-size: 1.5rem;
+        }
+        input, select, .btn-accion {
+            padding: 0.8rem 1rem;
+        }
+    }
 </style>
 </head>
 <body>
@@ -40,17 +257,17 @@
 <div class="contenedor-principal">
     <header>
         <h2>NÁPOLES F.C.</h2>
-        <p>Registro oficial</p>
+        <p>Formulario de registro oficial</p>
     </header>
 
     <form id="formRegistro">
-        <!-- PASO 1 -->
+        <!-- PASO 1: Cédula (resaltada con color) -->
         <div id="paso1" class="paso activo">
-            <input type="text" id="ced" maxlength="10" placeholder="CÉDULA (10 dígitos)">
+            <input type="text" id="ced" maxlength="10" placeholder="CÉDULA (10 dígitos)" autocomplete="off" style="border-color: #008f9b; box-shadow: 0 0 5px rgba(0,143,155,0.5);">
             <button type="button" id="btnCedula" class="btn-accion" disabled>VALIDAR</button>
         </div>
 
-        <!-- PASO 2 -->
+        <!-- PASO 2: Datos personales -->
         <div id="paso2" class="paso">
             <input type="text" id="n1" placeholder="PRIMER NOMBRE">
             <input type="text" id="n2" placeholder="SEGUNDO NOMBRE">
@@ -59,33 +276,33 @@
             <button type="button" id="btnPaso2" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
-        <!-- PASO 3 -->
+        <!-- PASO 3: Contacto -->
         <div id="paso3" class="paso">
             <input type="tel" id="tel" maxlength="10" placeholder="TELÉFONO">
-            <input type="email" id="correo" placeholder="CORREO">
+            <input type="email" id="correo" placeholder="CORREO ELECTRÓNICO">
             <button type="button" id="btnPaso3" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
-        <!-- PASO 4 -->
+        <!-- PASO 4: Fotos -->
         <div id="paso4" class="paso">
-            <h3>FOTO PERFIL</h3>
+            <h3>📸 FOTO PERFIL</h3>
             <input type="file" id="rostro" accept="image/*">
             <span id="vistoRostro" class="visto-img"></span>
-            <h3>FOTO CÉDULA</h3>
+            <h3>🪪 FOTO CÉDULA</h3>
             <input type="file" id="cedulaFile" accept="image/*">
             <span id="vistoCedula" class="visto-img"></span>
             <button type="button" id="btnPaso4" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
-        <!-- PASO 5 -->
+        <!-- PASO 5: Armadura -->
         <div id="paso5" class="paso">
-            <h3>ARMADURA</h3>
+            <h3>⚽ ARMADURA</h3>
             <select id="nombreCamiseta"></select>
             <select id="dorsal"></select>
             <button type="button" id="btnPaso5" class="btn-accion" disabled>SIGUIENTE</button>
         </div>
 
-        <!-- PASO 6 -->
+        <!-- PASO 6: Extras y finalización -->
         <div id="paso6" class="paso">
             <select id="medias">
                 <option value="">MEDIAS EXTRAS (+$2)</option>
@@ -107,10 +324,10 @@
     <h3 id="loader-texto">Procesando...</h3>
 </div>
 
-<div id="modalExito" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:100000; justify-content:center; align-items:center;">
-    <div style="background:#1A2B48; padding:30px; border-radius:20px; text-align:center; border:2px solid #B59461;">
-        <h2 style="color:#B59461;">✅ ¡REGISTRO EXITOSO!</h2>
-        <p style="color:white;">Redirigiendo en <span id="contador">3</span> segundos...</p>
+<div id="modalExito">
+    <div class="modal-content">
+        <h2>✅ ¡REGISTRO EXITOSO!</h2>
+        <p>Redirigiendo en <span id="contador">3</span> segundos...</p>
     </div>
 </div>
 
