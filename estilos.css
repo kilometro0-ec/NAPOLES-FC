@@ -1,179 +1,91 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Registro Nápoles FC</title>
-    <link rel="stylesheet" href="estilos.css">
-    <style>
-        /* Estilos rápidos para asegurar que el sistema de pasos funcione */
-        .paso-contenido { display: none; animation: fadeIn 0.4s; }
-        .paso-activo { display: block !important; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
-</head>
-<body>
+/* Configuración Global para evitar desbordamientos */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-    <!-- Pantalla de Carga -->
-    <div id="loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;">
-        <div class="spinner-balon"></div>
-        <p style="color: gold; margin-top: 15px;">PROCESANDO...</p>
-    </div>
+:root {
+  --azul-noche: #1A2B48;
+  --cardenillo: #008B94;
+  --dorado: #B59461;
+  --blanco-puro: #ffffff;
+  --gris-suave: rgba(255, 255, 255, 0.1);
+}
 
-    <div class="contenedor-principal">
-        <header>
-            <h1 class="titulo-club">NÁPOLES F.C.</h1>
-            <div class="progreso-puntos">
-                <div id="p1" class="punto activo"></div>
-                <div id="p2" class="punto"></div>
-                <div id="p3" class="punto"></div>
-                <div id="p4" class="punto"></div>
-            </div>
-        </header>
+body {
+  background-color: var(--azul-noche);
+  color: var(--blanco-puro);
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 15px; /* Añadido para que no pegue al borde en móviles */
+  min-height: 100vh;
+}
 
-        <form id="formRegistro">
-            <!-- PASO 1 -->
-            <div id="step1" class="paso-contenido paso-activo">
-                <label class="tag">DATOS DE IDENTIDAD</label>
-                <input type="text" id="n1" name="nombre1" placeholder="PRIMER NOMBRE" required oninput="this.value = this.value.toUpperCase()">
-                <input type="text" id="ape" name="apellidos" placeholder="APELLIDOS COMPLETOS" required oninput="this.value = this.value.toUpperCase()">
-                <input type="tel" id="ced" name="cedula" placeholder="CÉDULA (10 DÍGITOS)" maxlength="10" required>
-                
-                <label class="tag">VALIDACIÓN DE PAGO ($5.00)</label>
-                <input type="text" id="trans" name="transaccion" placeholder="Nº DE TRANSACCIÓN" required oninput="this.value = this.value.toUpperCase()">
-                
-                <button type="button" class="btn-accion" onclick="validarPaso1()">SIGUIENTE</button>
-            </div>
+h2 { 
+  color: var(--dorado); 
+  text-align: center; 
+  text-transform: uppercase; 
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+}
 
-            <!-- PASO 2 -->
-            <div id="step2" class="paso-contenido">
-                <label class="tag">DORSAL Y CONTACTO</label>
-                <input type="email" name="correo" placeholder="CORREO ELECTRÓNICO" required>
-                <input type="tel" name="telefono" placeholder="WHATSAPP (09XXXXXXXX)" maxlength="10" required>
-                
-                <label class="tag">DORSAL DISPONIBLE</label>
-                <select name="dorsal" id="selectDorsal">
-                    <option value="10">10 - DISPONIBLE</option>
-                    <option value="7">7 - DISPONIBLE</option>
-                </select>
+.contenedor-principal {
+  max-width: 450px;
+  margin: 20px auto;
+  padding: 25px;
+  background-color: var(--gris-suave);
+  border: 1px solid var(--dorado);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px); /* Efecto moderno de cristal */
+}
 
-                <div class="flex-btns">
-                    <button type="button" class="btn-accion btn-atras" onclick="verPaso(1)">ATRÁS</button>
-                    <button type="button" class="btn-accion" onclick="verPaso(3)">SIGUIENTE</button>
-                </div>
-            </div>
+label { 
+  color: var(--dorado); 
+  font-size: 0.85em; 
+  font-weight: bold; 
+  display: block; 
+  margin-top: 15px;
+  text-transform: uppercase;
+}
 
-            <!-- PASO 3: FOTO ROSTRO -->
-            <div id="step3" class="paso-contenido">
-                <label class="tag">FOTO DEL ROSTRO</label>
-                <div class="camara-box">
-                    <video id="videoRostro" autoplay playsinline class="espejo" style="width:100%; height:100%; object-fit:cover;"></video>
-                    <canvas id="canvasRostro" style="display:none;"></canvas>
-                    <img id="prevRostro" class="preview-img" style="display:none; width:100%;">
-                </div>
-                <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
-                
-                <button type="button" id="btnCapRostro" class="btn-accion" onclick="capturarFoto('Rostro')">📸 CAPTURAR</button>
-                <div class="flex-btns">
-                    <button type="button" class="btn-accion btn-atras" onclick="verPaso(2)">ATRÁS</button>
-                    <button type="button" class="btn-accion" onclick="verPaso(4)">SIGUIENTE</button>
-                </div>
-            </div>
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  border: 1px solid var(--dorado);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border-radius: 8px;
+  outline: none;
+}
 
-            <!-- PASO 4: FOTO CÉDULA -->
-            <div id="step4" class="paso-contenido">
-                <label class="tag">FOTO DE CÉDULA</label>
-                <div class="camara-box">
-                    <video id="videoCedula" autoplay playsinline style="width:100%; height:100%; object-fit:cover;"></video>
-                    <canvas id="canvasCedula" style="display:none;"></canvas>
-                    <img id="prevCedula" class="preview-img" style="display:none; width:100%;">
-                </div>
-                <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
+input:focus {
+  border-color: var(--cardenillo);
+  box-shadow: 0 0 5px var(--cardenillo);
+}
 
-                <button type="button" id="btnCapCedula" class="btn-accion" onclick="capturarFoto('Cedula')">📸 CAPTURAR</button>
-                <div class="flex-btns">
-                    <button type="button" class="btn-atras btn-accion" onclick="verPaso(3)">ATRÁS</button>
-                    <button type="button" class="btn-accion" style="background: gold; color: black;" onclick="enviarFormulario()">FINALIZAR REGISTRO</button>
-                </div>
-            </div>
-        </form>
-    </div>
+.btn-accion {
+  background-color: var(--cardenillo);
+  color: white;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 15px;
+  display: block;
+}
 
-    <!-- TODO EL JAVASCRIPT AQUÍ -->
-    <script>
-        let streamActual = null;
+.btn-accion:hover { 
+  background-color: #00737a; 
+  box-shadow: 0 0 15px var(--cardenillo); 
+}
 
-        // 1. FUNCIÓN PARA CAMBIAR DE PASO
-        function verPaso(nPaso) {
-            // Ocultar todos
-            document.querySelectorAll('.paso-contenido').forEach(p => p.classList.remove('paso-activo'));
-            // Mostrar actual
-            document.getElementById('step' + nPaso).classList.add('paso-activo');
-            
-            // Actualizar puntos
-            document.querySelectorAll('.punto').forEach((p, index) => {
-                p.classList.toggle('activo', index < nPaso);
-            });
-
-            // Manejar Cámaras
-            detenerCamara();
-            if (nPaso === 3) iniciarCamara('videoRostro', 'user');
-            if (nPaso === 4) iniciarCamara('videoCedula', 'environment');
-        }
-
-        // 2. LÓGICA DE CÁMARA
-        async function iniciarCamara(idVideo, modo) {
-            try {
-                streamActual = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: modo }, 
-                    audio: false 
-                });
-                const video = document.getElementById(idVideo);
-                video.srcObject = streamActual;
-            } catch (err) {
-                alert("Error al abrir cámara: " + err);
-            }
-        }
-
-        function detenerCamara() {
-            if (streamActual) {
-                streamActual.getTracks().forEach(track => track.stop());
-            }
-        }
-
-        function capturarFoto(tipo) {
-            const video = document.getElementById('video' + tipo);
-            const canvas = document.getElementById('canvas' + tipo);
-            const preview = document.getElementById('prev' + tipo);
-            const input = document.getElementById('foto' + tipo + 'B64');
-
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-            input.value = dataUrl;
-            
-            preview.src = dataUrl;
-            preview.style.display = 'block';
-            video.style.display = 'none';
-        }
-
-        // 3. VALIDACIÓN Y ENVÍO
-        function validarPaso1() {
-            const c = document.getElementById('ced').value;
-            if(c.length < 10) return alert("Cédula incompleta");
-            verPaso(2);
-        }
-
-        async function enviarFormulario() {
-            document.getElementById('loader').style.display = 'flex';
-            // Aquí iría tu fetch al Google Apps Script
-            setTimeout(() => {
-                alert("¡REGISTRO EXITOSO!");
-                document.getElementById('loader').style.display = 'none';
-            }, 2000);
-        }
-    </script>
-</body>
-</html>
+/* Evitar que el menú de nav.js tape el contenido */
+.seccion-formulario {
+  margin-bottom: 20px;
+}
