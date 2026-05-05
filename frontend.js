@@ -1,33 +1,28 @@
-// Configuración (cambia por tu URL de Google Apps Script)
-const URL_GAS = "https://script.google.com/macros/s/AKfycbyOZObCnKnnbwwuwTO8CULGvh1-c9hiUqAhBs15N3ceMYaFQaiHtTQWGJgugbodinP6/exec";
+// ================= CONFIGURACIÓN =================
+// 🔴 ¡CAMBIAR ESTA URL POR LA DE TU GOOGLE APPS SCRIPT!
+const URL_GAS = "https://script.google.com/macros/s/AKfycbxjs260s4ZEh4ERrSRh7s99GjkqCZK-k5aEd7FO3dLlvO1FKHMo6gnKW_Jz2hPTwjP_/exec";
 
-// ========== SISTEMA DE TOASTS ==========
-function mostrarToast(mensaje, tipo = 'info', duracion = 3000) {
+// ================= SISTEMA DE TOASTS =================
+function mostrarToast(mensaje, tipo = 'info', duracion = 4000) {
     const toastAnterior = document.querySelector('.toast-notification');
     if (toastAnterior) toastAnterior.remove();
-    
     const toast = document.createElement('div');
     toast.className = `toast-notification ${tipo}`;
-    toast.innerHTML = `
-        <span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️'}</span>
-        <span>${mensaje}</span>
-    `;
+    toast.innerHTML = `<span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️'}</span><span>${mensaje}</span>`;
     document.body.appendChild(toast);
-    
     setTimeout(() => {
         toast.style.animation = 'toastSlideUp 0.3s reverse forwards';
         setTimeout(() => toast.remove(), 300);
     }, duracion);
 }
 
-// Marcar input con error y mostrar toast
 function marcarErrorInput(input, mensaje) {
     input.classList.add('error');
     mostrarToast(mensaje, 'error', 2500);
     setTimeout(() => input.classList.remove('error'), 500);
 }
 
-// Elementos DOM
+// ================= ELEMENTOS DOM =================
 const loaderDiv = document.getElementById('loader');
 const loaderTexto = document.getElementById('loader-texto');
 const modalExito = document.getElementById('modalExito');
@@ -44,7 +39,7 @@ function verPaso(n) {
 
 // Convertir a mayúsculas excepto email
 document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
-    inp.addEventListener('input', function(e) {
+    inp.addEventListener('input', function() {
         if (this.id !== 'correo') this.value = this.value.toUpperCase();
     });
 });
@@ -52,12 +47,10 @@ document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([typ
 // ================= PASO 1 =================
 const ced = document.getElementById('ced');
 const btnCedula = document.getElementById('btnCedula');
-
 ced.addEventListener('input', () => {
     ced.value = ced.value.replace(/\D/g, '').slice(0, 10);
     btnCedula.disabled = ced.value.length !== 10;
 });
-
 btnCedula.addEventListener('click', async () => {
     mostrarLoader(true, "Validando cédula...");
     try {
@@ -65,13 +58,12 @@ btnCedula.addEventListener('click', async () => {
         const data = await resp.json();
         if (data.cedulaExiste) {
             mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
-            mostrarLoader(false);
-            return;
+        } else {
+            verPaso(2);
         }
-        verPaso(2);
     } catch (error) {
-        mostrarToast("Error de conexión. Intenta de nuevo.", "error");
         console.error(error);
+        mostrarToast("Error de conexión. Revisa tu URL del backend.", "error");
     }
     mostrarLoader(false);
 });
@@ -82,20 +74,10 @@ const n2 = document.getElementById('n2');
 const ape = document.getElementById('ape');
 const fecha = document.getElementById('fecha');
 const btnPaso2 = document.getElementById('btnPaso2');
-
 function validarPaso2() {
     const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
-    if (n1.value.trim() && n2.value.trim() && ape.value.trim() && fechaValida) {
-        btnPaso2.disabled = false;
-    } else {
-        btnPaso2.disabled = true;
-        if (!n1.value.trim()) marcarErrorInput(n1, "Primer nombre obligatorio");
-        else if (!n2.value.trim()) marcarErrorInput(n2, "Segundo nombre obligatorio");
-        else if (!ape.value.trim()) marcarErrorInput(ape, "Apellidos obligatorios");
-        else if (!fechaValida) marcarErrorInput(fecha, "Fecha de nacimiento inválida");
-    }
+    btnPaso2.disabled = !(n1.value.trim() && n2.value.trim() && ape.value.trim() && fechaValida);
 }
-
 [n1, n2, ape, fecha].forEach(el => el.addEventListener('input', validarPaso2));
 btnPaso2.addEventListener('click', () => verPaso(3));
 
@@ -103,15 +85,11 @@ btnPaso2.addEventListener('click', () => verPaso(3));
 const tel = document.getElementById('tel');
 const correo = document.getElementById('correo');
 const btnPaso3 = document.getElementById('btnPaso3');
-
 function validarPaso3() {
     const telOk = tel.value.replace(/\D/g, '').length >= 10;
     const emailOk = correo.value.includes('@') && correo.value.includes('.');
     btnPaso3.disabled = !(telOk && emailOk);
-    if (!telOk && tel.value.length > 0) marcarErrorInput(tel, "Teléfono debe tener 10 dígitos");
-    if (!emailOk && correo.value.length > 0) marcarErrorInput(correo, "Correo electrónico inválido");
 }
-
 [tel, correo].forEach(el => el.addEventListener('input', validarPaso3));
 tel.addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0,10); });
 btnPaso3.addEventListener('click', () => verPaso(4));
@@ -140,11 +118,7 @@ function archivoABase64(file, inputHidden, vistoSpan) {
 }
 
 function verificarFotos() {
-    const rostroOk = fotoRostroB64.value !== '';
-    const cedulaOk = fotoCedulaB64.value !== '';
-    btnPaso4.disabled = !(rostroOk && cedulaOk);
-    if (!rostroOk && rostro.files.length > 0) marcarErrorInput(rostro, "Error al cargar foto perfil");
-    if (!cedulaOk && cedulaFile.files.length > 0) marcarErrorInput(cedulaFile, "Error al cargar foto cédula");
+    btnPaso4.disabled = !(fotoRostroB64.value && fotoCedulaB64.value);
 }
 
 rostro.addEventListener('change', async (e) => {
@@ -189,25 +163,17 @@ btnPaso4.addEventListener('click', async () => {
     const selectDorsal = document.getElementById('dorsal');
     selectNombre.innerHTML = '';
     selectDorsal.innerHTML = '';
-
-    const primerNombre = n1.value.trim();
-    const segundoNombre = n2.value.trim();
-    selectNombre.add(new Option(primerNombre, primerNombre));
-    if (segundoNombre) selectNombre.add(new Option(segundoNombre, segundoNombre));
-
+    selectNombre.add(new Option(n1.value.trim(), n1.value.trim()));
+    if (n2.value.trim()) selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
     try {
         const resp = await fetch(`${URL_GAS}?action=getDorsales`);
         const ocupados = await resp.json();
         for (let i = 1; i <= 99; i++) {
-            if (!ocupados.includes(String(i))) {
-                selectDorsal.add(new Option(i, i));
-            }
+            if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
         }
     } catch (error) {
         mostrarToast("No se pudieron cargar los dorsales.", "error");
         console.error(error);
-        mostrarLoader(false);
-        return;
     }
     mostrarLoader(false);
     verPaso(5);
@@ -217,7 +183,6 @@ btnPaso4.addEventListener('click', async () => {
 const nombreCamiseta = document.getElementById('nombreCamiseta');
 const dorsal = document.getElementById('dorsal');
 const btnPaso5 = document.getElementById('btnPaso5');
-
 function validarPaso5() {
     btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
 }
@@ -232,17 +197,31 @@ const uniforme = document.getElementById('uniforme');
 const btnFinal = document.getElementById('btnFinal');
 
 function validarPaso6() {
-    btnFinal.disabled = !(medias.value && inscripcion.value.trim() && uniforme.value.trim());
-    if (medias.value === "") marcarErrorInput(medias, "Seleccione si necesita medias extras");
-    if (!inscripcion.value.trim()) marcarErrorInput(inscripcion, "Número de transacción de inscripción requerido");
-    if (!uniforme.value.trim()) marcarErrorInput(uniforme, "Número de transacción de uniforme requerido");
+    const mediasValida = medias.value !== "";
+    const inscripcionValida = inscripcion.value.trim() !== "";
+    const uniformeValida = uniforme.value.trim() !== "";
+    btnFinal.disabled = !(mediasValida && inscripcionValida && uniformeValida);
+    // Mostrar ayudas si están vacíos pero el usuario ha intentado
+    if (!mediasValida) medias.style.borderColor = "#ff5e5e";
+    else medias.style.borderColor = "";
+    if (!inscripcionValida) inscripcion.style.borderColor = "#ff5e5e";
+    else inscripcion.style.borderColor = "";
+    if (!uniformeValida) uniforme.style.borderColor = "#ff5e5e";
+    else uniforme.style.borderColor = "";
 }
 [medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
 
-// Envío final
+// ================= ENVÍO FINAL =================
 btnFinal.addEventListener('click', async () => {
+    // Validar nuevamente antes de enviar
+    if (btnFinal.disabled) {
+        mostrarToast("Completa todos los campos del paso 6", "error");
+        return;
+    }
+
     mostrarLoader(true, "Registrando jugador...");
 
+    // Construir FormData con los nombres correctos que espera el backend
     const formData = new FormData();
     formData.append('ced', ced.value);
     formData.append('n1', n1.value.trim());
@@ -259,23 +238,47 @@ btnFinal.addEventListener('click', async () => {
     formData.append('fotoRostroB64', fotoRostroB64.value);
     formData.append('fotoCedulaB64', fotoCedulaB64.value);
 
+    // 🔍 Depuración: ver en consola qué se envía (sin las imágenes completas para no saturar)
+    console.log("Enviando datos:", {
+        ced: ced.value,
+        n1: n1.value,
+        n2: n2.value,
+        ape: ape.value,
+        fecha: fecha.value,
+        tel: tel.value,
+        correo: correo.value,
+        medias: medias.value,
+        dorsal: dorsal.value,
+        nombreCamiseta: nombreCamiseta.value,
+        inscripcion: inscripcion.value,
+        uniforme: uniforme.value,
+        tieneFotoRostro: !!fotoRostroB64.value,
+        tieneFotoCedula: !!fotoCedulaB64.value
+    });
+
     try {
-        const response = await fetch(URL_GAS, { method: 'POST', body: formData });
+        const response = await fetch(URL_GAS, {
+            method: 'POST',
+            body: formData
+        });
         const result = await response.json();
+        console.log("Respuesta del backend:", result);
 
         if (result.ok) {
+            // Guardar sesión
             localStorage.setItem('jugador_aprobado', JSON.stringify({
                 cedula: ced.value,
                 expira: Date.now() + 24 * 3600000,
                 admin: false
             }));
             mostrarLoader(false);
+            // Mostrar modal de éxito
             modalExito.style.display = 'flex';
             let segundos = 3;
             const spanContador = document.getElementById('contador');
             const intervalo = setInterval(() => {
                 segundos--;
-                spanContador.innerText = segundos;
+                if (spanContador) spanContador.innerText = segundos;
                 if (segundos <= 0) {
                     clearInterval(intervalo);
                     window.location.href = 'perfil.html';
@@ -283,19 +286,23 @@ btnFinal.addEventListener('click', async () => {
             }, 1000);
         } else {
             mostrarLoader(false);
-            mostrarToast("❌ Error: " + (result.msg || result.error || "Intenta de nuevo"), "error");
+            mostrarToast("❌ Error del servidor: " + (result.msg || result.error || "Desconocido"), "error");
         }
     } catch (error) {
         mostrarLoader(false);
-        console.error(error);
-        mostrarToast("Error de red. Revisa tu conexión.", "error");
+        console.error("Error de red:", error);
+        mostrarToast("Error de red. Revisa tu conexión o la URL del backend.", "error");
     }
 });
 
-// ================= INYECCIÓN DE NAVEGACIÓN =================
+// ================= NAVEGACIÓN (NO APARECE EN REGISTRO) =================
 function inyectarNav() {
-    const pagina = location.pathname.split("/").pop();
-    if (pagina === "index.html") return;
+    const path = window.location.pathname;
+    const filename = path.split("/").pop();
+    // Si es la página de registro (index.html, raíz o index), salimos
+    if (filename === "" || filename === "index.html" || filename === "index") {
+        return;
+    }
     if (document.querySelector('.nav-napoles')) return;
 
     let sessionActiva = false;
@@ -312,18 +319,13 @@ function inyectarNav() {
 
     const nav = document.createElement('nav');
     nav.className = 'nav-napoles';
-
     const items = [
         { href: 'index.html', icono: '🏠', label: 'Inicio' },
         { href: 'perfil.html', icono: '⚽', label: 'Perfil' },
         { href: 'noticias.html', icono: '📢', label: 'Noticias' }
     ];
-    if (sessionActiva && esAdmin) {
-        items.push({ href: 'admin.html', icono: '👑', label: 'Admin' });
-    }
-    if (sessionActiva) {
-        items.push({ href: '#', icono: '🚪', label: 'Salir', accion: 'logout' });
-    }
+    if (sessionActiva && esAdmin) items.push({ href: 'admin.html', icono: '👑', label: 'Admin' });
+    if (sessionActiva) items.push({ href: '#', icono: '🚪', label: 'Salir', accion: 'logout' });
 
     items.forEach(item => {
         const div = document.createElement('div');
@@ -340,7 +342,6 @@ function inyectarNav() {
         }
         nav.appendChild(div);
     });
-
     document.body.appendChild(nav);
 }
 
