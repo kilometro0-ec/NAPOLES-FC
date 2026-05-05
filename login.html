@@ -16,6 +16,14 @@
             font-size: 1.2rem;
             letter-spacing: 2px;
         }
+        .mensaje-error {
+            color: #ff5e5e;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.5);
+            padding: 8px;
+            border-radius: 20px;
+        }
     </style>
 </head>
 <body>
@@ -25,25 +33,39 @@
     <input type="text" id="loginCedula" maxlength="10" placeholder="CÉDULA (10 dígitos)">
     <button id="btnLogin" class="btn-accion" disabled>INGRESAR</button>
     <p style="margin-top: 1rem;">¿No tienes cuenta? <a href="index.html" style="color: var(--dorado);">Regístrate aquí</a></p>
+    <div id="mensajeError" class="mensaje-error"></div>
 </div>
 
 <script>
     const URL_GAS = "https://script.google.com/macros/s/AKfycbyOZObCnKnnbwwuwTO8CULGvh1-c9hiUqAhBs15N3ceMYaFQaiHtTQWGJgugbodinP6/exec";
     const cedulaInput = document.getElementById('loginCedula');
     const btnLogin = document.getElementById('btnLogin');
+    const mensajeError = document.getElementById('mensajeError');
 
     cedulaInput.addEventListener('input', () => {
         cedulaInput.value = cedulaInput.value.replace(/\D/g, '').slice(0,10);
         btnLogin.disabled = cedulaInput.value.length !== 10;
+        mensajeError.innerText = '';
     });
 
     btnLogin.addEventListener('click', async () => {
         const cedula = cedulaInput.value;
+        mensajeError.innerText = '';
+        btnLogin.disabled = true;
+        btnLogin.innerText = 'VERIFICANDO...';
+
         try {
             const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${cedula}`);
             const data = await resp.json();
-            if (data.cedulaExiste) {
-                // Guardar sesión (solo cédula, el perfil cargará el resto)
+
+            if (!data.cedulaExiste) {
+                mensajeError.innerText = "❌ Cédula no registrada. Debes registrarte primero.";
+                return;
+            }
+
+            // Verificar estado
+            if (data.estado === "APROBADO") {
+                // Guardar sesión
                 localStorage.setItem('jugador_aprobado', JSON.stringify({
                     cedula: cedula,
                     expira: Date.now() + 24 * 3600000,
@@ -51,10 +73,14 @@
                 }));
                 window.location.href = 'perfil.html';
             } else {
-                alert("❌ Cédula no registrada. Debes registrarte primero.");
+                mensajeError.innerText = "⏳ Tu cuenta está PENDIENTE de aprobación. Espera a que un administrador la active.";
             }
         } catch (error) {
-            alert("Error de conexión. Intenta de nuevo.");
+            mensajeError.innerText = "Error de conexión. Intenta de nuevo.";
+            console.error(error);
+        } finally {
+            btnLogin.disabled = false;
+            btnLogin.innerText = 'INGRESAR';
         }
     });
 </script>
