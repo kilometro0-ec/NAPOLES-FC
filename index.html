@@ -3,199 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Last-Modified" content="0">
-    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    
     <title>Inscripción | Nápoles FC</title>
-
-    <link rel="shortcut icon" href="/NAPOLES-FC/img/favicon.png" type="image/png">
-    <link rel="icon" href="/NAPOLES-FC/img/favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="/NAPOLES-FC/img/favicon.png">
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1A2B48">
-    
-    <link rel="stylesheet" href="estilos.css?v=1.0.3">
-    
+    <link rel="icon" href="/NAPOLES-FC/img/favicon.png">
     <style>
-        /* Estilos base para el funcionamiento del flujo */
-        .loading-overlay {
-            display: none; 
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(26, 43, 72, 0.98);
-            z-index: 10000;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .spinner {
-            width: 50px; height: 50px;
-            border: 5px solid rgba(181, 148, 97, 0.2);
-            border-top: 5px solid #B59461;
-            border-radius: 50%;
-            animation: spin 1s infinite linear;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .seccion-oculta { display: none !important; }
-        
-        #video { width: 100%; border-radius: 12px; border: 2px solid #B59461; background: #000; margin-bottom: 10px; }
-        .preview-camara { width: 100%; border-radius: 12px; display: none; border: 2px solid #008B94; margin-bottom: 10px; }
-        
-        .btn-accion {
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+        .contenedor-principal { max-width: 500px; background: white; margin: auto; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .seccion-oculta { display: none; }
+        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; margin-top: 10px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        .btn-sig { background: #B59461; color: white; }
+        .btn-fin { background: #008B94; color: white; }
+        #video { width: 100%; border-radius: 10px; background: #000; }
+        #loader { display: none; text-align: center; color: #B59461; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div id="loader" class="loading-overlay">
-        <div class="spinner"></div>
-        <p style="color: #B59461; margin-top: 20px; font-weight: bold; letter-spacing: 1px;">PROCESANDO REGISTRO...</p>
-    </div>
+    <div id="loader">⚙️ PROCESANDO REGISTRO, ESPERE...</div>
 
-    <div class="contenedor-principal">
-        <header style="text-align: center; margin-bottom: 30px; padding-top: 20px;">
-            <h2 style="margin: 0; color: #1A2B48; text-transform: uppercase;">Inscripción Oficial</h2>
-            <p style="color: #B59461; font-size: 0.85em; margin-top: 5px; font-weight: bold; letter-spacing: 2px;">
-                NAPOLES F.C. • 2026
-            </p>
+    <div class="contenedor-principal" id="contenido">
+        <header style="text-align: center;">
+            <h2 style="color: #1A2B48;">NAPOLES F.C.</h2>
+            <p>Registro de Jugadores 2026</p>
         </header>
 
-        <form id="formularioRegistro">
-            
-            <div id="paso1" class="seccion-formulario">
-                <label>Primer Nombre</label>
-                <input type="text" id="nombre1" name="nombre1" required placeholder="Escriba su nombre">
-                
-                <label>Segundo Nombre</label>
-                <input type="text" id="nombre2" name="nombre2" required placeholder="Escriba su segundo nombre">
-                
-                <label>Apellidos Completos</label>
-                <input type="text" id="apellidos" name="apellidos" required placeholder="Escriba sus apellidos">
-                
-                <label>Cédula de Identidad</label>
-                <input type="text" id="cedula" name="cedula" maxlength="10" required placeholder="Ej: 0999999999">
-                
-                <button type="button" class="btn-accion" style="background:#B59461; color:white;" onclick="validarYPasar(1, 2)">SIGUIENTE</button>
+        <form id="formRegistro">
+            <!-- PASO 1 -->
+            <div id="paso1">
+                <input type="text" name="nombre1" placeholder="Primer Nombre" required>
+                <input type="text" name="nombre2" placeholder="Segundo Nombre" required>
+                <input type="text" name="apellidos" placeholder="Apellidos Completos" required>
+                <input type="text" name="cedula" placeholder="Cédula" maxlength="10" required>
+                <button type="button" class="btn-sig" onclick="irA(2)">SIGUIENTE</button>
             </div>
 
-            <div id="paso2" class="seccion-formulario seccion-oculta">
-                <label>Fecha de Nacimiento</label>
-                <input type="date" id="fechaNac" name="fechaNac" required>
-                
-                <label>WhatsApp (Número de contacto)</label>
-                <input type="tel" id="telefono" name="telefono" maxlength="10" required placeholder="Ej: 0987654321">
-                
-                <label>Correo Electrónico</label>
-                <input type="email" id="correo" name="correo" required placeholder="ejemplo@correo.com">
-                
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-accion" style="background:#444; color:white;" onclick="irAtras(2, 1)">ATRÁS</button>
-                    <button type="button" class="btn-accion" style="background:#B59461; color:white;" onclick="validarYPasar(2, 3)">SIGUIENTE</button>
-                </div>
+            <!-- PASO 2 -->
+            <div id="paso2" class="seccion-oculta">
+                <input type="date" name="fechaNac" required>
+                <input type="tel" name="telefono" placeholder="WhatsApp" required>
+                <input type="email" name="correo" placeholder="Correo Electrónico" required>
+                <button type="button" class="btn-sig" onclick="irA(3)">SIGUIENTE</button>
             </div>
 
-            <div id="paso3" class="seccion-formulario seccion-oculta">
-                <label>Foto de Rostro (Verificación)</label>
+            <!-- PASO 3 -->
+            <div id="paso3" class="seccion-oculta">
                 <video id="video" autoplay playsinline></video>
+                <button type="button" id="btnFoto">📷 CAPTURAR FOTO</button>
                 <canvas id="canvas" style="display:none;"></canvas>
+                <img id="preview" style="display:none; width:100%; border-radius:10px;">
+                <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
                 
-                <button type="button" id="btnCapturar" class="btn-accion" style="background: #fff; color: #1A2B48; border: 2px solid #1A2B48;">
-                    📷 TOMAR FOTO AHORA
-                </button>
-                
-                <img id="fotoPreview" class="preview-camara" src="">
-                
-                <label style="margin-top: 20px;">Foto de Cédula (Subir Archivo)</label>
-                <input type="file" id="fotoCedula" name="fotoCedula" accept="image/*" required>
-                
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-accion" style="background:#444; color:white;" onclick="irAtras(3, 2)">ATRÁS</button>
-                    <button type="submit" id="btnFinalizar" class="btn-accion" style="background:#008B94; color:white;">FINALIZAR REGISTRO</button>
-                </div>
+                <button type="submit" class="btn-fin">FINALIZAR REGISTRO</button>
             </div>
-
         </form>
     </div>
 
-    <script src="nav.js?v=1.0.3"></script>
-    <script src="api.js?v=1.0.3"></script>
-
     <script>
+        const scriptURL = 'AQUÍ_PEGA_TU_URL_DE_GOOGLE_APPS_SCRIPT';
         let stream;
 
-        function validarYPasar(actual, siguiente) {
-            const pasoActual = document.getElementById(`paso${actual}`);
-            const inputs = pasoActual.querySelectorAll("[required]");
-            let valido = true;
-
-            inputs.forEach(i => {
-                if(!i.checkValidity()) {
-                    i.reportValidity();
-                    valido = false;
-                }
-            });
-
-            if(valido) {
-                pasoActual.classList.add('seccion-oculta');
-                document.getElementById(`paso${siguiente}`).classList.remove('seccion-oculta');
-                if(siguiente === 3) iniciarCamara();
-            }
+        function irA(paso) {
+            document.getElementById('paso1').classList.add('seccion-oculta');
+            document.getElementById('paso2').classList.add('seccion-oculta');
+            document.getElementById('paso3').classList.add('seccion-oculta');
+            document.getElementById('paso' + paso).classList.remove('seccion-oculta');
+            if(paso === 3) abrirCamara();
         }
 
-        function irAtras(actual, anterior) {
-            document.getElementById(`paso${actual}`).classList.add('seccion-oculta');
-            document.getElementById(`paso${anterior}`).classList.remove('seccion-oculta');
-            if(actual === 3 && stream) {
-                stream.getTracks().forEach(t => t.stop());
-            }
+        async function abrirCamara() {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+            document.getElementById('video').srcObject = stream;
         }
 
-        async function iniciarCamara() {
-            const video = document.getElementById('video');
-            const preview = document.getElementById('fotoPreview');
-            video.style.display = 'block';
-            preview.style.display = 'none';
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: "user", width: 400, height: 400 } 
-                });
-                video.srcObject = stream;
-            } catch (e) {
-                alert("Para validar tu identidad, es obligatorio el uso de la cámara.");
-            }
-        }
+        document.getElementById('btnFoto').onclick = () => {
+            const v = document.getElementById('video');
+            const c = document.getElementById('canvas');
+            c.width = v.videoWidth; c.height = v.videoHeight;
+            c.getContext('2d').drawImage(v, 0, 0);
+            const data = c.toDataURL('image/jpeg');
+            document.getElementById('fotoRostroB64').value = data;
+            document.getElementById('preview').src = data;
+            document.getElementById('preview').style.display = 'block';
+            v.style.display = 'none';
+            stream.getTracks().forEach(t => t.stop());
+        };
 
-        document.getElementById('btnCapturar').onclick = () => {
-            const video = document.getElementById('video');
-            const canvas = document.getElementById('canvas');
-            const preview = document.getElementById('fotoPreview');
-            
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            
-            const data = canvas.toDataURL('image/jpeg', 0.8);
-            preview.src = data; 
-            preview.style.display = 'block';
-            video.style.display = 'none';
-            
-            if(stream) stream.getTracks().forEach(t => t.stop());
+        document.getElementById('formRegistro').onsubmit = e => {
+            e.preventDefault();
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('contenido').style.opacity = '0.3';
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
+            .then(res => {
+                alert('¡REGISTRO EXITOSO! Nápoles FC le da la bienvenida.');
+                location.reload();
+            })
+            .catch(err => alert('Error: ' + err.message));
         };
     </script>
 </body>
