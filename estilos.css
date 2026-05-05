@@ -1,175 +1,187 @@
-<style>
-/* Importación de fuente moderna */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+/* 1. CONFIGURACIÓN GLOBAL */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+}
 
 :root {
-    --azul-napoles: #1A2B48;
-    --dorado: #C5A059;
-    --dorado-light: #e0c58e;
-    --gris-fondo: #f4f7f6;
-    --blanco: #ffffff;
+    --azul-noche: #1A2B48;
+    --cardenillo: #008B94;
+    --dorado: #B59461;
+    --blanco-puro: #ffffff;
+    --gris-suave: rgba(255, 255, 255, 0.1);
+    --negro-trans: rgba(0, 0, 0, 0.4);
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--gris-fondo);
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--azul-noche);
+    color: var(--blanco-puro);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
     min-height: 100vh;
-    color: var(--azul-napoles);
+    display: flex;
+    flex-direction: column;
 }
 
+/* 2. CONTENEDOR PRINCIPAL */
 .contenedor-principal {
-    background: var(--blanco);
-    width: 90%;
     max-width: 450px;
-    padding: 2rem;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    text-align: center;
+    width: 100%;
+    margin: 40px auto 120px auto; /* Margen extra abajo para el nav */
+    padding: 30px;
+    background-color: var(--gris-suave);
+    border: 1px solid var(--dorado);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-header h2 {
-    color: var(--azul-napoles);
-    letter-spacing: 2px;
-    margin-bottom: 5px;
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo-equipo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 5px var(--dorado));
+}
+
+h2 { 
+    color: var(--dorado); 
+    text-transform: uppercase; 
+    letter-spacing: 3px;
+    font-size: 1.4rem;
     font-weight: 700;
 }
 
-header h { /* Cambiado a span o p en producción, pero lo dejo por tu HTML */
-    display: block;
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
+/* 3. FORMULARIO E INPUTS */
+.seccion-formulario {
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Inputs y Selects */
-input, select {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border: 2px solid #eee;
-    border-radius: 12px;
-    box-sizing: border-box;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--dorado);
-    box-shadow: 0 0 8px rgba(197, 160, 89, 0.2);
-}
-
-input[readonly] {
-    background-color: #f9f9f9;
-    color: #999;
-}
-
-/* Botones */
-.btn-accion {
-    width: 100%;
-    padding: 16px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 12px;
-    background: var(--azul-napoles);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+label { 
+    color: var(--dorado); 
+    font-size: 0.75rem; 
+    font-weight: bold; 
+    display: block; 
+    margin-top: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.btn-accion:hover {
-    background: #253a5f;
-    transform: translateY(-2px);
-}
-
-.btn-accion:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Pasos y Animación */
-.paso { display: none; }
-.paso.activo { 
-    display: block; 
-    animation: slideUp 0.4s ease-out; 
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Cámara y Fotos */
-#contenedor-camara {
-    position: relative;
-    width: 220px;
-    height: 220px;
-    margin: 20px auto;
-    border-radius: 50%; /* Foto de perfil circular */
-    overflow: hidden;
-    border: 4px solid var(--dorado);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-#video, #previewCamara {
+input, select {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scaleX(-1);
+    padding: 12px 15px;
+    margin-top: 8px;
+    border: 1px solid rgba(181, 148, 97, 0.5);
+    background: var(--negro-trans);
+    color: white;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-.guia {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    border-radius: 50%;
-    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5);
-    pointer-events: none;
+input:focus, select:focus {
+    border-color: var(--cardenillo);
+    box-shadow: 0 0 8px rgba(0, 139, 148, 0.4);
+    outline: none;
+    background: rgba(0, 0, 0, 0.6);
 }
 
-/* Loader */
-#loader {
-    display: none;
+/* Estilo especial para el select */
+select option {
+    background: var(--azul-noche);
+    color: white;
+}
+
+/* 4. BOTONES */
+.btn-accion {
+    background: linear-gradient(135deg, var(--cardenillo), #005f66);
+    color: white;
+    border: none;
+    padding: 16px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-accion:active {
+    transform: scale(0.98);
+}
+
+.btn-accion:hover { 
+    box-shadow: 0 0 20px rgba(0, 139, 148, 0.6); 
+}
+
+/* 5. ANIMACIÓN DE CARGA Y ÉXITO (PROFESIONAL) */
+#loader, #final-animacion {
+    display: none; /* Controlado por JS */
     position: fixed;
-    inset: 0;
-    background: rgba(26, 43, 72, 0.9);
-    backdrop-filter: blur(8px);
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(26, 43, 72, 0.98);
+    z-index: 99999;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner-balon, .balon-animado {
+    width: 70px;
+    height: 70px;
+    border: 5px solid var(--gris-suave);
+    border-top: 5px solid var(--dorado);
+    border-radius: 50%;
+    animation: spinNapoles 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    margin-bottom: 25px;
+    box-shadow: 0 0 15px rgba(181, 148, 97, 0.3);
+}
+
+@keyframes spinNapoles {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#final-status {
     color: var(--dorado);
-    z-index: 9999;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.loading {
-    animation: pulse 1.5s infinite;
+#final-mensaje {
+    color: var(--blanco-puro);
+    font-size: 1rem;
+    margin-top: 10px;
+    opacity: 0.9;
+    max-width: 300px;
 }
 
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.6; }
-    100% { opacity: 1; }
+/* 6. UTILIDADES */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Estilo para el input file personalizado */
-#cedulaFile {
-    font-size: 0.8rem;
-    background: #f0f0f0;
-    margin-top: 20px;
+/* Ajustes para móviles pequeños */
+@media (max-width: 380px) {
+    .contenedor-principal {
+        padding: 20px;
+        margin-top: 20px;
+    }
+    h2 { font-size: 1.2rem; }
 }
-
-h3 {
-    font-size: 1.2rem;
-    color: var(--azul-napoles);
-    margin-top: 0;
-}
-</style>
