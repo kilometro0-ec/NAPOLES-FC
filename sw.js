@@ -1,41 +1,36 @@
-const CACHE_NAME = 'napoles-v2'; // <--- Cambiar el nombre de la versión es CLAVE
+const CACHE_NAME = 'napoles-v3';
+
 const urlsToCache = [
   './',
   './index.html',
   './estilos.css',
-  './api.js', // Asegúrate de incluir api.js
-  './nav.js'
+  './api.js',
+  './favicon.png',
+  './manifest.json'
 ];
 
-// Instalación y almacenamiento en caché
+// INSTALAR
 self.addEventListener('install', event => {
-  self.skipWaiting(); // Obliga al nuevo SW a activarse de inmediato
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
 });
 
-// Limpieza de cachés antiguos
+// ACTIVAR
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cache => {
-          if (cache !== CACHE_NAME) {
-            console.log('Borrando caché antiguo:', cache);
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
+    caches.keys().then(names =>
+      Promise.all(
+        names.map(n => n !== CACHE_NAME ? caches.delete(n) : null)
+      )
+    )
   );
 });
 
-// Estrategia: Network First (Prioriza la red para ver cambios de diseño)
+// FETCH (NETWORK FIRST)
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
