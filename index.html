@@ -193,8 +193,7 @@
         font-size: 0.8rem;
         color: #f3d572;
     }
-    #loader, #modalExito { display: none; /* resto de estilos ya están */ }
-    /* Asegurar que el modal se vea */
+    #loader, #modalExito { display: none; }
     #modalExito {
         position: fixed;
         inset: 0;
@@ -338,31 +337,111 @@
 <div id="modalExito"><div class="modal-card"><h2>✅ ¡Registro exitoso!</h2><p>Redirigiendo en <span id="contador">3</span> segundos...</p></div></div>
 
 <script>
-// ========== SOLUCIÓN PARA ACTIVAR BOTÓN DE CÉDULA ==========
-// Este script garantiza que al escribir 10 dígitos se habilite el botón Validar
-const cedulaInput = document.getElementById('ced');
-const btnValidar = document.getElementById('btnCedula');
+    // ========== FIX BOTÓN VALIDAR CÉDULA ==========
+    // Activa el botón cuando la cédula tenga 10 dígitos (solo números)
+    const cedInput = document.getElementById('ced');
+    const btnValidar = document.getElementById('btnCedula');
+    if (cedInput && btnValidar) {
+        cedInput.addEventListener('input', function(e) {
+            // Solo números y máximo 10 caracteres
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
+            btnValidar.disabled = (this.value.length !== 10);
+        });
+    }
 
-if (cedulaInput && btnValidar) {
-    cedulaInput.addEventListener('input', function(e) {
-        // Solo números y máximo 10
-        this.value = this.value.replace(/\D/g, '').slice(0, 10);
-        // Habilitar botón si la longitud es exactamente 10
-        btnValidar.disabled = this.value.length !== 10;
+    // ========== LÓGICA PARA EL PAGO DEL UNIFORME (Sí/No) ==========
+    const radios = document.querySelectorAll('input[name="pagoUniforme"]');
+    const condicionalDiv = document.getElementById('uniformeCondicional');
+    const uniformeHidden = document.getElementById('uniforme');
+
+    function actualizarCampoUniforme() {
+        const selected = document.querySelector('input[name="pagoUniforme"]:checked');
+        if (!selected) {
+            condicionalDiv.innerHTML = '';
+            uniformeHidden.value = '';
+            return;
+        }
+        if (selected.value === 'si') {
+            condicionalDiv.innerHTML = `
+                <div style="margin-top:8px;">
+                    <input type="text" id="transaccionUniforme" placeholder="Número de transacción del pago" style="width:100%; padding:0.8rem 1rem; border-radius:2rem; border:1px solid rgba(0,143,155,0.6); background:rgba(0,0,0,0.45); color:white;">
+                </div>
+            `;
+            const txInput = document.getElementById('transaccionUniforme');
+            if (txInput) {
+                txInput.addEventListener('input', () => {
+                    uniformeHidden.value = txInput.value;
+                    validarPaso6();
+                });
+                uniformeHidden.value = txInput.value || '';
+            }
+        } else {
+            condicionalDiv.innerHTML = `
+                <div class="aviso-pago">
+                    ⚠️ Debes abonar <strong>$10</strong> hasta el <strong>viernes 8 de mayo</strong>.<br>
+                    ¿Qué día vas a pagar?
+                    <select id="diaPago" style="margin-top:8px; padding:0.5rem; border-radius:1rem; background:#1e2a3e; color:white;">
+                        <option value="">Selecciona un día</option>
+                        <option value="Viernes 8 de mayo">Viernes 8 de mayo</option>
+                        <option value="Sábado 9 de mayo">Sábado 9 de mayo</option>
+                        <option value="Lunes 11 de mayo">Lunes 11 de mayo</option>
+                        <option value="Martes 12 de mayo">Martes 12 de mayo</option>
+                    </select>
+                </div>
+            `;
+            const selectDia = document.getElementById('diaPago');
+            if (selectDia) {
+                selectDia.addEventListener('change', () => {
+                    uniformeHidden.value = `PAGO PENDIENTE - pagará el ${selectDia.value}`;
+                    validarPaso6();
+                });
+                uniformeHidden.value = `PAGO PENDIENTE - pagará el ${selectDia.value || '?'}`;
+            }
+        }
+        validarPaso6();
+    }
+
+    radios.forEach(radio => radio.addEventListener('change', actualizarCampoUniforme));
+
+    // Validación del paso 6 para habilitar el botón final
+    const medias = document.getElementById('medias');
+    const inscripcion = document.getElementById('inscripcion');
+    const btnFinal = document.getElementById('btnFinal');
+
+    function validarPaso6() {
+        const mediasOk = medias.value !== "";
+        const inscripcionOk = inscripcion.value.trim() !== "";
+        const pagoSeleccionado = document.querySelector('input[name="pagoUniforme"]:checked');
+        let uniformeOk = false;
+        if (pagoSeleccionado) {
+            if (pagoSeleccionado.value === 'si') {
+                const txInput = document.getElementById('transaccionUniforme');
+                uniformeOk = txInput && txInput.value.trim() !== "";
+            } else {
+                const diaSelect = document.getElementById('diaPago');
+                uniformeOk = diaSelect && diaSelect.value !== "";
+            }
+        }
+        btnFinal.disabled = !(mediasOk && inscripcionOk && pagoSeleccionado && uniformeOk);
+    }
+
+    medias.addEventListener('change', validarPaso6);
+    inscripcion.addEventListener('input', validarPaso6);
+    
+    // Escuchar cambios en los campos dinámicos (se agregan después)
+    document.addEventListener('input', (e) => {
+        if (e.target.id === 'transaccionUniforme' || e.target.id === 'diaPago') validarPaso6();
     });
-}
-
-// ========== LÓGICA DEL RESTO DEL FORMULARIO (pasos, imágenes, dorsales, pago uniforme) ==========
-// Aquí puedes incluir el resto de tu lógica (la que estaba en frontend.js)
-// Por ahora solo incluimos lo necesario para que el botón funcione.
-// Si ya tienes frontend.js, asegúrate de que contenga toda la lógica (validación de cédula con backend)
-// No elimines el script de frontend.js que está abajo.
-
-// Para no duplicar, dejamos que frontend.js maneje el resto de validaciones.
-// Pero como frontend.js también tiene la habilitación del botón, no habrá conflicto.
-// Este script extra asegura que funcione incluso si frontend.js falla.
+    document.addEventListener('change', (e) => {
+        if (e.target.id === 'diaPago') validarPaso6();
+    });
+    
+    // Observador para cuando se crean los campos dinámicos
+    const observer = new MutationObserver(() => validarPaso6());
+    observer.observe(condicionalDiv, { childList: true, subtree: true });
 </script>
 
+<!-- Aquí cargamos frontend.js si existe, para el resto de funciones (pasos, imágenes, dorsales, envío) -->
 <script src="frontend.js"></script>
 </body>
 </html>
