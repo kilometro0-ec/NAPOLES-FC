@@ -3,270 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Registro Nápoles FC</title>
-    <link rel="stylesheet" href="estilos.css?v=3.0">
-    <style>
-        :root { --dorado: #c5a059; --oscuro: #0a0a0a; --blanco: #ffffff; }
-        
-        body { background-color: var(--oscuro); color: var(--blanco); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
-
-        .paso-contenido { display: none; }
-        .paso-activo { display: block; animation: fadeIn 0.4s ease; }
-
-        /* Guía de Cámara */
-        .camara-box { position: relative; overflow: hidden; border-radius: 15px; border: 2px solid var(--dorado); background: #000; margin-bottom: 15px; }
-        .guia-camara { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            border: 2px dashed rgba(197, 160, 89, 0.6); pointer-events: none; z-index: 10;
-        }
-        .guia-rostro { width: 55%; height: 65%; border-radius: 50%; } /* Rostro más alejado */
-        .guia-cedula { width: 85%; height: 55%; border-radius: 10px; }
-        
-        #videoRostro { transform: scaleX(-1); width: 100%; display: block; } /* Efecto Espejo */
-        #videoCedula { width: 100%; display: block; }
-
-        /* Animación Final del Balón */
-        #final-animacion { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--oscuro); z-index: 9999; text-align: center; color: white; padding-top: 25%;
-        }
-        .balon { width: 90px; filter: invert(1); animation: bounceRotate 1.2s infinite ease-in-out; }
-        
-        @keyframes bounceRotate {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-50px) rotate(180deg); }
-            100% { transform: translateY(0) rotate(360deg); }
-        }
-
-        /* Formato de Inputs */
-        input:not([type="email"]):not([type="date"]) { text-transform: uppercase; }
-        input, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid var(--dorado); background: rgba(255,255,255,0.05); color: white; border-radius: 8px; }
-        .tag { font-size: 0.75rem; color: var(--dorado); margin-bottom: -5px; margin-top: 10px; font-weight: bold; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+    <title>Registro - Nápoles F.C.</title>
+    <link rel="stylesheet" href="estilos.css">
+    <!-- Google Fonts para un look más Pro -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="final-animacion">
-        <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png" class="balon" alt="balon">
-        <h2 id="final-status" style="margin-top:20px;">PROCESANDO REGISTRO...</h2>
-        <p id="final-mensaje">Guardando tu información en Nápoles F.C.</p>
-    </div>
-
-    <div id="loader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; justify-content:center; align-items:center; flex-direction:column;">
-        <div class="balon" style="width:50px;"></div>
-        <p style="color:var(--dorado); margin-top:10px;">VALIDANDO CÉDULA...</p>
-    </div>
-
-    <div class="contenedor-principal" style="padding: 20px; max-width: 500px; margin: auto;">
-        <header style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: var(--dorado); letter-spacing: 2px;">NÁPOLES F.C.</h1>
-            <div class="progreso-puntos" style="display:flex; justify-content:center; gap:10px;">
-                <div id="p1" class="punto activo" style="width:12px; height:12px; border-radius:50%; background:var(--dorado);"></div>
-                <div id="p2" class="punto" style="width:12px; height:12px; border-radius:50%; background:#444;"></div>
-                <div id="p3" class="punto" style="width:12px; height:12px; border-radius:50%; background:#444;"></div>
-                <div id="p4" class="punto" style="width:12px; height:12px; border-radius:50%; background:#444;"></div>
-            </div>
+    <div class="contenedor-principal">
+        <header>
+            <img src="logo-napoles.png" alt="Logo Nápoles FC" class="logo-equipo">
+            <h2>Registro de Jugador</h2>
         </header>
 
-        <form id="formRegistro">
-            <div id="step1" class="paso-contenido paso-activo">
-                <label class="tag">DATOS DE IDENTIDAD</label>
-                <input type="text" id="n1" name="nombre1" placeholder="PRIMER NOMBRE" required oninput="this.value = this.value.toUpperCase()">
-                <input type="text" id="n2" name="nombre2" placeholder="SEGUNDO NOMBRE" oninput="this.value = this.value.toUpperCase()">
-                <input type="text" id="ape" name="apellidos" placeholder="APELLIDOS COMPLETOS" required oninput="this.value = this.value.toUpperCase()">
-                <input type="tel" id="ced" name="cedula" placeholder="CÉDULA (10 DÍGITOS)" maxlength="10" required>
-                
-                <label class="tag">FECHA DE NACIMIENTO</label>
-                <input type="date" name="fechaNac" required style="color-scheme: dark;">
-                
-                <label class="tag">CORREO ELECTRÓNICO</label>
-                <input type="email" name="correo" placeholder="ejemplo@correo.com" required>
-                
-                <button type="button" class="btn-accion" style="width:100%; padding:15px; background:var(--dorado); border:none; color:black; font-weight:bold; border-radius:8px; margin-top:20px;" onclick="validarPaso1()">SIGUIENTE</button>
+        <form id="formRegistro" onsubmit="event.preventDefault();">
+            
+            <!-- PASO 1: VALIDACIÓN INICIAL -->
+            <div id="paso1" class="seccion-formulario">
+                <label>Cédula de Identidad (10 dígitos)</label>
+                <input type="number" id="ced" name="cedula" placeholder="Ej: 17255..." required>
+
+                <label>Número de Transacción (Comprobante)</label>
+                <input type="text" id="trans" name="transaccion" placeholder="Código de depósito/transferencia" required>
+
+                <button type="button" class="btn-accion" onclick="validarDatosIniciales()">Verificar y Continuar</button>
             </div>
 
-            <div id="step2" class="paso-contenido">
-                <label class="tag">NOMBRE EN CAMISETA</label>
-                <select name="nombreCamiseta" id="selectNombreCamiseta" required></select>
+            <!-- PASO 2: DATOS PERSONALES -->
+            <div id="paso2" class="seccion-formulario" style="display:none;">
+                <label>Primer Nombre</label>
+                <input type="text" id="n1" name="nombre1" required>
 
-                <label class="tag">DORSAL (NÚMEROS DISPONIBLES)</label>
-                <select name="dorsal" id="selectDorsal" required>
-                    <option value="">CARGANDO DORSALES...</option>
+                <label>Segundo Nombre</label>
+                <input type="text" id="n2" name="nombre2">
+
+                <label>Apellidos Completos</label>
+                <input type="text" id="ape" name="apellidos" required>
+
+                <label>Fecha de Nacimiento</label>
+                <input type="date" name="fechaNac" required>
+
+                <label>Teléfono de Contacto</label>
+                <input type="tel" name="telefono" placeholder="099..." required>
+
+                <label>Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" required>
+
+                <button type="button" class="btn-accion" onclick="verPaso(3)">Siguiente Paso</button>
+            </div>
+
+            <!-- PASO 3: EQUIPACIÓN Y DORSAL -->
+            <div id="paso3" class="seccion-formulario" style="display:none;">
+                <label>Nombre en la Camiseta</label>
+                <select id="selectNombreCamiseta" name="nombreCamiseta" class="input-select">
+                    <!-- Se llena automáticamente con JS -->
                 </select>
 
-                <label class="tag">CONTACTO WHATSAPP</label>
-                <input type="tel" id="wha" name="telefono" placeholder="09XXXXXXXX" maxlength="10" required>
-                
-                <label class="tag">Nº DE TRANSACCIÓN ($5.00)</label>
-                <input type="text" name="transaccion" placeholder="CÓDIGO DE TRANSFERENCIA" required oninput="this.value = this.value.toUpperCase()">
-                
-                <input type="hidden" name="estado" value="PENDIENTE">
+                <label>Selecciona tu Dorsal</label>
+                <select id="selectDorsal" name="dorsal" required class="input-select">
+                    <option value="">Cargando números disponibles...</option>
+                </select>
 
-                <div style="display: flex; gap: 10px; margin-top:20px;">
-                    <button type="button" class="btn-accion" style="flex:1; padding:15px; background:#444; color:white; border:none; border-radius:8px;" onclick="verPaso(1)">ATRÁS</button>
-                    <button type="button" class="btn-accion" style="flex:2; padding:15px; background:var(--dorado); color:black; font-weight:bold; border:none; border-radius:8px;" onclick="validarPaso2()">SIGUIENTE</button>
-                </div>
+                <button type="button" class="btn-accion" onclick="verPaso(4)">Último Paso: Fotos</button>
             </div>
 
-            <div id="step3" class="paso-contenido">
-                <label class="tag">FOTO DEL ROSTRO (TIPO ESPEJO)</label>
-                <div class="camara-box">
-                    <video id="videoRostro" autoplay playsinline></video>
-                    <img id="prevRostro" style="display:none; width:100%; transform: scaleX(-1);">
-                    <div class="guia-camara guia-rostro" id="guiaR"></div>
-                </div>
+            <!-- PASO 4: SEGURIDAD (FOTOS) -->
+            <div id="paso4" class="seccion-formulario" style="display:none;">
+                <label>Foto del Rostro (Claridad frontal)</label>
+                <input type="file" accept="image/*" capture="user" onchange="procesarFoto(this, 'fotoRostroB64')">
                 <input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
-                
-                <div id="controlesRostro">
-                    <button type="button" id="btnCapRostro" class="btn-accion" style="width:100%; padding:15px; background:var(--dorado); color:black; font-weight:bold; border:none; border-radius:8px;">📸 CAPTURAR ROSTRO</button>
-                </div>
-                <div id="reintentarRostro" style="display:none; gap:10px;">
-                    <button type="button" class="btn-accion" style="flex:1; background:#cc4444; color:white; border:none; padding:15px; border-radius:8px;" onclick="reintentarFoto('Rostro')">REPETIR</button>
-                    <button type="button" class="btn-accion" style="flex:1; background:var(--dorado); color:black; font-weight:bold; border:none; padding:15px; border-radius:8px;" onclick="verPaso(4)">SIGUIENTE</button>
-                </div>
-            </div>
 
-            <div id="step4" class="paso-contenido">
-                <label class="tag">FOTO DE LA CÉDULA (FRONTAL)</label>
-                <div class="camara-box">
-                    <video id="videoCedula" autoplay playsinline></video>
-                    <img id="prevCedula" style="display:none; width:100%;">
-                    <div class="guia-camara guia-cedula" id="guiaC"></div>
-                </div>
+                <label>Foto de la Cédula (Lado frontal)</label>
+                <input type="file" accept="image/*" onchange="procesarFoto(this, 'fotoCedulaB64')">
                 <input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
 
-                <div id="controlesCedula">
-                    <button type="button" id="btnCapCedula" class="btn-accion" style="width:100%; padding:15px; background:var(--dorado); color:black; font-weight:bold; border:none; border-radius:8px;">📸 CAPTURAR CÉDULA</button>
-                </div>
-                <div id="reintentarCedula" style="display:none; gap:10px;">
-                    <button type="button" class="btn-accion" style="flex:1; background:#cc4444; color:white; border:none; padding:15px; border-radius:8px;" onclick="reintentarFoto('Cedula')">REPETIR</button>
-                    <button type="button" class="btn-accion" style="flex:1; background:#28a745; color:white; font-weight:bold; border:none; padding:15px; border-radius:8px;" onclick="finalizarRegistroCompleto()">FINALIZAR</button>
-                </div>
+                <button type="button" class="btn-accion" onclick="enviarTodo()">Finalizar Registro</button>
             </div>
+
+            <!-- Campo oculto para el estado -->
+            <input type="hidden" name="estado" value="PENDIENTE">
         </form>
     </div>
 
+    <!-- PANTALLA DE CARGA PROFESIONAL -->
+    <div id="loader">
+        <div class="spinner-balon"></div>
+        <p>Validando con el Club...</p>
+    </div>
+
+    <!-- ANIMACIÓN FINAL DE ÉXITO -->
+    <div id="final-animacion">
+        <div class="balon-animado"></div>
+        <h3 id="final-status">PROCESANDO...</h3>
+        <p id="final-mensaje">Estamos guardando tus datos en la base del Nápoles F.C.</p>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="script.js"></script>
+    <script src="api.js"></script>
     <script>
-        let currentStream;
+        // Función simple para cambiar entre pasos en el HTML
+        function verPaso(paso) {
+            document.querySelectorAll('.seccion-formulario').forEach(div => div.style.display = 'none');
+            document.getElementById('paso' + paso).style.display = 'block';
+            window.scrollTo(0,0);
+        }
 
-        // 1. Lógica de Pasos y Validación de Cédula Registrada
-        async function validarPaso1() {
-            const ced = document.getElementById('ced').value;
-            const n1 = document.getElementById('n1').value;
-            const ape = document.getElementById('ape').value;
-
-            if(ced.length !== 10 || !n1 || !ape) {
-                alert("REVISA QUE LA CÉDULA TENGA 10 DÍGITOS Y LOS CAMPOS ESTÉN LLENOS.");
-                return;
+        // Función para convertir fotos a Base64 antes de enviar
+        function procesarFoto(input, targetId) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                document.getElementById(targetId).value = reader.result;
             }
-
-            document.getElementById('loader').style.display = 'flex';
-            
-            try {
-                const resp = await fetch(`${URL_GOOGLE}?action=checkCedula&cedula=${ced}`);
-                const data = await resp.json();
-                
-                if(data.existe) {
-                    alert("ESTA CÉDULA YA ESTÁ REGISTRADA EN EL CLUB.");
-                    document.getElementById('loader').style.display = 'none';
-                } else {
-                    document.getElementById('loader').style.display = 'none';
-                    actualizarOpcionesNombre();
-                    verPaso(2);
-                }
-            } catch (e) {
-                document.getElementById('loader').style.display = 'none';
-                verPaso(2); // Dejamos pasar si hay error de red para no bloquear
-            }
-        }
-
-        function validarPaso2() {
-            const wha = document.getElementById('wha').value;
-            const trans = document.querySelector('[name="transaccion"]').value;
-            if(!wha.startsWith('09') || wha.length !== 10 || !trans) {
-                alert("WHATSAPP DEBE EMPEZAR CON 09 Y TENER 10 DÍGITOS. INGRESA EL Nº DE TRANSACCIÓN.");
-                return;
-            }
-            verPaso(3);
-        }
-
-        // 2. Control de Cámaras
-        async function verPaso(n) {
-            if (currentStream) currentStream.getTracks().forEach(t => t.stop());
-            document.querySelectorAll('.paso-contenido').forEach(p => p.classList.remove('paso-activo'));
-            document.querySelectorAll('.punto').forEach(p => { p.style.background = '#444'; });
-            
-            document.getElementById('step' + n).classList.add('paso-activo');
-            for(let i=1; i<=n; i++) document.getElementById('p' + i).style.background = '#c5a059';
-
-            if(n === 3) iniciarCamara('videoRostro', 'user');
-            if(n === 4) iniciarCamara('videoCedula', 'environment');
-        }
-
-        async function iniciarCamara(id, modo) {
-            try {
-                currentStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: modo } });
-                document.getElementById(id).srcObject = currentStream;
-            } catch (e) { alert("ERROR AL ABRIR CÁMARA."); }
-        }
-
-        // 3. Captura y Reintento
-        function configurarCaptura(btnId, videoId, prevId, inputId, contId, retryId, guiaId) {
-            document.getElementById(btnId).onclick = () => {
-                const v = document.getElementById(videoId);
-                const p = document.getElementById(prevId);
-                const canvas = document.createElement('canvas');
-                canvas.width = v.videoWidth; canvas.height = v.videoHeight;
-                canvas.getContext('2d').drawImage(v, 0, 0);
-                const data = canvas.toDataURL('image/jpeg', 0.8);
-                
-                document.getElementById(inputId).value = data;
-                p.src = data; p.style.display = 'block';
-                v.style.display = 'none';
-                document.getElementById(guiaId).style.display = 'none';
-                document.getElementById(contId).style.display = 'none';
-                document.getElementById(retryId).style.display = 'flex';
-            };
-        }
-
-        configurarCaptura('btnCapRostro', 'videoRostro', 'prevRostro', 'fotoRostroB64', 'controlesRostro', 'reintentarRostro', 'guiaR');
-        configurarCaptura('btnCapCedula', 'videoCedula', 'prevCedula', 'fotoCedulaB64', 'controlesCedula', 'reintentarCedula', 'guiaC');
-
-        function reintentarFoto(tipo) {
-            document.getElementById('prev' + tipo).style.display = 'none';
-            document.getElementById('video' + tipo).style.display = 'block';
-            document.getElementById('guia' + (tipo === 'Rostro' ? 'R' : 'C')).style.display = 'block';
-            document.getElementById('controles' + tipo).style.display = 'block';
-            document.getElementById('reintentar' + tipo).style.display = 'none';
-            iniciarCamara('video' + tipo, tipo === 'Rostro' ? 'user' : 'environment');
-        }
-
-        function actualizarOpcionesNombre() {
-            const n1 = document.getElementById('n1').value.toUpperCase();
-            const n2 = document.getElementById('n2').value.toUpperCase();
-            const select = document.getElementById('selectNombreCamiseta');
-            select.innerHTML = '';
-            if(n1) select.add(new Option(n1, n1));
-            if(n2) select.add(new Option(n2, n2));
-        }
-
-        async function finalizarRegistroCompleto() {
-            document.getElementById('final-animacion').style.display = 'block';
-            
-            // Llamamos a la función de envío de api.js
-            const exito = await enviarADatabase();
-            
-            if(exito) {
-                document.getElementById('final-status').innerText = "¡GRACIAS POR SER PARTE DEL EQUIPO!";
-                document.getElementById('final-mensaje').innerText = "Tu registro está PENDIENTE de aprobación.";
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 3500);
-            }
+            if (file) reader.readAsDataURL(file);
         }
     </script>
-    <script src="api.js?v=3.0"></script>
 </body>
 </html>
