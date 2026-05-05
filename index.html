@@ -13,8 +13,6 @@
 <link rel="stylesheet" href="estilos.css">
 
 <style>
-.nav-napoles{display:none !important;}
-
 .paso{display:none;}
 .paso.activo{display:block;animation:fade .3s ease;}
 
@@ -38,37 +36,6 @@ animation:pulse 1s infinite;
 100%{transform:scale(1)}
 }
 
-#contenedor-camara{
-position:relative;
-width:280px;
-height:280px;
-margin:20px auto;
-border-radius:20px;
-overflow:hidden;
-border:2px solid var(--dorado);
-}
-
-#video,#previewCamara{
-width:100%;
-height:100%;
-object-fit:cover;
-transform:scaleX(-1);
-}
-
-#previewCamara{position:absolute;top:0;left:0;display:none;}
-
-.guia{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:200px;
-height:200px;
-border:3px dashed #fff;
-border-radius:50%;
-box-shadow:0 0 0 1000px rgba(0,0,0,.5);
-}
-
 #loader{
 display:none;
 position:fixed;
@@ -89,7 +56,7 @@ color:#fff;
 
 <header>
 <h2>NAPOLES F.C.</h2>
-<h>Ficha de inscripción - Temporada 2026</h>
+<p>Ficha de inscripción - Temporada 2026</p>
 </header>
 
 <form id="formRegistro">
@@ -103,72 +70,71 @@ color:#fff;
 <!-- PASO 2 -->
 <div id="paso2" class="paso">
 <input id="ced2" readonly>
-<input id="n1" name="nombre1" placeholder="PRIMER NOMBRE">
-<input id="n2" name="nombre2" placeholder="SEGUNDO NOMBRE">
-<input id="ape" name="apellidos" placeholder="APELLIDOS">
-<input type="date" id="fecha" name="fechaNac">
+<input id="n1" placeholder="PRIMER NOMBRE">
+<input id="n2" placeholder="SEGUNDO NOMBRE">
+<input id="ape" placeholder="APELLIDOS">
+<input type="date" id="fecha">
 <button type="button" id="btnPaso2" class="btn-accion" disabled>SIGUIENTE</button>
 </div>
 
 <!-- PASO 3 -->
 <div id="paso3" class="paso">
-<input id="tel" name="telefono" placeholder="09XXXXXXXX">
-<input id="correo" name="correo" placeholder="correo@email.com">
+<input id="tel" placeholder="09XXXXXXXX">
+<input id="correo" placeholder="correo@email.com">
 <button type="button" id="btnPaso3" class="btn-accion" disabled>SIGUIENTE</button>
 </div>
 
-<!-- PASO 4 -->
+<!-- PASO 4 (SIN CÁMARA) -->
 <div id="paso4" class="paso">
 
-<div id="contenedor-camara">
-<video id="video" autoplay></video>
-<img id="previewCamara">
-<div class="guia"></div>
-</div>
+<h3>📷 SUBE TU FOTO DE CÉDULA</h3>
 
-<button type="button" id="btnCamara" class="btn-accion">Activar Cámara</button>
-<button type="button" id="btnFoto" class="btn-accion" style="background:#B59461">Capturar</button>
+<input type="file" id="cedulaFile" accept="image/*">
 
-<input type="file" id="cedulaFile">
+<p id="fotoEstado">No has seleccionado imagen</p>
 
 <button type="button" id="btnPaso4" class="btn-accion" disabled>SIGUIENTE</button>
+
 </div>
 
 <!-- PASO 5 -->
 <div id="paso5" class="paso">
-<h3>⚔️ TU PIEL, TU ARMADURA</h3>
-<select id="nombreCamiseta" name="nombreCamiseta"></select>
-<select id="dorsal" name="dorsal"></select>
+<h3>⚔️ ARMA TU ARMADURA</h3>
+
+<select id="nombreCamiseta"></select>
+<select id="dorsal"></select>
+
 <button type="button" id="btnPaso5" class="btn-accion" disabled>SIGUIENTE</button>
 </div>
 
 <!-- PASO 6 -->
 <div id="paso6" class="paso">
 
-<select id="medias" name="mediasExtras">
+<select id="medias">
 <option value="">Medias extras ($2)</option>
 <option value="NO">NO</option>
 <option value="SI">SI</option>
 </select>
 
-<input id="inscripcion" name="transaccionInscripcion" maxlength="10" placeholder="Pago inscripción INGRESA TU NUMERO DE TRASACCION  ($5)">
-<input id="uniforme" name="transaccionUniforme" maxlength="10" placeholder="Pago uniforme GUARDA TU NUMERO DE TRANSACCION ($18)">
+<input id="inscripcion" maxlength="10" placeholder="Pago inscripción ($5)">
+<input id="uniforme" maxlength="10" placeholder="Pago uniforme ($18)">
 
 <button type="button" id="btnFinal" class="btn-accion" disabled>FINALIZAR</button>
 
 </div>
 
-<input type="hidden" id="fotoRostroB64" name="fotoRostroB64">
-<input type="hidden" id="fotoCedulaB64" name="fotoCedulaB64">
+<input type="hidden" id="fotoRostroB64">
+<input type="hidden" id="fotoCedulaB64">
 
 </form>
+
 </div>
 
 <div id="loader">
-<p id="loader-texto">Procesando...</p>
+<p>Procesando...</p>
 </div>
 
-<!-- 🔥 SOLO AGREGADO: LINK APK -->
+<!-- APK -->
 <script>
 const APK_URL = "https://kilometro0-ec.github.io/NAPOLES-FC/apk/miapp.apk";
 </script>
@@ -177,104 +143,138 @@ const APK_URL = "https://kilometro0-ec.github.io/NAPOLES-FC/apk/miapp.apk";
 
 <script>
 
-// evitar recarga
-formRegistro.onsubmit=e=>e.preventDefault();
+// evitar submit
+formRegistro.onsubmit = e => e.preventDefault();
 
-// PASO 1
-ced.oninput=()=>btnCedula.disabled=ced.value.length!==10;
-
-btnCedula.onclick=async()=>{
-btnCedula.classList.add("loading");
-loader(true,"Validando...");
-
-const r=await validarCedulaServidor(ced.value);
-
-if(!r.ok){
-alert(r.msg);
-loader(false);
-btnCedula.classList.remove("loading");
-return;
-}
-
-ced2.value=ced.value;
-ced.readOnly=true;
-
-verPaso(2);
-loader(false);
-btnCedula.classList.remove("loading");
+/* =======================
+   PASO 1 CÉDULA
+======================= */
+ced.oninput = () => {
+  ced.value = ced.value.replace(/\D/g, "");
+  if (ced.value.length > 10) ced.value = ced.value.slice(0, 10);
+  btnCedula.disabled = ced.value.length !== 10;
 };
 
-// PASO 2
-document.querySelectorAll("#paso2 input").forEach(i=>{
-i.oninput=()=>btnPaso2.disabled=!(n1.value && ape.value && fecha.value);
-});
-btnPaso2.onclick=()=>verPaso(3);
+/* =======================
+   VALIDAR CÉDULA
+======================= */
+btnCedula.onclick = async () => {
 
-// PASO 3
-document.querySelectorAll("#paso3 input").forEach(i=>{
-i.oninput=()=>{
-btnPaso3.disabled=!(/^09\d{8}$/.test(tel.value) && /^\S+@\S+\.\S+$/.test(correo.value));
-};
-});
-btnPaso3.onclick=()=>verPaso(4);
+  btnCedula.classList.add("loading");
 
-// CAMARA
-btnCamara.onclick=iniciarCamara;
+  const r = await validarCedulaServidor(ced.value);
 
-btnFoto.onclick=()=>{
-capturarFoto();
-previewCamara.style.display="block";
-video.style.display="none";
-};
+  if (!r.ok) {
+    alert(r.msg);
+    btnCedula.classList.remove("loading");
+    return;
+  }
 
-// FOTO CEDULA
-cedulaFile.onchange=e=>{
-const r=new FileReader();
-r.onload=()=>fotoCedulaB64.value=r.result;
-r.readAsDataURL(e.target.files[0]);
-btnPaso4.disabled=false;
+  ced2.value = ced.value;
+  ced.readOnly = true;
+
+  verPaso(2);
+
+  btnCedula.classList.remove("loading");
 };
 
-// PASO 4
-btnPaso4.onclick=async()=>{
-await cargarArmadura();
-verPaso(5);
-};
-
-// PASO 5
-document.querySelectorAll("#paso5 select").forEach(s=>{
-s.onchange=()=>btnPaso5.disabled=!(nombreCamiseta.value && dorsal.value);
-});
-btnPaso5.onclick=()=>verPaso(6);
-
-// PASO 6
-document.querySelectorAll("#paso6 input,#paso6 select").forEach(i=>{
-i.oninput=()=>{
-btnFinal.disabled=!(medias.value && inscripcion.value.length>=4 && uniforme.value.length>=4);
-};
+/* =======================
+   PASO 2
+======================= */
+document.querySelectorAll("#paso2 input").forEach(i => {
+  i.oninput = () => {
+    btnPaso2.disabled = !(n1.value && ape.value && fecha.value);
+  };
 });
 
-// 🔥 FINAL MODIFICADO (APK + LOGIN)
-btnFinal.onclick=async()=>{
+btnPaso2.onclick = () => verPaso(3);
 
-loader(true,"Guardando...");
+/* =======================
+   PASO 3
+======================= */
+document.querySelectorAll("#paso3 input").forEach(i => {
+  i.oninput = () => {
+    btnPaso3.disabled = !(
+      /^09\d{8}$/.test(tel.value) &&
+      /^\S+@\S+\.\S+$/.test(correo.value)
+    );
+  };
+});
 
-await enviarRegistro();
+btnPaso3.onclick = () => verPaso(4);
 
-loader(false);
+/* =======================
+   PASO 4 FOTO GALERÍA
+======================= */
+cedulaFile.onchange = (e) => {
 
-// 🔥 DESCARGA APK
-const link=document.createElement("a");
-link.href=APK_URL;
-link.download="NapolisFC.apk";
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+  const file = e.target.files[0];
 
-// 🔥 REDIRECCIÓN
-setTimeout(()=>{
-window.location.href="login.html";
-},2000);
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    fotoCedulaB64.value = reader.result;
+    document.getElementById("fotoEstado").innerText = "Imagen cargada ✔";
+    btnPaso4.disabled = false;
+  };
+
+  reader.readAsDataURL(file);
+};
+
+btnPaso4.onclick = async () => {
+  await cargarArmadura();
+  verPaso(5);
+};
+
+/* =======================
+   PASO 5
+======================= */
+document.querySelectorAll("#paso5 select").forEach(s => {
+  s.onchange = () => {
+    btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+  };
+});
+
+btnPaso5.onclick = () => verPaso(6);
+
+/* =======================
+   PASO 6
+======================= */
+document.querySelectorAll("#paso6 input,#paso6 select").forEach(i => {
+  i.oninput = () => {
+    btnFinal.disabled = !(
+      medias.value &&
+      inscripcion.value.length >= 4 &&
+      uniforme.value.length >= 4
+    );
+  };
+});
+
+/* =======================
+   FINALIZAR
+======================= */
+btnFinal.onclick = async () => {
+
+  loader.style.display = "flex";
+
+  await enviarRegistro();
+
+  loader.style.display = "none";
+
+  // DESCARGA APK
+  const link = document.createElement("a");
+  link.href = APK_URL;
+  link.download = "NapolesFC.apk";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // LOGIN
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 1200);
 
 };
 
@@ -282,3 +282,4 @@ window.location.href="login.html";
 
 </body>
 </html>
+
