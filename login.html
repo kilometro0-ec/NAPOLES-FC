@@ -33,7 +33,9 @@
             justify-content: center;
             padding: 1.5rem;
             color: white;
-            overflow: hidden;
+            overflow-x: hidden;
+            /* Habilitar pull-to-refresh */
+            overscroll-behavior: auto;
         }
 
         .login-card {
@@ -43,10 +45,17 @@
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             padding: 3rem 2.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.5), 0 30px 50px -12px rgba(0, 0, 0, 0.6);
+            border-color: rgba(0, 210, 255, 0.8);
         }
 
         @keyframes slideUp {
@@ -242,12 +251,11 @@
     const URL_APK = "https://tu-servidor.com/apk/napoles-fc.apk";  // <--- REEMPLAZAR
     // ==========================================================
 
-    // 2. URL DEL BACKEND (la misma que ya tenías)
+    // 2. URL DEL BACKEND (cambiar si es necesario)
     const URL_GAS = "https://script.google.com/macros/s/AKfycbzw2Ef4Wja_Nu1Gks7o5yAP-xBgH0R5WAiXgaKhJ_0Z4r6PRrkHSwoMyf8WbMoASgKv/exec";
     
     // 3. FUNCIÓN DE DESCARGA
     function descargarAPK() {
-        // Si la URL es la de ejemplo (sin reemplazar) o está vacía, mostramos mensaje
         if (!URL_APK || URL_APK === "https://tu-servidor.com/apk/napoles-fc.apk") {
             alert("📦 La APK oficial estará disponible próximamente. ¡Gracias por registrarte!");
         } else {
@@ -266,7 +274,7 @@
         sessionStorage.removeItem('autoDownloadAPK'); // para que no se repita en recargas
     }
 
-    // 5. LÓGICA DE LOGIN (exactamente igual, sin tocar)
+    // 5. LÓGICA DE LOGIN
     const cedulaInput = document.getElementById('loginCedula');
     const btnLogin = document.getElementById('btnLogin');
     const errorDiv = document.getElementById('mensajeError');
@@ -316,8 +324,23 @@
         errorDiv.style.display = 'block';
     }
 
-    // 6. DESCARGA MANUAL CON EL BOTÓN
+    // 6. DESCARGA MANUAL
     manualBtn.addEventListener('click', descargarAPK);
+
+    // 7. HABILITAR PULL-TO-REFRESH en móviles (sin interferir)
+    let touchStartY = 0;
+    document.body.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    });
+    document.body.addEventListener('touchmove', (e) => {
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const moveY = e.touches[0].clientY;
+        // Solo evitar si hay scroll hacia abajo estando en la cima
+        if (scrollTop === 0 && moveY > touchStartY) {
+            // No prevenir default para permitir refresco
+            return;
+        }
+    });
 </script>
 </body>
 </html>
