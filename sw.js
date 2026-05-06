@@ -1,4 +1,4 @@
-const CACHE_NAME = 'napoles-v1';
+const CACHE_NAME = 'napoles-v2';
 const ASSETS = [
   'login.html',
   'manifest.json',
