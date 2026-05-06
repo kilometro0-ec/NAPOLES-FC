@@ -280,20 +280,20 @@
         // Si ya es una URL de imagen directa de Google Drive
         if (url.includes('drive.google.com/uc?export=view')) return url;
         
-        // Para URLs tipo: https://drive.google.com/file/d/ID/view
-        let match = url.match(/\/d\/(.+?)\/view/);
+        // Para URLs tipo: https://drive.google.com/file/d/ID/view?usp=drivesdk
+        let match = url.match(/\/d\/([a-zA-Z0-9_-]+)(?:\/|$|\?)/);
         if (match) {
             return `https://drive.google.com/uc?export=view&id=${match[1]}`;
         }
         
         // Para URLs tipo: https://drive.google.com/open?id=ID
-        match = url.match(/[?&]id=([^&]+)/);
+        match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
         if (match) {
             return `https://drive.google.com/uc?export=view&id=${match[1]}`;
         }
         
         // Para URLs tipo: https://docs.google.com/uc?id=ID
-        match = url.match(/[?&]id=([^&]+)/);
+        match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
         if (match) {
             return `https://drive.google.com/uc?export=view&id=${match[1]}`;
         }
