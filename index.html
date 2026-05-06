@@ -154,7 +154,7 @@
         .countdown-message {
             margin-top: 0.5rem;
             font-size: 0.75rem;
-            color: #8db5d0;
+            color: #ff6b6b;
             font-weight: 500;
         }
 
@@ -528,11 +528,11 @@
 
 <div class="contenedor-principal">
     <header>
-        <h1>NÁPOLES F.C.</h1>
+        <h1>⚽ NÁPOLES F.C.</h1>
         <p class="subtitulo">Formulario de registro oficial</p>
         <div class="badge">🏆 Temporada 2026 - 2027</div>
         
-        <!-- RELOJ COUNTDOWN -->
+        <!-- ==================== RELOJ COUNTDOWN ==================== -->
         <div class="countdown-container">
             <div class="countdown-title">⏰ CIERRE DE INSCRIPCIONES</div>
             <div class="countdown" id="countdown">
@@ -553,7 +553,7 @@
                     <span class="countdown-label">Segundos</span>
                 </div>
             </div>
-            <div class="countdown-message" id="countdownMessage">📅 Cierre: Viernes 8 de Mayo - 11:00 PM</div>
+            <div class="countdown-message" id="countdownMessage"></div>
         </div>
     </header>
 
@@ -584,7 +584,7 @@
             <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 4: FOTOS -->
+        <!-- PASO 4: FOTOS (CORREGIDO CON VISTOS PERMANENTES) -->
         <div id="paso4" class="paso">
             <div class="campo">
                 <label>📸 Foto de perfil (sonríe)</label>
@@ -592,7 +592,7 @@
                     <input type="file" id="rostro" accept="image/jpeg,image/png">
                     <span id="vistoRostro" class="visto-icon">✅</span>
                 </div>
-                <div id="mensajeRostro" class="mensaje-exito-foto"></div>
+                <div id="mensajeRostro" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
             </div>
             <div class="campo">
                 <label>🪪 Foto de tu cédula (frontal)</label>
@@ -600,7 +600,7 @@
                     <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
                     <span id="vistoCedula" class="visto-icon">✅</span>
                 </div>
-                <div id="mensajeCedula" class="mensaje-exito-foto"></div>
+                <div id="mensajeCedula" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
             </div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
@@ -668,6 +668,7 @@
 
     // ================= RELOJ COUNTDOWN =================
     function actualizarCountdown() {
+        // Fecha objetivo: Viernes 8 de mayo de 2026 a las 23:00:00
         const fechaObjetivo = new Date(2026, 4, 8, 23, 0, 0);
         const ahora = new Date();
         const diferencia = fechaObjetivo - ahora;
@@ -679,6 +680,7 @@
         const messageElem = document.getElementById('countdownMessage');
         
         if (diferencia <= 0) {
+            // Tiempo expirado
             if (daysElem) daysElem.textContent = '00';
             if (hoursElem) hoursElem.textContent = '00';
             if (minutesElem) minutesElem.textContent = '00';
@@ -687,6 +689,15 @@
                 messageElem.innerHTML = '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
                 messageElem.style.color = '#ff6b6b';
             }
+            
+            // Deshabilitar el formulario completo
+            const inputs = document.querySelectorAll('#formRegistro input, #formRegistro select, #formRegistro button');
+            inputs.forEach(input => {
+                if (input.id !== 'btnCedula' && input.id !== 'btnPaso2' && input.id !== 'btnPaso3' && 
+                    input.id !== 'btnPaso4' && input.id !== 'btnPaso5' && input.id !== 'btnFinal') {
+                    input.disabled = true;
+                }
+            });
             return;
         }
         
@@ -700,12 +711,16 @@
         if (minutesElem) minutesElem.textContent = String(minutes).padStart(2, '0');
         if (secondsElem) secondsElem.textContent = String(seconds).padStart(2, '0');
         
-        if (days <= 1 && messageElem) {
+        if (messageElem && days <= 1) {
             messageElem.innerHTML = '⚠️ ¡ÚLTIMAS HORAS PARA INSCRIBIRTE! ⚠️';
             messageElem.style.color = '#ffaa00';
+        } else if (messageElem) {
+            messageElem.innerHTML = '📅 Cierre: Viernes 8 de Mayo - 11:00 PM';
+            messageElem.style.color = '#8db5d0';
         }
     }
     
+    // Actualizar cada segundo
     setInterval(actualizarCountdown, 1000);
     actualizarCountdown();
 
@@ -868,12 +883,6 @@
     const vistoRostro = document.getElementById('vistoRostro');
     const vistoCedula = document.getElementById('vistoCedula');
 
-    // Ocultar mensajes y vistos inicialmente
-    if (mensajeRostro) mensajeRostro.style.display = 'none';
-    if (mensajeCedula) mensajeCedula.style.display = 'none';
-    if (vistoRostro) vistoRostro.style.display = 'none';
-    if (vistoCedula) vistoCedula.style.display = 'none';
-
     function archivoABase64(file, inputHidden, mensajeElemento, vistoElemento) {
         return new Promise((resolve, reject) => {
             if (!file) return resolve(null);
@@ -902,10 +911,193 @@
         const tieneRostro = fotoRostroB64.value && fotoRostroB64.value !== '';
         const tieneCedula = fotoCedulaB64.value && fotoCedulaB64.value !== '';
         btnPaso4.disabled = !(tieneRostro && tieneCedula);
+        
+        if (tieneRostro && mensajeRostro.style.display !== 'flex') {
+            mensajeRostro.style.display = 'flex';
+            if (vistoRostro) vistoRostro.style.display = 'inline-block';
+        }
+        
+        if (tieneCedula && mensajeCedula.style.display !== 'flex') {
+            mensajeCedula.style.display = 'flex';
+            if (vistoCedula) vistoCedula.style.display = 'inline-block';
+        }
     }
 
     rostro.addEventListener('change', async (e) => {
         const file = e.target.files[0];
-        if (!file) {
-            fotoRostroB64.value = '';
-            if (mensajeRostro)
+        if (file && !file.type.startsWith('image/')) {
+            mostrarToast("Solo imágenes JPG o PNG", "error");
+            rostro.value = '';
+            return;
+        }
+        if (file && file.size > 2 * 1024 * 1024) {
+            mostrarToast("La imagen no debe superar 2MB", "error");
+            rostro.value = '';
+            return;
+        }
+        await archivoABase64(file, fotoRostroB64, mensajeRostro, vistoRostro);
+        verificarFotos();
+    });
+
+    cedulaFile.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file && !file.type.startsWith('image/')) {
+            mostrarToast("Solo imágenes JPG o PNG", "error");
+            cedulaFile.value = '';
+            return;
+        }
+        if (file && file.size > 2 * 1024 * 1024) {
+            mostrarToast("La imagen no debe superar 2MB", "error");
+            cedulaFile.value = '';
+            return;
+        }
+        await archivoABase64(file, fotoCedulaB64, mensajeCedula, vistoCedula);
+        verificarFotos();
+    });
+
+    btnPaso4.addEventListener('click', async () => {
+        if (!fotoRostroB64.value) {
+            mostrarToast("Debes subir una foto de perfil", "error");
+            return;
+        }
+        if (!fotoCedulaB64.value) {
+            mostrarToast("Debes subir una foto de tu cédula", "error");
+            return;
+        }
+        
+        mostrarLoader(true, "Cargando dorsales...");
+        const selectNombre = document.getElementById('nombreCamiseta');
+        const selectDorsal = document.getElementById('dorsal');
+        selectNombre.innerHTML = '<option value="">Selecciona</option>';
+        selectDorsal.innerHTML = '<option value="">Selecciona</option>';
+        
+        selectNombre.add(new Option(n1.value.trim(), n1.value.trim()));
+        if (n2.value.trim()) {
+            selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
+        }
+        
+        try {
+            const resp = await fetch(`${URL_GAS}?action=getDorsales`);
+            const ocupados = await resp.json();
+            for (let i = 1; i <= 99; i++) {
+                if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
+            }
+            if (selectDorsal.options.length === 1) {
+                mostrarToast("No hay dorsales disponibles. Contacta al administrador.", "error");
+                mostrarLoader(false);
+                return;
+            }
+        } catch (error) {
+            mostrarToast("No se pudieron cargar los dorsales.", "error");
+            console.error(error);
+        }
+        mostrarLoader(false);
+        verPaso(5);
+    });
+
+    // ================= PASO 5 =================
+    const nombreCamiseta = document.getElementById('nombreCamiseta');
+    const dorsal = document.getElementById('dorsal');
+    const btnPaso5 = document.getElementById('btnPaso5');
+    
+    function validarPaso5() {
+        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+    }
+    
+    nombreCamiseta.addEventListener('change', validarPaso5);
+    dorsal.addEventListener('change', validarPaso5);
+    
+    btnPaso5.addEventListener('click', () => {
+        if (!nombreCamiseta.value) {
+            mostrarToast("Selecciona un nombre para la camiseta", "error");
+            return;
+        }
+        if (!dorsal.value) {
+            mostrarToast("Selecciona un número dorsal", "error");
+            return;
+        }
+        verPaso(6);
+    });
+
+    // ================= PASO 6 =================
+    const medias = document.getElementById('medias');
+    const inscripcion = document.getElementById('inscripcion');
+    const uniforme = document.getElementById('uniforme');
+    const btnFinal = document.getElementById('btnFinal');
+
+    function validarPaso6() {
+        const mediasValida = medias.value !== "";
+        const inscripcionValida = inscripcion.value.trim() !== "";
+        const uniformeValida = uniforme.value.trim() !== "";
+        btnFinal.disabled = !(mediasValida && inscripcionValida && uniformeValida);
+        
+        if (!mediasValida) medias.style.borderColor = "#e74c3c";
+        else medias.style.borderColor = "";
+        if (!inscripcionValida) inscripcion.style.borderColor = "#e74c3c";
+        else inscripcion.style.borderColor = "";
+        if (!uniformeValida) uniforme.style.borderColor = "#e74c3c";
+        else uniforme.style.borderColor = "";
+    }
+    
+    [medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
+
+    // ================= ENVÍO FINAL =================
+    btnFinal.addEventListener('click', async () => {
+        if (btnFinal.disabled) {
+            mostrarToast("Completa todos los campos del paso 6", "error");
+            return;
+        }
+
+        mostrarLoader(true, "Registrando jugador...");
+
+        const formData = new FormData();
+        formData.append('ced', ced.value);
+        formData.append('n1', n1.value.trim());
+        formData.append('n2', n2.value.trim());
+        formData.append('ape', ape.value.trim());
+        formData.append('fecha', fecha.value);
+        formData.append('tel', tel.value.replace(/\D/g, ''));
+        formData.append('correo', correo.value.trim().toLowerCase());
+        formData.append('medias', medias.value);
+        formData.append('dorsal', dorsal.value);
+        formData.append('nombreCamiseta', nombreCamiseta.value);
+        formData.append('inscripcion', inscripcion.value.trim());
+        formData.append('uniforme', uniforme.value.trim());
+        formData.append('fotoRostroB64', fotoRostroB64.value);
+        formData.append('fotoCedulaB64', fotoCedulaB64.value);
+
+        try {
+            const response = await fetch(URL_GAS, { method: 'POST', body: formData });
+            const result = await response.json();
+
+            if (result.ok) {
+                mostrarLoader(false);
+                modalExito.style.display = 'flex';
+                let segundos = 3;
+                const spanContador = document.getElementById('contador');
+                const intervalo = setInterval(() => {
+                    segundos--;
+                    if (spanContador) spanContador.innerText = segundos;
+                    if (segundos <= 0) {
+                        clearInterval(intervalo);
+                        window.location.href = 'login.html';
+                    }
+                }, 1000);
+            } else {
+                mostrarLoader(false);
+                mostrarToast("❌ Error: " + (result.msg || result.error || "Desconocido"), "error");
+            }
+        } catch (error) {
+            mostrarLoader(false);
+            console.error("Error de red:", error);
+            mostrarToast("Error de red. Revisa tu conexión o la URL del backend.", "error");
+        }
+    });
+    
+    // Verificar fotos al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+        verificarFotos();
+    });
+</script>
+</body>
+</html>
