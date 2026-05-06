@@ -170,6 +170,17 @@
         
         .tarjeta-amarilla { color: #f1c40f; }
         .tarjeta-roja { color: #e74c3c; }
+
+        .debug-info {
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            margin: 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-family: monospace;
+            word-break: break-all;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -178,18 +189,33 @@
     <div id="perfilContent">
         <div class="loading">⚽ CARGANDO PERFIL... ⚽</div>
     </div>
+    <div id="debugInfo" class="debug-info"></div>
 </div>
 
 <script>
     const URL_GAS = "https://script.google.com/macros/s/AKfycbzDd_upVUwAl3ORyxhAbPbN1ZS-NwpYhtCUTyLInjHWsrIUt4OhyShgo_xIn8Pfxw/exec";
 
+    // Función para mostrar debug (opcional, activar si hay problemas)
+    function debug(msg) {
+        console.log(msg);
+        const debugDiv = document.getElementById('debugInfo');
+        if (debugDiv) {
+            debugDiv.style.display = 'block';
+            debugDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + msg + '<br>';
+        }
+    }
+
     // Verificar sesión activa
     const session = JSON.parse(localStorage.getItem('jugador_aprobado'));
     
+    debug('Sesión recuperada: ' + JSON.stringify(session));
+    
     if (!session || !session.cedula || Date.now() > session.expira) {
+        debug('Sesión inválida o expirada, redirigiendo a login');
         localStorage.removeItem('jugador_aprobado');
         window.location.href = 'login.html';
     } else {
+        debug('Cédula de sesión: "' + session.cedula + '"');
         cargarPerfil(session.cedula);
     }
 
@@ -198,19 +224,29 @@
         let reintentos = 0;
         const maxReintentos = 3;
         
+        // Limpiar cédula de posibles caracteres extraños
+        const cedulaLimpia = cedula.toString().replace(/[^0-9]/g, '');
+        debug('Cédula limpia para buscar: "' + cedulaLimpia + '"');
+        
         async function intentarCargar() {
             try {
                 container.innerHTML = '<div class="loading">📡 SINCRONIZANDO CON EL SERVIDOR...</div>';
                 
-                const url = `${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
+                // Construir URL con timestamp para evitar caché
+                const url = `${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
+                debug('Consultando URL: ' + url);
+                
                 const resp = await fetch(url);
+                debug('Respuesta HTTP: ' + resp.status);
                 
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 
                 const data = await resp.json();
+                debug('Respuesta del servidor: ' + JSON.stringify(data));
                 
                 if (data.ok && data.jugador) {
                     const j = data.jugador;
+                    debug('Jugador encontrado: ' + j.nombre1 + ' ' + j.apellidos);
                     
                     const goles = j.goles || 0;
                     const amarillas = j.amarillas || 0;
@@ -243,13 +279,13 @@
                                 </div>
                                 <div class="ovr-badge">${ovrMostrar}</div>
                             </div>
-                            <div class="player-name">${nombreCamiseta.toUpperCase()}</div>
-                            <div class="player-dorsal-tag">👕 DORSAL ${dorsal}</div>
+                            <div class="player-name">${escapeHtml(nombreCamiseta.toUpperCase())}</div>
+                            <div class="player-dorsal-tag">👕 DORSAL ${escapeHtml(dorsal)}</div>
                         </div>
                         <div class="stats-grid">
                             <div class="stat-box full-width">
                                 <span class="stat-label">📄 Cédula</span>
-                                <span class="stat-value" style="color:#fff;">${cedula}</span>
+                                <span class="stat-value" style="color:#fff;">${escapeHtml(cedulaLimpia)}</span>
                             </div>
                             <div class="stat-box">
                                 <span class="stat-label">⚽ Goles</span>
@@ -293,25 +329,49 @@
                         window.location.href = 'login.html';
                     };
                 } else {
-                    container.innerHTML = `<div class="loading error-loading">❌ ${data.mensaje || 'Jugador no encontrado'}</div>`;
-                    setTimeout(() => {
-                        localStorage.removeItem('jugador_aprobado');
-                        window.location.href = 'login.html';
-                    }, 2000);
+                    debug('Jugador NO encontrado. data.ok = ' + data.ok);
+                    container.innerHTML = `<div class="loading error-loading">
+                        ❌ JUGADOR NO ENCONTRADO<br>
+                        <small>Cédula buscada: ${cedulaLimpia}</small><br>
+                        <small>Verifica que tu cuenta esté APROBADA por el delegado</small>
+                        <br><br>
+                        <button onclick="localStorage.removeItem('jugador_aprobado'); window.location.href='login.html'" 
+                                style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer;">
+                            VOLVER A INICIAR SESIÓN
+                        </button>
+                    </div>`;
                 }
             } catch (error) {
                 console.error('Error:', error);
+                debug('Error: ' + error.message);
                 reintentos++;
                 if (reintentos < maxReintentos) {
                     container.innerHTML = `<div class="loading error-loading">⚠️ Error de conexión (Intento ${reintentos}/${maxReintentos})<br>Reconectando...</div>`;
                     setTimeout(intentarCargar, 2000);
                 } else {
-                    container.innerHTML = `<div class="loading error-loading">❌ No se pudo conectar al servidor.<br>Verifica tu internet y recarga la página.</div>`;
+                    container.innerHTML = `<div class="loading error-loading">
+                        ❌ No se pudo conectar al servidor.<br>
+                        Verifica tu internet y recarga la página.
+                        <br><br>
+                        <button onclick="location.reload()" style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer;">
+                            REINTENTAR
+                        </button>
+                    </div>`;
                 }
             }
         }
         
         intentarCargar();
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
     }
 </script>
 </body>
