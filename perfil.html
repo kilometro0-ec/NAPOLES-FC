@@ -243,7 +243,7 @@
         cargarPerfil(session.cedula);
     }
 
-    // FUNCIÓN CORREGIDA - Usa thumbnail para evitar bloqueo CORS
+    // FUNCIÓN CON PROXY - Funciona en celulares
     function convertirUrlDrive(url) {
         if (!url || url === 'null' || url === '' || url === 'undefined') return null;
         
@@ -252,25 +252,22 @@
         // Extraer el ID del archivo
         let id = null;
         
-        // Método 1: Extraer ID de /d/ID/
         let match = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if (match && match[1]) id = match[1];
         
-        // Método 2: Extraer ID de uc?export=view&id=ID
         if (!id) {
             match = cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
             if (match && match[1]) id = match[1];
         }
         
-        // Método 3: Buscar cadena larga que parezca ID
         if (!id) {
             match = cleanUrl.match(/([a-zA-Z0-9_-]{28,})/);
             if (match && match[1]) id = match[1];
         }
         
         if (id) {
-            // Usar thumbnail en lugar de uc (menos restricciones CORS)
-            return `https://drive.google.com/thumbnail?id=${id}&sz=400`;
+            // Usar proxy de imágenes gratuito (funciona en todos los dispositivos)
+            return `https://images.weserv.nl/?url=https://drive.google.com/uc?id=${id}&w=400&h=400&fit=cover`;
         }
         
         return null;
@@ -305,7 +302,7 @@
                 const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                // CONVERTIR LA URL DE LA FOTO usando thumbnail
+                // CONVERTIR LA URL DE LA FOTO usando proxy
                 let fotoUrl = convertirUrlDrive(j.urlRostro);
                 
                 // Si no hay foto, usar avatar
