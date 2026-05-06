@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 50%, #0a0f1e 100%);
             font-family: 'Inter', sans-serif;
@@ -16,7 +15,6 @@
             padding: 16px;
             color: #fff;
         }
-
         body::before {
             content: '';
             position: fixed;
@@ -24,13 +22,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 210, 255, 0.05) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
-
         .profile-container {
             max-width: 500px;
             width: 100%;
@@ -38,7 +33,6 @@
             position: relative;
             z-index: 1;
         }
-
         .profile-header {
             background: rgba(10, 20, 40, 0.6);
             backdrop-filter: blur(20px);
@@ -48,7 +42,6 @@
             border: 1px solid rgba(212, 175, 55, 0.2);
             text-align: center;
         }
-
         .profile-header h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 1.6rem;
@@ -58,13 +51,11 @@
             background-clip: text;
             color: transparent;
         }
-
         .profile-header p {
             font-size: 0.75rem;
             color: rgba(255,255,255,0.5);
             margin-top: 4px;
         }
-
         .player-card {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(10, 20, 40, 0.8) 100%);
             backdrop-filter: blur(10px);
@@ -75,7 +66,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .player-photo-section {
             display: flex;
             align-items: center;
@@ -84,9 +74,7 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-
         .player-photo-wrapper { position: relative; }
-
         .player-photo {
             width: 110px;
             height: 110px;
@@ -95,14 +83,12 @@
             padding: 4px;
             background: linear-gradient(135deg, #1a1f2e, #0f1420);
         }
-
         .player-photo img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
         }
-
         .ovr-badge {
             position: absolute;
             bottom: -5px;
@@ -120,9 +106,7 @@
             border: 3px solid #0a0f1e;
             font-family: 'Outfit', sans-serif;
         }
-
         .player-info { flex: 1; min-width: 180px; text-align: center; }
-
         .player-name {
             font-size: 1.5rem;
             font-weight: 800;
@@ -132,7 +116,6 @@
             background-clip: text;
             color: transparent;
         }
-
         .dorsal-badge {
             display: inline-block;
             background: rgba(212, 175, 55, 0.2);
@@ -144,14 +127,12 @@
             color: #D4AF37;
             margin-top: 8px;
         }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-bottom: 20px;
         }
-
         .stat-card {
             background: rgba(10, 20, 40, 0.5);
             backdrop-filter: blur(10px);
@@ -160,11 +141,9 @@
             text-align: center;
             border: 1px solid rgba(255,255,255,0.05);
         }
-
         .stat-icon { font-size: 24px; margin-bottom: 6px; }
         .stat-label { font-size: 0.65rem; text-transform: uppercase; color: rgba(255,255,255,0.5); }
         .stat-value { font-size: 1.5rem; font-weight: 800; color: #D4AF37; }
-
         .values-section, .payments-section {
             background: rgba(10, 20, 40, 0.5);
             backdrop-filter: blur(10px);
@@ -173,7 +152,6 @@
             margin-bottom: 20px;
             border: 1px solid rgba(255,255,255,0.05);
         }
-
         .section-title {
             display: flex;
             align-items: center;
@@ -183,13 +161,11 @@
             font-weight: 600;
             color: #D4AF37;
         }
-
         .values-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
-
         .value-item {
             background: rgba(0,0,0,0.3);
             border-radius: 16px;
@@ -198,23 +174,19 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .value-name { font-size: 0.75rem; display: flex; align-items: center; gap: 6px; }
         .value-score { font-weight: 700; color: #D4AF37; }
-
         .payments-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
-
         .payment-item {
             text-align: center;
             padding: 12px;
             background: rgba(0,0,0,0.3);
             border-radius: 16px;
         }
-
         .payment-status-badge {
             display: inline-block;
             padding: 4px 12px;
@@ -223,10 +195,8 @@
             font-weight: 700;
             margin-top: 8px;
         }
-
         .pagado { background: #2ecc71; color: #fff; }
         .pendiente { background: #e74c3c; color: #fff; }
-
         .logout-btn {
             width: 100%;
             background: rgba(231, 76, 60, 0.15);
@@ -240,8 +210,8 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            margin-top: 20px;
         }
-
         .loading-screen { text-align: center; padding: 60px 20px; }
         .spinner {
             width: 50px;
@@ -253,9 +223,6 @@
             margin: 0 auto 20px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
-        /* Ocultar logs en producción */
-        .debug-hidden { display: none; }
     </style>
 </head>
 <body>
@@ -276,36 +243,32 @@
         cargarPerfil(session.cedula);
     }
 
-    // Función para extraer ID de Google Drive y generar URL de imagen
-    function obtenerUrlImagenDrive(url) {
-        if (!url || url === 'null' || url === '' || url === 'undefined') {
-            return null;
-        }
+    // FUNCIÓN MEJORADA para convertir URL de Drive a imagen directa
+    function convertirUrlDrive(url) {
+        if (!url || url === 'null' || url === '' || url === 'undefined') return null;
         
-        // Método 1: Extraer ID de URL tipo /file/d/ID/
+        // Si ya es URL de imagen directa correcta
+        if (url.includes('drive.google.com/uc?export=view')) return url;
+        if (url.includes('drive.google.com/thumbnail?id=')) return url;
+        
+        // Método 1: Extraer ID de /d/ID/ (tu caso)
         let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if (match) {
             return `https://drive.google.com/uc?export=view&id=${match[1]}`;
         }
         
-        // Método 2: Extraer ID de URL tipo id=ID
-        match = url.match(/id=([a-zA-Z0-9_-]+)/);
+        // Método 2: Extraer ID de id=ID
+        match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
         if (match) {
             return `https://drive.google.com/uc?export=view&id=${match[1]}`;
         }
         
-        // Método 3: Extraer ID de URL tipo /uc?id=ID
-        match = url.match(/uc\?id=([a-zA-Z0-9_-]+)/);
-        if (match) {
-            return url;
+        // Método 3: Si la URL es solo el ID
+        if (url.match(/^[a-zA-Z0-9_-]{25,}$/)) {
+            return `https://drive.google.com/uc?export=view&id=${url}`;
         }
         
-        // Si ya es una URL válida de imagen
-        if (url.includes('.jpg') || url.includes('.png') || url.includes('.jpeg')) {
-            return url;
-        }
-        
-        return null;
+        return url;
     }
 
     async function cargarPerfil(cedula) {
@@ -337,19 +300,16 @@
                 const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                // Obtener URL de la foto
-                let fotoUrl = obtenerUrlImagenDrive(j.urlRostro);
+                // CONVERTIR LA URL DE LA FOTO
+                let fotoUrl = convertirUrlDrive(j.urlRostro);
                 
-                // Si hay URL pero es null, usar avatar
+                console.log("URL original:", j.urlRostro);
+                console.log("URL convertida:", fotoUrl);
+                
+                // Si no hay foto, usar avatar
                 if (!fotoUrl) {
-                    const inicial = nombreCamiseta.charAt(0).toUpperCase();
+                    const inicial = nombreCompleto.charAt(0).toUpperCase();
                     fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
-                }
-                
-                // Para debug (opcional, puedes eliminar estas líneas)
-                if (j.urlRostro) {
-                    console.log("URL original:", j.urlRostro);
-                    console.log("URL convertida:", fotoUrl);
                 }
                 
                 container.innerHTML = `
@@ -363,7 +323,7 @@
                             <div class="player-photo-wrapper">
                                 <div class="player-photo">
                                     <img src="${fotoUrl}" alt="${nombreCamiseta}" 
-                                         onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.substring(0,2))}'">
+                                         onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCompleto.charAt(0))}'">
                                 </div>
                                 <div class="ovr-badge">${ovrMostrar}</div>
                             </div>
