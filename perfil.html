@@ -4,81 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Nápoles F.C. - Mi Perfil</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Fuentes: Rajdhani para números/títulos técnicos y Montserrat para lectura -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --dorado: #D4AF37;
             --dorado-brillante: #FFD700;
-            --azul-oscuro: #0a1428;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(212, 175, 55, 0.3);
-            --rojo-error: #ff5e5e;
-            --verde-pagado: #2ecc71;
+            --dorado-glow: rgba(212, 175, 55, 0.4);
+            --azul-oscuro: #060b14;
+            --azul-card: #0a1428;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(212, 175, 55, 0.2);
+            --rojo: #ff4b4b;
+            --verde: #00e676;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--azul-oscuro);
-            background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.1), transparent 400px);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(20, 40, 80, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 20px;
             color: #fff;
         }
 
+        /* Contenedor Principal con efecto Blur */
         .pes-container {
-            max-width: 480px;
+            max-width: 420px;
             width: 100%;
-            background: rgba(10, 20, 40, 0.8);
+            background: var(--azul-card);
             backdrop-filter: blur(20px);
-            border-radius: 2rem;
+            border-radius: 30px;
             border: 1px solid var(--glass-border);
-            overflow-y: auto;
-            max-height: 95vh;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            animation: fadeIn 0.6s ease-out;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            position: relative;
+            animation: containerEntry 0.8s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
+        @keyframes containerEntry {
+            from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
 
+        /* Header con Estilo Premium */
         .pes-header {
-            padding: 1.5rem 1rem;
+            padding: 2rem 1rem 1rem;
             text-align: center;
-            border-bottom: 1px solid var(--glass-border);
+            position: relative;
         }
 
         .pes-header h1 {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 4px;
-            background: linear-gradient(135deg, #fff 0%, var(--dorado) 100%);
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            background: linear-gradient(to bottom, #fff 30%, var(--dorado) 100%);
             -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
+        /* Tarjeta de Jugador Central */
         .player-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 1.5rem;
+            padding: 1rem 2rem;
+            position: relative;
         }
 
-        .player-photo-wrapper { position: relative; margin-bottom: 1rem; }
+        .player-photo-wrapper {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Resplandor detrás de la foto */
+        .player-photo-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px; height: 150px;
+            background: var(--dorado);
+            filter: blur(30px);
+            opacity: 0.15;
+            border-radius: 50%;
+        }
 
         .player-photo {
-            width: 130px; height: 130px;
+            width: 140px; height: 140px;
             border-radius: 50%;
-            border: 3px solid var(--dorado);
-            padding: 4px;
-            background: var(--azul-oscuro);
+            border: 4px solid var(--dorado);
+            padding: 5px;
+            background: linear-gradient(45deg, var(--azul-oscuro), #1a2a4a);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
         .player-photo img {
@@ -87,96 +115,131 @@
             object-fit: cover;
         }
 
+        /* Badge de Media (OVR) */
         .ovr-badge {
-            position: absolute; bottom: 0; right: 0;
-            background: var(--dorado);
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: linear-gradient(135deg, #fff, var(--dorado));
             color: #000;
-            font-weight: 800;
-            width: 42px; height: 42px;
+            font-weight: 900;
+            width: 45px; height: 45px;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            border: 3px solid var(--azul-oscuro);
-            font-size: 1.1rem;
+            border-radius: 12px;
+            border: 3px solid var(--azul-card);
+            font-size: 1.3rem;
+            font-family: 'Rajdhani', sans-serif;
+            transform: rotate(-5deg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .player-name { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.3rem; }
-        
+        .player-name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: -0.5px;
+        }
+
         .player-dorsal-tag {
-            background: var(--dorado);
-            color: #000;
-            padding: 2px 12px;
-            border-radius: 4px;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--dorado);
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
 
+        /* Grid de Estadísticas */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
-            padding: 1rem;
+            gap: 12px;
+            padding: 25px 20px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 35px 35px 0 0;
+            margin-top: 10px;
         }
 
         .stat-box {
-            background: var(--glass-bg);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 10px;
-            text-align: center;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 18px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--glass-border);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .stat-label {
             display: block;
-            font-size: 0.65rem;
-            color: #aaa;
+            font-size: 0.6rem;
+            color: #8a99af;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
         }
 
         .stat-value {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--dorado-brillante);
+            color: #fff;
         }
 
-        .full-width { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
-        .full-width .stat-label { margin-bottom: 0; }
-        .full-width .stat-value { font-size: 1rem; }
+        .full-width { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; }
+
+        /* Estados y Colores Especiales */
+        .val-gold { color: var(--dorado-brillante); text-shadow: 0 0 10px var(--dorado-glow); }
+        .val-green { color: var(--verde); font-weight: 800; }
+        .val-red { color: var(--rojo); font-weight: 800; }
 
         .btn-cerrar {
             grid-column: span 2;
-            background: transparent;
-            border: 1px solid var(--rojo-error);
-            color: var(--rojo-error);
-            padding: 0.8rem;
-            border-radius: 10px;
+            background: rgba(255, 75, 75, 0.1);
+            border: 1px solid rgba(255, 75, 75, 0.2);
+            color: var(--rojo);
+            padding: 1.1rem;
+            border-radius: 18px;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-family: 'Montserrat';
             text-transform: uppercase;
-            transition: all 0.2s ease;
+            letter-spacing: 1px;
+            transition: all 0.3s;
         }
 
-        .btn-cerrar:hover { background: var(--rojo-error); color: #fff; }
-
-        .loading { 
-            padding: 3rem; 
-            text-align: center; 
-            color: var(--dorado);
+        .btn-cerrar:hover {
+            background: var(--rojo);
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 75, 75, 0.2);
         }
-        
-        .error-loading { color: var(--rojo-error); }
-        
-        .tarjeta-amarilla { color: #f1c40f; }
-        .tarjeta-roja { color: #e74c3c; }
+
+        .loading { padding: 4rem 2rem; text-align: center; color: var(--dorado); font-weight: 700; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
 <div class="pes-container">
     <div id="perfilContent">
-        <div class="loading">⚽ CARGANDO PERFIL... ⚽</div>
+        <div class="loading">  CARGANDO PERFIL...</div>
     </div>
 </div>
 
@@ -184,15 +247,11 @@
     const URL_GAS = "https://script.google.com/macros/s/AKfycbz69eNVlAzoDDUzjqBwDf6L9M93Rb-Y9TyZAyK_Qv7nYtPJeiMtTfRwrhTODigpqwDG/exec";
 
     function escapeHtml(str) {
-        if (str === undefined || str === null) return '';
-        return String(str).replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, m => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[m]));
     }
 
+    // Manejo de Sesión
     const session = JSON.parse(localStorage.getItem('jugador_aprobado'));
     
     if (!session || !session.cedula || Date.now() > session.expira) {
@@ -207,112 +266,116 @@
         const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
         
         try {
-            container.innerHTML = '<div class="loading">📡 CARGANDO PERFIL...</div>';
-            
             const url = `${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
             const resp = await fetch(url);
-            
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            
             const data = await resp.json();
             
             if (data.ok && data.jugador) {
                 const j = data.jugador;
                 
-                const goles = j.goles || 0;
-                const amarillas = j.amarillas || 0;
-                const rojas = j.rojas || 0;
-                const companerismo = j.companerismo || 0;
-                const respeto = j.respeto || 0;
-                const humildad = j.humildad || 0;
-                const puntualidad = j.puntualidad || 0;
-                const estadoPago = j.estadoPago || 'PENDIENTE';
-                const dorsal = j.dorsal || '--';
+                // Cálculo de Media (OVR)
+                const stats = [
+                    Number(j.companerismo) || 0, 
+                    Number(j.respeto) || 0, 
+                    Number(j.humildad) || 0, 
+                    Number(j.puntualidad) || 0
+                ];
+                const promedio = stats.reduce((a, b) => a + b, 0) / 4;
+                const ovr = Math.min(99, Math.max(40, Math.round(promedio * 10)));
+                
                 const nombreCamiseta = j.nombreCamiseta || j.nombre1 || 'JUGADOR';
-                const nombreCompleto = `${j.nombre1 || ''} ${j.apellidos || ''}`.trim();
+                const nombreCompleto = `${j.nombre1 || ''} ${j.apellidos || ''}`.trim().toUpperCase();
                 
-                const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
-                const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
-                
+                // Formatear Foto de Google Drive
                 let fotoUrl = j.urlRostro || '';
-                if (fotoUrl && fotoUrl.includes('drive.google.com/file/d/')) {
-                    const match = fotoUrl.match(/\/d\/(.+?)\/view/);
-                    if (match) {
-                        fotoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-                    }
+                if (fotoUrl.includes('drive.google.com')) {
+                    const id = fotoUrl.match(/[-\w]{25,}/);
+                    if (id) fotoUrl = `https://drive.google.com/uc?export=view&id=${id[0]}`;
                 }
                 
-                if (!fotoUrl || fotoUrl.trim() === '') {
-                    const inicial = nombreCamiseta.charAt(0).toUpperCase();
-                    fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
+                // Si no hay foto, usar avatar con iniciales
+                if (!fotoUrl || fotoUrl === '') {
+                    fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=140&name=${encodeURIComponent(nombreCamiseta)}`;
                 }
-                
+
                 container.innerHTML = `
                     <div class="pes-header">
-                        <h1>⚜️ MI PERFIL NÁPOLES ⚜️</h1>
+                        <h1>⚜️ Nápoles F.C. ⚜️</h1>
                     </div>
+                    
                     <div class="player-card">
                         <div class="player-photo-wrapper">
                             <div class="player-photo">
-                                <img src="${fotoUrl}" alt="${escapeHtml(nombreCamiseta)}" 
-                                     onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.substring(0,2))}'">
+                                <img src="${fotoUrl}" alt="Perfil" onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&name=FC'">
                             </div>
-                            <div class="ovr-badge">${ovrMostrar}</div>
+                            <div class="ovr-badge">${ovr}</div>
                         </div>
-                        <div class="player-name">${escapeHtml(nombreCompleto.toUpperCase())}</div>
-                        <div class="player-dorsal-tag">👕 DORSAL ${escapeHtml(String(dorsal))}</div>
+                        <div class="player-name">${escapeHtml(nombreCompleto)}</div>
+                        <div class="player-dorsal-tag">TEMPORADA 2024 • #${escapeHtml(String(j.dorsal || '00'))}</div>
                     </div>
+
                     <div class="stats-grid">
-                        <div class="stat-box full-width">
-                            <span class="stat-label">📄 Cédula</span>
-                            <span class="stat-value" style="color:#fff;">${escapeHtml(cedulaLimpia)}</span>
+                        <div class="stat-box full-width" style="animation-delay: 0.1s">
+                            <span class="stat-label">Identificación Oficial</span>
+                            <span class="stat-value" style="font-size:1.1rem; letter-spacing:1px;">ID: ${cedulaLimpia}</span>
                         </div>
-                        <div class="stat-box">
-                            <span class="stat-label">⚽ Goles</span>
-                            <span class="stat-value">${goles}</span>
+
+                        <div class="stat-box" style="animation-delay: 0.2s">
+                            <span class="stat-label">Goles Totales</span>
+                            <span class="stat-value val-gold">⚽ ${j.goles || 0}</span>
                         </div>
-                        <div class="stat-box">
-                            <span class="stat-label">🃏 Tarjetas</span>
-                            <div style="display:flex; gap:8px; justify-content:center;">
-                                <span class="stat-value tarjeta-amarilla">🟨 ${amarillas}</span>
-                                <span class="stat-value tarjeta-roja">🟥 ${rojas}</span>
+
+                        <div class="stat-box" style="animation-delay: 0.3s">
+                            <span class="stat-label">Disciplina</span>
+                            <div style="display:flex; gap:12px; margin-top:5px;">
+                                <span class="stat-value" style="color:#ffeb3b; font-size:1.2rem;">🟨 ${j.amarillas || 0}</span>
+                                <span class="stat-value" style="color:#ff5252; font-size:1.2rem;">🟥 ${j.rojas || 0}</span>
                             </div>
                         </div>
-                        <div class="stat-box">
-                            <span class="stat-label">🤝 Compañerismo</span>
-                            <span class="stat-value">${companerismo}/10</span>
+
+                        <div class="stat-box" style="animation-delay: 0.4s">
+                            <span class="stat-label">Fair Play /10</span>
+                            <span class="stat-value">${j.companerismo || 0}</span>
                         </div>
-                        <div class="stat-box">
-                            <span class="stat-label">🙏 Respeto</span>
-                            <span class="stat-value">${respeto}/10</span>
+
+                        <div class="stat-box" style="animation-delay: 0.5s">
+                            <span class="stat-label">Compromiso /10</span>
+                            <span class="stat-value">${j.puntualidad || 0}</span>
                         </div>
-                        <div class="stat-box">
-                            <span class="stat-label">💙 Humildad</span>
-                            <span class="stat-value">${humildad}/10</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">⏰ Puntualidad</span>
-                            <span class="stat-value">${puntualidad}/10</span>
-                        </div>
-                        <div class="stat-box full-width">
-                            <span class="stat-label">💰 Estado de Pago</span>
-                            <span class="stat-value" style="color: ${estadoPago === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">
-                                ${estadoPago === 'PAGADO' ? '✅ PAGADO' : '⚠️ PENDIENTE'}
+
+                        <div class="stat-box full-width" style="animation-delay: 0.6s">
+                            <span class="stat-label">Estado de Cuenta</span>
+                            <span class="stat-value ${j.estadoPago === 'PAGADO' ? 'val-green' : 'val-red'}">
+                                ${j.estadoPago === 'PAGADO' ? '✓ AL DÍA' : '⚠ PENDIENTE'}
                             </span>
                         </div>
-                        <button id="cerrarSesion" class="btn-cerrar">🚪 CERRAR SESIÓN</button>
+
+                        <button id="cerrarSesion" class="btn-cerrar">Finalizar Sesión</button>
                     </div>
                 `;
-                
+
+                // Evento de cierre de sesión
                 document.getElementById('cerrarSesion').onclick = () => {
-                    localStorage.removeItem('jugador_aprobado');
-                    window.location.href = 'login.html';
+                    if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                        localStorage.removeItem('jugador_aprobado');
+                        window.location.href = 'login.html';
+                    }
                 };
+
             } else {
-                container.innerHTML = `<div class="loading error-loading">❌ JUGADOR NO ENCONTRADO</div>`;
+                container.innerHTML = `
+                    <div class="loading" style="color:var(--rojo)">
+                        ❌ JUGADOR NO ENCONTRADO<br>
+                        <button onclick="location.reload()" style="margin-top:20px; background:none; border:1px solid white; color:white; padding:10px; cursor:pointer; border-radius:10px;">Reintentar</button>
+                    </div>`;
             }
         } catch (error) {
-            container.innerHTML = `<div class="loading error-loading">❌ ERROR DE CONEXIÓN<br><button onclick="location.reload()" style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer; margin-top:10px;">REINTENTAR</button></div>`;
+            container.innerHTML = `
+                <div class="loading">
+                    ❌ ERROR DE CONEXIÓN<br>
+                    <small style="font-weight:400; font-size:0.8rem; color:#aaa;">Verifica tu internet</small><br>
+                    <button onclick="location.reload()" style="margin-top:20px; background:var(--dorado); border:none; color:black; padding:10px 20px; cursor:pointer; border-radius:10px; font-weight:700;">REINTENTAR</button>
+                </div>`;
         }
     }
 </script>
