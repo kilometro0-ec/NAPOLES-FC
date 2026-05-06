@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Nápoles FC">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5323/5323982.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1165/1165187.png">
     <meta name="theme-color" content="#020c1a">
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -24,11 +24,7 @@
             --glass: rgba(12, 25, 45, 0.7);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-dark);
@@ -44,7 +40,6 @@
             padding: 1.5rem;
             color: white;
             overflow-x: hidden;
-            overscroll-behavior: auto;
         }
 
         .login-card {
@@ -57,7 +52,6 @@
             border: 1px solid rgba(0, 210, 255, 0.4);
             box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             padding: 3rem 2.5rem;
-            transition: transform 0.3s ease;
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -66,15 +60,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .logo-area {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-
+        .logo-area { text-align: center; margin-bottom: 2.5rem; }
         .logo-area h1 {
             font-size: 2.2rem;
             font-weight: 800;
-            letter-spacing: -1px;
             background: linear-gradient(to right, #fff, var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
@@ -82,8 +71,7 @@
             margin-bottom: 0.5rem;
         }
 
-        .logo-area p { color: #94a3b8; font-size: 0.95rem; }
-
+        /* GRUPO DE ENTRADA CON MARGEN */
         .input-group { margin-bottom: 2rem; }
 
         .input-group label {
@@ -103,7 +91,7 @@
             border: 2px solid rgba(255, 255, 255, 0.05);
             border-radius: 1.2rem;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
             text-align: center;
             letter-spacing: 4px;
@@ -117,6 +105,7 @@
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
         }
 
+        /* BOTÓN CON MARGEN SUPERIOR */
         .btn-submit {
             width: 100%;
             padding: 1.2rem;
@@ -130,12 +119,12 @@
             letter-spacing: 2px;
             cursor: pointer;
             transition: 0.3s;
+            margin-top: 0.5rem;
         }
 
-        .btn-submit:disabled { background: #1e293b; color: #475569; cursor: not-allowed; }
+        .btn-submit:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.7; }
 
         .footer-links { margin-top: 2rem; text-align: center; font-size: 0.9rem; }
-
         .footer-links a { color: var(--accent); text-decoration: none; font-weight: 700; }
 
         .btn-download {
@@ -159,13 +148,13 @@
             border-radius: 1rem;
             margin-top: 1.5rem;
             display: none;
-            animation: shake 0.4s ease-in-out;
+            text-align: center;
+            font-size: 0.85rem;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        /* Detectar si ya es APP instalada */
+        @media (display-mode: standalone) {
+            #containerDownload { display: none !important; }
         }
     </style>
 </head>
@@ -189,7 +178,8 @@
     <div class="footer-links">
         ¿Eres nuevo en el club? <br><br>
         <a href="index.html">CREAR CUENTA NUEVA ✨</a>
-        <div style="margin-top: 1rem;">
+        
+        <div id="containerDownload">
             <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
         </div>
     </div>
@@ -197,14 +187,19 @@
 
 <script>
     const URL_GAS = "https://script.google.com/macros/s/AKfycbzw2Ef4Wja_Nu1Gks7o5yAP-xBgH0R5WAiXgaKhJ_0Z4r6PRrkHSwoMyf8WbMoASgKv/exec";
-    const URL_APK = "https://tu-servidor.com/apk/napoles-fc.apk"; // Reemplazar con URL real
-
+    
     const cedulaInput = document.getElementById('loginCedula');
     const btnLogin = document.getElementById('btnLogin');
     const errorDiv = document.getElementById('mensajeError');
     const manualBtn = document.getElementById('manualDownloadBtn');
+    const containerDownload = document.getElementById('containerDownload');
 
-    // --- LOGICA DE LOGIN ---
+    // 1. OCULTAR SI YA ESTÁ INSTALADA
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        containerDownload.style.display = 'none';
+    }
+
+    // 2. VALIDACIÓN DE INPUT
     cedulaInput.addEventListener('input', (e) => {
         let value = e.target.value.replace(/\D/g, '');
         e.target.value = value.slice(0, 10);
@@ -212,28 +207,30 @@
         errorDiv.style.display = 'none';
     });
 
+    // 3. LÓGICA DE INICIO DE SESIÓN
     btnLogin.addEventListener('click', async () => {
         const cedula = cedulaInput.value;
         btnLogin.disabled = true;
         btnLogin.innerText = 'VERIFICANDO...';
+        errorDiv.style.display = 'none';
 
         try {
             const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${cedula}`);
             const data = await resp.json();
 
-            if (!data.cedulaExiste) {
-                mostrarError("Cédula no registrada.");
-            } else if (data.estado === "APROBADO") {
+            if (data.cedulaExiste && data.estado === "APROBADO") {
                 localStorage.setItem('jugador_aprobado', JSON.stringify({
                     cedula: cedula,
                     expira: Date.now() + 86400000
                 }));
                 window.location.href = 'perfil.html';
+            } else if (!data.cedulaExiste) {
+                mostrarError("La cédula no está registrada.");
             } else {
-                mostrarError("Cuenta en revisión por el delegado.");
+                mostrarError("Tu cuenta está en revisión por el delegado.");
             }
         } catch (err) {
-            mostrarError("Error de conexión.");
+            mostrarError("Error de conexión con el servidor.");
         } finally {
             btnLogin.disabled = false;
             btnLogin.innerText = 'INICIAR SESIÓN';
@@ -245,21 +242,12 @@
         errorDiv.style.display = 'block';
     }
 
-    function descargarAPK() {
-        if (URL_APK.includes("tu-servidor")) {
-            alert("📦 APK disponible próximamente.");
-        } else {
-            window.location.href = URL_APK;
-        }
-    }
-
-    // --- LÓGICA DE INSTALACIÓN PWA ---
+    // 4. LÓGICA DE INSTALACIÓN
     let deferredPrompt;
-
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        manualBtn.innerHTML = "📲 INSTALAR APP OFICIAL";
+        manualBtn.innerHTML = "👕 INSTALAR APP (CAMISETA)";
         manualBtn.style.background = "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)";
         manualBtn.style.color = "#000";
     });
@@ -267,16 +255,16 @@
     manualBtn.addEventListener('click', async () => {
         if (deferredPrompt) {
             deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') containerDownload.style.display = 'none';
             deferredPrompt = null;
         } else {
-            descargarAPK();
+            alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar' o 'Añadir a pantalla de inicio'.");
         }
     });
 
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
-        });
+        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
     }
 </script>
 </body>
