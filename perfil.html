@@ -170,17 +170,6 @@
         
         .tarjeta-amarilla { color: #f1c40f; }
         .tarjeta-roja { color: #e74c3c; }
-
-        .debug-info {
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            margin: 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-family: monospace;
-            word-break: break-all;
-            display: block;
-        }
     </style>
 </head>
 <body>
@@ -189,96 +178,46 @@
     <div id="perfilContent">
         <div class="loading">⚽ CARGANDO PERFIL... ⚽</div>
     </div>
-    <div id="debugInfo" class="debug-info"></div>
 </div>
 
 <script>
     const URL_GAS = "https://script.google.com/macros/s/AKfycbz69eNVlAzoDDUzjqBwDf6L9M93Rb-Y9TyZAyK_Qv7nYtPJeiMtTfRwrhTODigpqwDG/exec";
 
-    // Función para mostrar debug
-    function debug(msg) {
-        console.log(msg);
-        const debugDiv = document.getElementById('debugInfo');
-        if (debugDiv) {
-            const line = document.createElement('div');
-            line.textContent = new Date().toLocaleTimeString() + ': ' + msg;
-            debugDiv.appendChild(line);
-            debugDiv.scrollTop = debugDiv.scrollHeight;
-            // Limitar a 20 líneas
-            while (debugDiv.children.length > 20) {
-                debugDiv.removeChild(debugDiv.firstChild);
-            }
-        }
-    }
-
-    // Función escapeHtml CORREGIDA - maneja números y strings
     function escapeHtml(str) {
         if (str === undefined || str === null) return '';
-        // Convertir a string si es número u otro tipo
-        const strSafe = String(str);
-        return strSafe
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
+        return String(str).replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
     }
 
-    // Función para formatear fecha
-    function formatFecha(fechaStr) {
-        if (!fechaStr) return 'No registrada';
-        try {
-            const fecha = new Date(fechaStr);
-            if (isNaN(fecha.getTime())) return fechaStr;
-            return fecha.toLocaleDateString('es-ES', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        } catch(e) {
-            return fechaStr;
-        }
-    }
-
-    // Verificar sesión activa
     const session = JSON.parse(localStorage.getItem('jugador_aprobado'));
     
-    debug('Sesión recuperada: ' + JSON.stringify(session));
-    
     if (!session || !session.cedula || Date.now() > session.expira) {
-        debug('Sesión inválida o expirada, redirigiendo a login');
         localStorage.removeItem('jugador_aprobado');
         window.location.href = 'login.html';
     } else {
-        debug('Cédula de sesión: "' + session.cedula + '"');
         cargarPerfil(session.cedula);
     }
 
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
-        
-        // Limpiar cédula de posibles caracteres extraños
         const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
-        debug('Cédula limpia para buscar: "' + cedulaLimpia + '"');
         
         try {
-            container.innerHTML = '<div class="loading">📡 SINCRONIZANDO CON EL SERVIDOR...</div>';
+            container.innerHTML = '<div class="loading">📡 CARGANDO PERFIL...</div>';
             
-            // Construir URL con timestamp para evitar caché
             const url = `${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
-            debug('Consultando URL: ' + url);
-            
             const resp = await fetch(url);
-            debug('Respuesta HTTP: ' + resp.status);
             
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             
             const data = await resp.json();
-            debug('Respuesta del servidor: ' + JSON.stringify(data).substring(0, 200));
             
             if (data.ok && data.jugador) {
                 const j = data.jugador;
-                debug('Jugador encontrado: ' + j.nombre1 + ' ' + j.apellidos);
                 
                 const goles = j.goles || 0;
                 const amarillas = j.amarillas || 0;
@@ -292,16 +231,11 @@
                 const nombreCamiseta = j.nombreCamiseta || j.nombre1 || 'JUGADOR';
                 const nombreCompleto = `${j.nombre1 || ''} ${j.apellidos || ''}`.trim();
                 
-                // Calcular OVR (promedio de valores humanos * 10)
                 const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                debug(`OVR calculado: ${ovrMostrar} (promedio: ${promedio})`);
-                
-                // Procesar foto URL (convertir a vista directa si es necesario)
                 let fotoUrl = j.urlRostro || '';
                 if (fotoUrl && fotoUrl.includes('drive.google.com/file/d/')) {
-                    // Convertir URL de vista de Google Drive a URL directa de imagen
                     const match = fotoUrl.match(/\/d\/(.+?)\/view/);
                     if (match) {
                         fotoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
@@ -313,9 +247,6 @@
                     fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
                 }
                 
-                debug('Foto URL: ' + fotoUrl);
-                
-                // Construir HTML - usar escapeHtml solo para strings que puedan tener caracteres especiales
                 container.innerHTML = `
                     <div class="pes-header">
                         <h1>⚜️ MI PERFIL NÁPOLES ⚜️</h1>
@@ -377,32 +308,11 @@
                     localStorage.removeItem('jugador_aprobado');
                     window.location.href = 'login.html';
                 };
-                
-                debug('Perfil cargado exitosamente');
             } else {
-                debug('Jugador NO encontrado. data.ok = ' + data.ok);
-                container.innerHTML = `<div class="loading error-loading">
-                    ❌ JUGADOR NO ENCONTRADO<br>
-                    <small>Cédula buscada: ${escapeHtml(cedulaLimpia)}</small>
-                    <br><br>
-                    <button onclick="localStorage.removeItem('jugador_aprobado'); window.location.href='login.html'" 
-                            style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer; margin-top:20px;">
-                        VOLVER A INICIAR SESIÓN
-                    </button>
-                </div>`;
+                container.innerHTML = `<div class="loading error-loading">❌ JUGADOR NO ENCONTRADO</div>`;
             }
         } catch (error) {
-            debug('ERROR: ' + error.message);
-            console.error('Error detallado:', error);
-            container.innerHTML = `<div class="loading error-loading">
-                ❌ ERROR DE CONEXIÓN<br>
-                <small>${escapeHtml(error.message)}</small>
-                <br><br>
-                <button onclick="location.reload()" 
-                        style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer; margin-top:20px;">
-                    REINTENTAR
-                </button>
-            </div>`;
+            container.innerHTML = `<div class="loading error-loading">❌ ERROR DE CONEXIÓN<br><button onclick="location.reload()" style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer; margin-top:10px;">REINTENTAR</button></div>`;
         }
     }
 </script>
