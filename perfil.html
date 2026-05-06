@@ -223,16 +223,6 @@
             margin: 0 auto 20px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .debug-info {
-            background: rgba(0,0,0,0.7);
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-family: monospace;
-            word-break: break-all;
-            display: block;
-        }
     </style>
 </head>
 <body>
@@ -240,7 +230,6 @@
     <div id="perfilContent">
         <div class="loading-screen"><div class="spinner"></div><p>CARGANDO PERFIL...</p></div>
     </div>
-    <div id="debugInfo" class="debug-info" style="display:none;"></div>
 </div>
 
 <script>
@@ -254,52 +243,41 @@
         cargarPerfil(session.cedula);
     }
 
-    // FUNCIÓN ULTRA MEJORADA para convertir URL de Drive a imagen directa
+    // FUNCIÓN CORREGIDA - Usa thumbnail para evitar bloqueo CORS
     function convertirUrlDrive(url) {
         if (!url || url === 'null' || url === '' || url === 'undefined') return null;
         
-        // Limpiar la URL
         let cleanUrl = String(url).trim();
         
-        // Si ya es URL de imagen directa correcta
-        if (cleanUrl.includes('drive.google.com/uc?export=view')) return cleanUrl;
-        if (cleanUrl.includes('drive.google.com/thumbnail?id=')) return cleanUrl;
+        // Extraer el ID del archivo
+        let id = null;
         
-        // MÉTODO 1: Extraer ID de /d/ID/ (formato más común)
+        // Método 1: Extraer ID de /d/ID/
         let match = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-        if (match && match[1]) {
-            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        if (match && match[1]) id = match[1];
+        
+        // Método 2: Extraer ID de uc?export=view&id=ID
+        if (!id) {
+            match = cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) id = match[1];
         }
         
-        // MÉTODO 2: Extraer ID de id=ID
-        match = cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-        if (match && match[1]) {
-            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        // Método 3: Buscar cadena larga que parezca ID
+        if (!id) {
+            match = cleanUrl.match(/([a-zA-Z0-9_-]{28,})/);
+            if (match && match[1]) id = match[1];
         }
         
-        // MÉTODO 3: Extraer ID de /uc?id=ID
-        match = cleanUrl.match(/uc\?id=([a-zA-Z0-9_-]+)/);
-        if (match && match[1]) {
-            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        if (id) {
+            // Usar thumbnail en lugar de uc (menos restricciones CORS)
+            return `https://drive.google.com/thumbnail?id=${id}&sz=400`;
         }
         
-        // MÉTODO 4: Si la URL es solo el ID (más de 25 caracteres alfanuméricos)
-        if (cleanUrl.match(/^[a-zA-Z0-9_-]{25,}$/)) {
-            return `https://drive.google.com/uc?export=view&id=${cleanUrl}`;
-        }
-        
-        // MÉTODO 5: Buscar cualquier cadena larga que parezca un ID
-        match = cleanUrl.match(/([a-zA-Z0-9_-]{28,})/);
-        if (match && match[1]) {
-            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-        }
-        
-        return cleanUrl;
+        return null;
     }
 
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
-        const debugDiv = document.getElementById('debugInfo');
         const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
         
         try {
@@ -308,16 +286,8 @@
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             const data = await resp.json();
             
-            // Mostrar debug
-            debugDiv.style.display = 'block';
-            debugDiv.innerHTML = `<strong>DEBUG:</strong><br>`;
-            debugDiv.innerHTML += `Cédula: ${cedulaLimpia}<br>`;
-            debugDiv.innerHTML += `Data recibida: ${JSON.stringify(data, null, 2).substring(0, 500)}<br>`;
-            
             if (data.ok && data.jugador) {
                 const j = data.jugador;
-                
-                debugDiv.innerHTML += `<br><strong>URL Rostro original:</strong> ${j.urlRostro || 'NO HAY URL'}<br>`;
                 
                 const goles = j.goles || 0;
                 const amarillas = j.amarillas || 0;
@@ -335,15 +305,13 @@
                 const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                // CONVERTIR LA URL DE LA FOTO
+                // CONVERTIR LA URL DE LA FOTO usando thumbnail
                 let fotoUrl = convertirUrlDrive(j.urlRostro);
-                debugDiv.innerHTML += `<strong>URL convertida:</strong> ${fotoUrl || 'NO SE PUDO CONVERTIR'}<br>`;
                 
                 // Si no hay foto, usar avatar
                 if (!fotoUrl) {
                     const inicial = nombreCompleto.charAt(0).toUpperCase();
                     fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
-                    debugDiv.innerHTML += `<strong>Usando avatar:</strong> ${fotoUrl}<br>`;
                 }
                 
                 container.innerHTML = `
@@ -412,8 +380,6 @@
                 container.innerHTML = `<div class="loading-screen"><p>❌ ${data.mensaje || 'JUGADOR NO ENCONTRADO'}</p><button onclick="localStorage.removeItem('jugador_aprobado');location.href='login.html'" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">VOLVER</button></div>`;
             }
         } catch (error) {
-            debugDiv.style.display = 'block';
-            debugDiv.innerHTML += `<br><strong>ERROR:</strong> ${error.message}<br>`;
             container.innerHTML = `<div class="loading-screen"><p>❌ ERROR DE CONEXIÓN</p><button onclick="location.reload()" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">REINTENTAR</button></div>`;
         }
     }
