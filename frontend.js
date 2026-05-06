@@ -1,6 +1,6 @@
 // ================= CONFIGURACIÓN =================
 // 🔴 ¡CAMBIAR ESTA URL POR LA DE TU GOOGLE APPS SCRIPT!
-const URL_GAS = "https://script.google.com/macros/s/AKfycbximUE_D9vB4BMHUtl3M9EZrR92Vk-1s0_US8Qm4TcpIaqWYP3Ak56JqP4344LmNzyr/exec";
+const URL_GAS = "https://script.google.com/macros/s/AKfycbxoyMY98oWErI_IxNk-Pwraiq6ukx-58Ag4GJLknubeBlJx1KE76Z4FNs0ScFBDWKEq/exec";
 
 // ================= SISTEMA DE TOASTS =================
 function mostrarToast(mensaje, tipo = 'info', duracion = 4000) {
