@@ -273,6 +273,34 @@
         cargarPerfil(session.cedula);
     }
 
+    // Función para convertir URL de Google Drive a imagen directa
+    function convertirUrlDrive(url) {
+        if (!url || url === 'null' || url === '' || url === 'undefined') return null;
+        
+        // Si ya es una URL de imagen directa de Google Drive
+        if (url.includes('drive.google.com/uc?export=view')) return url;
+        
+        // Para URLs tipo: https://drive.google.com/file/d/ID/view
+        let match = url.match(/\/d\/(.+?)\/view/);
+        if (match) {
+            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        }
+        
+        // Para URLs tipo: https://drive.google.com/open?id=ID
+        match = url.match(/[?&]id=([^&]+)/);
+        if (match) {
+            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        }
+        
+        // Para URLs tipo: https://docs.google.com/uc?id=ID
+        match = url.match(/[?&]id=([^&]+)/);
+        if (match) {
+            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        }
+        
+        return url;
+    }
+
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
         const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
@@ -288,6 +316,8 @@
             if (data.ok && data.jugador) {
                 const j = data.jugador;
                 
+                console.log("URL de foto original:", j.urlRostro);
+                
                 const goles = j.goles || 0;
                 const amarillas = j.amarillas || 0;
                 const rojas = j.rojas || 0;
@@ -299,34 +329,20 @@
                 const nombreCamiseta = j.nombreCamiseta || j.nombre1 || 'JUGADOR';
                 const nombreCompleto = `${j.nombre1 || ''} ${j.apellidos || ''}`.trim();
                 const partidos = j.partidosJugados || 0;
-                const valorVocalia = j.valorVocalia || 0;
                 const vocaliasPendientes = j.vocaliasPendientes || 0;
                 
                 const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                // Limpiar URL de la foto de Drive
-                let fotoUrl = j.urlRostro || '';
-                if (fotoUrl) {
-                    // Si es URL de vista de Drive, convertir a directa
-                    if (fotoUrl.includes('drive.google.com/file/d/')) {
-                        const match = fotoUrl.match(/\/d\/(.+?)\/view/);
-                        if (match) {
-                            fotoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-                        }
-                    }
-                    // Si es URL de apertura, también convertir
-                    if (fotoUrl.includes('drive.google.com/open?id=')) {
-                        const match = fotoUrl.match(/id=(.+?)(&|$)/);
-                        if (match) {
-                            fotoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-                        }
-                    }
-                }
+                // Procesar la URL de la foto
+                let fotoUrl = convertirUrlDrive(j.urlRostro);
                 
-                // Si no hay foto o es inválida, usar avatar
-                if (!fotoUrl || fotoUrl.trim() === '' || fotoUrl === 'null') {
-                    fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.charAt(0))}`;
+                console.log("URL de foto procesada:", fotoUrl);
+                
+                // Si no hay foto válida, usar avatar con iniciales
+                if (!fotoUrl) {
+                    const inicial = nombreCamiseta.charAt(0).toUpperCase();
+                    fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
                 }
                 
                 container.innerHTML = `
