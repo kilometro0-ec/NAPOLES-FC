@@ -179,7 +179,7 @@
             font-size: 11px;
             font-family: monospace;
             word-break: break-all;
-            display: none;
+            display: block;
         }
     </style>
 </head>
@@ -195,13 +195,48 @@
 <script>
     const URL_GAS = "https://script.google.com/macros/s/AKfycbz69eNVlAzoDDUzjqBwDf6L9M93Rb-Y9TyZAyK_Qv7nYtPJeiMtTfRwrhTODigpqwDG/exec";
 
-    // Función para mostrar debug (opcional, activar si hay problemas)
+    // Función para mostrar debug
     function debug(msg) {
         console.log(msg);
         const debugDiv = document.getElementById('debugInfo');
         if (debugDiv) {
-            debugDiv.style.display = 'block';
-            debugDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + msg + '<br>';
+            const line = document.createElement('div');
+            line.textContent = new Date().toLocaleTimeString() + ': ' + msg;
+            debugDiv.appendChild(line);
+            debugDiv.scrollTop = debugDiv.scrollHeight;
+            // Limitar a 20 líneas
+            while (debugDiv.children.length > 20) {
+                debugDiv.removeChild(debugDiv.firstChild);
+            }
+        }
+    }
+
+    // Función escapeHtml CORREGIDA - maneja números y strings
+    function escapeHtml(str) {
+        if (str === undefined || str === null) return '';
+        // Convertir a string si es número u otro tipo
+        const strSafe = String(str);
+        return strSafe
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // Función para formatear fecha
+    function formatFecha(fechaStr) {
+        if (!fechaStr) return 'No registrada';
+        try {
+            const fecha = new Date(fechaStr);
+            if (isNaN(fecha.getTime())) return fechaStr;
+            return fecha.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        } catch(e) {
+            return fechaStr;
         }
     }
 
@@ -221,157 +256,154 @@
 
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
-        let reintentos = 0;
-        const maxReintentos = 3;
         
         // Limpiar cédula de posibles caracteres extraños
-        const cedulaLimpia = cedula.toString().replace(/[^0-9]/g, '');
+        const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
         debug('Cédula limpia para buscar: "' + cedulaLimpia + '"');
         
-        async function intentarCargar() {
-            try {
-                container.innerHTML = '<div class="loading">📡 SINCRONIZANDO CON EL SERVIDOR...</div>';
+        try {
+            container.innerHTML = '<div class="loading">📡 SINCRONIZANDO CON EL SERVIDOR...</div>';
+            
+            // Construir URL con timestamp para evitar caché
+            const url = `${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
+            debug('Consultando URL: ' + url);
+            
+            const resp = await fetch(url);
+            debug('Respuesta HTTP: ' + resp.status);
+            
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            
+            const data = await resp.json();
+            debug('Respuesta del servidor: ' + JSON.stringify(data).substring(0, 200));
+            
+            if (data.ok && data.jugador) {
+                const j = data.jugador;
+                debug('Jugador encontrado: ' + j.nombre1 + ' ' + j.apellidos);
                 
-                // Construir URL con timestamp para evitar caché
-                const url = `${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
-                debug('Consultando URL: ' + url);
+                const goles = j.goles || 0;
+                const amarillas = j.amarillas || 0;
+                const rojas = j.rojas || 0;
+                const companerismo = j.companerismo || 0;
+                const respeto = j.respeto || 0;
+                const humildad = j.humildad || 0;
+                const puntualidad = j.puntualidad || 0;
+                const estadoPago = j.estadoPago || 'PENDIENTE';
+                const dorsal = j.dorsal || '--';
+                const nombreCamiseta = j.nombreCamiseta || j.nombre1 || 'JUGADOR';
+                const nombreCompleto = `${j.nombre1 || ''} ${j.apellidos || ''}`.trim();
                 
-                const resp = await fetch(url);
-                debug('Respuesta HTTP: ' + resp.status);
+                // Calcular OVR (promedio de valores humanos * 10)
+                const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
+                const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                debug(`OVR calculado: ${ovrMostrar} (promedio: ${promedio})`);
                 
-                const data = await resp.json();
-                debug('Respuesta del servidor: ' + JSON.stringify(data));
-                
-                if (data.ok && data.jugador) {
-                    const j = data.jugador;
-                    debug('Jugador encontrado: ' + j.nombre1 + ' ' + j.apellidos);
-                    
-                    const goles = j.goles || 0;
-                    const amarillas = j.amarillas || 0;
-                    const rojas = j.rojas || 0;
-                    const companerismo = j.companerismo || 0;
-                    const respeto = j.respeto || 0;
-                    const humildad = j.humildad || 0;
-                    const puntualidad = j.puntualidad || 0;
-                    const estadoPago = j.estadoPago || 'PENDIENTE';
-                    const dorsal = j.dorsal || '--';
-                    const nombreCamiseta = j.nombreCamiseta || j.nombre1 || 'JUGADOR';
-                    
-                    const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
-                    const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
-                    
-                    let fotoUrl = j.urlRostro || '';
-                    if (!fotoUrl || fotoUrl.trim() === '') {
-                        const inicial = nombreCamiseta.charAt(0).toUpperCase();
-                        fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
+                // Procesar foto URL (convertir a vista directa si es necesario)
+                let fotoUrl = j.urlRostro || '';
+                if (fotoUrl && fotoUrl.includes('drive.google.com/file/d/')) {
+                    // Convertir URL de vista de Google Drive a URL directa de imagen
+                    const match = fotoUrl.match(/\/d\/(.+?)\/view/);
+                    if (match) {
+                        fotoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
                     }
-                    
-                    container.innerHTML = `
-                        <div class="pes-header">
-                            <h1>⚜️ MI PERFIL NÁPOLES ⚜️</h1>
-                        </div>
-                        <div class="player-card">
-                            <div class="player-photo-wrapper">
-                                <div class="player-photo">
-                                    <img src="${fotoUrl}" alt="${nombreCamiseta}" onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.substring(0,2))}'">
-                                </div>
-                                <div class="ovr-badge">${ovrMostrar}</div>
-                            </div>
-                            <div class="player-name">${escapeHtml(nombreCamiseta.toUpperCase())}</div>
-                            <div class="player-dorsal-tag">👕 DORSAL ${escapeHtml(dorsal)}</div>
-                        </div>
-                        <div class="stats-grid">
-                            <div class="stat-box full-width">
-                                <span class="stat-label">📄 Cédula</span>
-                                <span class="stat-value" style="color:#fff;">${escapeHtml(cedulaLimpia)}</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-label">⚽ Goles</span>
-                                <span class="stat-value">${goles}</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-label">🃏 Tarjetas</span>
-                                <div style="display:flex; gap:8px; justify-content:center;">
-                                    <span class="stat-value tarjeta-amarilla">🟨 ${amarillas}</span>
-                                    <span class="stat-value tarjeta-roja">🟥 ${rojas}</span>
-                                </div>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-label">🤝 Compañerismo</span>
-                                <span class="stat-value">${companerismo}/10</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-label">🙏 Respeto</span>
-                                <span class="stat-value">${respeto}/10</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-label">💙 Humildad</span>
-                                <span class="stat-value">${humildad}/10</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-label">⏰ Puntualidad</span>
-                                <span class="stat-value">${puntualidad}/10</span>
-                            </div>
-                            <div class="stat-box full-width">
-                                <span class="stat-label">💰 Estado de Pago</span>
-                                <span class="stat-value" style="color: ${estadoPago === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">
-                                    ${estadoPago === 'PAGADO' ? '✅ PAGADO' : '⚠️ PENDIENTE'}
-                                </span>
-                            </div>
-                            <button id="cerrarSesion" class="btn-cerrar">🚪 CERRAR SESIÓN</button>
-                        </div>
-                    `;
-                    
-                    document.getElementById('cerrarSesion').onclick = () => {
-                        localStorage.removeItem('jugador_aprobado');
-                        window.location.href = 'login.html';
-                    };
-                } else {
-                    debug('Jugador NO encontrado. data.ok = ' + data.ok);
-                    container.innerHTML = `<div class="loading error-loading">
-                        ❌ JUGADOR NO ENCONTRADO<br>
-                        <small>Cédula buscada: ${cedulaLimpia}</small><br>
-                        <small>Verifica que tu cuenta esté APROBADA por el delegado</small>
-                        <br><br>
-                        <button onclick="localStorage.removeItem('jugador_aprobado'); window.location.href='login.html'" 
-                                style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer;">
-                            VOLVER A INICIAR SESIÓN
-                        </button>
-                    </div>`;
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                debug('Error: ' + error.message);
-                reintentos++;
-                if (reintentos < maxReintentos) {
-                    container.innerHTML = `<div class="loading error-loading">⚠️ Error de conexión (Intento ${reintentos}/${maxReintentos})<br>Reconectando...</div>`;
-                    setTimeout(intentarCargar, 2000);
-                } else {
-                    container.innerHTML = `<div class="loading error-loading">
-                        ❌ No se pudo conectar al servidor.<br>
-                        Verifica tu internet y recarga la página.
-                        <br><br>
-                        <button onclick="location.reload()" style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer;">
-                            REINTENTAR
-                        </button>
-                    </div>`;
+                
+                if (!fotoUrl || fotoUrl.trim() === '') {
+                    const inicial = nombreCamiseta.charAt(0).toUpperCase();
+                    fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
                 }
+                
+                debug('Foto URL: ' + fotoUrl);
+                
+                // Construir HTML - usar escapeHtml solo para strings que puedan tener caracteres especiales
+                container.innerHTML = `
+                    <div class="pes-header">
+                        <h1>⚜️ MI PERFIL NÁPOLES ⚜️</h1>
+                    </div>
+                    <div class="player-card">
+                        <div class="player-photo-wrapper">
+                            <div class="player-photo">
+                                <img src="${fotoUrl}" alt="${escapeHtml(nombreCamiseta)}" 
+                                     onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.substring(0,2))}'">
+                            </div>
+                            <div class="ovr-badge">${ovrMostrar}</div>
+                        </div>
+                        <div class="player-name">${escapeHtml(nombreCompleto.toUpperCase())}</div>
+                        <div class="player-dorsal-tag">👕 DORSAL ${escapeHtml(String(dorsal))}</div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-box full-width">
+                            <span class="stat-label">📄 Cédula</span>
+                            <span class="stat-value" style="color:#fff;">${escapeHtml(cedulaLimpia)}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">⚽ Goles</span>
+                            <span class="stat-value">${goles}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">🃏 Tarjetas</span>
+                            <div style="display:flex; gap:8px; justify-content:center;">
+                                <span class="stat-value tarjeta-amarilla">🟨 ${amarillas}</span>
+                                <span class="stat-value tarjeta-roja">🟥 ${rojas}</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">🤝 Compañerismo</span>
+                            <span class="stat-value">${companerismo}/10</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">🙏 Respeto</span>
+                            <span class="stat-value">${respeto}/10</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">💙 Humildad</span>
+                            <span class="stat-value">${humildad}/10</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">⏰ Puntualidad</span>
+                            <span class="stat-value">${puntualidad}/10</span>
+                        </div>
+                        <div class="stat-box full-width">
+                            <span class="stat-label">💰 Estado de Pago</span>
+                            <span class="stat-value" style="color: ${estadoPago === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">
+                                ${estadoPago === 'PAGADO' ? '✅ PAGADO' : '⚠️ PENDIENTE'}
+                            </span>
+                        </div>
+                        <button id="cerrarSesion" class="btn-cerrar">🚪 CERRAR SESIÓN</button>
+                    </div>
+                `;
+                
+                document.getElementById('cerrarSesion').onclick = () => {
+                    localStorage.removeItem('jugador_aprobado');
+                    window.location.href = 'login.html';
+                };
+                
+                debug('Perfil cargado exitosamente');
+            } else {
+                debug('Jugador NO encontrado. data.ok = ' + data.ok);
+                container.innerHTML = `<div class="loading error-loading">
+                    ❌ JUGADOR NO ENCONTRADO<br>
+                    <small>Cédula buscada: ${escapeHtml(cedulaLimpia)}</small>
+                    <br><br>
+                    <button onclick="localStorage.removeItem('jugador_aprobado'); window.location.href='login.html'" 
+                            style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer; margin-top:20px;">
+                        VOLVER A INICIAR SESIÓN
+                    </button>
+                </div>`;
             }
+        } catch (error) {
+            debug('ERROR: ' + error.message);
+            console.error('Error detallado:', error);
+            container.innerHTML = `<div class="loading error-loading">
+                ❌ ERROR DE CONEXIÓN<br>
+                <small>${escapeHtml(error.message)}</small>
+                <br><br>
+                <button onclick="location.reload()" 
+                        style="background:gold; color:black; padding:8px 16px; border:none; border-radius:8px; cursor:pointer; margin-top:20px;">
+                    REINTENTAR
+                </button>
+            </div>`;
         }
-        
-        intentarCargar();
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
     }
 </script>
 </body>
