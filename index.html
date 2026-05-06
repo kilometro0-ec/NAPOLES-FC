@@ -183,6 +183,7 @@
 <script>
     const URL_GAS = "https://script.google.com/macros/s/AKfycbz69eNVlAzoDDUzjqBwDf6L9M93Rb-Y9TyZAyK_Qv7nYtPJeiMtTfRwrhTODigpqwDG/exec";
 
+    // Función para escapar HTML
     function escapeHtml(str) {
         if (str === undefined || str === null) return '';
         return String(str).replace(/[&<>]/g, function(m) {
@@ -321,7 +322,6 @@
                 </div>`;
             }
         } catch (error) {
-            console.error('Error:', error);
             container.innerHTML = `<div class="loading error-loading">
                 ❌ ERROR DE CONEXIÓN<br>
                 <small>${escapeHtml(error.message)}</small>
