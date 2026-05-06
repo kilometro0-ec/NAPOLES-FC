@@ -1,4 +1,4 @@
-const CACHE_NAME = 'napoles-v1.0.4'; // Cambia el número de versión cada vez que actualices
+const CACHE_NAME = 'napoles-v1.0.5'; // Cambia el número de versión cada vez que actualices
 const ASSETS = [
   'login.html',
   'manifest.json',
