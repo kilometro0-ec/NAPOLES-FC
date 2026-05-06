@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Nápoles F.C. - Acceso Jugadores</title>
     
-    <!-- Configuración PWA e iOS -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -30,8 +29,7 @@
             background-color: var(--bg-dark);
             background-image: 
                 radial-gradient(circle at 50% 0%, rgba(0, 210, 255, 0.15), transparent 50%),
-                linear-gradient(rgba(2, 12, 26, 0.8), rgba(2, 12, 26, 0.8)),
-                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300d2ff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                linear-gradient(rgba(2, 12, 26, 0.8), rgba(2, 12, 26, 0.8));
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
             display: flex;
@@ -39,7 +37,6 @@
             justify-content: center;
             padding: 1.5rem;
             color: white;
-            overflow-x: hidden;
         }
 
         .login-card {
@@ -47,10 +44,9 @@
             width: 100%;
             background: var(--glass);
             backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 2.5rem;
             border: 1px solid rgba(0, 210, 255, 0.4);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
             padding: 3rem 2.5rem;
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -68,12 +64,9 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 0.5rem;
         }
 
-        /* GRUPO DE ENTRADA CON MARGEN */
         .input-group { margin-bottom: 2rem; }
-
         .input-group label {
             display: block;
             font-size: 0.8rem;
@@ -101,11 +94,9 @@
 
         input:focus {
             border-color: var(--primary);
-            background: rgba(15, 23, 42, 0.9);
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
         }
 
-        /* BOTÓN CON MARGEN SUPERIOR */
         .btn-submit {
             width: 100%;
             padding: 1.2rem;
@@ -119,7 +110,6 @@
             letter-spacing: 2px;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 0.5rem;
         }
 
         .btn-submit:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.7; }
@@ -152,7 +142,29 @@
             font-size: 0.85rem;
         }
 
-        /* Detectar si ya es APP instalada */
+        .loading-indicator {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .loading-indicator.active { display: flex; }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(0, 210, 255, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         @media (display-mode: standalone) {
             #containerDownload { display: none !important; }
         }
@@ -172,15 +184,20 @@
     </div>
 
     <button id="btnLogin" class="btn-submit" disabled>Iniciar Sesión</button>
+    
+    <div class="loading-indicator" id="loadingIndicator">
+        <div class="spinner"></div>
+        <span>Verificando con el servidor...</span>
+    </div>
 
     <div id="mensajeError" class="error-toast"></div>
 
     <div class="footer-links">
         ¿Eres nuevo en el club? <br><br>
-        <a href="index.html">CREAR CUENTA NUEVA ✨</a>
+        <a href="registro.html">CREAR CUENTA NUEVA ✨</a>
         
         <div id="containerDownload">
-            <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
+            <span id="manualDownloadBtn" class="btn-download">📲 INSTALAR APP</span>
         </div>
     </div>
 </div>
@@ -191,15 +208,29 @@
     const cedulaInput = document.getElementById('loginCedula');
     const btnLogin = document.getElementById('btnLogin');
     const errorDiv = document.getElementById('mensajeError');
+    const loadingIndicator = document.getElementById('loadingIndicator');
     const manualBtn = document.getElementById('manualDownloadBtn');
     const containerDownload = document.getElementById('containerDownload');
 
-    // 1. OCULTAR SI YA ESTÁ INSTALADA
+    // Verificar si ya hay sesión activa
+    const sesionGuardada = localStorage.getItem('jugador_aprobado');
+    if (sesionGuardada) {
+        try {
+            const datos = JSON.parse(sesionGuardada);
+            if (datos.expira && datos.expira > Date.now() && datos.cedula) {
+                window.location.href = 'perfil.html';
+            } else {
+                localStorage.removeItem('jugador_aprobado');
+            }
+        } catch(e) {
+            localStorage.removeItem('jugador_aprobado');
+        }
+    }
+
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
         containerDownload.style.display = 'none';
     }
 
-    // 2. VALIDACIÓN DE INPUT
     cedulaInput.addEventListener('input', (e) => {
         let value = e.target.value.replace(/\D/g, '');
         e.target.value = value.slice(0, 10);
@@ -207,47 +238,87 @@
         errorDiv.style.display = 'none';
     });
 
-    // 3. LÓGICA DE INICIO DE SESIÓN
+    async function fetchWithTimeout(url, timeout = 15000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        try {
+            const response = await fetch(url, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            return response;
+        } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+        }
+    }
+
     btnLogin.addEventListener('click', async () => {
         const cedula = cedulaInput.value;
+        
+        if (cedula.length !== 10) {
+            mostrarError("La cédula debe tener 10 dígitos.");
+            return;
+        }
+        
         btnLogin.disabled = true;
+        const originalText = btnLogin.innerText;
         btnLogin.innerText = 'VERIFICANDO...';
         errorDiv.style.display = 'none';
-
+        loadingIndicator.classList.add('active');
+        
         try {
-            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${cedula}`);
+            const url = `${URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
+            const resp = await fetchWithTimeout(url);
             const data = await resp.json();
-
-            if (data.cedulaExiste && data.estado === "APROBADO") {
+            
+            console.log('Respuesta del servidor:', data);
+            
+            if (data.cedulaExiste === true && data.estado === "APROBADO") {
                 localStorage.setItem('jugador_aprobado', JSON.stringify({
                     cedula: cedula,
+                    nombre: data.nombre || 'Jugador',
                     expira: Date.now() + 86400000
                 }));
                 window.location.href = 'perfil.html';
-            } else if (!data.cedulaExiste) {
-                mostrarError("La cédula no está registrada.");
+            } else if (data.cedulaExiste === false) {
+                mostrarError("❌ La cédula no está registrada. Debes crear una cuenta primero.");
+            } else if (data.estado === "PENDIENTE") {
+                mostrarError("⏳ Tu cuenta está en revisión por el delegado. Espera la aprobación.");
             } else {
-                mostrarError("Tu cuenta está en revisión por el delegado.");
+                mostrarError("⚠️ Error en la verificación. Intenta de nuevo.");
             }
         } catch (err) {
-            mostrarError("Error de conexión con el servidor.");
+            console.error('Error de conexión:', err);
+            if (err.name === 'AbortError') {
+                mostrarError("⏱️ Tiempo de espera agotado. Verifica tu conexión a internet.");
+            } else {
+                mostrarError("📡 No se pudo conectar con el servidor. Verifica tu internet y vuelve a intentar.");
+            }
         } finally {
+            loadingIndicator.classList.remove('active');
             btnLogin.disabled = false;
-            btnLogin.innerText = 'INICIAR SESIÓN';
+            btnLogin.innerText = originalText;
         }
     });
 
     function mostrarError(msj) {
         errorDiv.innerText = "⚠️ " + msj;
         errorDiv.style.display = 'block';
+        setTimeout(() => {
+            if (errorDiv.style.display === 'block') {
+                errorDiv.style.opacity = '0';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                    errorDiv.style.opacity = '1';
+                }, 300);
+            }
+        }, 5000);
     }
 
-    // 4. LÓGICA DE INSTALACIÓN
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        manualBtn.innerHTML = "👕 INSTALAR APP (CAMISETA)";
+        manualBtn.innerHTML = "👕 INSTALAR APP";
         manualBtn.style.background = "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)";
         manualBtn.style.color = "#000";
     });
@@ -259,12 +330,12 @@
             if (outcome === 'accepted') containerDownload.style.display = 'none';
             deferredPrompt = null;
         } else {
-            alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar' o 'Añadir a pantalla de inicio'.");
+            alert("Abre el menú del navegador y selecciona 'Instalar aplicación' o 'Añadir a pantalla de inicio'.");
         }
     });
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
     }
 </script>
 </body>
