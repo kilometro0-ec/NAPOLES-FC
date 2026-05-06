@@ -252,7 +252,7 @@
             font-size: 0.75rem;
             margin-top: 5px;
             margin-left: 12px;
-            display: flex;
+            display: none;
             align-items: center;
             gap: 5px;
             animation: fadeInLeft 0.3s ease;
@@ -528,7 +528,7 @@
 
 <div class="contenedor-principal">
     <header>
-        <h1> NÁPOLES F.C.</h1>
+        <h1>⚽ NÁPOLES F.C.</h1>
         <p class="subtitulo">Formulario de registro oficial</p>
         <div class="badge">🏆 Temporada 2026 - 2027</div>
         
@@ -584,7 +584,7 @@
             <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 4: FOTOS (CORREGIDO CON VISTOS PERMANENTES) -->
+        <!-- PASO 4: FOTOS -->
         <div id="paso4" class="paso">
             <div class="campo">
                 <label>📸 Foto de perfil (sonríe)</label>
@@ -592,7 +592,7 @@
                     <input type="file" id="rostro" accept="image/jpeg,image/png">
                     <span id="vistoRostro" class="visto-icon">✅</span>
                 </div>
-                <div id="mensajeRostro" class="mensaje-exito-foto">none,✓ Documento subido con éxito</div>
+                <div id="mensajeRostro" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
             </div>
             <div class="campo">
                 <label>🪪 Foto de tu cédula (frontal)</label>
@@ -600,7 +600,7 @@
                     <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
                     <span id="vistoCedula" class="visto-icon">✅</span>
                 </div>
-                <div id="mensajeCedula" class="mensaje-exito-foto">none,✓ Documento subido con éxito</div>
+                <div id="mensajeCedula" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
             </div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
@@ -658,13 +658,14 @@
 <div id="modalExito">
     <div class="modal-card">
         <h2>✅ ¡Registro exitoso!</h2>
-        <p>Redirigiendo en <span id="contador">3</span> segundos...</p>
+        <p>Redirigiendo al login en <span id="contador">3</span> segundos...</p>
     </div>
 </div>
 
 <script>
     // ================= CONFIGURACIÓN =================
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbw_mkqOXQLO9q3mv5vuQUV5nHayAaJXC_iH_NAqUbybdIBSkX0uAE7zb6ki6j-lw66h/exec";
+    // IMPORTANTE: Reemplaza esta URL con la URL de tu Web App de Google Apps Script
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbxCV9O-HjoeyDkybzaLLCwgEZAWFu6RRmta3yLLIW1azi-Lrr3ppDU3tBOLjpn4oiwr/exec";
 
     // ================= RELOJ COUNTDOWN =================
     function actualizarCountdown() {
@@ -680,7 +681,6 @@
         const messageElem = document.getElementById('countdownMessage');
         
         if (diferencia <= 0) {
-            // Tiempo expirado
             if (daysElem) daysElem.textContent = '00';
             if (hoursElem) hoursElem.textContent = '00';
             if (minutesElem) minutesElem.textContent = '00';
@@ -690,7 +690,6 @@
                 messageElem.style.color = '#ff6b6b';
             }
             
-            // Deshabilitar el formulario completo
             const inputs = document.querySelectorAll('#formRegistro input, #formRegistro select, #formRegistro button');
             inputs.forEach(input => {
                 if (input.id !== 'btnCedula' && input.id !== 'btnPaso2' && input.id !== 'btnPaso3' && 
@@ -720,7 +719,6 @@
         }
     }
     
-    // Actualizar cada segundo
     setInterval(actualizarCountdown, 1000);
     actualizarCountdown();
 
@@ -773,6 +771,7 @@
         ced.value = ced.value.replace(/\D/g, '').slice(0, 10);
         btnCedula.disabled = ced.value.length !== 10;
     });
+    
     btnCedula.addEventListener('click', async () => {
         if (ced.value.length !== 10) {
             marcarErrorInput(ced, "La cédula debe tener 10 dígitos");
@@ -892,7 +891,6 @@
                 
                 if (mensajeElemento) {
                     mensajeElemento.style.display = 'flex';
-                    mensajeElemento.innerHTML = '✓ Documento subido con éxito';
                     mensajeElemento.style.color = '#2ecc71';
                 }
                 
@@ -980,7 +978,9 @@
             const resp = await fetch(`${URL_GAS}?action=getDorsales`);
             const ocupados = await resp.json();
             for (let i = 1; i <= 99; i++) {
-                if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
+                if (!ocupados.includes(String(i))) {
+                    selectDorsal.add(new Option(i, i));
+                }
             }
             if (selectDorsal.options.length === 1) {
                 mostrarToast("No hay dorsales disponibles. Contacta al administrador.", "error");
@@ -1040,6 +1040,7 @@
     }
     
     [medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
+    medias.addEventListener('change', validarPaso6);
 
     // ================= ENVÍO FINAL =================
     btnFinal.addEventListener('click', async () => {
@@ -1050,24 +1051,34 @@
 
         mostrarLoader(true, "Registrando jugador...");
 
-        const formData = new FormData();
-        formData.append('ced', ced.value);
-        formData.append('n1', n1.value.trim());
-        formData.append('n2', n2.value.trim());
-        formData.append('ape', ape.value.trim());
-        formData.append('fecha', fecha.value);
-        formData.append('tel', tel.value.replace(/\D/g, ''));
-        formData.append('correo', correo.value.trim().toLowerCase());
-        formData.append('medias', medias.value);
-        formData.append('dorsal', dorsal.value);
-        formData.append('nombreCamiseta', nombreCamiseta.value);
-        formData.append('inscripcion', inscripcion.value.trim());
-        formData.append('uniforme', uniforme.value.trim());
-        formData.append('fotoRostroB64', fotoRostroB64.value);
-        formData.append('fotoCedulaB64', fotoCedulaB64.value);
+        // Crear objeto con los datos
+        const dataToSend = {
+            ced: ced.value,
+            n1: n1.value.trim(),
+            n2: n2.value.trim(),
+            ape: ape.value.trim(),
+            fecha: fecha.value,
+            tel: tel.value.replace(/\D/g, ''),
+            correo: correo.value.trim().toLowerCase(),
+            medias: medias.value,
+            dorsal: dorsal.value,
+            nombreCamiseta: nombreCamiseta.value,
+            inscripcion: inscripcion.value.trim(),
+            uniforme: uniforme.value.trim(),
+            fotoRostroB64: fotoRostroB64.value,
+            fotoCedulaB64: fotoCedulaB64.value,
+            action: 'registrarJugador'
+        };
 
         try {
-            const response = await fetch(URL_GAS, { method: 'POST', body: formData });
+            const response = await fetch(URL_GAS, { 
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend)
+            });
+            
             const result = await response.json();
 
             if (result.ok) {
@@ -1075,6 +1086,8 @@
                 modalExito.style.display = 'flex';
                 let segundos = 3;
                 const spanContador = document.getElementById('contador');
+                spanContador.innerText = segundos;
+                
                 const intervalo = setInterval(() => {
                     segundos--;
                     if (spanContador) spanContador.innerText = segundos;
@@ -1095,9 +1108,7 @@
     });
     
     // Verificar fotos al cargar
-    document.addEventListener('DOMContentLoaded', () => {
-        verificarFotos();
-    });
+    verificarFotos();
 </script>
 </body>
 </html>
