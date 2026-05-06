@@ -263,7 +263,7 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbw5Lm1pircaNrz1z2M04dwD1Jl4WNDo6Go6kukvmk7JAwYYHiDMiU9EOmcGiPl_9b44/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbz4HLUL11p4kx1AqD0nyMp2q1f0HI_d75vyyrP1IcWrMcDgmI0Gc2AYo4lF6jy-i-26/exec";
 
     const session = JSON.parse(localStorage.getItem('jugador_aprobado'));
     if (!session || !session.cedula || Date.now() > session.expira) {
@@ -283,6 +283,8 @@
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             const data = await resp.json();
             
+            console.log("Datos recibidos:", data);
+            
             if (data.ok && data.jugador) {
                 const j = data.jugador;
                 
@@ -297,16 +299,33 @@
                 const nombreCamiseta = j.nombreCamiseta || j.nombre1 || 'JUGADOR';
                 const nombreCompleto = `${j.nombre1 || ''} ${j.apellidos || ''}`.trim();
                 const partidos = j.partidosJugados || 0;
+                const valorVocalia = j.valorVocalia || 0;
+                const vocaliasPendientes = j.vocaliasPendientes || 0;
                 
                 const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
+                // Limpiar URL de la foto de Drive
                 let fotoUrl = j.urlRostro || '';
-                if (fotoUrl && fotoUrl.includes('drive.google.com/file/d/')) {
-                    const match = fotoUrl.match(/\/d\/(.+?)\/view/);
-                    if (match) fotoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                if (fotoUrl) {
+                    // Si es URL de vista de Drive, convertir a directa
+                    if (fotoUrl.includes('drive.google.com/file/d/')) {
+                        const match = fotoUrl.match(/\/d\/(.+?)\/view/);
+                        if (match) {
+                            fotoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                        }
+                    }
+                    // Si es URL de apertura, también convertir
+                    if (fotoUrl.includes('drive.google.com/open?id=')) {
+                        const match = fotoUrl.match(/id=(.+?)(&|$)/);
+                        if (match) {
+                            fotoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                        }
+                    }
                 }
-                if (!fotoUrl || fotoUrl.trim() === '') {
+                
+                // Si no hay foto o es inválida, usar avatar
+                if (!fotoUrl || fotoUrl.trim() === '' || fotoUrl === 'null') {
                     fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.charAt(0))}`;
                 }
                 
@@ -320,7 +339,8 @@
                         <div class="player-photo-section">
                             <div class="player-photo-wrapper">
                                 <div class="player-photo">
-                                    <img src="${fotoUrl}" alt="${nombreCamiseta}" onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.substring(0,2))}'">
+                                    <img src="${fotoUrl}" alt="${nombreCamiseta}" 
+                                         onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.substring(0,2))}'">
                                 </div>
                                 <div class="ovr-badge">${ovrMostrar}</div>
                             </div>
@@ -356,7 +376,11 @@
                             <div class="payment-item"><i class="fas fa-socks"></i><div>Medias</div><span class="payment-status-badge ${j.mediasEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.mediasEstado || 'PENDIENTE'}</span></div>
                         </div>
                         <div style="margin-top:12px; text-align:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:16px;">
-                            <i class="fas fa-coins"></i> Vocalía: <strong style="color:${j.estadoPagoVocalia === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">${j.estadoPagoVocalia || 'PENDIENTE'}</strong>
+                            <i class="fas fa-coins"></i> Vocalía: 
+                            <strong style="color:${j.estadoPagoVocalia === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">
+                                ${j.estadoPagoVocalia || 'PENDIENTE'}
+                            </strong>
+                            ${vocaliasPendientes > 0 ? `<span style="font-size:0.7rem; margin-left:8px;">(Deuda: $${vocaliasPendientes})</span>` : ''}
                         </div>
                     </div>
                     
@@ -368,10 +392,11 @@
                     window.location.href = 'login.html';
                 };
             } else {
-                container.innerHTML = `<div class="loading-screen"><p>❌ JUGADOR NO ENCONTRADO</p><button onclick="localStorage.removeItem('jugador_aprobado');location.href='login.html'" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">VOLVER</button></div>`;
+                container.innerHTML = `<div class="loading-screen"><p>❌ ${data.mensaje || 'JUGADOR NO ENCONTRADO'}</p><button onclick="localStorage.removeItem('jugador_aprobado');location.href='login.html'" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">VOLVER</button></div>`;
             }
         } catch (error) {
-            container.innerHTML = `<div class="loading-screen"><p>❌ ERROR DE CONEXIÓN</p><button onclick="location.reload()" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">REINTENTAR</button></div>`;
+            console.error("Error:", error);
+            container.innerHTML = `<div class="loading-screen"><p>❌ ERROR DE CONEXIÓN: ${error.message}</p><button onclick="location.reload()" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">REINTENTAR</button></div>`;
         }
     }
 </script>
