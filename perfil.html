@@ -14,16 +14,13 @@
             --glass-border: rgba(212, 175, 55, 0.3);
             --rojo-error: #ff5e5e;
             --verde-pagado: #2ecc71;
-            --rojo-pendiente: #e74c3c;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--azul-oscuro);
-            background-image: 
-                radial-gradient(circle at top right, rgba(212, 175, 55, 0.1), transparent 400px),
-                radial-gradient(circle at bottom left, rgba(0, 82, 212, 0.1), transparent 400px);
+            background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.1), transparent 400px);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
             display: flex;
@@ -38,7 +35,6 @@
             width: 100%;
             background: rgba(10, 20, 40, 0.8);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-radius: 2rem;
             border: 1px solid var(--glass-border);
             overflow-y: auto;
@@ -73,7 +69,6 @@
             flex-direction: column;
             align-items: center;
             padding: 1.5rem;
-            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
         }
 
         .player-photo-wrapper { position: relative; margin-bottom: 1rem; }
@@ -113,7 +108,6 @@
             border-radius: 4px;
             font-weight: 700;
             font-size: 0.8rem;
-            transform: skewX(-15deg);
         }
 
         .stats-grid {
@@ -137,7 +131,6 @@
             color: #aaa;
             text-transform: uppercase;
             margin-bottom: 4px;
-            letter-spacing: 0.5px;
         }
 
         .stat-value {
@@ -148,7 +141,6 @@
         }
 
         .full-width { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
-        
         .full-width .stat-label { margin-bottom: 0; }
         .full-width .stat-value { font-size: 1rem; }
 
@@ -169,48 +161,33 @@
         .btn-cerrar:hover { background: var(--rojo-error); color: #fff; }
 
         .loading { 
-            padding: 5rem; 
+            padding: 3rem; 
             text-align: center; 
             color: var(--dorado);
-            font-weight: 500;
         }
         
-        .error-loading {
-            color: var(--rojo-error);
-        }
-
-        /* Estilos específicos para datos de tarjetas */
-        .tarjetas-container {
-            display: inline-flex;
-            gap: 12px;
-            align-items: center;
-            justify-content: center;
-        }
+        .error-loading { color: var(--rojo-error); }
         
-        .tarjeta-amarilla {
-            color: #f1c40f;
-        }
-        
-        .tarjeta-roja {
-            color: #e74c3c;
-        }
+        .tarjeta-amarilla { color: #f1c40f; }
+        .tarjeta-roja { color: #e74c3c; }
     </style>
 </head>
 <body>
 
 <div class="pes-container">
     <div id="perfilContent">
-        <div class="loading">⚽ SINCRONIZANDO DATOS... ⚽</div>
+        <div class="loading">⚽ CARGANDO PERFIL... ⚽</div>
     </div>
 </div>
 
 <script>
-    // URL CORREGIDA del Google Apps Script (usamos la que proporcionaste originalmente)
     const URL_GAS = "https://script.google.com/macros/s/AKfycbzDd_upVUwAl3ORyxhAbPbN1ZS-NwpYhtCUTyLInjHWsrIUt4OhyShgo_xIn8Pfxw/exec";
 
     // Verificar sesión activa
-    let session = JSON.parse(localStorage.getItem('jugador_aprobado'));
-    if (!session || Date.now() > session.expira) {
+    const session = JSON.parse(localStorage.getItem('jugador_aprobado'));
+    
+    if (!session || !session.cedula || Date.now() > session.expira) {
+        localStorage.removeItem('jugador_aprobado');
         window.location.href = 'login.html';
     } else {
         cargarPerfil(session.cedula);
@@ -218,140 +195,123 @@
 
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
-        try {
-            // Mostramos loading actualizado
-            container.innerHTML = '<div class="loading">📡 CARGANDO PERFIL DE JUGADOR...</div>';
-            
-            // Llamada correcta a la API con el parámetro action=obtenerJugador
-            const resp = await fetch(`${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedula)}`);
-            
-            if (!resp.ok) {
-                throw new Error(`Error HTTP: ${resp.status}`);
-            }
-            
-            const data = await resp.json();
-            
-            if (data.ok && data.jugador) {
-                // Extraemos el objeto jugador
-                const jugador = data.jugador;
+        let reintentos = 0;
+        const maxReintentos = 3;
+        
+        async function intentarCargar() {
+            try {
+                container.innerHTML = '<div class="loading">📡 SINCRONIZANDO CON EL SERVIDOR...</div>';
                 
-                // Valores por defecto para campos que podrían venir undefined
-                const goles = jugador.goles !== undefined && jugador.goles !== null ? jugador.goles : 0;
-                const amarillas = jugador.amarillas !== undefined && jugador.amarillas !== null ? jugador.amarillas : 0;
-                const rojas = jugador.rojas !== undefined && jugador.rojas !== null ? jugador.rojas : 0;
-                const companerismo = jugador.companerismo !== undefined && jugador.companerismo !== null ? jugador.companerismo : 0;
-                const respeto = jugador.respeto !== undefined && jugador.respeto !== null ? jugador.respeto : 0;
-                const humildad = jugador.humildad !== undefined && jugador.humildad !== null ? jugador.humildad : 0;
-                const puntualidad = jugador.puntualidad !== undefined && jugador.puntualidad !== null ? jugador.puntualidad : 0;
-                const estadoPago = jugador.estadoPago || 'PENDIENTE';
-                const dorsal = jugador.dorsal || '--';
-                const nombreCamiseta = jugador.nombreCamiseta || jugador.nombre1 || 'JUGADOR';
-                const cedulaJugador = jugador.cedula || cedula;
+                const url = `${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
+                const resp = await fetch(url);
                 
-                // Cálculo de Valoración General (OVR) basado en los 5 valores humanos (escala 1-10 -> 1-100)
-                const promedio = (parseInt(companerismo) + parseInt(respeto) + parseInt(humildad) + parseInt(puntualidad)) / 4;
-                const ovrCalculada = Math.round(promedio * 10);
-                const ovrMostrar = isNaN(ovrCalculada) ? 60 : (ovrCalculada < 40 ? 40 : ovrCalculada);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 
-                // Imagen: buscamos urlRostro o fallback con placeholder
-                let fotoUrl = jugador.urlRostro || '';
-                // Si la URL no es válida o está vacía, usamos placeholder con iniciales
-                if (!fotoUrl || fotoUrl.trim() === '') {
-                    // Placeholder con avatar por defecto con la inicial del nombre
-                    const inicial = nombreCamiseta.charAt(0).toUpperCase();
-                    fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
-                }
+                const data = await resp.json();
                 
-                // Construir HTML con todos los datos correctamente mostrados
-                container.innerHTML = `
-                    <div class="pes-header">
-                        <h1>⚜️ MI PERFIL NÁPOLES ⚜️</h1>
-                    </div>
+                if (data.ok && data.jugador) {
+                    const j = data.jugador;
                     
-                    <div class="player-card">
-                        <div class="player-photo-wrapper">
-                            <div class="player-photo">
-                                <img src="${fotoUrl}" alt="Foto de ${nombreCamiseta}" onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.substring(0,2))}'">
+                    const goles = j.goles || 0;
+                    const amarillas = j.amarillas || 0;
+                    const rojas = j.rojas || 0;
+                    const companerismo = j.companerismo || 0;
+                    const respeto = j.respeto || 0;
+                    const humildad = j.humildad || 0;
+                    const puntualidad = j.puntualidad || 0;
+                    const estadoPago = j.estadoPago || 'PENDIENTE';
+                    const dorsal = j.dorsal || '--';
+                    const nombreCamiseta = j.nombreCamiseta || j.nombre1 || 'JUGADOR';
+                    
+                    const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
+                    const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
+                    
+                    let fotoUrl = j.urlRostro || '';
+                    if (!fotoUrl || fotoUrl.trim() === '') {
+                        const inicial = nombreCamiseta.charAt(0).toUpperCase();
+                        fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
+                    }
+                    
+                    container.innerHTML = `
+                        <div class="pes-header">
+                            <h1>⚜️ MI PERFIL NÁPOLES ⚜️</h1>
+                        </div>
+                        <div class="player-card">
+                            <div class="player-photo-wrapper">
+                                <div class="player-photo">
+                                    <img src="${fotoUrl}" alt="${nombreCamiseta}" onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent(nombreCamiseta.substring(0,2))}'">
+                                </div>
+                                <div class="ovr-badge">${ovrMostrar}</div>
                             </div>
-                            <div class="ovr-badge">${ovrMostrar}</div>
+                            <div class="player-name">${nombreCamiseta.toUpperCase()}</div>
+                            <div class="player-dorsal-tag">👕 DORSAL ${dorsal}</div>
                         </div>
-                        <div class="player-name">${nombreCamiseta.toUpperCase()}</div>
-                        <div class="player-dorsal-tag">👕 DORSAL ${dorsal}</div>
-                    </div>
-
-                    <div class="stats-grid">
-                        <!-- Datos Principales: Cédula -->
-                        <div class="stat-box full-width">
-                            <span class="stat-label">📄 Cédula de Identidad</span>
-                            <span class="stat-value" style="font-size:1rem; color:#fff;">${cedulaJugador}</span>
-                        </div>
-
-                        <!-- Estadísticas de Campo: Goles y Tarjetas -->
-                        <div class="stat-box">
-                            <span class="stat-label">⚽ Goles</span>
-                            <span class="stat-value">⚽ ${goles}</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">🃏 Tarjetas</span>
-                            <div class="tarjetas-container">
-                                <span class="stat-value tarjeta-amarilla">🟨 ${amarillas}</span>
-                                <span class="stat-value tarjeta-roja">🟥 ${rojas}</span>
+                        <div class="stats-grid">
+                            <div class="stat-box full-width">
+                                <span class="stat-label">📄 Cédula</span>
+                                <span class="stat-value" style="color:#fff;">${cedula}</span>
                             </div>
+                            <div class="stat-box">
+                                <span class="stat-label">⚽ Goles</span>
+                                <span class="stat-value">${goles}</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">🃏 Tarjetas</span>
+                                <div style="display:flex; gap:8px; justify-content:center;">
+                                    <span class="stat-value tarjeta-amarilla">🟨 ${amarillas}</span>
+                                    <span class="stat-value tarjeta-roja">🟥 ${rojas}</span>
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">🤝 Compañerismo</span>
+                                <span class="stat-value">${companerismo}/10</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">🙏 Respeto</span>
+                                <span class="stat-value">${respeto}/10</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">💙 Humildad</span>
+                                <span class="stat-value">${humildad}/10</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">⏰ Puntualidad</span>
+                                <span class="stat-value">${puntualidad}/10</span>
+                            </div>
+                            <div class="stat-box full-width">
+                                <span class="stat-label">💰 Estado de Pago</span>
+                                <span class="stat-value" style="color: ${estadoPago === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">
+                                    ${estadoPago === 'PAGADO' ? '✅ PAGADO' : '⚠️ PENDIENTE'}
+                                </span>
+                            </div>
+                            <button id="cerrarSesion" class="btn-cerrar">🚪 CERRAR SESIÓN</button>
                         </div>
-
-                        <!-- Valores Humanos (Campos corregidos) -->
-                        <div class="stat-box">
-                            <span class="stat-label">🤝 Compañerismo</span>
-                            <span class="stat-value">${companerismo}/10</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">🙏 Respeto</span>
-                            <span class="stat-value">${respeto}/10</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">💙 Humildad</span>
-                            <span class="stat-value">${humildad}/10</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">⏰ Puntualidad</span>
-                            <span class="stat-value">${puntualidad}/10</span>
-                        </div>
-
-                        <!-- Estado de Pago Vocalía -->
-                        <div class="stat-box full-width">
-                            <span class="stat-label">💰 Estado de Pago Vocalía</span>
-                            <span class="stat-value" style="color: ${estadoPago === 'PAGADO' ? '#2ecc71' : '#e74c3c'}; font-weight:700;">
-                                ${estadoPago === 'PAGADO' ? '✅ PAGADO' : '⚠️ PENDIENTE'}
-                            </span>
-                        </div>
-
-                        <button id="cerrarSesion" class="btn-cerrar">🚪 Cerrar Sesión</button>
-                    </div>
-                `;
-
-                // Agregar evento de cierre de sesión
-                document.getElementById('cerrarSesion').onclick = () => {
-                    localStorage.removeItem('jugador_aprobado');
-                    window.location.href = 'login.html';
-                };
-            } else {
-                // Si la API responde pero no hay jugador
-                container.innerHTML = `<div class="loading error-loading">❌ JUGADOR NO ENCONTRADO O DATOS INCOMPLETOS</div>`;
-                setTimeout(() => {
-                    localStorage.removeItem('jugador_aprobado');
-                    window.location.href = 'login.html';
-                }, 2000);
-            }
-        } catch (error) {
-            console.error('Error al cargar perfil:', error);
-            container.innerHTML = `<div class="loading error-loading">⚠️ ERROR DE CONEXIÓN: ${error.message}<br>Reintentando...</div>`;
-            // Opcional: reintentar después de 3 segundos
-            setTimeout(() => {
-                if (localStorage.getItem('jugador_aprobado')) {
-                    cargarPerfil(cedula);
+                    `;
+                    
+                    document.getElementById('cerrarSesion').onclick = () => {
+                        localStorage.removeItem('jugador_aprobado');
+                        window.location.href = 'login.html';
+                    };
+                } else {
+                    container.innerHTML = `<div class="loading error-loading">❌ ${data.mensaje || 'Jugador no encontrado'}</div>`;
+                    setTimeout(() => {
+                        localStorage.removeItem('jugador_aprobado');
+                        window.location.href = 'login.html';
+                    }, 2000);
                 }
-            }, 3000);
+            } catch (error) {
+                console.error('Error:', error);
+                reintentos++;
+                if (reintentos < maxReintentos) {
+                    container.innerHTML = `<div class="loading error-loading">⚠️ Error de conexión (Intento ${reintentos}/${maxReintentos})<br>Reconectando...</div>`;
+                    setTimeout(intentarCargar, 2000);
+                } else {
+                    container.innerHTML = `<div class="loading error-loading">❌ No se pudo conectar al servidor.<br>Verifica tu internet y recarga la página.</div>`;
+                }
+            }
         }
+        
+        intentarCargar();
     }
 </script>
 </body>
