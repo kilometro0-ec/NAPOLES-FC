@@ -83,6 +83,7 @@
             justify-content: center;
             border-radius: 50%;
             border: 3px solid #0a0f1e;
+            font-size: 0.8rem;
         }
         .player-name {
             font-size: 1.5rem;
@@ -91,6 +92,14 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+        .dorsal-badge {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            text-align: center;
         }
         .stats-grid {
             display: grid;
@@ -105,6 +114,8 @@
             padding: 12px;
             text-align: center;
         }
+        .stat-icon { font-size: 1.5rem; margin-bottom: 6px; }
+        .stat-label { font-size: 0.7rem; opacity: 0.7; }
         .stat-value { font-size: 1.5rem; font-weight: 800; color: #D4AF37; }
         .values-section, .payments-section {
             background: rgba(10, 20, 40, 0.5);
@@ -112,6 +123,15 @@
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 8px;
         }
         .values-grid {
             display: grid;
@@ -137,11 +157,13 @@
             background: rgba(0,0,0,0.3);
             border-radius: 16px;
         }
+        .payment-item i { font-size: 1.2rem; margin-bottom: 6px; color: #D4AF37; }
+        .payment-item div { font-size: 0.7rem; margin: 4px 0; }
         .payment-status-badge {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 50px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             margin-top: 8px;
         }
@@ -157,6 +179,10 @@
             font-weight: 700;
             cursor: pointer;
             margin-top: 20px;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
         }
         .loading-screen { text-align: center; padding: 60px 20px; }
         .spinner {
@@ -169,6 +195,23 @@
             margin: 0 auto 20px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .error-box {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+        .retry-btn {
+            background: #D4AF37;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #0a0f1e;
+        }
     </style>
 </head>
 <body>
@@ -179,8 +222,10 @@
 </div>
 
 <script>
+    // ⚠️ ACTUALIZA ESTA URL CON LA DE TU APLICACIÓN WEB ⚠️
     const URL_GAS = "https://script.google.com/macros/s/AKfycbxCV9O-HjoeyDkybzaLLCwgEZAWFu6RRmta3yLLIW1azi-Lrr3ppDU3tBOLjpn4oiwr/exec";
 
+    // Verificar sesión del jugador
     const session = JSON.parse(localStorage.getItem('jugador_aprobado'));
     if (!session || !session.cedula || Date.now() > session.expira) {
         localStorage.removeItem('jugador_aprobado');
@@ -201,58 +246,129 @@
             if (data.ok && data.jugador) {
                 const j = data.jugador;
                 
-                const promedio = (Number(j.companerismo) + Number(j.respeto) + Number(j.humildad) + Number(j.puntualidad)) / 4;
+                // Calcular OVR promedio
+                const valores = [j.companerismo || 0, j.respeto || 0, j.humildad || 0, j.puntualidad || 0];
+                const promedio = valores.reduce((a, b) => a + b, 0) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                // Usar Base64 si existe, sino avatar
-                let fotoUrl = j.fotoBase64 || `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent((j.nombreCamiseta || 'J').charAt(0))}`;
+                // Foto (si tiene URL o usar avatar)
+                let fotoUrl = j.urlRostro;
+                if (!fotoUrl || fotoUrl === "") {
+                    const inicial = (j.nombreCamiseta || j.nombre1 || 'J').charAt(0).toUpperCase();
+                    fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${inicial}`;
+                }
+                
+                // Estado de pagos (usando los campos correctos del backend)
+                const estadoGeneral = j.estado || 'PENDIENTE';
+                const estadoPagoVocalia = j.estadoPago || 'PENDIENTE';
+                const isAprobado = estadoGeneral === 'APROBADO';
                 
                 container.innerHTML = `
                     <div class="profile-header">
                         <h1>⚜️ NÁPOLES F.C. ⚜️</h1>
                         <p>Club Atlético Nápoles - Miembro Oficial</p>
                     </div>
+                    
                     <div class="player-card">
                         <div class="player-photo-section">
                             <div class="player-photo-wrapper">
                                 <div class="player-photo">
-                                    <img src="${fotoUrl}" alt="foto" onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent((j.nombreCamiseta || 'J').charAt(0))}'">
+                                    <img src="${fotoUrl}" alt="foto" onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${(j.nombreCamiseta || j.nombre1 || 'J').charAt(0)}'">
                                 </div>
                                 <div class="ovr-badge">${ovrMostrar}</div>
                             </div>
                             <div class="player-info">
-                                <div class="player-name">${(j.nombre1 || '')} ${(j.apellidos || '')}</div>
+                                <div class="player-name">${j.nombre1 || ''} ${j.apellidos || ''}</div>
                                 <div class="dorsal-badge"><i class="fas fa-hashtag"></i> DORSAL ${j.dorsal || '--'}</div>
                                 <div style="font-size:0.7rem; margin-top:8px;"><i class="fas fa-id-card"></i> ${cedulaLimpia}</div>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="stats-grid">
-                        <div class="stat-card"><div class="stat-icon"><i class="fas fa-futbol"></i></div><div class="stat-label">GOLES</div><div class="stat-value">${j.goles || 0}</div></div>
-                        <div class="stat-card"><div class="stat-icon"><i class="fas fa-square" style="color:#f1c40f;"></i></div><div class="stat-label">AMARILLAS</div><div class="stat-value">${j.amarillas || 0}</div></div>
-                        <div class="stat-card"><div class="stat-icon"><i class="fas fa-square" style="color:#e74c3c;"></i></div><div class="stat-label">ROJAS</div><div class="stat-value">${j.rojas || 0}</div></div>
-                    </div>
-                    <div class="values-section">
-                        <div class="section-title"><i class="fas fa-chart-line"></i> VALORES HUMANOS <span style="font-size:0.6rem; margin-left:auto;">(${j.partidosJugados || 0} partidos)</span></div>
-                        <div class="values-grid">
-                            <div class="value-item"><span><i class="fas fa-handshake"></i> Compañerismo</span><span class="value-score">${j.companerismo || 0}/10</span></div>
-                            <div class="value-item"><span><i class="fas fa-heart"></i> Respeto</span><span class="value-score">${j.respeto || 0}/10</span></div>
-                            <div class="value-item"><span><i class="fas fa-leaf"></i> Humildad</span><span class="value-score">${j.humildad || 0}/10</span></div>
-                            <div class="value-item"><span><i class="fas fa-clock"></i> Puntualidad</span><span class="value-score">${j.puntualidad || 0}/10</span></div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-futbol"></i></div>
+                            <div class="stat-label">GOLES</div>
+                            <div class="stat-value">${j.goles || 0}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-square" style="color:#f1c40f;"></i></div>
+                            <div class="stat-label">AMARILLAS</div>
+                            <div class="stat-value">${j.amarillas || 0}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-square" style="color:#e74c3c;"></i></div>
+                            <div class="stat-label">ROJAS</div>
+                            <div class="stat-value">${j.rojas || 0}</div>
                         </div>
                     </div>
+                    
+                    <div class="values-section">
+                        <div class="section-title">
+                            <i class="fas fa-chart-line"></i> VALORES HUMANOS 
+                            <span style="font-size:0.6rem; margin-left:auto;">(${j.partidosJugados || 0} partidos)</span>
+                        </div>
+                        <div class="values-grid">
+                            <div class="value-item">
+                                <span><i class="fas fa-handshake"></i> Compañerismo</span>
+                                <span class="value-score">${j.companerismo || 0}/10</span>
+                            </div>
+                            <div class="value-item">
+                                <span><i class="fas fa-heart"></i> Respeto</span>
+                                <span class="value-score">${j.respeto || 0}/10</span>
+                            </div>
+                            <div class="value-item">
+                                <span><i class="fas fa-leaf"></i> Humildad</span>
+                                <span class="value-score">${j.humildad || 0}/10</span>
+                            </div>
+                            <div class="value-item">
+                                <span><i class="fas fa-clock"></i> Puntualidad</span>
+                                <span class="value-score">${j.puntualidad || 0}/10</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="payments-section">
                         <div class="section-title"><i class="fas fa-credit-card"></i> ESTADO DE PAGOS</div>
                         <div class="payments-grid">
-                            <div class="payment-item"><i class="fas fa-file-signature"></i><div>Inscripción</div><span class="payment-status-badge ${j.inscripEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.inscripEstado || 'PENDIENTE'}</span></div>
-                            <div class="payment-item"><i class="fas fa-tshirt"></i><div>Uniforme</div><span class="payment-status-badge ${j.unifEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.unifEstado || 'PENDIENTE'}</span></div>
-                            <div class="payment-item"><i class="fas fa-socks"></i><div>Medias</div><span class="payment-status-badge ${j.mediasEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.mediasEstado || 'PENDIENTE'}</span></div>
+                            <div class="payment-item">
+                                <i class="fas fa-file-signature"></i>
+                                <div>Inscripción</div>
+                                <span class="payment-status-badge ${isAprobado ? 'pagado' : 'pendiente'}">
+                                    ${isAprobado ? 'PAGADO' : 'PENDIENTE'}
+                                </span>
+                            </div>
+                            <div class="payment-item">
+                                <i class="fas fa-tshirt"></i>
+                                <div>Estado Cuenta</div>
+                                <span class="payment-status-badge ${estadoGeneral === 'APROBADO' ? 'pagado' : 'pendiente'}">
+                                    ${estadoGeneral}
+                                </span>
+                            </div>
+                            <div class="payment-item">
+                                <i class="fas fa-socks"></i>
+                                <div>Kit Completo</div>
+                                <span class="payment-status-badge ${isAprobado ? 'pagado' : 'pendiente'}">
+                                    ${isAprobado ? 'COMPLETO' : 'PENDIENTE'}
+                                </span>
+                            </div>
                         </div>
                         <div style="margin-top:12px; text-align:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:16px;">
-                            <i class="fas fa-coins"></i> Vocalía: <strong style="color:${j.estadoPagoVocalia === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">${j.estadoPagoVocalia || 'PENDIENTE'}</strong>
+                            <i class="fas fa-coins"></i> Vocalía al día: 
+                            <strong style="color:${estadoPagoVocalia === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">
+                                ${estadoPagoVocalia === 'PAGADO' ? 'SÍ ✓' : 'PENDIENTE'}
+                            </strong>
                         </div>
+                        ${estadoGeneral !== 'APROBADO' ? `
+                        <div style="margin-top:16px; text-align:center; padding:10px; background:rgba(231,76,60,0.2); border-radius:16px;">
+                            <i class="fas fa-clock"></i> Tu cuenta está pendiente de aprobación por el administrador
+                        </div>
+                        ` : ''}
                     </div>
-                    <button class="logout-btn" id="cerrarSesion"><i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN</button>
+                    
+                    <button class="logout-btn" id="cerrarSesion">
+                        <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
+                    </button>
                 `;
                 
                 document.getElementById('cerrarSesion').onclick = () => {
@@ -260,10 +376,27 @@
                     window.location.href = 'login.html';
                 };
             } else {
-                container.innerHTML = `<div class="loading-screen"><p>❌ ${data.mensaje || 'JUGADOR NO ENCONTRADO'}</p><button onclick="localStorage.removeItem('jugador_aprobado');location.href='login.html'" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">VOLVER</button></div>`;
+                container.innerHTML = `
+                    <div class="error-box">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #e74c3c;"></i>
+                        <p style="margin-top: 16px;">❌ ${data.mensaje || 'JUGADOR NO ENCONTRADO'}</p>
+                        <p style="font-size: 0.8rem; margin-top: 8px;">Tu cuenta puede haber sido eliminada o aún no ha sido aprobada</p>
+                        <button class="retry-btn" onclick="localStorage.removeItem('jugador_aprobado');window.location.href='login.html'">
+                            VOLVER AL INICIO
+                        </button>
+                    </div>
+                `;
             }
         } catch (error) {
-            container.innerHTML = `<div class="loading-screen"><p>❌ ERROR DE CONEXIÓN</p><button onclick="location.reload()" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">REINTENTAR</button></div>`;
+            console.error('Error:', error);
+            container.innerHTML = `
+                <div class="error-box">
+                    <i class="fas fa-wifi" style="font-size: 3rem; color: #e74c3c;"></i>
+                    <p style="margin-top: 16px;">❌ ERROR DE CONEXIÓN</p>
+                    <p style="font-size: 0.8rem;">No se pudo conectar con el servidor</p>
+                    <button class="retry-btn" onclick="location.reload()">REINTENTAR</button>
+                </div>
+            `;
         }
     }
 </script>
