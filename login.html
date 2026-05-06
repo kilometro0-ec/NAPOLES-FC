@@ -162,6 +162,28 @@
             text-shadow: 0 0 10px var(--accent);
         }
 
+        .btn-download {
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.7rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 1.2rem;
+            display: inline-block;
+            width: auto;
+        }
+
+        .btn-download:hover {
+            background: var(--primary);
+            color: #0a1928;
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
+        }
+
         .error-toast {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.2);
@@ -181,7 +203,6 @@
             75% { transform: translateX(5px); }
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .login-card { padding: 2rem 1.5rem; }
         }
@@ -209,26 +230,57 @@
     <div class="footer-links">
         ¿Eres nuevo en el club? <br><br>
         <a href="index.html">CREAR CUENTA NUEVA ✨</a>
+        <div style="margin-top: 1rem;">
+            <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APP OFICIAL (APK)</span>
+        </div>
     </div>
 </div>
 
 <script>
+    // ==========================================================
+    // 1. CONFIGURACIÓN DEL APK (CAMBIA ESTA URL POR LA REAL)
+    const URL_APK = "https://tu-servidor.com/apk/napoles-fc.apk";  // <--- REEMPLAZAR
+    // ==========================================================
+
+    // 2. URL DEL BACKEND (la misma que ya tenías)
     const URL_GAS = "https://script.google.com/macros/s/AKfycbzw2Ef4Wja_Nu1Gks7o5yAP-xBgH0R5WAiXgaKhJ_0Z4r6PRrkHSwoMyf8WbMoASgKv/exec";
+    
+    // 3. FUNCIÓN DE DESCARGA
+    function descargarAPK() {
+        // Si la URL es la de ejemplo (sin reemplazar) o está vacía, mostramos mensaje
+        if (!URL_APK || URL_APK === "https://tu-servidor.com/apk/napoles-fc.apk") {
+            alert("📦 La APK oficial estará disponible próximamente. ¡Gracias por registrarte!");
+        } else {
+            const link = document.createElement('a');
+            link.href = URL_APK;
+            link.download = "napoles-fc.apk";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+
+    // 4. DESCARGA AUTOMÁTICA SI VIENE DEL REGISTRO (sessionStorage)
+    if (sessionStorage.getItem('autoDownloadAPK') === 'true') {
+        descargarAPK();
+        sessionStorage.removeItem('autoDownloadAPK'); // para que no se repita en recargas
+    }
+
+    // 5. LÓGICA DE LOGIN (exactamente igual, sin tocar)
     const cedulaInput = document.getElementById('loginCedula');
     const btnLogin = document.getElementById('btnLogin');
     const errorDiv = document.getElementById('mensajeError');
+    const manualBtn = document.getElementById('manualDownloadBtn');
 
     cedulaInput.addEventListener('input', (e) => {
         let value = e.target.value.replace(/\D/g, '');
         e.target.value = value.slice(0, 10);
-        
         btnLogin.disabled = e.target.value.length !== 10;
         errorDiv.style.display = 'none';
     });
 
     btnLogin.addEventListener('click', async () => {
         const cedula = cedulaInput.value;
-        
         errorDiv.style.display = 'none';
         btnLogin.disabled = true;
         btnLogin.innerText = 'PROCESANDO...';
@@ -263,6 +315,9 @@
         errorDiv.innerText = "⚠️ " + mensaje;
         errorDiv.style.display = 'block';
     }
+
+    // 6. DESCARGA MANUAL CON EL BOTÓN
+    manualBtn.addEventListener('click', descargarAPK);
 </script>
 </body>
 </html>
