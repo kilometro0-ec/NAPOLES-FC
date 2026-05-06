@@ -4,423 +4,268 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Nápoles F.C. - Acceso Jugadores</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Configuración PWA e iOS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nápoles FC">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1165/1165187.png">
+    <meta name="theme-color" content="#020c1a">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #00d2ff;
+            --primary-dark: #008f9b;
+            --accent: #FFD700;
+            --bg-dark: #020c1a;
+            --glass: rgba(12, 25, 45, 0.7);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 50%, #0a0f1e 100%);
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 210, 255, 0.15), transparent 50%),
+                linear-gradient(rgba(2, 12, 26, 0.8), rgba(2, 12, 26, 0.8)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300d2ff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            position: relative;
+            padding: 1.5rem;
+            color: white;
             overflow-x: hidden;
         }
 
-        /* Efecto de fondo */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
-            top: -25%;
-            left: -25%;
-            pointer-events: none;
-        }
-
-        .login-container {
-            max-width: 450px;
+        .login-card {
+            max-width: 420px;
             width: 100%;
-            z-index: 1;
-            animation: fadeInUp 0.6s ease-out;
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 2.5rem;
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 3rem 2.5rem;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Header del club */
-        .club-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .club-logo {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, #1a1f2e, #0f1420);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            border: 2px solid #D4AF37;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-        }
-
-        .club-logo i {
-            font-size: 3rem;
-            color: #D4AF37;
-        }
-
-        .club-header h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.8rem;
+        .logo-area { text-align: center; margin-bottom: 2.5rem; }
+        .logo-area h1 {
+            font-size: 2.2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #FFD700, #D4AF37);
+            background: linear-gradient(to right, #fff, var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
         }
 
-        .club-header p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.85rem;
-            margin-top: 8px;
-        }
-
-        /* Tarjeta de login */
-        .login-card {
-            background: rgba(10, 20, 40, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 32px;
-            padding: 32px 28px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .input-group {
-            margin-bottom: 24px;
-        }
+        /* GRUPO DE ENTRADA CON MARGEN */
+        .input-group { margin-bottom: 2rem; }
 
         .input-group label {
             display: block;
-            margin-bottom: 8px;
+            font-size: 0.8rem;
             font-weight: 600;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
-        .input-group label i {
-            margin-right: 8px;
-            color: #D4AF37;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .input-wrapper i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #D4AF37;
-            font-size: 1rem;
-        }
-
-        .input-wrapper input {
+        input {
             width: 100%;
-            padding: 14px 16px 14px 45px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 60px;
-            font-size: 1rem;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s;
-        }
-
-        .input-wrapper input:focus {
+            padding: 1.2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.2rem;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 4px;
             outline: none;
-            border-color: #D4AF37;
-            background: rgba(0, 0, 0, 0.6);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            transition: 0.3s;
         }
 
-        .input-wrapper input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+        input:focus {
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
         }
 
-        /* Botón login */
-        .login-btn {
+        /* BOTÓN CON MARGEN SUPERIOR */
+        .btn-submit {
             width: 100%;
-            background: linear-gradient(135deg, #D4AF37, #FFD700);
+            padding: 1.2rem;
+            border-radius: 1.2rem;
             border: none;
-            padding: 14px;
-            border-radius: 60px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #00d2ff 100%);
+            color: white;
             font-size: 1rem;
             font-weight: 700;
-            color: #0a0f1e;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            transition: 0.3s;
+            margin-top: 0.5rem;
         }
 
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
-        }
+        .btn-submit:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.7; }
 
-        .login-btn:active {
-            transform: translateY(0);
-        }
+        .footer-links { margin-top: 2rem; text-align: center; font-size: 0.9rem; }
+        .footer-links a { color: var(--accent); text-decoration: none; font-weight: 700; }
 
-        /* Mensajes de estado */
-        .message {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            text-align: center;
-            display: none;
-        }
-
-        .message.error {
-            background: rgba(231, 76, 60, 0.2);
-            border: 1px solid rgba(231, 76, 60, 0.5);
-            color: #e74c3c;
-            display: block;
-        }
-
-        .message.success {
-            background: rgba(46, 204, 113, 0.2);
-            border: 1px solid rgba(46, 204, 113, 0.5);
-            color: #2ecc71;
-            display: block;
-        }
-
-        .message.info {
-            background: rgba(52, 152, 219, 0.2);
-            border: 1px solid rgba(52, 152, 219, 0.5);
-            color: #3498db;
-            display: block;
-        }
-
-        /* Info adicional */
-        .info-footer {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .info-footer i {
-            margin: 0 4px;
-        }
-
-        /* Loading spinner */
-        .spinner {
+        .btn-download {
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.7rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.2rem;
             display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(10, 15, 30, 0.3);
-            border-top-color: #0a0f1e;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .error-toast {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            display: none;
+            text-align: center;
+            font-size: 0.85rem;
         }
 
-        .login-btn.disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
+        /* Detectar si ya es APP instalada */
+        @media (display-mode: standalone) {
+            #containerDownload { display: none !important; }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="club-header">
-            <div class="club-logo">
-                <i class="fas fa-futbol"></i>
-            </div>
-            <h1>NÁPOLES F.C.</h1>
-            <p>Club Atlético Nápoles - Área de Jugadores</p>
-        </div>
 
-        <div class="login-card">
-            <form id="loginForm" onsubmit="return false;">
-                <div class="input-group">
-                    <label><i class="fas fa-id-card"></i> NÚMERO DE CÉDULA</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-id-card"></i>
-                        <input 
-                            type="text" 
-                            id="cedula" 
-                            placeholder="Ingrese su cédula sin puntos ni espacios" 
-                            autocomplete="off"
-                            maxlength="10"
-                            required
-                        >
-                    </div>
-                </div>
-
-                <button type="submit" class="login-btn" id="loginBtn">
-                    <i class="fas fa-sign-in-alt"></i> INGRESAR
-                </button>
-            </form>
-
-            <div id="messageContainer"></div>
-
-            <div class="info-footer">
-                <i class="fas fa-shield-alt"></i> Datos protegidos · Solo para miembros del club
-            </div>
-        </div>
+<div class="login-card">
+    <div class="logo-area">
+        <h1>NÁPOLES F.C.</h1>
+        <p>Panel de Control de Jugadores</p>
     </div>
 
-    <script>
-        // ⚠️ ACTUALIZA ESTA URL CON LA DE TU APLICACIÓN WEB ⚠️
-        const URL_GAS = "https://script.google.com/macros/s/AKfycbxCV9O-HjoeyDkybzaLLCwgEZAWFu6RRmta3yLLIW1azi-Lrr3ppDU3tBOLjpn4oiwr/exec";
+    <div class="input-group">
+        <label>Número de Cédula</label>
+        <input type="text" id="loginCedula" maxlength="10" placeholder="0000000000" inputmode="numeric">
+    </div>
 
-        const loginBtn = document.getElementById('loginBtn');
-        const cedulaInput = document.getElementById('cedula');
+    <button id="btnLogin" class="btn-submit" disabled>Iniciar Sesión</button>
 
-        // Permitir solo números
-        cedulaInput.addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
+    <div id="mensajeError" class="error-toast"></div>
 
-        // Login al presionar Enter
-        cedulaInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                realizarLogin();
-            }
-        });
+    <div class="footer-links">
+        ¿Eres nuevo en el club? <br><br>
+        <a href="index.html">CREAR CUENTA NUEVA ✨</a>
+        
+        <div id="containerDownload">
+            <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
+        </div>
+    </div>
+</div>
 
-        // Evento del botón login
-        loginBtn.addEventListener('click', realizarLogin);
+<script>
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbxCV9O-HjoeyDkybzaLLCwgEZAWFu6RRmta3yLLIW1azi-Lrr3ppDU3tBOLjpn4oiwr/exec";
+    
+    const cedulaInput = document.getElementById('loginCedula');
+    const btnLogin = document.getElementById('btnLogin');
+    const errorDiv = document.getElementById('mensajeError');
+    const manualBtn = document.getElementById('manualDownloadBtn');
+    const containerDownload = document.getElementById('containerDownload');
 
-        async function realizarLogin() {
-            const cedula = cedulaInput.value.trim();
-            
-            // Validar que la cédula no esté vacía
-            if (!cedula) {
-                mostrarMensaje('Por favor, ingrese su número de cédula', 'error');
-                return;
-            }
+    // 1. OCULTAR SI YA ESTÁ INSTALADA
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        containerDownload.style.display = 'none';
+    }
 
-            // Validar longitud mínima (ajusta según tu país)
-            if (cedula.length < 6) {
-                mostrarMensaje('La cédula debe tener al menos 6 dígitos', 'error');
-                return;
-            }
+    // 2. VALIDACIÓN DE INPUT
+    cedulaInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        e.target.value = value.slice(0, 10);
+        btnLogin.disabled = e.target.value.length !== 10;
+        errorDiv.style.display = 'none';
+    });
 
-            // Mostrar loading
-            loginBtn.disabled = true;
-            loginBtn.classList.add('disabled');
-            loginBtn.innerHTML = '<span class="spinner"></span> VERIFICANDO...';
-            
-            // Limpiar mensajes anteriores
-            limpiarMensajes();
+    // 3. LÓGICA DE INICIO DE SESIÓN
+    btnLogin.addEventListener('click', async () => {
+        const cedula = cedulaInput.value;
+        btnLogin.disabled = true;
+        btnLogin.innerText = 'VERIFICANDO...';
+        errorDiv.style.display = 'none';
 
-            try {
-                // Verificar si el jugador existe y está aprobado
-                const url = `${URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
-                const response = await fetch(url);
-                const data = await response.json();
+        try {
+            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${cedula}`);
+            const data = await resp.json();
 
-                if (data.cedulaExiste) {
-                    // Verificar estado del jugador
-                    if (data.estado === 'APROBADO') {
-                        // Guardar sesión
-                        const session = {
-                            cedula: cedula,
-                            nombre: data.nombre,
-                            expira: Date.now() + (24 * 60 * 60 * 1000) // 24 horas
-                        };
-                        localStorage.setItem('jugador_aprobado', JSON.stringify(session));
-                        
-                        mostrarMensaje(`✅ ¡Bienvenido ${data.nombre}! Redirigiendo...`, 'success');
-                        
-                        // Redirigir al perfil después de 1 segundo
-                        setTimeout(() => {
-                            window.location.href = 'perfil.html';
-                        }, 1000);
-                    } else if (data.estado === 'PENDIENTE') {
-                        mostrarMensaje(
-                            '⏳ Tu cuenta está pendiente de aprobación por el administrador. ' +
-                            'En breve recibirás una notificación cuando sea activada.',
-                            'info'
-                        );
-                        loginBtn.disabled = false;
-                        loginBtn.classList.remove('disabled');
-                        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> INGRESAR';
-                    } else {
-                        mostrarMensaje('❌ Tu cuenta ha sido rechazada. Contacta al administrador para más información.', 'error');
-                        loginBtn.disabled = false;
-                        loginBtn.classList.remove('disabled');
-                        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> INGRESAR';
-                    }
-                } else {
-                    mostrarMensaje(
-                        '❌ Cédula no registrada. Si ya te registraste, espera la aprobación del administrador. ' +
-                        'De lo contrario, completa el formulario de registro.',
-                        'error'
-                    );
-                    loginBtn.disabled = false;
-                    loginBtn.classList.remove('disabled');
-                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> INGRESAR';
-                }
-            } catch (error) {
-                console.error('Error de conexión:', error);
-                mostrarMensaje(
-                    '⚠️ Error de conexión con el servidor. Verifica tu conexión a internet y vuelve a intentar.',
-                    'error'
-                );
-                loginBtn.disabled = false;
-                loginBtn.classList.remove('disabled');
-                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> INGRESAR';
-            }
-        }
-
-        function mostrarMensaje(texto, tipo) {
-            const container = document.getElementById('messageContainer');
-            container.innerHTML = `<div class="message ${tipo}">${texto}</div>`;
-        }
-
-        function limpiarMensajes() {
-            const container = document.getElementById('messageContainer');
-            container.innerHTML = '';
-        }
-
-        // Verificar si ya hay sesión activa
-        function verificarSesionExistente() {
-            const session = JSON.parse(localStorage.getItem('jugador_aprobado'));
-            if (session && session.cedula && Date.now() < session.expira) {
-                // Sesión válida, redirigir directamente al perfil
+            if (data.cedulaExiste && data.estado === "APROBADO") {
+                localStorage.setItem('jugador_aprobado', JSON.stringify({
+                    cedula: cedula,
+                    expira: Date.now() + 86400000
+                }));
                 window.location.href = 'perfil.html';
-            } else if (session) {
-                // Sesión expirada
-                localStorage.removeItem('jugador_aprobado');
+            } else if (!data.cedulaExiste) {
+                mostrarError("La cédula no está registrada.");
+            } else {
+                mostrarError("Tu cuenta está en revisión por el delegado.");
             }
+        } catch (err) {
+            mostrarError("Error de conexión con el servidor.");
+        } finally {
+            btnLogin.disabled = false;
+            btnLogin.innerText = 'INICIAR SESIÓN';
         }
+    });
 
-        // Ejecutar al cargar la página
-        verificarSesionExistente();
-    </script>
+    function mostrarError(msj) {
+        errorDiv.innerText = "⚠️ " + msj;
+        errorDiv.style.display = 'block';
+    }
+
+    // 4. LÓGICA DE INSTALACIÓN
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        manualBtn.innerHTML = "👕 INSTALAR APP (CAMISETA)";
+        manualBtn.style.background = "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)";
+        manualBtn.style.color = "#000";
+    });
+
+    manualBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') containerDownload.style.display = 'none';
+            deferredPrompt = null;
+        } else {
+            alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar' o 'Añadir a pantalla de inicio'.");
+        }
+    });
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+    }
+</script>
 </body>
 </html>
