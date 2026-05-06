@@ -253,6 +253,9 @@
             margin: 0 auto 20px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Ocultar logs en producción */
+        .debug-hidden { display: none; }
     </style>
 </head>
 <body>
@@ -273,32 +276,36 @@
         cargarPerfil(session.cedula);
     }
 
-    // Función para convertir URL de Google Drive a imagen directa
-    function convertirUrlDrive(url) {
-        if (!url || url === 'null' || url === '' || url === 'undefined') return null;
+    // Función para extraer ID de Google Drive y generar URL de imagen
+    function obtenerUrlImagenDrive(url) {
+        if (!url || url === 'null' || url === '' || url === 'undefined') {
+            return null;
+        }
         
-        // Si ya es una URL de imagen directa de Google Drive
-        if (url.includes('drive.google.com/uc?export=view')) return url;
-        
-        // Para URLs tipo: https://drive.google.com/file/d/ID/view?usp=drivesdk
-        let match = url.match(/\/d\/([a-zA-Z0-9_-]+)(?:\/|$|\?)/);
+        // Método 1: Extraer ID de URL tipo /file/d/ID/
+        let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if (match) {
             return `https://drive.google.com/uc?export=view&id=${match[1]}`;
         }
         
-        // Para URLs tipo: https://drive.google.com/open?id=ID
-        match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+        // Método 2: Extraer ID de URL tipo id=ID
+        match = url.match(/id=([a-zA-Z0-9_-]+)/);
         if (match) {
             return `https://drive.google.com/uc?export=view&id=${match[1]}`;
         }
         
-        // Para URLs tipo: https://docs.google.com/uc?id=ID
-        match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+        // Método 3: Extraer ID de URL tipo /uc?id=ID
+        match = url.match(/uc\?id=([a-zA-Z0-9_-]+)/);
         if (match) {
-            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+            return url;
         }
         
-        return url;
+        // Si ya es una URL válida de imagen
+        if (url.includes('.jpg') || url.includes('.png') || url.includes('.jpeg')) {
+            return url;
+        }
+        
+        return null;
     }
 
     async function cargarPerfil(cedula) {
@@ -311,12 +318,8 @@
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             const data = await resp.json();
             
-            console.log("Datos recibidos:", data);
-            
             if (data.ok && data.jugador) {
                 const j = data.jugador;
-                
-                console.log("URL de foto original:", j.urlRostro);
                 
                 const goles = j.goles || 0;
                 const amarillas = j.amarillas || 0;
@@ -334,15 +337,19 @@
                 const promedio = (Number(companerismo) + Number(respeto) + Number(humildad) + Number(puntualidad)) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                // Procesar la URL de la foto
-                let fotoUrl = convertirUrlDrive(j.urlRostro);
+                // Obtener URL de la foto
+                let fotoUrl = obtenerUrlImagenDrive(j.urlRostro);
                 
-                console.log("URL de foto procesada:", fotoUrl);
-                
-                // Si no hay foto válida, usar avatar con iniciales
+                // Si hay URL pero es null, usar avatar
                 if (!fotoUrl) {
                     const inicial = nombreCamiseta.charAt(0).toUpperCase();
                     fotoUrl = `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent(inicial)}`;
+                }
+                
+                // Para debug (opcional, puedes eliminar estas líneas)
+                if (j.urlRostro) {
+                    console.log("URL original:", j.urlRostro);
+                    console.log("URL convertida:", fotoUrl);
                 }
                 
                 container.innerHTML = `
@@ -411,8 +418,7 @@
                 container.innerHTML = `<div class="loading-screen"><p>❌ ${data.mensaje || 'JUGADOR NO ENCONTRADO'}</p><button onclick="localStorage.removeItem('jugador_aprobado');location.href='login.html'" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">VOLVER</button></div>`;
             }
         } catch (error) {
-            console.error("Error:", error);
-            container.innerHTML = `<div class="loading-screen"><p>❌ ERROR DE CONEXIÓN: ${error.message}</p><button onclick="location.reload()" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">REINTENTAR</button></div>`;
+            container.innerHTML = `<div class="loading-screen"><p>❌ ERROR DE CONEXIÓN</p><button onclick="location.reload()" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">REINTENTAR</button></div>`;
         }
     }
 </script>
