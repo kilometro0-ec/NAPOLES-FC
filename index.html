@@ -214,6 +214,24 @@
             }
         }
 
+        /* Visto al lado del input */
+        .visto-icon {
+            font-size: 1.3rem;
+            display: none;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .file-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-input-wrapper input {
+            flex: 1;
+        }
+
         /* ==================== BOTONES ==================== */
         .btn-primary {
             background: linear-gradient(105deg, var(--cardenillo), #006b74);
@@ -449,7 +467,7 @@
 
 <div class="contenedor-principal">
     <header>
-        <h1>NÁPOLES F.C.</h1>
+        <h1>⚽ NÁPOLES F.C.</h1>
         <p class="subtitulo">Formulario de registro oficial</p>
         <div class="badge">🏆 Temporada 2026 - 2027</div>
     </header>
@@ -481,17 +499,23 @@
             <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 4: FOTOS -->
+        <!-- PASO 4: FOTOS (CORREGIDO CON VISTOS PERMANENTES) -->
         <div id="paso4" class="paso">
             <div class="campo">
                 <label>📸 Foto de perfil (sonríe)</label>
-                <input type="file" id="rostro" accept="image/jpeg,image/png">
-                <div id="mensajeRostro" class="mensaje-exito-foto" style="display: none;">✓ Documento subido con éxito</div>
+                <div class="file-input-wrapper">
+                    <input type="file" id="rostro" accept="image/jpeg,image/png">
+                    <span id="vistoRostro" class="visto-icon">✅</span>
+                </div>
+                <div id="mensajeRostro" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
             </div>
             <div class="campo">
                 <label>🪪 Foto de tu cédula (frontal)</label>
-                <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
-                <div id="mensajeCedula" class="mensaje-exito-foto" style="display: none;">✓ Documento subido con éxito</div>
+                <div class="file-input-wrapper">
+                    <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
+                    <span id="vistoCedula" class="visto-icon">✅</span>
+                </div>
+                <div id="mensajeCedula" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
             </div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
@@ -553,7 +577,6 @@
     </div>
 </div>
 
-<!-- ✅ SOLO ESTO - ELIMINÉ TODO EL JAVASCRIPT INCRUSTADO -->
 <script src="frontend.js"></script>
 </body>
 </html>
