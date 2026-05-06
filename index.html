@@ -103,6 +103,61 @@
             font-weight: 500;
         }
 
+        /* ==================== RELOJ COUNTDOWN ==================== */
+        .countdown-container {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1rem;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .countdown-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dorado);
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .countdown-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--dorado), #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 0.6rem;
+            color: #b0c4de;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-message {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
         /* ==================== PASOS ==================== */
         .paso {
             display: none;
@@ -460,6 +515,12 @@
                 grid-template-columns: 1fr;
                 gap: 10px;
             }
+            .countdown-number {
+                font-size: 1.2rem;
+            }
+            .countdown-item {
+                min-width: 45px;
+            }
         }
     </style>
 </head>
@@ -470,6 +531,30 @@
         <h1>⚽ NÁPOLES F.C.</h1>
         <p class="subtitulo">Formulario de registro oficial</p>
         <div class="badge">🏆 Temporada 2026 - 2027</div>
+        
+        <!-- ==================== RELOJ COUNTDOWN ==================== -->
+        <div class="countdown-container">
+            <div class="countdown-title">⏰ CIERRE DE INSCRIPCIONES</div>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Días</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+            <div class="countdown-message" id="countdownMessage"></div>
+        </div>
     </header>
 
     <form id="formRegistro">
@@ -577,6 +662,442 @@
     </div>
 </div>
 
-<script src="frontend.js"></script>
+<script>
+    // ================= CONFIGURACIÓN =================
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbzw2Ef4Wja_Nu1Gks7o5yAP-xBgH0R5WAiXgaKhJ_0Z4r6PRrkHSwoMyf8WbMoASgKv/exec";
+
+    // ================= RELOJ COUNTDOWN =================
+    function actualizarCountdown() {
+        // Fecha objetivo: Viernes 8 de mayo de 2026 a las 23:00:00
+        const fechaObjetivo = new Date(2026, 4, 8, 23, 0, 0);
+        const ahora = new Date();
+        const diferencia = fechaObjetivo - ahora;
+        
+        const daysElem = document.getElementById('days');
+        const hoursElem = document.getElementById('hours');
+        const minutesElem = document.getElementById('minutes');
+        const secondsElem = document.getElementById('seconds');
+        const messageElem = document.getElementById('countdownMessage');
+        
+        if (diferencia <= 0) {
+            // Tiempo expirado
+            if (daysElem) daysElem.textContent = '00';
+            if (hoursElem) hoursElem.textContent = '00';
+            if (minutesElem) minutesElem.textContent = '00';
+            if (secondsElem) secondsElem.textContent = '00';
+            if (messageElem) {
+                messageElem.innerHTML = '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
+                messageElem.style.color = '#ff6b6b';
+            }
+            
+            // Deshabilitar el formulario completo
+            const inputs = document.querySelectorAll('#formRegistro input, #formRegistro select, #formRegistro button');
+            inputs.forEach(input => {
+                if (input.id !== 'btnCedula' && input.id !== 'btnPaso2' && input.id !== 'btnPaso3' && 
+                    input.id !== 'btnPaso4' && input.id !== 'btnPaso5' && input.id !== 'btnFinal') {
+                    input.disabled = true;
+                }
+            });
+            return;
+        }
+        
+        const days = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diferencia % (1000 * 60)) / 1000);
+        
+        if (daysElem) daysElem.textContent = String(days).padStart(2, '0');
+        if (hoursElem) hoursElem.textContent = String(hours).padStart(2, '0');
+        if (minutesElem) minutesElem.textContent = String(minutes).padStart(2, '0');
+        if (secondsElem) secondsElem.textContent = String(seconds).padStart(2, '0');
+        
+        if (messageElem && days <= 1) {
+            messageElem.innerHTML = '⚠️ ¡ÚLTIMAS HORAS PARA INSCRIBIRTE! ⚠️';
+            messageElem.style.color = '#ffaa00';
+        } else if (messageElem) {
+            messageElem.innerHTML = '📅 Cierre: Viernes 8 de Mayo - 11:00 PM';
+            messageElem.style.color = '#8db5d0';
+        }
+    }
+    
+    // Actualizar cada segundo
+    setInterval(actualizarCountdown, 1000);
+    actualizarCountdown();
+
+    // ================= SISTEMA DE TOASTS =================
+    function mostrarToast(mensaje, tipo = 'info', duracion = 4000) {
+        const toastAnterior = document.querySelector('.toast-notification');
+        if (toastAnterior) toastAnterior.remove();
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${tipo}`;
+        toast.innerHTML = `<span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️'}</span><span>${mensaje}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'toastSlideUp 0.3s reverse forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, duracion);
+    }
+
+    function marcarErrorInput(input, mensaje) {
+        input.classList.add('error');
+        mostrarToast(mensaje, 'error', 2500);
+        setTimeout(() => input.classList.remove('error'), 500);
+    }
+
+    // ================= ELEMENTOS DOM =================
+    const loaderDiv = document.getElementById('loader');
+    const loaderTexto = document.getElementById('loader-texto');
+    const modalExito = document.getElementById('modalExito');
+
+    function mostrarLoader(visible, texto = "Procesando...") {
+        loaderDiv.style.display = visible ? "flex" : "none";
+        if (texto) loaderTexto.innerText = texto;
+    }
+
+    function verPaso(n) {
+        document.querySelectorAll(".paso").forEach(p => p.classList.remove("activo"));
+        document.getElementById(`paso${n}`).classList.add("activo");
+    }
+
+    // Convertir a mayúsculas excepto email
+    document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
+        inp.addEventListener('input', function() {
+            if (this.id !== 'correo') this.value = this.value.toUpperCase();
+        });
+    });
+
+    // ================= PASO 1 =================
+    const ced = document.getElementById('ced');
+    const btnCedula = document.getElementById('btnCedula');
+    ced.addEventListener('input', () => {
+        ced.value = ced.value.replace(/\D/g, '').slice(0, 10);
+        btnCedula.disabled = ced.value.length !== 10;
+    });
+    btnCedula.addEventListener('click', async () => {
+        if (ced.value.length !== 10) {
+            marcarErrorInput(ced, "La cédula debe tener 10 dígitos");
+            return;
+        }
+        mostrarLoader(true, "Validando cédula...");
+        try {
+            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+            const data = await resp.json();
+            if (data.cedulaExiste) {
+                mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
+            } else {
+                mostrarToast("✅ Cédula válida", "success");
+                verPaso(2);
+            }
+        } catch (error) {
+            console.error(error);
+            mostrarToast("Error de conexión. Revisa tu URL del backend.", "error");
+        }
+        mostrarLoader(false);
+    });
+
+    // ================= PASO 2 =================
+    const n1 = document.getElementById('n1');
+    const n2 = document.getElementById('n2');
+    const ape = document.getElementById('ape');
+    const fecha = document.getElementById('fecha');
+    const btnPaso2 = document.getElementById('btnPaso2');
+    
+    function validarPaso2() {
+        const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
+        let fechaOk = true;
+        
+        if (fechaValida) {
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            const fechaSeleccionada = new Date(fecha.value);
+            if (fechaSeleccionada > hoy) {
+                fechaOk = false;
+            }
+        }
+        
+        btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fechaValida && fechaOk);
+    }
+    
+    [n1, n2, ape, fecha].forEach(el => el.addEventListener('input', validarPaso2));
+    
+    btnPaso2.addEventListener('click', () => {
+        if (!n1.value.trim()) {
+            marcarErrorInput(n1, "El primer nombre es obligatorio");
+            return;
+        }
+        if (!ape.value.trim()) {
+            marcarErrorInput(ape, "Los apellidos son obligatorios");
+            return;
+        }
+        if (!fecha.value) {
+            marcarErrorInput(fecha, "La fecha de nacimiento es obligatoria");
+            return;
+        }
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const fechaNac = new Date(fecha.value);
+        if (fechaNac > hoy) {
+            marcarErrorInput(fecha, "La fecha no puede ser futura");
+            return;
+        }
+        verPaso(3);
+    });
+
+    // ================= PASO 3 =================
+    const tel = document.getElementById('tel');
+    const correo = document.getElementById('correo');
+    const btnPaso3 = document.getElementById('btnPaso3');
+    
+    function validarPaso3() {
+        const telOk = tel.value.replace(/\D/g, '').length === 10;
+        const emailOk = correo.value.includes('@') && correo.value.includes('.');
+        btnPaso3.disabled = !(telOk && emailOk);
+    }
+    
+    [tel, correo].forEach(el => el.addEventListener('input', validarPaso3));
+    
+    tel.addEventListener('input', e => { 
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+    });
+    
+    btnPaso3.addEventListener('click', () => {
+        if (tel.value.replace(/\D/g, '').length !== 10) {
+            marcarErrorInput(tel, "El teléfono debe tener 10 dígitos");
+            return;
+        }
+        if (!correo.value.includes('@') || !correo.value.includes('.')) {
+            marcarErrorInput(correo, "Ingresa un correo válido");
+            return;
+        }
+        verPaso(4);
+    });
+
+    // ================= PASO 4 =================
+    const rostro = document.getElementById('rostro');
+    const cedulaFile = document.getElementById('cedulaFile');
+    const fotoRostroB64 = document.getElementById('fotoRostroB64');
+    const fotoCedulaB64 = document.getElementById('fotoCedulaB64');
+    const btnPaso4 = document.getElementById('btnPaso4');
+    const mensajeRostro = document.getElementById('mensajeRostro');
+    const mensajeCedula = document.getElementById('mensajeCedula');
+    const vistoRostro = document.getElementById('vistoRostro');
+    const vistoCedula = document.getElementById('vistoCedula');
+
+    function archivoABase64(file, inputHidden, mensajeElemento, vistoElemento) {
+        return new Promise((resolve, reject) => {
+            if (!file) return resolve(null);
+            const reader = new FileReader();
+            reader.onload = () => {
+                inputHidden.value = reader.result;
+                
+                if (mensajeElemento) {
+                    mensajeElemento.style.display = 'flex';
+                    mensajeElemento.innerHTML = '✓ Documento subido con éxito';
+                    mensajeElemento.style.color = '#2ecc71';
+                }
+                
+                if (vistoElemento) {
+                    vistoElemento.style.display = 'inline-block';
+                }
+                
+                resolve(true);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function verificarFotos() {
+        const tieneRostro = fotoRostroB64.value && fotoRostroB64.value !== '';
+        const tieneCedula = fotoCedulaB64.value && fotoCedulaB64.value !== '';
+        btnPaso4.disabled = !(tieneRostro && tieneCedula);
+        
+        if (tieneRostro && mensajeRostro.style.display !== 'flex') {
+            mensajeRostro.style.display = 'flex';
+            if (vistoRostro) vistoRostro.style.display = 'inline-block';
+        }
+        
+        if (tieneCedula && mensajeCedula.style.display !== 'flex') {
+            mensajeCedula.style.display = 'flex';
+            if (vistoCedula) vistoCedula.style.display = 'inline-block';
+        }
+    }
+
+    rostro.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file && !file.type.startsWith('image/')) {
+            mostrarToast("Solo imágenes JPG o PNG", "error");
+            rostro.value = '';
+            return;
+        }
+        if (file && file.size > 2 * 1024 * 1024) {
+            mostrarToast("La imagen no debe superar 2MB", "error");
+            rostro.value = '';
+            return;
+        }
+        await archivoABase64(file, fotoRostroB64, mensajeRostro, vistoRostro);
+        verificarFotos();
+    });
+
+    cedulaFile.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file && !file.type.startsWith('image/')) {
+            mostrarToast("Solo imágenes JPG o PNG", "error");
+            cedulaFile.value = '';
+            return;
+        }
+        if (file && file.size > 2 * 1024 * 1024) {
+            mostrarToast("La imagen no debe superar 2MB", "error");
+            cedulaFile.value = '';
+            return;
+        }
+        await archivoABase64(file, fotoCedulaB64, mensajeCedula, vistoCedula);
+        verificarFotos();
+    });
+
+    btnPaso4.addEventListener('click', async () => {
+        if (!fotoRostroB64.value) {
+            mostrarToast("Debes subir una foto de perfil", "error");
+            return;
+        }
+        if (!fotoCedulaB64.value) {
+            mostrarToast("Debes subir una foto de tu cédula", "error");
+            return;
+        }
+        
+        mostrarLoader(true, "Cargando dorsales...");
+        const selectNombre = document.getElementById('nombreCamiseta');
+        const selectDorsal = document.getElementById('dorsal');
+        selectNombre.innerHTML = '<option value="">Selecciona</option>';
+        selectDorsal.innerHTML = '<option value="">Selecciona</option>';
+        
+        selectNombre.add(new Option(n1.value.trim(), n1.value.trim()));
+        if (n2.value.trim()) {
+            selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
+        }
+        
+        try {
+            const resp = await fetch(`${URL_GAS}?action=getDorsales`);
+            const ocupados = await resp.json();
+            for (let i = 1; i <= 99; i++) {
+                if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
+            }
+            if (selectDorsal.options.length === 1) {
+                mostrarToast("No hay dorsales disponibles. Contacta al administrador.", "error");
+                mostrarLoader(false);
+                return;
+            }
+        } catch (error) {
+            mostrarToast("No se pudieron cargar los dorsales.", "error");
+            console.error(error);
+        }
+        mostrarLoader(false);
+        verPaso(5);
+    });
+
+    // ================= PASO 5 =================
+    const nombreCamiseta = document.getElementById('nombreCamiseta');
+    const dorsal = document.getElementById('dorsal');
+    const btnPaso5 = document.getElementById('btnPaso5');
+    
+    function validarPaso5() {
+        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+    }
+    
+    nombreCamiseta.addEventListener('change', validarPaso5);
+    dorsal.addEventListener('change', validarPaso5);
+    
+    btnPaso5.addEventListener('click', () => {
+        if (!nombreCamiseta.value) {
+            mostrarToast("Selecciona un nombre para la camiseta", "error");
+            return;
+        }
+        if (!dorsal.value) {
+            mostrarToast("Selecciona un número dorsal", "error");
+            return;
+        }
+        verPaso(6);
+    });
+
+    // ================= PASO 6 =================
+    const medias = document.getElementById('medias');
+    const inscripcion = document.getElementById('inscripcion');
+    const uniforme = document.getElementById('uniforme');
+    const btnFinal = document.getElementById('btnFinal');
+
+    function validarPaso6() {
+        const mediasValida = medias.value !== "";
+        const inscripcionValida = inscripcion.value.trim() !== "";
+        const uniformeValida = uniforme.value.trim() !== "";
+        btnFinal.disabled = !(mediasValida && inscripcionValida && uniformeValida);
+        
+        if (!mediasValida) medias.style.borderColor = "#e74c3c";
+        else medias.style.borderColor = "";
+        if (!inscripcionValida) inscripcion.style.borderColor = "#e74c3c";
+        else inscripcion.style.borderColor = "";
+        if (!uniformeValida) uniforme.style.borderColor = "#e74c3c";
+        else uniforme.style.borderColor = "";
+    }
+    
+    [medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
+
+    // ================= ENVÍO FINAL =================
+    btnFinal.addEventListener('click', async () => {
+        if (btnFinal.disabled) {
+            mostrarToast("Completa todos los campos del paso 6", "error");
+            return;
+        }
+
+        mostrarLoader(true, "Registrando jugador...");
+
+        const formData = new FormData();
+        formData.append('ced', ced.value);
+        formData.append('n1', n1.value.trim());
+        formData.append('n2', n2.value.trim());
+        formData.append('ape', ape.value.trim());
+        formData.append('fecha', fecha.value);
+        formData.append('tel', tel.value.replace(/\D/g, ''));
+        formData.append('correo', correo.value.trim().toLowerCase());
+        formData.append('medias', medias.value);
+        formData.append('dorsal', dorsal.value);
+        formData.append('nombreCamiseta', nombreCamiseta.value);
+        formData.append('inscripcion', inscripcion.value.trim());
+        formData.append('uniforme', uniforme.value.trim());
+        formData.append('fotoRostroB64', fotoRostroB64.value);
+        formData.append('fotoCedulaB64', fotoCedulaB64.value);
+
+        try {
+            const response = await fetch(URL_GAS, { method: 'POST', body: formData });
+            const result = await response.json();
+
+            if (result.ok) {
+                mostrarLoader(false);
+                modalExito.style.display = 'flex';
+                let segundos = 3;
+                const spanContador = document.getElementById('contador');
+                const intervalo = setInterval(() => {
+                    segundos--;
+                    if (spanContador) spanContador.innerText = segundos;
+                    if (segundos <= 0) {
+                        clearInterval(intervalo);
+                        window.location.href = 'login.html';
+                    }
+                }, 1000);
+            } else {
+                mostrarLoader(false);
+                mostrarToast("❌ Error: " + (result.msg || result.error || "Desconocido"), "error");
+            }
+        } catch (error) {
+            mostrarLoader(false);
+            console.error("Error de red:", error);
+            mostrarToast("Error de red. Revisa tu conexión o la URL del backend.", "error");
+        }
+    });
+    
+    // Verificar fotos al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+        verificarFotos();
+    });
+</script>
 </body>
 </html>
