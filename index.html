@@ -1,218 +1,1103 @@
-const SPREADSHEET_ID = "1RIW76k-tLe41P6mf0PPUStKcchMYLt7sHTOaN0MwFZM";
-const ROOT_FOLDER_ID = "11rYr6psxvsYmFn3H57Vna7qdeNSsWoe9"; // Carpeta "JUGADORES NAPOLES F.C"
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nápoles F.C. - Registro Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== RESET Y VARIABLES ==================== */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
 
-// ================= GET =================
-function doGet(e) {
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sheetJugadores = ss.getSheetByName("Jugadores");
-  const action = e?.parameter?.action;
+        :root {
+            --azul-noche: #1A2B48;
+            --cardenillo: #008B94;
+            --dorado: #D4AF37;
+            --dorado-oscuro: #B59461;
+            --blanco-puro: #ffffff;
+            --gris-suave: rgba(255, 255, 255, 0.1);
+            --negro-trans: rgba(0, 0, 0, 0.4);
+            --rojo-error: #e74c3c;
+            --verde-exito: #2ecc71;
+        }
 
-  // Servir el HTML del panel de administración
-  if (action === "admin") {
-    return HtmlService.createHtmlOutputFromFile("admin")
-      .setTitle("Panel Administración")
-      .addMetaTag("viewport", "width=device-width, initial-scale=1")
-      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-  }
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a1928, #020c1a);
+            font-family: 'Inter', 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
 
-  // Validar si cédula ya existe
-  if (action === "validarRegistro") {
-    const cedula = e?.parameter?.cedula;
-    if (!cedula) return json({ error: "Cédula requerida" });
-    
-    const data = sheetJugadores.getDataRange().getValues();
-    let cedulaExiste = false;
-    
-    for (let i = 1; i < data.length; i++) {
-      const cedGuardada = String(data[i][4]).replace(/^'/, '').trim();
-      if (cedGuardada === cedula) {
-        cedulaExiste = true;
-        break;
-      }
-    }
-    return json({ cedulaExiste });
-  }
+        /* ==================== CONTENEDOR PRINCIPAL ==================== */
+        .contenedor-principal {
+            max-width: 520px;
+            width: 100%;
+            margin: 20px auto;
+            background: rgba(26, 43, 72, 0.75);
+            backdrop-filter: blur(18px);
+            border-radius: 2rem;
+            border: 1px solid rgba(181, 148, 97, 0.4);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(181, 148, 97, 0.15) inset;
+            padding: 2rem 1.8rem;
+            transition: transform 0.25s ease, box-shadow 0.3s;
+            animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
 
-  // Obtener dorsales ocupados
-  if (action === "getDorsales") {
-    if (!sheetJugadores) {
-      return json([]);
-    }
-    const data = sheetJugadores.getDataRange().getValues();
-    const ocupados = [];
-    for (let i = 1; i < data.length; i++) {
-      const dorsal = data[i][17];
-      if (dorsal && dorsal.toString().trim()) {
-        ocupados.push(dorsal.toString().trim());
-      }
-    }
-    return json(ocupados);
-  }
+        .contenedor-principal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 55px rgba(0, 0, 0, 0.5);
+        }
 
-  return json({ ok: true, msg: "API funcionando" });
-}
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-// ================= POST =================
-function doPost(e) {
-  const lock = LockService.getScriptLock();
-  try {
-    lock.waitLock(15000);
-    
-    // Parsear datos
-    let params = {};
-    if (e && e.parameter) {
-      params = e.parameter;
-    }
-    
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    let sheet = ss.getSheetByName("Jugadores");
-    
-    // Crear hoja si no existe
-    if (!sheet) {
-      sheet = ss.insertSheet("Jugadores");
-      sheet.appendRow([
-        "Timestamp", "Primer Nombre", "Segundo Nombre", "Apellidos", 
-        "Cédula", "Fecha Nacimiento", "Teléfono", "Correo", 
-        "Foto Perfil", "Foto Cedula", "Estado", "Goles", "Amarillas", 
-        "Rojas", "Deuda", "Inscripción", "Uniforme", "Dorsal", 
-        "Nombre Camiseta", "Medias Extras", "Fecha Registro"
-      ]);
-    }
-    
-    // Crear nombre de carpeta para el jugador
-    const nombreCompleto = `${params.n1 || ""} ${params.n2 || ""} ${params.ape || ""}`.trim().replace(/\s+/g, " ");
-    const nombreCarpeta = `${nombreCompleto} - ${params.ced}`;
-    
-    // Procesar imágenes (guardar en Drive dentro de la subcarpeta del jugador)
-    let fotoUrl = "";
-    let fotoCedulaUrl = "";
-    
-    if (params.fotoRostroB64) {
-      fotoUrl = saveImageToPlayerFolder(params.fotoRostroB64, nombreCarpeta, params.ced, "perfil");
-    }
-    if (params.fotoCedulaB64) {
-      fotoCedulaUrl = saveImageToPlayerFolder(params.fotoCedulaB64, nombreCarpeta, params.ced, "cedula");
-    }
-    
-    // Agregar jugador a la hoja de cálculo
-    sheet.appendRow([
-      new Date(),                                    // Timestamp
-      params.n1 || "",                              // Primer Nombre
-      params.n2 || "",                              // Segundo Nombre
-      params.ape || "",                             // Apellidos
-      params.ced || "",                             // Cédula
-      params.fecha || "",                           // Fecha Nacimiento
-      params.tel || "",                             // Teléfono
-      params.correo || "",                          // Correo
-      fotoUrl,                                      // Foto Perfil
-      fotoCedulaUrl,                               // Foto Cedula
-      "PENDIENTE",                                  // Estado
-      0,                                            // Goles
-      0,                                            // Amarillas
-      0,                                            // Rojas
-      0,                                            // Deuda
-      params.inscripcion || "",                     // Inscripción
-      params.uniforme || "",                        // Uniforme
-      params.dorsal || "",                          // Dorsal
-      params.nombreCamiseta || "",                  // Nombre Camiseta
-      params.medias || "NO",                        // Medias Extras
-      new Date()                                    // Fecha Registro
-    ]);
-    
-    return json({ ok: true, msg: "Jugador registrado exitosamente" });
-    
-  } catch (err) {
-    Logger.log("ERROR: " + err);
-    return json({ ok: false, error: err.toString() });
-  } finally {
-    lock.releaseLock();
-  }
-}
+        /* ==================== HEADER ==================== */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-// ================= FUNCIÓN PARA GUARDAR IMÁGENES EN CARPETA DEL JUGADOR =================
-function saveImageToPlayerFolder(base64Data, nombreCarpeta, cedula, tipo) {
-  try {
-    // Extraer el tipo de imagen y los datos
-    const matches = base64Data.match(/^data:image\/(\w+);base64,(.+)$/);
-    if (!matches) return "";
-    
-    const extension = matches[1];
-    const imageData = matches[2];
-    
-    // Obtener la carpeta raíz "JUGADORES NAPOLES F.C"
-    let rootFolder;
-    try {
-      rootFolder = DriveApp.getFolderById(ROOT_FOLDER_ID);
-      Logger.log("Carpeta raíz encontrada: " + rootFolder.getName());
-    } catch (e) {
-      Logger.log("Error al obtener carpeta raíz: " + e);
-      // Si no existe, crearla
-      rootFolder = DriveApp.createFolder("JUGADORES NAPOLES F.C");
-      Logger.log("Carpeta raíz creada: " + rootFolder.getName());
-    }
-    
-    // Buscar si ya existe una carpeta con el nombre del jugador
-    let playerFolder = null;
-    const folders = rootFolder.getFolders();
-    while (folders.hasNext()) {
-      const folder = folders.next();
-      if (folder.getName() === nombreCarpeta) {
-        playerFolder = folder;
-        Logger.log("Carpeta existente encontrada: " + nombreCarpeta);
-        break;
-      }
-    }
-    
-    // Si no existe, crear la carpeta del jugador
-    if (!playerFolder) {
-      playerFolder = rootFolder.createFolder(nombreCarpeta);
-      Logger.log("Nueva carpeta creada: " + nombreCarpeta);
-    }
-    
-    // Crear nombre de archivo
-    const nombreArchivo = `${cedula}_${tipo}_${new Date().getTime()}.${extension}`;
-    
-    // Decodificar base64 y crear blob
-    const blob = Utilities.newBlob(Utilities.base64Decode(imageData), 
-                                   `image/${extension}`, 
-                                   nombreArchivo);
-    
-    // Guardar archivo en la carpeta del jugador
-    const file = playerFolder.createFile(blob);
-    file.setDescription(`Foto ${tipo} del jugador ${cedula}`);
-    
-    Logger.log("Archivo guardado: " + nombreArchivo);
-    
-    // Retornar URL de vista
-    return `https://drive.google.com/uc?export=view&id=${file.getId()}`;
-    
-  } catch (err) {
-    Logger.log("Error guardando imagen: " + err);
-    return "";
-  }
-}
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--dorado), #F3D572);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.4rem;
+        }
 
-// ================= UTIL =================
-function json(data) {
-  return ContentService
-    .createTextOutput(JSON.stringify(data))
-    .setMimeType(ContentService.MimeType.JSON);
-}
+        .subtitulo {
+            color: #b0c4de;
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
 
-// ================= FUNCIÓN PARA VERIFICAR CARPETA (OPCIONAL) =================
-function verificarCarpetaRaiz() {
-  try {
-    let folder;
-    try {
-      folder = DriveApp.getFolderById(ROOT_FOLDER_ID);
-      Logger.log("Carpeta encontrada: " + folder.getName() + " - ID: " + folder.getId());
-    } catch (e) {
-      folder = DriveApp.createFolder("JUGADORES NAPOLES F.C");
-      Logger.log("Carpeta creada: " + folder.getName() + " - ID: " + folder.getId());
+        .badge {
+            display: inline-block;
+            background: rgba(0, 139, 148, 0.2);
+            border-radius: 60px;
+            padding: 0.3rem 1rem;
+            font-size: 0.7rem;
+            color: var(--dorado);
+            margin-top: 0.6rem;
+            font-weight: 500;
+        }
+
+        /* ==================== RELOJ COUNTDOWN ==================== */
+        .countdown-container {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1rem;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .countdown-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dorado);
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .countdown-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--dorado), #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 0.6rem;
+            color: #b0c4de;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-message {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
+        /* ==================== PASOS ==================== */
+        .paso {
+            display: none;
+            animation: fadeSlide 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .paso.activo {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ==================== CAMPOS ==================== */
+        .campo {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9ab3cf;
+            margin-bottom: 0.25rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(181, 148, 97, 0.5);
+            border-radius: 1rem;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', monospace;
+            transition: all 0.25s;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--cardenillo);
+            box-shadow: 0 0 0 3px rgba(0, 139, 148, 0.3);
+            background: rgba(0, 0, 0, 0.7);
+            transform: scale(1.01);
+        }
+
+        input.error, select.error {
+            border-color: var(--rojo-error);
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        input::placeholder, select::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+
+        select option {
+            background: var(--azul-noche);
+            color: white;
+            padding: 10px;
+        }
+
+        .help-note {
+            font-size: 0.7rem;
+            color: #8db5d0;
+            margin-top: 0.3rem;
+            margin-left: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Mensaje de éxito al subir foto */
+        .mensaje-exito-foto {
+            color: var(--verde-exito);
+            font-size: 0.75rem;
+            margin-top: 5px;
+            margin-left: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            animation: fadeInLeft 0.3s ease;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Visto al lado del input */
+        .visto-icon {
+            font-size: 1.3rem;
+            display: none;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .file-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-input-wrapper input {
+            flex: 1;
+        }
+
+        /* ==================== BOTONES ==================== */
+        .btn-primary {
+            background: linear-gradient(105deg, var(--cardenillo), #006b74);
+            border: none;
+            padding: 0.9rem;
+            width: 100%;
+            border-radius: 3rem;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: white;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            transition: all 0.25s;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            background: linear-gradient(105deg, #00a5b3, #00808a);
+            box-shadow: 0 10px 20px rgba(0, 139, 148, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+            z-index: -1;
+        }
+
+        .btn-primary:active::after {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Grid para paso 5 */
+        .grid-2cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* ==================== LOADER ==================== */
+        #loader {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10000;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(212, 175, 55, 0.25);
+            border-top: 4px solid var(--dorado);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #loader-texto {
+            color: white;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* ==================== MODAL ÉXITO ==================== */
+        #modalExito {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            justify-content: center;
+            align-items: center;
+            z-index: 10002;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-card {
+            background: linear-gradient(145deg, #1A2B48, #0f1a2e);
+            border-radius: 2rem;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid var(--dorado);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            max-width: 320px;
+            width: 85%;
+            animation: modalZoom 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+
+        @keyframes modalZoom {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-card h2 {
+            color: var(--dorado);
+            margin-bottom: 0.8rem;
+            font-size: 1.5rem;
+        }
+
+        .modal-card p {
+            color: white !important;
+            font-size: 1rem;
+        }
+
+        #contador {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--dorado), #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            min-width: 50px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ==================== TOASTS ==================== */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10001;
+            animation: toastSlideUp 0.3s ease forwards;
+            border-left: 4px solid var(--dorado);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            font-size: 0.85rem;
+            max-width: 90%;
+        }
+
+        .toast-notification.error {
+            border-left-color: var(--rojo-error);
+            background: rgba(30, 20, 20, 0.95);
+        }
+
+        .toast-notification.success {
+            border-left-color: var(--verde-exito);
+            background: rgba(20, 30, 20, 0.95);
+        }
+
+        @keyframes toastSlideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 550px) {
+            body {
+                padding: 1rem;
+            }
+            .contenedor-principal {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            input, select, .btn-primary {
+                padding: 0.8rem 1rem;
+            }
+            .grid-2cols {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .countdown-number {
+                font-size: 1.2rem;
+            }
+            .countdown-item {
+                min-width: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor-principal">
+    <header>
+        <h1> NÁPOLES F.C.</h1>
+        <p class="subtitulo">Formulario de registro oficial</p>
+        <div class="badge">🏆 Temporada 2026 - 2027</div>
+        
+        <!-- ==================== RELOJ COUNTDOWN ==================== -->
+        <div class="countdown-container">
+            <div class="countdown-title">⏰ CIERRE DE INSCRIPCIONES</div>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Días</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+            <div class="countdown-message" id="countdownMessage"></div>
+        </div>
+    </header>
+
+    <form id="formRegistro">
+        <!-- PASO 1: CÉDULA -->
+        <div id="paso1" class="paso activo">
+            <div class="campo">
+                <label>🔢 CÉDULA (10 dígitos)</label>
+                <input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890" autocomplete="off">
+                <div class="help-note"><span>🔑</span> Ingresa tu número de cédula para empezar</div>
+            </div>
+            <button type="button" id="btnCedula" class="btn-primary" disabled>Validar cédula</button>
+        </div>
+
+        <!-- PASO 2: DATOS PERSONALES -->
+        <div id="paso2" class="paso">
+            <div class="campo"><label>📝 Primer nombre</label><input type="text" id="n1" placeholder="Ej: LEONARDO"></div>
+            <div class="campo"><label>📝 Segundo nombre (opcional)</label><input type="text" id="n2" placeholder="Ej: ADRIAN"></div>
+            <div class="campo"><label>📝 Apellidos</label><input type="text" id="ape" placeholder="Ej: MUÑOZ BUENDIA"></div>
+            <div class="campo"><label>📅 Fecha de nacimiento</label><input type="date" id="fecha"></div>
+            <button type="button" id="btnPaso2" class="btn-primary" disabled>Siguiente</button>
+        </div>
+
+        <!-- PASO 3: CONTACTO -->
+        <div id="paso3" class="paso">
+            <div class="campo"><label>📞 Teléfono (10 dígitos)</label><input type="tel" id="tel" maxlength="10" placeholder="Ej: 0991234567"></div>
+            <div class="campo"><label>✉️ Correo electrónico</label><input type="email" id="correo" placeholder="tú@ejemplo.com"></div>
+            <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
+        </div>
+
+        <!-- PASO 4: FOTOS (CORREGIDO CON VISTOS PERMANENTES) -->
+        <div id="paso4" class="paso">
+            <div class="campo">
+                <label>📸 Foto de perfil (sonríe)</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="rostro" accept="image/jpeg,image/png">
+                    <span id="vistoRostro" class="visto-icon">✅</span>
+                </div>
+                <div id="mensajeRostro" class="mensaje-exito-foto">none,✓ Documento subido con éxito</div>
+            </div>
+            <div class="campo">
+                <label>🪪 Foto de tu cédula (frontal)</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
+                    <span id="vistoCedula" class="visto-icon">✅</span>
+                </div>
+                <div id="mensajeCedula" class="mensaje-exito-foto">none,✓ Documento subido con éxito</div>
+            </div>
+            <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
+        </div>
+
+        <!-- PASO 5: PERSONALIZA TU ARMADURA -->
+        <div id="paso5" class="paso">
+            <div class="grid-2cols">
+                <div class="campo">
+                    <label>🏷️ Nombre en tu camiseta</label>
+                    <select id="nombreCamiseta">
+                        <option value="">Selecciona</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label>🔢 Número en tu dorsal</label>
+                    <select id="dorsal">
+                        <option value="">Selecciona</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
+        </div>
+
+        <!-- PASO 6: VALORES -->
+        <div id="paso6" class="paso">
+            <div class="campo">
+                <label>🧦 Medias extras (+$2)</label>
+                <select id="medias">
+                    <option value="">Selecciona</option>
+                    <option value="NO">No</option>
+                    <option value="SI">Sí</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>💰 N° transacción inscripción ($5)</label>
+                <input id="inscripcion" placeholder="Ej: PAGO-12345">
+            </div>
+            <div class="campo">
+                <label>👕 N° transacción uniforme (abono 75% + medias)</label>
+                <input id="uniforme" placeholder="Ej: PAGO-67890">
+            </div>
+            <button type="button" id="btnFinal" class="btn-primary" disabled>Finalizar registro</button>
+        </div>
+
+        <input type="hidden" id="fotoRostroB64">
+        <input type="hidden" id="fotoCedulaB64">
+    </form>
+</div>
+
+<div id="loader">
+    <div class="spinner"></div>
+    <div id="loader-texto">Procesando...</div>
+</div>
+
+<div id="modalExito">
+    <div class="modal-card">
+        <h2>✅ ¡Registro exitoso!</h2>
+        <p>Redirigiendo en <span id="contador">3</span> segundos...</p>
+    </div>
+</div>
+
+<script>
+    // ================= CONFIGURACIÓN =================
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbw_mkqOXQLO9q3mv5vuQUV5nHayAaJXC_iH_NAqUbybdIBSkX0uAE7zb6ki6j-lw66h/exec";
+
+    // ================= RELOJ COUNTDOWN =================
+    function actualizarCountdown() {
+        // Fecha objetivo: Viernes 8 de mayo de 2026 a las 23:00:00
+        const fechaObjetivo = new Date(2026, 4, 8, 23, 0, 0);
+        const ahora = new Date();
+        const diferencia = fechaObjetivo - ahora;
+        
+        const daysElem = document.getElementById('days');
+        const hoursElem = document.getElementById('hours');
+        const minutesElem = document.getElementById('minutes');
+        const secondsElem = document.getElementById('seconds');
+        const messageElem = document.getElementById('countdownMessage');
+        
+        if (diferencia <= 0) {
+            // Tiempo expirado
+            if (daysElem) daysElem.textContent = '00';
+            if (hoursElem) hoursElem.textContent = '00';
+            if (minutesElem) minutesElem.textContent = '00';
+            if (secondsElem) secondsElem.textContent = '00';
+            if (messageElem) {
+                messageElem.innerHTML = '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
+                messageElem.style.color = '#ff6b6b';
+            }
+            
+            // Deshabilitar el formulario completo
+            const inputs = document.querySelectorAll('#formRegistro input, #formRegistro select, #formRegistro button');
+            inputs.forEach(input => {
+                if (input.id !== 'btnCedula' && input.id !== 'btnPaso2' && input.id !== 'btnPaso3' && 
+                    input.id !== 'btnPaso4' && input.id !== 'btnPaso5' && input.id !== 'btnFinal') {
+                    input.disabled = true;
+                }
+            });
+            return;
+        }
+        
+        const days = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diferencia % (1000 * 60)) / 1000);
+        
+        if (daysElem) daysElem.textContent = String(days).padStart(2, '0');
+        if (hoursElem) hoursElem.textContent = String(hours).padStart(2, '0');
+        if (minutesElem) minutesElem.textContent = String(minutes).padStart(2, '0');
+        if (secondsElem) secondsElem.textContent = String(seconds).padStart(2, '0');
+        
+        if (messageElem && days <= 1) {
+            messageElem.innerHTML = '⚠️ ¡ÚLTIMAS HORAS PARA INSCRIBIRTE! ⚠️';
+            messageElem.style.color = '#ffaa00';
+        } else if (messageElem) {
+            messageElem.innerHTML = '📅 Cierre: Viernes 8 de Mayo - 11:00 PM';
+            messageElem.style.color = '#8db5d0';
+        }
     }
-    return folder.getId();
-  } catch (err) {
-    Logger.log("Error: " + err);
-    return null;
-  }
-}
+    
+    // Actualizar cada segundo
+    setInterval(actualizarCountdown, 1000);
+    actualizarCountdown();
+
+    // ================= SISTEMA DE TOASTS =================
+    function mostrarToast(mensaje, tipo = 'info', duracion = 4000) {
+        const toastAnterior = document.querySelector('.toast-notification');
+        if (toastAnterior) toastAnterior.remove();
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${tipo}`;
+        toast.innerHTML = `<span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️'}</span><span>${mensaje}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'toastSlideUp 0.3s reverse forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, duracion);
+    }
+
+    function marcarErrorInput(input, mensaje) {
+        input.classList.add('error');
+        mostrarToast(mensaje, 'error', 2500);
+        setTimeout(() => input.classList.remove('error'), 500);
+    }
+
+    // ================= ELEMENTOS DOM =================
+    const loaderDiv = document.getElementById('loader');
+    const loaderTexto = document.getElementById('loader-texto');
+    const modalExito = document.getElementById('modalExito');
+
+    function mostrarLoader(visible, texto = "Procesando...") {
+        loaderDiv.style.display = visible ? "flex" : "none";
+        if (texto) loaderTexto.innerText = texto;
+    }
+
+    function verPaso(n) {
+        document.querySelectorAll(".paso").forEach(p => p.classList.remove("activo"));
+        document.getElementById(`paso${n}`).classList.add("activo");
+    }
+
+    // Convertir a mayúsculas excepto email
+    document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
+        inp.addEventListener('input', function() {
+            if (this.id !== 'correo') this.value = this.value.toUpperCase();
+        });
+    });
+
+    // ================= PASO 1 =================
+    const ced = document.getElementById('ced');
+    const btnCedula = document.getElementById('btnCedula');
+    ced.addEventListener('input', () => {
+        ced.value = ced.value.replace(/\D/g, '').slice(0, 10);
+        btnCedula.disabled = ced.value.length !== 10;
+    });
+    btnCedula.addEventListener('click', async () => {
+        if (ced.value.length !== 10) {
+            marcarErrorInput(ced, "La cédula debe tener 10 dígitos");
+            return;
+        }
+        mostrarLoader(true, "Validando cédula...");
+        try {
+            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+            const data = await resp.json();
+            if (data.cedulaExiste) {
+                mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
+            } else {
+                mostrarToast("✅ Cédula válida", "success");
+                verPaso(2);
+            }
+        } catch (error) {
+            console.error(error);
+            mostrarToast("Error de conexión. Revisa tu URL del backend.", "error");
+        }
+        mostrarLoader(false);
+    });
+
+    // ================= PASO 2 =================
+    const n1 = document.getElementById('n1');
+    const n2 = document.getElementById('n2');
+    const ape = document.getElementById('ape');
+    const fecha = document.getElementById('fecha');
+    const btnPaso2 = document.getElementById('btnPaso2');
+    
+    function validarPaso2() {
+        const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
+        let fechaOk = true;
+        
+        if (fechaValida) {
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            const fechaSeleccionada = new Date(fecha.value);
+            if (fechaSeleccionada > hoy) {
+                fechaOk = false;
+            }
+        }
+        
+        btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fechaValida && fechaOk);
+    }
+    
+    [n1, n2, ape, fecha].forEach(el => el.addEventListener('input', validarPaso2));
+    
+    btnPaso2.addEventListener('click', () => {
+        if (!n1.value.trim()) {
+            marcarErrorInput(n1, "El primer nombre es obligatorio");
+            return;
+        }
+        if (!ape.value.trim()) {
+            marcarErrorInput(ape, "Los apellidos son obligatorios");
+            return;
+        }
+        if (!fecha.value) {
+            marcarErrorInput(fecha, "La fecha de nacimiento es obligatoria");
+            return;
+        }
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const fechaNac = new Date(fecha.value);
+        if (fechaNac > hoy) {
+            marcarErrorInput(fecha, "La fecha no puede ser futura");
+            return;
+        }
+        verPaso(3);
+    });
+
+    // ================= PASO 3 =================
+    const tel = document.getElementById('tel');
+    const correo = document.getElementById('correo');
+    const btnPaso3 = document.getElementById('btnPaso3');
+    
+    function validarPaso3() {
+        const telOk = tel.value.replace(/\D/g, '').length === 10;
+        const emailOk = correo.value.includes('@') && correo.value.includes('.');
+        btnPaso3.disabled = !(telOk && emailOk);
+    }
+    
+    [tel, correo].forEach(el => el.addEventListener('input', validarPaso3));
+    
+    tel.addEventListener('input', e => { 
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+    });
+    
+    btnPaso3.addEventListener('click', () => {
+        if (tel.value.replace(/\D/g, '').length !== 10) {
+            marcarErrorInput(tel, "El teléfono debe tener 10 dígitos");
+            return;
+        }
+        if (!correo.value.includes('@') || !correo.value.includes('.')) {
+            marcarErrorInput(correo, "Ingresa un correo válido");
+            return;
+        }
+        verPaso(4);
+    });
+
+    // ================= PASO 4 =================
+    const rostro = document.getElementById('rostro');
+    const cedulaFile = document.getElementById('cedulaFile');
+    const fotoRostroB64 = document.getElementById('fotoRostroB64');
+    const fotoCedulaB64 = document.getElementById('fotoCedulaB64');
+    const btnPaso4 = document.getElementById('btnPaso4');
+    const mensajeRostro = document.getElementById('mensajeRostro');
+    const mensajeCedula = document.getElementById('mensajeCedula');
+    const vistoRostro = document.getElementById('vistoRostro');
+    const vistoCedula = document.getElementById('vistoCedula');
+
+    function archivoABase64(file, inputHidden, mensajeElemento, vistoElemento) {
+        return new Promise((resolve, reject) => {
+            if (!file) return resolve(null);
+            const reader = new FileReader();
+            reader.onload = () => {
+                inputHidden.value = reader.result;
+                
+                if (mensajeElemento) {
+                    mensajeElemento.style.display = 'flex';
+                    mensajeElemento.innerHTML = '✓ Documento subido con éxito';
+                    mensajeElemento.style.color = '#2ecc71';
+                }
+                
+                if (vistoElemento) {
+                    vistoElemento.style.display = 'inline-block';
+                }
+                
+                resolve(true);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function verificarFotos() {
+        const tieneRostro = fotoRostroB64.value && fotoRostroB64.value !== '';
+        const tieneCedula = fotoCedulaB64.value && fotoCedulaB64.value !== '';
+        btnPaso4.disabled = !(tieneRostro && tieneCedula);
+        
+        if (tieneRostro && mensajeRostro.style.display !== 'flex') {
+            mensajeRostro.style.display = 'flex';
+            if (vistoRostro) vistoRostro.style.display = 'inline-block';
+        }
+        
+        if (tieneCedula && mensajeCedula.style.display !== 'flex') {
+            mensajeCedula.style.display = 'flex';
+            if (vistoCedula) vistoCedula.style.display = 'inline-block';
+        }
+    }
+
+    rostro.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file && !file.type.startsWith('image/')) {
+            mostrarToast("Solo imágenes JPG o PNG", "error");
+            rostro.value = '';
+            return;
+        }
+        if (file && file.size > 2 * 1024 * 1024) {
+            mostrarToast("La imagen no debe superar 2MB", "error");
+            rostro.value = '';
+            return;
+        }
+        await archivoABase64(file, fotoRostroB64, mensajeRostro, vistoRostro);
+        verificarFotos();
+    });
+
+    cedulaFile.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file && !file.type.startsWith('image/')) {
+            mostrarToast("Solo imágenes JPG o PNG", "error");
+            cedulaFile.value = '';
+            return;
+        }
+        if (file && file.size > 2 * 1024 * 1024) {
+            mostrarToast("La imagen no debe superar 2MB", "error");
+            cedulaFile.value = '';
+            return;
+        }
+        await archivoABase64(file, fotoCedulaB64, mensajeCedula, vistoCedula);
+        verificarFotos();
+    });
+
+    btnPaso4.addEventListener('click', async () => {
+        if (!fotoRostroB64.value) {
+            mostrarToast("Debes subir una foto de perfil", "error");
+            return;
+        }
+        if (!fotoCedulaB64.value) {
+            mostrarToast("Debes subir una foto de tu cédula", "error");
+            return;
+        }
+        
+        mostrarLoader(true, "Cargando dorsales...");
+        const selectNombre = document.getElementById('nombreCamiseta');
+        const selectDorsal = document.getElementById('dorsal');
+        selectNombre.innerHTML = '<option value="">Selecciona</option>';
+        selectDorsal.innerHTML = '<option value="">Selecciona</option>';
+        
+        selectNombre.add(new Option(n1.value.trim(), n1.value.trim()));
+        if (n2.value.trim()) {
+            selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
+        }
+        
+        try {
+            const resp = await fetch(`${URL_GAS}?action=getDorsales`);
+            const ocupados = await resp.json();
+            for (let i = 1; i <= 99; i++) {
+                if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
+            }
+            if (selectDorsal.options.length === 1) {
+                mostrarToast("No hay dorsales disponibles. Contacta al administrador.", "error");
+                mostrarLoader(false);
+                return;
+            }
+        } catch (error) {
+            mostrarToast("No se pudieron cargar los dorsales.", "error");
+            console.error(error);
+        }
+        mostrarLoader(false);
+        verPaso(5);
+    });
+
+    // ================= PASO 5 =================
+    const nombreCamiseta = document.getElementById('nombreCamiseta');
+    const dorsal = document.getElementById('dorsal');
+    const btnPaso5 = document.getElementById('btnPaso5');
+    
+    function validarPaso5() {
+        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+    }
+    
+    nombreCamiseta.addEventListener('change', validarPaso5);
+    dorsal.addEventListener('change', validarPaso5);
+    
+    btnPaso5.addEventListener('click', () => {
+        if (!nombreCamiseta.value) {
+            mostrarToast("Selecciona un nombre para la camiseta", "error");
+            return;
+        }
+        if (!dorsal.value) {
+            mostrarToast("Selecciona un número dorsal", "error");
+            return;
+        }
+        verPaso(6);
+    });
+
+    // ================= PASO 6 =================
+    const medias = document.getElementById('medias');
+    const inscripcion = document.getElementById('inscripcion');
+    const uniforme = document.getElementById('uniforme');
+    const btnFinal = document.getElementById('btnFinal');
+
+    function validarPaso6() {
+        const mediasValida = medias.value !== "";
+        const inscripcionValida = inscripcion.value.trim() !== "";
+        const uniformeValida = uniforme.value.trim() !== "";
+        btnFinal.disabled = !(mediasValida && inscripcionValida && uniformeValida);
+        
+        if (!mediasValida) medias.style.borderColor = "#e74c3c";
+        else medias.style.borderColor = "";
+        if (!inscripcionValida) inscripcion.style.borderColor = "#e74c3c";
+        else inscripcion.style.borderColor = "";
+        if (!uniformeValida) uniforme.style.borderColor = "#e74c3c";
+        else uniforme.style.borderColor = "";
+    }
+    
+    [medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
+
+    // ================= ENVÍO FINAL =================
+    btnFinal.addEventListener('click', async () => {
+        if (btnFinal.disabled) {
+            mostrarToast("Completa todos los campos del paso 6", "error");
+            return;
+        }
+
+        mostrarLoader(true, "Registrando jugador...");
+
+        const formData = new FormData();
+        formData.append('ced', ced.value);
+        formData.append('n1', n1.value.trim());
+        formData.append('n2', n2.value.trim());
+        formData.append('ape', ape.value.trim());
+        formData.append('fecha', fecha.value);
+        formData.append('tel', tel.value.replace(/\D/g, ''));
+        formData.append('correo', correo.value.trim().toLowerCase());
+        formData.append('medias', medias.value);
+        formData.append('dorsal', dorsal.value);
+        formData.append('nombreCamiseta', nombreCamiseta.value);
+        formData.append('inscripcion', inscripcion.value.trim());
+        formData.append('uniforme', uniforme.value.trim());
+        formData.append('fotoRostroB64', fotoRostroB64.value);
+        formData.append('fotoCedulaB64', fotoCedulaB64.value);
+
+        try {
+            const response = await fetch(URL_GAS, { method: 'POST', body: formData });
+            const result = await response.json();
+
+            if (result.ok) {
+                mostrarLoader(false);
+                modalExito.style.display = 'flex';
+                let segundos = 3;
+                const spanContador = document.getElementById('contador');
+                const intervalo = setInterval(() => {
+                    segundos--;
+                    if (spanContador) spanContador.innerText = segundos;
+                    if (segundos <= 0) {
+                        clearInterval(intervalo);
+                        window.location.href = 'login.html';
+                    }
+                }, 1000);
+            } else {
+                mostrarLoader(false);
+                mostrarToast("❌ Error: " + (result.msg || result.error || "Desconocido"), "error");
+            }
+        } catch (error) {
+            mostrarLoader(false);
+            console.error("Error de red:", error);
+            mostrarToast("Error de red. Revisa tu conexión o la URL del backend.", "error");
+        }
+    });
+    
+    // Verificar fotos al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+        verificarFotos();
+    });
+</script>
+</body>
+</html>
