@@ -1,482 +1,271 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Nápoles F.C. - Registro Oficial</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-<style>
-    /* Todo tu CSS se mantiene exactamente igual */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    body {
-        background: radial-gradient(circle at 10% 20%, #0a1928, #020c1a);
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem;
-    }
-    .registro-container {
-        max-width: 560px;
-        width: 100%;
-        background: rgba(12, 25, 45, 0.65);
-        backdrop-filter: blur(18px);
-        border-radius: 2.5rem;
-        border: 1px solid rgba(0, 143, 155, 0.3);
-        box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 143, 155, 0.15) inset;
-        padding: 2rem 1.8rem;
-        transition: transform 0.25s ease, box-shadow 0.3s;
-    }
-    .registro-container:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 35px 55px rgba(0, 0, 0, 0.5);
-    }
-    .header {
-        text-align: center;
-        margin-bottom: 2.2rem;
-    }
-    .header h1 {
-        font-size: 2rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #D4AF37, #F3D572);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        letter-spacing: -0.5px;
-        margin-bottom: 0.4rem;
-    }
-    .header p {
-        color: #b0c4de;
-        font-size: 0.9rem;
-        font-weight: 400;
-    }
-    .badge {
-        display: inline-block;
-        background: rgba(0, 143, 155, 0.2);
-        border-radius: 60px;
-        padding: 0.2rem 1rem;
-        font-size: 0.7rem;
-        color: #8fcbdb;
-        margin-top: 0.6rem;
-    }
-    .paso {
-        display: none;
-        animation: fadeSlide 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-    .paso.activo {
-        display: block;
-    }
-    @keyframes fadeSlide {
-        0% { opacity: 0; transform: translateY(12px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-    .campo {
-        margin-bottom: 1.2rem;
-    }
-    label {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #9ab3cf;
-        margin-bottom: 0.25rem;
-    }
-    input, select {
-        width: 100%;
-        padding: 0.9rem 1.2rem;
-        background: rgba(0, 0, 0, 0.45);
-        border: 1px solid rgba(0, 143, 155, 0.6);
-        border-radius: 2rem;
-        color: white;
-        font-size: 1rem;
-        font-family: 'Inter', monospace;
-        transition: all 0.25s;
-        outline: none;
-    }
-    input:focus, select:focus {
-        border-color: #008f9b;
-        box-shadow: 0 0 0 3px rgba(0, 143, 155, 0.3);
-        background: rgba(0, 0, 0, 0.7);
-    }
-    input.error, select.error {
-        border-color: #ff6b6b;
-        animation: shake 0.3s ease;
-    }
-    @keyframes shake {
-        0%,100% { transform: translateX(0); }
-        25% { transform: translateX(-4px); }
-        75% { transform: translateX(4px); }
-    }
-    .help-note {
-        font-size: 0.7rem;
-        color: #8db5d0;
-        margin-top: 0.3rem;
-        margin-left: 0.8rem;
-        font-style: italic;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .btn-primary {
-        background: linear-gradient(105deg, #008f9b, #006b74);
-        border: none;
-        padding: 0.9rem;
-        width: 100%;
-        border-radius: 3rem;
-        font-weight: 700;
-        font-size: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: white;
-        cursor: pointer;
-        margin-top: 1.2rem;
-        transition: all 0.25s;
-        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-    }
-    .btn-primary:hover:not(:disabled) {
-        transform: translateY(-2px);
-        background: linear-gradient(105deg, #00a5b3, #00808a);
-        box-shadow: 0 10px 20px rgba(0, 143, 155, 0.4);
-    }
-    .btn-primary:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-    }
-    .foto-area {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-top: 0.5rem;
-    }
-    .visto-img {
-        font-size: 1.3rem;
-        color: #2ecc71;
-        animation: pop 0.2s ease;
-    }
-    @keyframes pop {
-        0% { transform: scale(0); }
-        80% { transform: scale(1.2); }
-        100% { transform: scale(1); }
-    }
-    /* Estilos para el grupo de pago uniforme */
-    .radio-group {
-        display: flex;
-        gap: 1.5rem;
-        margin: 0.5rem 0 0.2rem;
-    }
-    .radio-group label {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-size: 0.9rem;
-        text-transform: none;
-        font-weight: normal;
-        color: #b0c4de;
-        cursor: pointer;
-    }
-    .radio-group input {
-        width: auto;
-        margin: 0;
-        transform: scale(1.1);
-    }
-    .condicional {
-        margin-top: 0.8rem;
-        transition: all 0.2s;
-    }
-    .aviso-pago {
-        background: rgba(0, 0, 0, 0.4);
-        border-left: 3px solid #ffb347;
-        padding: 0.6rem 1rem;
-        border-radius: 1rem;
-        font-size: 0.8rem;
-        color: #f3d572;
-    }
-    #loader {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(8px);
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        z-index: 10000;
-    }
-    .spinner {
-        width: 60px;
-        height: 60px;
-        border: 4px solid rgba(0, 143, 155, 0.25);
-        border-top: 4px solid #008f9b;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #loader-texto {
-        margin-top: 1rem;
-        color: white;
-        font-weight: 500;
-    }
-    #modalExito {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(12px);
-        justify-content: center;
-        align-items: center;
-        z-index: 20000;
-    }
-    .modal-card {
-        background: rgba(10, 25, 45, 0.95);
-        border-radius: 2rem;
-        padding: 2rem;
-        text-align: center;
-        border: 2px solid #008f9b;
-        max-width: 300px;
-        width: 85%;
-        animation: zoom 0.3s ease;
-    }
-    @keyframes zoom {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-    .modal-card h2 {
-        color: #008f9b;
-        margin-bottom: 0.8rem;
-    }
-    .toast {
-        position: fixed;
-        bottom: 25px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #1e2a3e;
-        backdrop-filter: blur(12px);
-        padding: 0.75rem 1.5rem;
-        border-radius: 3rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 500;
-        z-index: 10001;
-        animation: toastIn 0.25s ease;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        border-left: 5px solid #008f9b;
-        color: white;
-        font-size: 0.85rem;
-        max-width: 90%;
-    }
-    .toast.error { border-left-color: #ff6b6b; }
-    .toast.success { border-left-color: #2ecc71; }
-    @keyframes toastIn {
-        from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-        to { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-    @media (max-width: 550px) {
-        .registro-container {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nápoles F.C. - Acceso Jugadores</title>
+    
+    <!-- Configuración PWA e iOS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nápoles FC">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1165/1165187.png">
+    <meta name="theme-color" content="#020c1a">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --primary-dark: #008f9b;
+            --accent: #FFD700;
+            --bg-dark: #020c1a;
+            --glass: rgba(12, 25, 45, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 210, 255, 0.15), transparent 50%),
+                linear-gradient(rgba(2, 12, 26, 0.8), rgba(2, 12, 26, 0.8)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300d2ff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 1.5rem;
+            color: white;
+            overflow-x: hidden;
         }
-        .header h1 {
-            font-size: 1.6rem;
+
+        .login-card {
+            max-width: 420px;
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 2.5rem;
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 3rem 2.5rem;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        input, select, .btn-primary {
-            padding: 0.8rem 1rem;
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .help-note {
-            font-size: 0.65rem;
+
+        .logo-area { text-align: center; margin-bottom: 2.5rem; }
+        .logo-area h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
         }
-        .radio-group {
-            gap: 1rem;
+
+        /* GRUPO DE ENTRADA CON MARGEN */
+        .input-group { margin-bottom: 2rem; }
+
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
-    }
-</style>
+
+        input {
+            width: 100%;
+            padding: 1.2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.2rem;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 4px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        }
+
+        /* BOTÓN CON MARGEN SUPERIOR */
+        .btn-submit {
+            width: 100%;
+            padding: 1.2rem;
+            border-radius: 1.2rem;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #00d2ff 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.7; }
+
+        .footer-links { margin-top: 2rem; text-align: center; font-size: 0.9rem; }
+        .footer-links a { color: var(--accent); text-decoration: none; font-weight: 700; }
+
+        .btn-download {
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.7rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            display: inline-block;
+        }
+
+        .error-toast {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            display: none;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        /* Detectar si ya es APP instalada */
+        @media (display-mode: standalone) {
+            #containerDownload { display: none !important; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="registro-container">
-    <div class="header">
-        <h1>NAPOLES F.C.</h1>
-        <p>Formulario de registro oficial</p>
-        <div class="badge">🏆 Temporada 2026 - 2027</div>
+<div class="login-card">
+    <div class="logo-area">
+        <h1>NÁPOLES F.C.</h1>
+        <p>Panel de Control de Jugadores</p>
     </div>
 
-    <form id="formRegistro">
-        <!-- PASO 1: Cédula -->
-        <div id="paso1" class="paso activo">
-            <div class="campo">
-                <label>🔢 CÉDULA (10 dígitos)</label>
-                <input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890" autocomplete="off">
-                <div class="help-note"><span>🔑</span> Ingresa tu número de cédula para empezar</div>
-            </div>
-            <button type="button" id="btnCedula" class="btn-primary" disabled>Validar</button>
-        </div>
+    <div class="input-group">
+        <label>Número de Cédula</label>
+        <input type="text" id="loginCedula" maxlength="10" placeholder="0000000000" inputmode="numeric">
+    </div>
 
-        <!-- PASO 2: Datos personales -->
-        <div id="paso2" class="paso">
-            <div class="campo"><label>Primer nombre</label><input type="text" id="n1" placeholder="Ej: LEONARDO"></div>
-            <div class="campo"><label>Segundo nombre</label><input type="text" id="n2" placeholder="ADRIAN"></div>
-            <div class="campo"><label>Apellidos</label><input type="text" id="ape" placeholder="Ej: MUÑOZ BUENDIA"></div>
-            <div class="campo"><label>Fecha de nacimiento</label><input type="date" id="fecha"></div>
-            <div class="help-note"><span>📅</span> Aquí debes ingresar tu fecha de nacimiento</div>
-            <button type="button" id="btnPaso2" class="btn-primary" disabled>Siguiente</button>
-        </div>
+    <button id="btnLogin" class="btn-submit" disabled>Iniciar Sesión</button>
 
-        <!-- PASO 3: Contacto -->
-        <div id="paso3" class="paso">
-            <div class="campo"><label>Teléfono (10 dígitos)</label><input type="tel" id="tel" maxlength="10" placeholder="Ej: 0991234567"></div>
-            <div class="campo"><label>Correo electrónico</label><input type="email" id="correo" placeholder="tú@ejemplo.com"></div>
-            <div class="help-note"><span>📞</span> Queremos estar en contacto contigo</div>
-            <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
-        </div>
+    <div id="mensajeError" class="error-toast"></div>
 
-        <!-- PASO 4: Fotos -->
-        <div id="paso4" class="paso">
-            <div class="campo"><label>📸 Foto perfil... Sonrie</label><input type="file" id="rostro" accept="image/jpeg,image/png"><span id="vistoRostro" class="visto-img"></span></div>
-            <div class="campo"><label>🪪 Foto de tú cédula (L. Frontal)</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"><span id="vistoCedula" class="visto-img"></span></div>
-            <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
+    <div class="footer-links">
+        ¿Eres nuevo en el club? <br><br>
+        <a href="index.html">CREAR CUENTA NUEVA ✨</a>
+        
+        <div id="containerDownload">
+            <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
         </div>
-
-        <!-- PASO 5: Armadura -->
-        <div id="paso5" class="paso">
-            <div class="campo"><label>🏷️ Nombre en tú camiseta</label><select id="nombreCamiseta"></select></div>
-            <div class="campo"><label>🔢 Número de tú dorsal</label><select id="dorsal"></select></div>
-            <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
-        </div>
-
-        <!-- PASO 6: Valores con pago de uniforme mejorado -->
-        <div id="paso6" class="paso">
-            <div class="campo"><label>🧦 Quieres Medias extras (+$2)</label>
-                <select id="medias">
-                    <option value="">Selecciona</option>
-                    <option value="NO">No</option>
-                    <option value="SI">Sí</option>
-                </select>
-            </div>
-            <div class="campo"><label>💰 N° transacción valor de inscripción ($5)</label>
-                <input id="inscripcion" placeholder="Ej: PAGO-12345">
-            </div>
-            <!-- Nuevo campo uniforme con opciones -->
-            <div class="campo">
-                <label>👕 Pago del uniforme (abono 75% + medias)</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="pagoUniforme" value="si"> Sí, ya pagué</label>
-                    <label><input type="radio" name="pagoUniforme" value="no"> No, aún no pago</label>
-                </div>
-                <div id="uniformeCondicional" class="condicional"></div>
-                <input type="hidden" id="uniforme" value="">
-            </div>
-            <button type="button" id="btnFinal" class="btn-primary" disabled>Finalizar registro</button>
-        </div>
-
-        <input type="hidden" id="fotoRostroB64">
-        <input type="hidden" id="fotoCedulaB64">
-    </form>
+    </div>
 </div>
 
-<div id="loader"><div class="spinner"></div><div id="loader-texto">Procesando...</div></div>
-<div id="modalExito"><div class="modal-card"><h2>✅ ¡Registro exitoso!</h2><p>Redirigiendo en <span id="contador">3</span> segundos...</p></div></div>
-
 <script>
-    // Lógica para el pago del uniforme
-    const radios = document.querySelectorAll('input[name="pagoUniforme"]');
-    const condicionalDiv = document.getElementById('uniformeCondicional');
-    const uniformeHidden = document.getElementById('uniforme');
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbzw2Ef4Wja_Nu1Gks7o5yAP-xBgH0R5WAiXgaKhJ_0Z4r6PRrkHSwoMyf8WbMoASgKv/exec";
+    
+    const cedulaInput = document.getElementById('loginCedula');
+    const btnLogin = document.getElementById('btnLogin');
+    const errorDiv = document.getElementById('mensajeError');
+    const manualBtn = document.getElementById('manualDownloadBtn');
+    const containerDownload = document.getElementById('containerDownload');
 
-    function actualizarCampoUniforme() {
-        const selected = document.querySelector('input[name="pagoUniforme"]:checked');
-        if (!selected) {
-            condicionalDiv.innerHTML = '';
-            uniformeHidden.value = '';
-            return;
-        }
-        if (selected.value === 'si') {
-            condicionalDiv.innerHTML = `
-                <div style="margin-top:8px;">
-                    <input type="text" id="transaccionUniforme" placeholder="Número de transacción del pago" style="width:100%; padding:0.8rem 1rem; border-radius:2rem; border:1px solid rgba(0,143,155,0.6); background:rgba(0,0,0,0.45); color:white;">
-                </div>
-            `;
-            const txInput = document.getElementById('transaccionUniforme');
-            if (txInput) {
-                txInput.addEventListener('input', () => {
-                    uniformeHidden.value = txInput.value;
-                    validarPaso6();
-                });
-                uniformeHidden.value = txInput.value || '';
-            }
-        } else {
-            // Opción "No, aún no pago"
-            condicionalDiv.innerHTML = `
-                <div class="aviso-pago">
-                    ⚠️ Debes abonar <strong>$10 + medias</strong> hasta el <strong>viernes 8 de mayo</strong>.<br>
-                    ¿Qué día vas a pagar?
-                    <select id="diaPago" style="margin-top:8px; padding:0.5rem; border-radius:1rem; background:#1e2a3e; color:white;">
-                        <option value="">Selecciona un día</option>
-                        <option value="Viernes 8 de mayo">Viernes 8 de mayo</option>
-                        <option value="Sábado 9 de mayo">Sábado 9 de mayo</option>
-                        <option value="Lunes 11 de mayo">Lunes 11 de mayo</option>
-                        <option value="Martes 12 de mayo">Martes 12 de mayo</option>
-                    </select>
-                </div>
-            `;
-            const selectDia = document.getElementById('diaPago');
-            if (selectDia) {
-                selectDia.addEventListener('change', () => {
-                    uniformeHidden.value = `PAGO PENDIENTE - pagará el ${selectDia.value}`;
-                    validarPaso6();
-                });
-                uniformeHidden.value = `PAGO PENDIENTE - pagará el ${selectDia.value || '?'}`;
-            }
-        }
-        validarPaso6();
+    // 1. OCULTAR SI YA ESTÁ INSTALADA
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        containerDownload.style.display = 'none';
     }
 
-    radios.forEach(radio => radio.addEventListener('change', actualizarCampoUniforme));
+    // 2. VALIDACIÓN DE INPUT
+    cedulaInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        e.target.value = value.slice(0, 10);
+        btnLogin.disabled = e.target.value.length !== 10;
+        errorDiv.style.display = 'none';
+    });
 
-    // Validación del paso 6 para habilitar el botón final
-    const medias = document.getElementById('medias');
-    const inscripcion = document.getElementById('inscripcion');
-    const btnFinal = document.getElementById('btnFinal');
+    // 3. LÓGICA DE INICIO DE SESIÓN
+    btnLogin.addEventListener('click', async () => {
+        const cedula = cedulaInput.value;
+        btnLogin.disabled = true;
+        btnLogin.innerText = 'VERIFICANDO...';
+        errorDiv.style.display = 'none';
 
-    function validarPaso6() {
-        const mediasOk = medias.value !== "";
-        const inscripcionOk = inscripcion.value.trim() !== "";
-        const pagoSeleccionado = document.querySelector('input[name="pagoUniforme"]:checked');
-        let uniformeOk = false;
-        if (pagoSeleccionado) {
-            if (pagoSeleccionado.value === 'si') {
-                const txInput = document.getElementById('transaccionUniforme');
-                uniformeOk = txInput && txInput.value.trim() !== "";
+        try {
+            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${cedula}`);
+            const data = await resp.json();
+
+            if (data.cedulaExiste && data.estado === "APROBADO") {
+                localStorage.setItem('jugador_aprobado', JSON.stringify({
+                    cedula: cedula,
+                    expira: Date.now() + 86400000
+                }));
+                window.location.href = 'perfil.html';
+            } else if (!data.cedulaExiste) {
+                mostrarError("La cédula no está registrada.");
             } else {
-                const diaSelect = document.getElementById('diaPago');
-                uniformeOk = diaSelect && diaSelect.value !== "";
+                mostrarError("Tu cuenta está en revisión por el delegado.");
             }
+        } catch (err) {
+            mostrarError("Error de conexión con el servidor.");
+        } finally {
+            btnLogin.disabled = false;
+            btnLogin.innerText = 'INICIAR SESIÓN';
         }
-        btnFinal.disabled = !(mediasOk && inscripcionOk && pagoSeleccionado && uniformeOk);
+    });
+
+    function mostrarError(msj) {
+        errorDiv.innerText = "⚠️ " + msj;
+        errorDiv.style.display = 'block';
     }
 
-    medias.addEventListener('change', validarPaso6);
-    inscripcion.addEventListener('input', validarPaso6);
-    
-    // Escuchar cambios en los campos dinámicos
-    document.addEventListener('input', (e) => {
-        if (e.target.id === 'transaccionUniforme' || e.target.id === 'diaPago') validarPaso6();
+    // 4. LÓGICA DE INSTALACIÓN
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        manualBtn.innerHTML = "👕 INSTALAR APP (CAMISETA)";
+        manualBtn.style.background = "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)";
+        manualBtn.style.color = "#000";
     });
-    document.addEventListener('change', (e) => {
-        if (e.target.id === 'diaPago') validarPaso6();
-    });
-    
-    // Observador para cuando se crean los campos dinámicos
-    const observer = new MutationObserver(() => validarPaso6());
-    observer.observe(condicionalDiv, { childList: true, subtree: true });
-</script>
 
-<script src="frontend.js"></script>
+    manualBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') containerDownload.style.display = 'none';
+            deferredPrompt = null;
+        } else {
+            alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar' o 'Añadir a pantalla de inicio'.");
+        }
+    });
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+    }
+</script>
 </body>
 </html>
