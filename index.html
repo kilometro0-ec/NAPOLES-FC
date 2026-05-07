@@ -54,6 +54,11 @@
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateX(-50%) scale(1); }
+            to { opacity: 0; transform: translateX(-50%) scale(0.9); }
+        }
 
         header {
             text-align: center;
@@ -366,10 +371,20 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             font-size: 0.85rem;
             max-width: 90%;
+            animation: toastSlideUp 0.3s ease;
+        }
+        
+        @keyframes toastSlideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
         .toast-notification.error {
             border-left-color: var(--rojo-error);
+        }
+        
+        .toast-notification.success {
+            border-left-color: var(--verde-exito);
         }
 
         @media (max-width: 550px) {
@@ -384,9 +399,9 @@
 </head>
 <body>
 
-<!-- IFRAME OCULTO PARA COMUNICACIÓN CON GOOGLE APPS SCRIPT -->
-<!-- ⚠️ IMPORTANTE: Reemplazar con tu URL de Google Apps Script -->
-<iframe id="puenteGS" src="https://script.google.com/macros/s/AKfycbyO-vxoegVPUPdxdFyxA_SsLckKhsUJFtug05kh0FJ672TrkBSpyTUqKiRgMi_t7OV8/exec" style="display: none;" onload="onPuenteListo()"></iframe>
+<!-- IFRAME PARA COMUNICACIÓN CON GOOGLE APPS SCRIPT -->
+<!-- ⚠️ IMPORTANTE: Reemplaza con la URL de tu Google Apps Script -->
+<iframe id="puenteGS" src="https://script.google.com/macros/s/AKfycbw-2-u73tCp9Pd7XXVTYfBBA1bODPKszx_f76Gsi66_k9tZT7y7mL-kXWZOcGlHRr0/exec" style="display: none;" onload="onPuenteListo()"></iframe>
 
 <div class="contenedor-principal">
     <header>
@@ -539,25 +554,96 @@
     let puenteListo = false;
     let callbacks = {};
     let nextId = 1;
+    let reconnectAttempts = 0;
+    const MAX_RECONNECT_ATTEMPTS = 5;
     
     // ================= COMUNICACIÓN CON IFRAME =================
     const iframe = document.getElementById('puenteGS');
     
+    // Función para verificar conexión periódicamente
+    function startHeartbeat() {
+        setInterval(() => {
+            if (puenteListo) {
+                pingBridge().catch(() => {
+                    console.log('❤️ Heartbeat falló, reintentando conexión...');
+                    puenteListo = false;
+                    reconnectBridge();
+                });
+            }
+        }, 30000);
+    }
+    
+    // Función para reconectar
+    function reconnectBridge() {
+        if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+            console.error('❌ Máximos intentos de reconexión alcanzados');
+            mostrarToast('Error de conexión persistente. Recarga la página.', 'error', 5000);
+            return;
+        }
+        
+        reconnectAttempts++;
+        console.log(`🔄 Intento de reconexión ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}`);
+        
+        const currentSrc = iframe.src;
+        iframe.src = 'about:blank';
+        setTimeout(() => {
+            iframe.src = currentSrc;
+        }, 100);
+    }
+    
+    // Función para hacer ping al puente
+    async function pingBridge() {
+        return new Promise((resolve, reject) => {
+            if (!iframe.contentWindow) {
+                reject(new Error('No hay ventana del iframe'));
+                return;
+            }
+            
+            const id = nextId++;
+            const timeout = setTimeout(() => {
+                delete callbacks[id];
+                reject(new Error('Timeout ping'));
+            }, 5000);
+            
+            callbacks[id] = {
+                resolve: () => { clearTimeout(timeout); resolve(); },
+                reject: (err) => { clearTimeout(timeout); reject(err); }
+            };
+            
+            iframe.contentWindow.postMessage({ action: 'ping', id: id }, '*');
+        });
+    }
+    
     function onPuenteListo() {
-        console.log('Iframe cargado');
+        console.log('✅ Iframe cargado correctamente');
+        setTimeout(async () => {
+            try {
+                await pingBridge();
+                console.log('✅ Conexión con puente establecida');
+            } catch (error) {
+                console.log('⚠️ Ping inicial falló, esperando mensaje ready...');
+            }
+        }, 500);
     }
     
     // Escuchar mensajes del iframe
     window.addEventListener('message', function(event) {
-        // Verificar que el mensaje viene del iframe
-        if (event.source !== iframe.contentWindow) return;
-        
         const data = event.data;
-        console.log('Mensaje recibido del puente:', data);
+        console.log('📨 Mensaje recibido en ventana principal:', data);
         
         if (data.action === 'ready') {
             puenteListo = true;
-            console.log('Puente listo para comunicarse');
+            reconnectAttempts = 0;
+            console.log('🎉 Puente listo para comunicarse!');
+            mostrarToast('Conexión establecida correctamente', 'success', 2000);
+            return;
+        }
+        
+        if (data.action === 'pong') {
+            if (data.id && callbacks[data.id]) {
+                callbacks[data.id].resolve();
+                delete callbacks[data.id];
+            }
             return;
         }
         
@@ -573,24 +659,52 @@
     
     function llamarBackend(action, data = {}) {
         return new Promise((resolve, reject) => {
-            if (!puenteListo) {
-                reject(new Error('El puente de comunicación no está listo. Espera unos segundos.'));
-                return;
-            }
-            
-            const id = nextId++;
-            callbacks[id] = { resolve, reject };
-            iframe.contentWindow.postMessage({ action, id, ...data }, '*');
-            
-            // Timeout por si no hay respuesta
-            setTimeout(() => {
-                if (callbacks[id]) {
-                    delete callbacks[id];
-                    reject(new Error('Timeout: No se recibió respuesta del servidor'));
+            let waitTime = 0;
+            const maxWait = 10000;
+            const interval = setInterval(() => {
+                if (puenteListo || waitTime >= maxWait) {
+                    clearInterval(interval);
+                    
+                    if (!puenteListo) {
+                        reject(new Error('El puente de comunicación no está listo. Verifica tu conexión a internet.'));
+                        return;
+                    }
+                    
+                    const id = nextId++;
+                    callbacks[id] = { resolve, reject };
+                    
+                    const timeout = setTimeout(() => {
+                        if (callbacks[id]) {
+                            delete callbacks[id];
+                            reject(new Error('Timeout: El servidor no respondió'));
+                        }
+                    }, 30000);
+                    
+                    callbacks[id].timeout = timeout;
+                    
+                    try {
+                        iframe.contentWindow.postMessage({ action, id, ...data }, '*');
+                    } catch (error) {
+                        clearTimeout(timeout);
+                        delete callbacks[id];
+                        reject(new Error('Error enviando mensaje: ' + error.message));
+                    }
                 }
-            }, 30000);
+                waitTime += 100;
+            }, 100);
         });
     }
+    
+    // Iniciar heartbeat cuando el puente esté listo
+    let heartbeatStarted = false;
+    const originalOnPuenteListo = onPuenteListo;
+    window.onPuenteListo = function() {
+        originalOnPuenteListo();
+        if (!heartbeatStarted) {
+            heartbeatStarted = true;
+            startHeartbeat();
+        }
+    };
     
     // ================= RELOJ COUNTDOWN =================
     function actualizarCountdown() {
@@ -633,7 +747,7 @@
         toast.innerHTML = `<span>${tipo === 'error' ? '❌' : '✅'}</span><span>${mensaje}</span>`;
         document.body.appendChild(toast);
         setTimeout(() => {
-            toast.style.animation = 'toastSlideUp 0.3s reverse forwards';
+            toast.style.animation = 'fadeOut 0.3s forwards';
             setTimeout(() => toast.remove(), 300);
         }, duracion);
     }
