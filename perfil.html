@@ -116,7 +116,7 @@
         .stat-icon { font-size: 1.5rem; margin-bottom: 6px; }
         .stat-label { font-size: 0.7rem; opacity: 0.7; }
         .stat-value { font-size: 1.5rem; font-weight: 800; color: #D4AF37; }
-        .values-section, .payments-section {
+        .values-section, .payments-section, .vocalia-section {
             background: rgba(10, 20, 40, 0.5);
             backdrop-filter: blur(10px);
             border-radius: 24px;
@@ -203,6 +203,11 @@
             margin-bottom: 16px;
             width: 100%;
         }
+        .warning-text {
+            color: #f39c12;
+            font-size: 0.7rem;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -212,17 +217,9 @@
     </div>
 </div>
 
-<!-- 🔥 Cargar configuración centralizada - SIN URL hardcodeada -->
 <script src="config.js"></script>
 
 <script>
-    // Verificar que config.js se cargó correctamente
-    if (typeof CONFIG === 'undefined') {
-        console.error('❌ config.js no cargado correctamente');
-        alert('Error de configuración. Recarga la página o contacta al administrador.');
-    }
-
-    // 🔥 Usar 'jugador_actual' que es como se guarda en login.html
     const session = JSON.parse(localStorage.getItem('jugador_actual'));
     
     if (!session || !session.cedula || Date.now() > session.expira) {
@@ -237,15 +234,13 @@
         const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
         
         try {
-            // 🔥 Usar CONFIG.URL_GAS (viene de config.js) - SIN URL hardcodeada
-            const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
+            const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
             const resp = await fetch(url);
             const data = await resp.json();
             
-            if (data.cedulaExiste && data.datosJugador) {
-                const j = data.datosJugador;
+            if (data.success && data.jugador) {
+                const j = data.jugador;
                 
-                // Calcular promedio de valores
                 const companerismo = Number(j.companerismo) || 8;
                 const respeto = Number(j.respeto) || 8;
                 const humildad = Number(j.humildad) || 8;
@@ -253,14 +248,10 @@
                 const promedio = (companerismo + respeto + humildad + puntualidad) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                // Usar URL de foto o avatar por defecto
                 let fotoUrl = j.urlFotoRostro || CONFIG.DEFAULT_AVATAR;
-                
-                // Formatear nombres
                 const nombreCompleto = `${j.primerNombre || ''} ${j.segundoNombre || ''} ${j.apellidos || ''}`.trim();
                 const nombreMostrar = nombreCompleto || j.nombreCamiseta || 'Jugador';
                 
-                // Determinar estado de medias
                 let mediasEstadoText = j.mediasEstado || 'null';
                 let mediasClass = '';
                 if (mediasEstadoText === 'PAGADO') mediasClass = 'pagado';
@@ -297,13 +288,24 @@
                         <div class="stat-card"><div class="stat-icon"><i class="fas fa-square" style="color:#e74c3c;"></i></div><div class="stat-label">ROJAS</div><div class="stat-value">${j.rojas || 0}</div></div>
                     </div>
                     <div class="values-section">
-                        <div class="section-title"><i class="fas fa-chart-line"></i> VALORES HUMANOS</div>
+                        <div class="section-title"><i class="fas fa-chart-line"></i> VALORES HUMANOS (Último partido)</div>
                         <div class="values-grid">
                             <div class="value-item"><span><i class="fas fa-handshake"></i> Compañerismo</span><span class="value-score">${companerismo}/10</span></div>
                             <div class="value-item"><span><i class="fas fa-heart"></i> Respeto</span><span class="value-score">${respeto}/10</span></div>
                             <div class="value-item"><span><i class="fas fa-leaf"></i> Humildad</span><span class="value-score">${humildad}/10</span></div>
                             <div class="value-item"><span><i class="fas fa-clock"></i> Puntualidad</span><span class="value-score">${puntualidad}/10</span></div>
                         </div>
+                    </div>
+                    <div class="vocalia-section">
+                        <div class="section-title"><i class="fas fa-money-bill-wave"></i> VOCALÍA</div>
+                        <div class="values-grid">
+                            <div class="value-item"><span>💰 Valor Vocalía</span><span class="value-score">$${j.valorVocalia || 0}</span></div>
+                            <div class="value-item"><span>📋 Vocalías Pendientes</span><span class="value-score">${j.vocaliasPendientes || 0}</span></div>
+                        </div>
+                        <div style="margin-top:12px; text-align:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:16px;">
+                            <i class="fas fa-coins"></i> Deuda Total Vocalía: <strong style="color:${(j.deudaVocalia || 0) > 0 ? '#e74c3c' : '#2ecc71'}">$${j.deudaVocalia || 0}</strong>
+                        </div>
+                        ${j.sancionEspecial ? `<div class="warning-text"><i class="fas fa-exclamation-triangle"></i> Sanción: ${escapeHtml(j.sancionEspecial)}</div>` : ''}
                     </div>
                     <div class="payments-section">
                         <div class="section-title"><i class="fas fa-credit-card"></i> ESTADO DE PAGOS</div>
@@ -312,10 +314,7 @@
                             <div class="payment-item"><i class="fas fa-tshirt"></i><div>Uniforme</div><span class="payment-status-badge ${j.unifEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.unifEstado || 'PENDIENTE'}</span></div>
                             <div class="payment-item"><i class="fas fa-socks"></i><div>Medias</div><span class="payment-status-badge ${mediasClass}">${mediasLabel}</span></div>
                         </div>
-                        <div style="margin-top:12px; text-align:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:16px;">
-                            <i class="fas fa-coins"></i> Deuda Vocalía: <strong style="color:${(j.deudaVocalia || 0) > 0 ? '#e74c3c' : '#2ecc71'}">$${j.deudaVocalia || 0}</strong>
-                        </div>
-                        <div style="margin-top:8px; text-align:center; font-size:0.7rem; opacity:0.7;">
+                        <div style="margin-top:12px; text-align:center; font-size:0.7rem; opacity:0.7;">
                             <i class="fas fa-tag"></i> Talla: ${j.tallaUni || 'No asignada'} | <i class="fas fa-tshirt"></i> Camiseta: ${j.nombreCamiseta || '-'}
                         </div>
                     </div>
