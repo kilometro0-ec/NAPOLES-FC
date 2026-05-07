@@ -9,6 +9,8 @@
     <style>
         :root {
             --primary-gold: #D4AF37;
+            --primary-gold-light: #f5e6a3;
+            --primary-gold-glow: rgba(212, 175, 55, 0.6);
             --dark-bg: #060912;
             --card-bg: rgba(255, 255, 255, 0.05);
             --text-main: #ffffff;
@@ -39,6 +41,7 @@
             color: var(--primary-gold);
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
 
         /* --- FILA DE TARJETAS (IDENTIDAD Y CAMISETA) --- */
@@ -49,73 +52,261 @@
             margin-bottom: 20px;
         }
 
-        .id-card-identity {
-            background: linear-gradient(145deg, rgba(212, 175, 55, 0.15), rgba(10, 20, 40, 0.95));
+        /* ESTILO BASE COMÚN PARA AMBAS TARJETAS */
+        .glass-card {
+            background: linear-gradient(145deg, rgba(10, 20, 40, 0.85), rgba(5, 10, 20, 0.95));
             border-radius: 20px;
-            border: 2px solid var(--primary-gold);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* EFECTO DE LUZ BRILLANTE (SHIMMER) PARA AMBAS TARJETAS */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(212, 175, 55, 0.15),
+                rgba(212, 175, 55, 0.3),
+                rgba(212, 175, 55, 0.15),
+                transparent
+            );
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* EFECTO DE BRILLO EN LOS BORDES */
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(212, 175, 55, 0.4), 
+                rgba(212, 175, 55, 0.1),
+                rgba(212, 175, 55, 0.4),
+                transparent 70%);
+            border-radius: 22px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glass-card:hover::after {
+            opacity: 1;
+            animation: borderGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* TARJETA DE IDENTIDAD */
+        .id-card-identity {
+            composes: glass-card;
             padding: 15px;
             text-align: center;
-            animation: pulseGlow 2.5s infinite ease-in-out;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: relative;
+            z-index: 2;
         }
 
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
-            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+        /* ANIMACIÓN DE PULSO SUAVE PARA LA TARJETA DE IDENTIDAD */
+        .id-card-identity {
+            animation: softPulse 3s infinite ease-in-out;
+        }
+
+        @keyframes softPulse {
+            0%, 100% { 
+                box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+                border-color: rgba(212, 175, 55, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+                border-color: rgba(212, 175, 55, 0.6);
+            }
         }
 
         .player-img {
             width: 80px; height: 80px;
             border-radius: 50%;
-            border: 2px solid var(--primary-gold);
+            border: 3px solid var(--primary-gold);
             object-fit: cover;
             margin-bottom: 10px;
             background: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 2;
         }
 
-        .id-card-jersey-wrap { perspective: 1000px; height: 180px; }
-        .jersey-card-inner {
-            position: relative; width: 100%; height: 100%;
-            transform-style: preserve-3d;
-            animation: rotateJersey 12s infinite linear;
+        .player-img:hover {
+            transform: scale(1.05);
         }
-        @keyframes rotateJersey { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
+
+        /* TARJETA DE CAMISETA 3D MEJORADA */
+        .id-card-jersey-wrap { 
+            perspective: 1000px; 
+            height: 180px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .jersey-card-inner {
+            position: relative; 
+            width: 100%; 
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.1s linear;
+            border-radius: 20px;
+        }
+
+        /* Animación de rotación más suave y continua */
+        @keyframes rotateJerseySmooth {
+            from { transform: rotateY(0); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .jersey-card-inner {
+            animation: rotateJerseySmooth 15s infinite linear;
+        }
+
+        /* Pausar animación al hacer hover */
+        .id-card-jersey-wrap:hover .jersey-card-inner {
+            animation-play-state: paused;
+        }
 
         .face-jersey {
-            position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(145deg, #0a1428, #000);
-            border-radius: 20px; border: 2px solid var(--glass-border);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: absolute; 
+            width: 100%; 
+            height: 100%;
+            background: linear-gradient(145deg, #0a1428, #000814);
+            border-radius: 20px; 
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
             backface-visibility: hidden;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
         }
 
-        .jersey-number { font-size: 4.5rem; font-weight: 900; color: var(--primary-gold); font-family: 'Outfit'; line-height: 1; }
+        /* Luz reflejante en la camiseta */
+        .face-jersey::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .id-card-jersey-wrap:hover .face-jersey::before {
+            opacity: 1;
+            animation: lensFlare 2s infinite;
+        }
+
+        @keyframes lensFlare {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            50% { transform: translate(10%, 10%) rotate(45deg); opacity: 0.6; }
+            100% { transform: translate(-10%, -10%) rotate(90deg); opacity: 0; }
+        }
+
+        .jersey-number { 
+            font-size: 4.5rem; 
+            font-weight: 900; 
+            color: var(--primary-gold); 
+            font-family: 'Outfit'; 
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .jersey-name {
+            font-size: 0.7rem; 
+            font-weight: 800; 
+            opacity: 0.8; 
+            letter-spacing: 2px;
+            color: var(--primary-gold-light);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
 
         /* --- ESTADÍSTICAS --- */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
         .stat-card {
-            background: var(--card-bg); border-radius: 12px; padding: 10px 5px;
-            text-align: center; border: 1px solid rgba(255,255,255,0.05);
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            padding: 10px 5px;
+            text-align: center; 
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         .stat-val { display: block; font-size: 1.1rem; font-weight: 800; }
         .stat-lab { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
 
         /* --- BLOQUES DE INFO --- */
         .section-box {
-            background: var(--card-bg); border-radius: 18px; padding: 15px;
-            margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05);
+            background: var(--card-bg); 
+            border-radius: 18px; 
+            padding: 15px;
+            margin-bottom: 12px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .section-box:hover {
+            border-color: rgba(212, 175, 55, 0.2);
         }
         .section-title {
-            font-size: 0.8rem; font-weight: 800; color: var(--primary-gold);
-            margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+            font-size: 0.8rem; 
+            font-weight: 800; 
+            color: var(--primary-gold);
+            margin-bottom: 12px; 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
         }
 
         .info-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 10px 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.03);
             font-size: 0.85rem;
         }
         .info-row:last-child { border: none; }
@@ -128,24 +319,64 @@
         .status-green { color: var(--success) !important; }
 
         .btn-sync {
-            width: 100%; background: transparent; border: 1px solid var(--primary-gold);
-            color: var(--primary-gold); padding: 12px; border-radius: 12px;
-            font-weight: 700; font-size: 0.8rem; cursor: pointer; margin-bottom: 15px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; 
+            background: linear-gradient(135deg, transparent, rgba(212, 175, 55, 0.1));
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold); 
+            padding: 12px; 
+            border-radius: 12px;
+            font-weight: 700; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            margin-bottom: 15px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px;
             transition: 0.3s;
         }
-        .btn-sync:active { background: rgba(212, 175, 55, 0.1); transform: scale(0.98); }
+        .btn-sync:hover {
+            background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .btn-sync:active { transform: scale(0.98); }
 
         .btn-logout {
-            width: 100%; padding: 15px; border-radius: 15px; border: none;
-            background: rgba(231, 76, 60, 0.1); color: #e74c3c;
-            font-weight: 800; cursor: pointer; margin-top: 10px;
+            width: 100%; 
+            padding: 15px; 
+            border-radius: 15px; 
+            border: none;
+            background: rgba(231, 76, 60, 0.1); 
+            color: #e74c3c;
+            font-weight: 800; 
+            cursor: pointer; 
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-logout:hover {
+            background: rgba(231, 76, 60, 0.2);
+            transform: translateY(-2px);
         }
 
-        .spinner { width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.1); border-top-color: var(--primary-gold); border-radius: 50%; animation: spin 1s infinite linear; margin: 100px auto; }
+        .spinner { 
+            width: 40px; 
+            height: 40px; 
+            border: 3px solid rgba(212, 175, 55, 0.1); 
+            border-top-color: var(--primary-gold); 
+            border-radius: 50%; 
+            animation: spin 1s infinite linear; 
+            margin: 100px auto; 
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
         
         .error-message { text-align: center; padding: 50px; color: var(--danger); }
+        
+        /* Ajustes responsivos */
+        @media (max-width: 400px) {
+            .jersey-number { font-size: 3.5rem; }
+            .player-img { width: 65px; height: 65px; }
+            .id-card-jersey-wrap { height: 160px; }
+        }
     </style>
 </head>
 <body>
@@ -201,19 +432,24 @@
                     </div>
 
                     <div class="cards-row">
-                        <!-- TARJETA DE IDENTIDAD -->
-                        <div class="id-card-identity">
+                        <!-- TARJETA DE IDENTIDAD CON LUZ -->
+                        <div class="id-card-identity glass-card">
                             <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
                             <div style="font-weight:900; font-family:'Outfit'; text-transform:uppercase; font-size:0.9rem;">${j.primerNombre || ''} ${j.segundoNombre || ''}</div>
-                            <div style="font-size:0.6rem; color:var(--text-muted); margin-top:2px;">C.I. ${cedula}</div>
+                            <div style="font-size:0.6rem; color:var(--text-muted); margin-top:2px;">
+                                <i class="fas fa-id-card"></i> C.I. ${cedula}
+                            </div>
                         </div>
 
-                        <!-- TARJETA DE CAMISETA (GIRO 3D) -->
+                        <!-- TARJETA DE CAMISETA 3D MEJORADA -->
                         <div class="id-card-jersey-wrap">
                             <div class="jersey-card-inner">
                                 <div class="face-jersey">
-                                    <div style="font-size:0.7rem; font-weight:800; opacity:0.7; letter-spacing:1px;">${j.nombreCamiseta || 'NÁPOLES'}</div>
+                                    <div class="jersey-name">${j.nombreCamiseta || 'NÁPOLES'}</div>
                                     <div class="jersey-number">${j.dorsal || '00'}</div>
+                                    <div style="font-size:0.55rem; opacity:0.5; margin-top:5px;">
+                                        <i class="fas fa-tshirt"></i> ${j.tallaUni || 'M'}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -299,7 +535,7 @@
                     <div style="height: 30px;"></div>
                 `;
             } else {
-                container.innerHTML = `<p class="error-message">Jugador no encontrado.<br><small>${data.error || ''}</small></p>`;
+                container.innerHTML = `<p class="error-message"><i class="fas fa-user-slash"></i><br>Jugador no encontrado.<br><small>${data.error || ''}</small></p>`;
             }
         } catch (e) {
             console.error('Error:', e);
