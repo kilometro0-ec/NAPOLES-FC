@@ -39,93 +39,22 @@
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
 
-        /* --- CONTENEDOR 3D DE LA TARJETA --- */
-        .id-card-3d {
-            perspective: 1200px;
-            width: 100%;
-            height: 320px;
-            margin-bottom: 30px;
-        }
-
-        .id-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-            animation: rotateContinuous 12s infinite linear; /* Giro constante */
-        }
-
-        /* Pausar rotación al tocar/hover para poder ver los datos o clickear el botón */
-        .id-card-3d:active .id-card-inner, 
-        .id-card-3d:hover .id-card-inner {
-            animation-play-state: paused;
-        }
-
-        @keyframes rotateContinuous {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 30px;
+        /* --- TARJETA 1: IDENTIDAD (FOTO + MEDIA + CI) --- */
+        .id-card-identity {
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.1), rgba(10, 20, 40, 0.8));
+            border-radius: 24px;
             border: 2px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-        }
-
-        /* LADO A: ESTILO CAMISETA (Dorso) */
-        .face-jersey {
-            background: linear-gradient(145deg, #0a1428 0%, #060912 100%);
-        }
-
-        .jersey-design {
-            position: absolute;
-            top: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(212, 175, 55, 0.03) 40px, rgba(212, 175, 55, 0.03) 80px);
-            z-index: 0;
-        }
-
-        .jersey-name {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            color: #fff;
-            letter-spacing: 2px;
-            z-index: 1;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        .jersey-number {
-            font-family: 'Outfit', sans-serif;
-            font-size: 6rem;
-            font-weight: 900;
-            color: var(--primary-gold);
-            line-height: 1;
-            z-index: 1;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
-        }
-
-        /* LADO B: FICHA TÉCNICA (Foto y Botón) */
-        .face-photo {
-            background: linear-gradient(145deg, rgba(15, 25, 45, 0.95), #060912);
-            transform: rotateY(180deg);
-            padding: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
         .photo-wrapper {
             position: relative;
-            margin-bottom: 15px;
+            width: 140px;
+            margin: 0 auto 15px;
         }
 
         .player-img {
@@ -134,39 +63,37 @@
             border-radius: 50%;
             border: 3px solid var(--primary-gold);
             object-fit: cover;
-            padding: 5px;
+            padding: 4px;
             background: #000;
         }
 
         .ovr-badge {
             position: absolute;
-            bottom: 0;
+            bottom: 5px;
             right: 0;
             background: var(--primary-gold);
             color: #000;
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 1.3rem;
-            border: 3px solid #060912;
+            font-size: 1.4rem;
+            border: 3px solid #0b1426;
             font-family: 'Outfit', sans-serif;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .ci-label {
-            font-size: 0.8rem;
+        .ci-badge {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 15px;
-            background: rgba(255,255,255,0.05);
-            padding: 4px 12px;
-            border-radius: 20px;
+            margin: 10px 0 15px;
+            display: block;
         }
 
-        /* BOTÓN ACTUALIZAR DENTRO DE LA CARD */
-        .btn-mini-sync {
+        .btn-sync {
             background: var(--primary-gold);
             color: #000;
             border: none;
@@ -175,51 +102,109 @@
             font-weight: 800;
             font-size: 0.75rem;
             cursor: pointer;
-            display: flex;
+            transition: 0.3s;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: 0.3s;
         }
 
-        .btn-mini-sync:active { transform: scale(0.9); }
+        /* --- TARJETA 2: CAMISETA (GIRO CONSTANTE) --- */
+        .id-card-jersey-wrap {
+            perspective: 1000px;
+            width: 100%;
+            height: 280px;
+            margin-bottom: 25px;
+        }
 
-        /* --- SECCIONES DE ESTADÍSTICAS --- */
+        .jersey-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: rotateJersey 10s infinite linear;
+        }
+
+        @keyframes rotateJersey {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .face-jersey {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #0a1428 0%, #060912 100%);
+            border-radius: 24px;
+            border: 2px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            -webkit-backface-visibility: visible;
+            backface-visibility: visible;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .jersey-stripes {
+            position: absolute;
+            top: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(212, 175, 55, 0.02) 30px, rgba(212, 175, 55, 0.02) 60px);
+        }
+
+        .jersey-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #fff;
+            letter-spacing: 3px;
+            z-index: 1;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+
+        .jersey-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 6.5rem;
+            font-weight: 900;
+            color: var(--primary-gold);
+            line-height: 1;
+            z-index: 1;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
+        }
+
+        /* --- OTROS ESTILOS --- */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
         .stat-card {
-            background: var(--card-bg); border-radius: 20px; padding: 12px;
+            background: var(--card-bg); border-radius: 18px; padding: 12px;
             text-align: center; border: 1px solid rgba(255,255,255,0.05);
         }
-        .stat-val { font-size: 1.3rem; font-weight: 800; color: #fff; font-family: 'Outfit'; }
+        .stat-val { font-size: 1.2rem; font-weight: 800; font-family: 'Outfit'; }
         .stat-lab { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; }
 
         .section-box {
-            background: var(--card-bg); border-radius: 24px; padding: 18px;
+            background: var(--card-bg); border-radius: 20px; padding: 15px;
             margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05);
         }
-        .box-title { font-size: 0.8rem; font-weight: 700; color: var(--primary-gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .box-title { font-size: 0.8rem; font-weight: 700; color: var(--primary-gold); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
 
-        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem; }
         .info-row span:first-child { color: var(--text-muted); }
         .info-row span:last-child { font-weight: 700; color: var(--primary-gold); }
 
         .btn-logout {
-            width: 100%; padding: 15px; border-radius: 18px; border: none;
-            background: rgba(231, 76, 60, 0.15); color: #e74c3c;
+            width: 100%; padding: 14px; border-radius: 15px; border: none;
+            background: rgba(231, 76, 60, 0.1); color: #e74c3c;
             font-weight: 700; cursor: pointer; margin-top: 10px;
         }
 
-        .loading-wrap { text-align: center; padding: 100px 0; }
-        .spinner { width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.1); border-top-color: var(--primary-gold); border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 15px; }
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.1); border-top-color: var(--primary-gold); border-radius: 50%; animation: spin 1s infinite linear; margin: 100px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
 <div class="profile-container" id="perfilContent">
-    <div class="loading-wrap">
-        <div class="spinner"></div>
-        <p>CARGANDO PERFIL...</p>
-    </div>
+    <div class="spinner"></div>
 </div>
 
 <script src="config.js"></script>
@@ -259,61 +244,50 @@
                         <h1>⚜️ ${CONFIG.APP_NAME} ⚜️</h1>
                     </div>
 
-                    <!-- ID CARD 3D GIRATORIA -->
-                    <div class="id-card-3d">
-                        <div class="id-card-inner">
-                            
-                            <!-- LADO A: CAMISETA -->
-                            <div class="card-face face-jersey">
-                                <div class="jersey-design"></div>
+                    <!-- ID CARD 1: IDENTIDAD -->
+                    <div class="id-card-identity">
+                        <div class="photo-wrapper">
+                            <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
+                            <div class="ovr-badge">${ovr}</div>
+                        </div>
+                        <div style="font-weight:800; font-size:1.3rem;">${escapeHtml(j.primerNombre)} ${escapeHtml(j.apellidos)}</div>
+                        <span class="ci-badge"><i class="fas fa-fingerprint"></i> CI: ${ciLimpia}</span>
+                        
+                        <button class="btn-sync" onclick="refrescarPerfil()">
+                            <i class="fas fa-sync-alt"></i> ACTUALIZAR PERFIL
+                        </button>
+                    </div>
+
+                    <!-- ID CARD 2: CAMISETA GIRATORIA -->
+                    <div class="id-card-jersey-wrap">
+                        <div class="jersey-card-inner">
+                            <div class="face-jersey">
+                                <div class="jersey-stripes"></div>
                                 <div class="jersey-name">${escapeHtml(nombreDorso)}</div>
                                 <div class="jersey-number">${j.dorsal || '00'}</div>
-                            </div>
-
-                            <!-- LADO B: FOTO Y ACTUALIZACIÓN -->
-                            <div class="card-face face-photo">
-                                <div class="photo-wrapper">
-                                    <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
-                                    <div class="ovr-badge">${ovr}</div>
-                                </div>
-                                <div style="font-weight:800; font-size:1.2rem; margin-bottom:2px;">${escapeHtml(j.primerNombre)} ${escapeHtml(j.apellidos)}</div>
-                                <div class="ci-label"><i class="fas fa-id-card"></i> CI: ${ciLimpia}</div>
-                                
-                                <button class="btn-mini-sync" onclick="refrescarPerfil()">
-                                    <i class="fas fa-sync-alt"></i> ACTUALIZAR DATOS
-                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- RESUMEN DE CAMPO -->
+                    <!-- ESTADÍSTICAS -->
                     <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-val">${j.goles || 0}</div>
-                            <div class="stat-lab">Goles</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-val" style="color:#f1c40f;">${j.amarillas || 0}</div>
-                            <div class="stat-lab">Amarillas</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-val" style="color:#e74c3c;">${j.rojas || 0}</div>
-                            <div class="stat-lab">Rojas</div>
-                        </div>
+                        <div class="stat-card"><div class="stat-val">${j.goles || 0}</div><div class="stat-lab">Goles</div></div>
+                        <div class="stat-card"><div class="stat-val" style="color:#f1c40f;">${j.amarillas || 0}</div><div class="stat-lab">Amarillas</div></div>
+                        <div class="stat-card"><div class="stat-val" style="color:#e74c3c;">${j.rojas || 0}</div><div class="stat-lab">Rojas</div></div>
                     </div>
 
                     <!-- VALORES -->
                     <div class="section-box">
-                        <div class="box-title"><i class="fas fa-shield-halved"></i> ATRIBUTOS HUMANOS</div>
+                        <div class="box-title"><i class="fas fa-star"></i> VALORES HUMANOS</div>
                         <div class="info-row"><span>Compañerismo</span><span>${comp}/10</span></div>
                         <div class="info-row"><span>Respeto</span><span>${respV}/10</span></div>
                         <div class="info-row"><span>Humildad</span><span>${hum}/10</span></div>
                         <div class="info-row"><span>Puntualidad</span><span>${punt}/10</span></div>
                     </div>
 
-                    <!-- ESTADO ADMINISTRATIVO -->
+                    <!-- VOCALÍA -->
                     <div class="section-box">
-                        <div class="box-title"><i class="fas fa-receipt"></i> VOCALÍA Y PAGOS</div>
+                        <div class="box-title"><i class="fas fa-wallet"></i> ESTADO DE CUENTA</div>
                         <div class="info-row"><span>Deuda Vocalía</span><span style="color:${Number(j.deudaVocalia) > 0 ? '#e74c3c' : '#2ecc71'}">$${j.deudaVocalia || 0}</span></div>
                         <div class="info-row"><span>Inscripción</span><span>${j.inscripEstado || 'PENDIENTE'}</span></div>
                         <div class="info-row"><span>Uniforme</span><span>${j.unifEstado || 'PENDIENTE'}</span></div>
@@ -323,15 +297,15 @@
                 `;
 
             } else {
-                container.innerHTML = `<div style="text-align:center; padding:50px;">❌ Error: Jugador no encontrado</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:50px;">❌ Jugador no encontrado</div>`;
             }
         } catch (e) {
-            container.innerHTML = `<div style="text-align:center; padding:50px;">❌ Error de conexión con el servidor</div>`;
+            container.innerHTML = `<div style="text-align:center; padding:50px;">❌ Error de conexión</div>`;
         }
     }
 
     function refrescarPerfil() { 
-        document.getElementById('perfilContent').innerHTML = '<div class="loading-wrap"><div class="spinner"></div><p>ACTUALIZANDO...</p></div>';
+        document.getElementById('perfilContent').innerHTML = '<div class="spinner"></div>';
         cargarPerfil(session.cedula); 
     }
     
