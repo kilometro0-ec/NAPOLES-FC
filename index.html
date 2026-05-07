@@ -887,4 +887,136 @@
         }
         
         mostrarLoader(true, "Cargando dorsales...");
-        const selectNombre =
+        const selectNombre = document.getElementById('nombreCamiseta');
+        const selectDorsal = document.getElementById('dorsal');
+        selectNombre.innerHTML = '<option value="">Selecciona</option>';
+        selectDorsal.innerHTML = '<option value="">Selecciona</option>';
+        
+        selectNombre.add(new Option(n1.value.trim(), n1.value.trim()));
+        if (n2.value.trim()) selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
+        
+        try {
+            const resp = await fetch(`${URL_GAS}?action=getDorsales`);
+            const ocupados = await resp.json();
+            for (let i = 1; i <= 99; i++) {
+                if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
+            }
+            if (selectDorsal.options.length === 1) {
+                mostrarToast("No hay dorsales disponibles. Contacta al administrador.", "error");
+                mostrarLoader(false);
+                return;
+            }
+        } catch (error) {
+            mostrarToast("No se pudieron cargar los dorsales.", "error");
+        }
+        mostrarLoader(false);
+        verPaso(5);
+    });
+
+    // ================= PASO 5 =================
+    const nombreCamiseta = document.getElementById('nombreCamiseta');
+    const dorsal = document.getElementById('dorsal');
+    const btnPaso5 = document.getElementById('btnPaso5');
+    
+    function validarPaso5() {
+        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
+    }
+    
+    nombreCamiseta.addEventListener('change', validarPaso5);
+    dorsal.addEventListener('change', validarPaso5);
+    
+    btnPaso5.addEventListener('click', () => {
+        if (!nombreCamiseta.value) {
+            mostrarToast("Selecciona un nombre para la camiseta", "error");
+            return;
+        }
+        if (!dorsal.value) {
+            mostrarToast("Selecciona un número dorsal", "error");
+            return;
+        }
+        verPaso(6);
+    });
+
+    // ================= PASO 6 =================
+    const talla = document.getElementById('talla');
+    const medias = document.getElementById('medias');
+    const inscripcion = document.getElementById('inscripcion');
+    const uniforme = document.getElementById('uniforme');
+    const btnFinal = document.getElementById('btnFinal');
+
+    function validarPaso6() {
+        const tallaValida = talla.value !== "";
+        const mediasValida = medias.value !== "";
+        const inscripcionValida = inscripcion.value.trim() !== "";
+        const uniformeValida = uniforme.value.trim() !== "";
+        btnFinal.disabled = !(tallaValida && mediasValida && inscripcionValida && uniformeValida);
+    }
+    
+    [talla, medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
+    [talla, medias, inscripcion, uniforme].forEach(el => el.addEventListener('change', validarPaso6));
+
+    // ================= ENVÍO FINAL =================
+    btnFinal.addEventListener('click', async () => {
+        if (btnFinal.disabled) {
+            mostrarToast("Completa todos los campos del paso 6", "error");
+            return;
+        }
+
+        mostrarLoader(true, "Registrando jugador...");
+
+        // Construir objeto con datos para enviar como JSON
+        const datos = {
+            action: 'registrar',
+            ced: ced.value,
+            n1: n1.value.trim(),
+            n2: n2.value.trim(),
+            ape: ape.value.trim(),
+            fecha: fecha.value,
+            tel: tel.value.replace(/\D/g, ''),
+            correo: correo.value.trim().toLowerCase(),
+            medias: medias.value,
+            dorsal: dorsal.value,
+            nombreCamiseta: nombreCamiseta.value,
+            inscripcion: inscripcion.value.trim(),
+            uniforme: uniforme.value.trim(),
+            talla: talla.value,
+            fotoRostroB64: fotoRostroB64.value,
+            fotoCedulaB64: fotoCedulaB64.value
+        };
+
+        try {
+            const response = await fetch(URL_GAS, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(datos)
+            });
+            
+            // IMPORTANTE: Con no-cors no podemos leer la respuesta directamente
+            // Asumimos éxito si no hay error de red
+            mostrarLoader(false);
+            modalExito.style.display = 'flex';
+            let segundos = 3;
+            const spanContador = document.getElementById('contador');
+            const intervalo = setInterval(() => {
+                segundos--;
+                if (spanContador) spanContador.innerText = segundos;
+                if (segundos <= 0) {
+                    clearInterval(intervalo);
+                    window.location.href = 'login.html';
+                }
+            }, 1000);
+            
+        } catch (error) {
+            mostrarLoader(false);
+            console.error("Error de red:", error);
+            mostrarToast("Error de red. Revisa tu conexión.", "error");
+        }
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        verificarFotos();
+    });
+</script>
+</body>
+</html>
