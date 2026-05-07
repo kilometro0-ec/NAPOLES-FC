@@ -182,10 +182,18 @@
     </div>
 </div>
 
+<!-- Cargar configuración centralizada -->
+<script src="config.js"></script>
+
 <script>
-    // REEMPLAZA con tu URL del Web App de Google Apps Script
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbw93aokkZs0TTqSHv5LgJsBG3yLN2eOEmcwcvjNFzbtOnUeCCtMx5lQP4mq8loPC9Ky/exec";
-    
+    // Verificar que config.js se cargó correctamente
+    if (typeof CONFIG === 'undefined') {
+        console.error('❌ config.js no cargado correctamente');
+        alert('Error de configuración. Recarga la página o contacta al administrador.');
+    } else {
+        console.log('✅ Configuración cargada:', CONFIG.URL_GAS);
+    }
+
     const cedulaInput = document.getElementById('loginCedula');
     const btnLogin = document.getElementById('btnLogin');
     const errorDiv = document.getElementById('mensajeError');
@@ -210,28 +218,30 @@
         errorDiv.style.display = 'none';
 
         try {
-            // Llamada corregida: obtener datos completos del jugador
-            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${cedula}`);
+            // Usar CONFIG.URL_GAS en lugar de la variable local
+            const resp = await fetch(`${CONFIG.URL_GAS}?action=validarRegistro&cedula=${cedula}`);
             const data = await resp.json();
+
+            console.log('Respuesta del servidor:', data); // Para depuración
 
             if (data.cedulaExiste && data.estado === "APROBADO" && data.datosJugador) {
                 // Guardar TODOS los datos del jugador en localStorage
                 localStorage.setItem('jugador_actual', JSON.stringify({
                     ...data.datosJugador,
                     cedula: cedula,
-                    expira: Date.now() + 86400000
+                    expira: Date.now() + (CONFIG.TIEMPO_SESION || 86400000)
                 }));
                 window.location.href = 'perfil.html';
             } else if (!data.cedulaExiste) {
-                mostrarError("La cédula no está registrada.");
+                mostrarError("❌ La cédula no está registrada. Por favor, regístrate primero.");
             } else if (data.estado !== "APROBADO") {
-                mostrarError("Tu cuenta está en revisión por el delegado. Estado actual: " + (data.estado || "PENDIENTE"));
+                mostrarError("⏳ Tu cuenta está en revisión por el delegado. Estado actual: " + (data.estado || "PENDIENTE"));
             } else {
-                mostrarError("No se pudieron cargar tus datos. Contacta al administrador.");
+                mostrarError("⚠️ No se pudieron cargar tus datos. Contacta al administrador.");
             }
         } catch (err) {
-            console.error(err);
-            mostrarError("Error de conexión con el servidor.");
+            console.error('Error de conexión:', err);
+            mostrarError("🔌 Error de conexión con el servidor. Verifica tu internet.");
         } finally {
             btnLogin.disabled = false;
             btnLogin.innerText = 'INICIAR SESIÓN';
@@ -239,8 +249,14 @@
     });
 
     function mostrarError(msj) {
-        errorDiv.innerText = "⚠️ " + msj;
+        errorDiv.innerText = msj;
         errorDiv.style.display = 'block';
+        // Ocultar después de 5 segundos
+        setTimeout(() => {
+            if (errorDiv.style.display === 'block') {
+                errorDiv.style.display = 'none';
+            }
+        }, 5000);
     }
 
     let deferredPrompt;
@@ -264,7 +280,7 @@
     });
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('Service Worker error:', err));
     }
 </script>
 </body>
