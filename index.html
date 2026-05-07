@@ -6,10 +6,8 @@
     <title>Nápoles F.C. - Registro Oficial</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
-        /* ==================== RESET Y VARIABLES ==================== */
         * {
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
             margin: 0;
             padding: 0;
         }
@@ -18,44 +16,29 @@
             --azul-noche: #1A2B48;
             --cardenillo: #008B94;
             --dorado: #D4AF37;
-            --dorado-oscuro: #B59461;
-            --blanco-puro: #ffffff;
-            --gris-suave: rgba(255, 255, 255, 0.1);
-            --negro-trans: rgba(0, 0, 0, 0.4);
             --rojo-error: #e74c3c;
             --verde-exito: #2ecc71;
         }
 
         body {
             background: radial-gradient(circle at 10% 20%, #0a1928, #020c1a);
-            font-family: 'Inter', 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            position: relative;
         }
 
-        /* ==================== CONTENEDOR PRINCIPAL ==================== */
         .contenedor-principal {
             max-width: 520px;
             width: 100%;
-            margin: 20px auto;
             background: rgba(26, 43, 72, 0.75);
             backdrop-filter: blur(18px);
             border-radius: 2rem;
             border: 1px solid rgba(181, 148, 97, 0.4);
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(181, 148, 97, 0.15) inset;
             padding: 2rem 1.8rem;
-            transition: transform 0.25s ease, box-shadow 0.3s;
-            animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        .contenedor-principal:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 35px 55px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s ease;
         }
 
         @keyframes slideUp {
@@ -69,12 +52,6 @@
             }
         }
 
-        /* ==================== HEADER ==================== */
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
         h1 {
             font-size: 2rem;
             font-weight: 800;
@@ -82,43 +59,34 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
+            text-align: center;
             margin-bottom: 0.4rem;
         }
 
         .subtitulo {
             color: #b0c4de;
             font-size: 0.85rem;
-            font-weight: 400;
+            text-align: center;
         }
 
         .badge {
-            display: inline-block;
+            display: block;
+            text-align: center;
             background: rgba(0, 139, 148, 0.2);
             border-radius: 60px;
             padding: 0.3rem 1rem;
             font-size: 0.7rem;
             color: var(--dorado);
-            margin-top: 0.6rem;
-            font-weight: 500;
+            margin: 0.6rem auto 0;
+            width: fit-content;
         }
 
-        /* ==================== RELOJ COUNTDOWN ==================== */
         .countdown-container {
             background: rgba(0, 0, 0, 0.5);
             border-radius: 1rem;
             padding: 0.8rem;
             margin-top: 1rem;
             text-align: center;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .countdown-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--dorado);
-            margin-bottom: 0.5rem;
         }
 
         .countdown {
@@ -126,11 +94,6 @@
             justify-content: center;
             gap: 0.8rem;
             flex-wrap: wrap;
-        }
-
-        .countdown-item {
-            text-align: center;
-            min-width: 60px;
         }
 
         .countdown-number {
@@ -141,27 +104,16 @@
             background-clip: text;
             color: transparent;
             display: block;
-            line-height: 1;
         }
 
         .countdown-label {
             font-size: 0.6rem;
             color: #b0c4de;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .countdown-message {
-            margin-top: 0.5rem;
-            font-size: 0.75rem;
-            color: #ff6b6b;
-            font-weight: 500;
-        }
-
-        /* ==================== PASOS ==================== */
         .paso {
             display: none;
-            animation: fadeSlide 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            animation: fadeSlide 0.4s ease;
         }
 
         .paso.activo {
@@ -179,7 +131,6 @@
             }
         }
 
-        /* ==================== CAMPOS ==================== */
         .campo {
             margin-bottom: 1.2rem;
         }
@@ -188,8 +139,6 @@
             display: block;
             font-size: 0.75rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             color: #9ab3cf;
             margin-bottom: 0.25rem;
         }
@@ -203,15 +152,12 @@
             color: white;
             font-size: 1rem;
             font-family: 'Inter', monospace;
-            transition: all 0.25s;
             outline: none;
         }
 
         input:focus, select:focus {
             border-color: var(--cardenillo);
             box-shadow: 0 0 0 3px rgba(0, 139, 148, 0.3);
-            background: rgba(0, 0, 0, 0.7);
-            transform: scale(1.01);
         }
 
         input.error, select.error {
@@ -225,58 +171,6 @@
             75% { transform: translateX(5px); }
         }
 
-        input::placeholder, select::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.85rem;
-        }
-
-        select option {
-            background: var(--azul-noche);
-            color: white;
-            padding: 10px;
-        }
-
-        .help-note {
-            font-size: 0.7rem;
-            color: #8db5d0;
-            margin-top: 0.3rem;
-            margin-left: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Mensaje de éxito al subir foto */
-        .mensaje-exito-foto {
-            color: var(--verde-exito);
-            font-size: 0.75rem;
-            margin-top: 5px;
-            margin-left: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            animation: fadeInLeft 0.3s ease;
-        }
-
-        @keyframes fadeInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Visto al lado del input */
-        .visto-icon {
-            font-size: 1.3rem;
-            display: none;
-            min-width: 30px;
-            text-align: center;
-        }
-
         .file-input-wrapper {
             display: flex;
             align-items: center;
@@ -287,7 +181,19 @@
             flex: 1;
         }
 
-        /* ==================== BOTONES ==================== */
+        .visto-icon {
+            font-size: 1.3rem;
+            display: none;
+        }
+
+        .mensaje-exito-foto {
+            color: var(--verde-exito);
+            font-size: 0.75rem;
+            margin-top: 5px;
+            margin-left: 12px;
+            display: none;
+        }
+
         .btn-primary {
             background: linear-gradient(105deg, var(--cardenillo), #006b74);
             border: none;
@@ -296,71 +202,35 @@
             border-radius: 3rem;
             font-weight: 700;
             font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
             color: white;
             cursor: pointer;
             margin-top: 1.2rem;
-            transition: all 0.25s;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            background: linear-gradient(105deg, #00a5b3, #00808a);
-            box-shadow: 0 10px 20px rgba(0, 139, 148, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(1px);
         }
 
         .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s, height 0.4s;
-            z-index: -1;
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            background: linear-gradient(105deg, #00a5b3, #00808a);
         }
 
-        .btn-primary:active::after {
-            width: 200px;
-            height: 200px;
-        }
-
-        /* Grid para paso 5 */
         .grid-2cols {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
 
-        /* ==================== LOADER ==================== */
         #loader {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            gap: 20px;
             z-index: 10000;
         }
 
@@ -378,28 +248,14 @@
             100% { transform: rotate(360deg); }
         }
 
-        #loader-texto {
-            color: white;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        /* ==================== MODAL ÉXITO ==================== */
         #modalExito {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
             justify-content: center;
             align-items: center;
             z-index: 10002;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal-card {
@@ -408,118 +264,42 @@
             padding: 2rem;
             text-align: center;
             border: 2px solid var(--dorado);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             max-width: 320px;
             width: 85%;
-            animation: modalZoom 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
-        }
-
-        @keyframes modalZoom {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
         }
 
         .modal-card h2 {
             color: var(--dorado);
             margin-bottom: 0.8rem;
-            font-size: 1.5rem;
         }
 
-        .modal-card p {
-            color: white !important;
-            font-size: 1rem;
-        }
-
-        #contador {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--dorado), #ffd700);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            min-width: 50px;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* ==================== TOASTS ==================== */
         .toast-notification {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(12px);
             color: white;
             padding: 12px 24px;
             border-radius: 60px;
-            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 10px;
             z-index: 10001;
-            animation: toastSlideUp 0.3s ease forwards;
             border-left: 4px solid var(--dorado);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             font-size: 0.85rem;
-            max-width: 90%;
         }
 
         .toast-notification.error {
             border-left-color: var(--rojo-error);
-            background: rgba(30, 20, 20, 0.95);
         }
 
-        .toast-notification.success {
-            border-left-color: var(--verde-exito);
-            background: rgba(20, 30, 20, 0.95);
-        }
-
-        @keyframes toastSlideUp {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
-        /* ==================== RESPONSIVE ==================== */
         @media (max-width: 550px) {
-            body {
-                padding: 1rem;
-            }
             .contenedor-principal {
                 padding: 1.5rem;
             }
-            h1 {
-                font-size: 1.5rem;
-            }
-            input, select, .btn-primary {
-                padding: 0.8rem 1rem;
-            }
             .grid-2cols {
                 grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            .countdown-number {
-                font-size: 1.2rem;
-            }
-            .countdown-item {
-                min-width: 45px;
             }
         }
     </style>
@@ -527,35 +307,40 @@
 <body>
 
 <div class="contenedor-principal">
-    <header>
-        <h1>⚓ NÁPOLES F.C.</h1>
-        <p class="subtitulo">Formulario de registro oficial</p>
-        <div class="badge">🏆 Temporada 2026 - 2027</div>
-        
-        <div class="countdown-container">
-            <div class="countdown-title">⏰ CIERRE DE INSCRIPCIONES</div>
-            <div class="countdown" id="countdown">
-                <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">Días</span></div>
-                <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label">Horas</span></div>
-                <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label">Minutos</span></div>
-                <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label">Segundos</span></div>
+    <h1>⚓ NÁPOLES F.C.</h1>
+    <p class="subtitulo">Formulario de registro oficial</p>
+    <div class="badge">🏆 Temporada 2026 - 2027</div>
+    
+    <div class="countdown-container">
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">Días</span>
             </div>
-            <div class="countdown-message" id="countdownMessage"></div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">Horas</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">00</span>
+                <span class="countdown-label">Minutos</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">00</span>
+                <span class="countdown-label">Segundos</span>
+            </div>
         </div>
-    </header>
+    </div>
 
     <form id="formRegistro">
-        <!-- PASO 1: CÉDULA -->
         <div id="paso1" class="paso activo">
             <div class="campo">
                 <label>🔢 CÉDULA (10 dígitos)</label>
-                <input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890" autocomplete="off">
-                <div class="help-note"><span>🔑</span> Ingresa tu número de cédula para empezar</div>
+                <input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890">
             </div>
             <button type="button" id="btnCedula" class="btn-primary" disabled>Validar cédula</button>
         </div>
 
-        <!-- PASO 2: DATOS PERSONALES -->
         <div id="paso2" class="paso">
             <div class="campo"><label>📝 Primer nombre</label><input type="text" id="n1" placeholder="Ej: LEONARDO"></div>
             <div class="campo"><label>📝 Segundo nombre (opcional)</label><input type="text" id="n2" placeholder="Ej: ADRIAN"></div>
@@ -564,52 +349,72 @@
             <button type="button" id="btnPaso2" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 3: CONTACTO -->
         <div id="paso3" class="paso">
             <div class="campo"><label>📞 Teléfono (10 dígitos)</label><input type="tel" id="tel" maxlength="10" placeholder="Ej: 0991234567"></div>
             <div class="campo"><label>✉️ Correo electrónico</label><input type="email" id="correo" placeholder="tú@ejemplo.com"></div>
             <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 4: FOTOS -->
         <div id="paso4" class="paso">
             <div class="campo">
-                <label>📸 Foto de perfil (sonríe)</label>
+                <label>📸 Foto de perfil</label>
                 <div class="file-input-wrapper">
                     <input type="file" id="rostro" accept="image/jpeg,image/png">
                     <span id="vistoRostro" class="visto-icon">✅</span>
                 </div>
-                <div id="mensajeRostro" class="mensaje-exito-foto" style="display:none;">✓ Documento subido con éxito</div>
+                <div id="mensajeRostro" class="mensaje-exito-foto">✓ Documento subido</div>
             </div>
             <div class="campo">
-                <label>🪪 Foto de tu cédula (frontal)</label>
+                <label>🪪 Foto de cédula</label>
                 <div class="file-input-wrapper">
                     <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
                     <span id="vistoCedula" class="visto-icon">✅</span>
                 </div>
-                <div id="mensajeCedula" class="mensaje-exito-foto" style="display:none;">✓ Documento subido con éxito</div>
+                <div id="mensajeCedula" class="mensaje-exito-foto">✓ Documento subido</div>
             </div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 5: PERSONALIZA TU ARMADURA -->
         <div id="paso5" class="paso">
-            <div class="campo"><label>🏷️ Nombre en tu camiseta</label><select id="nombreCamiseta"><option value="">Selecciona</option></select></div>
-            <div class="campo"><label>🔢 Número dorsal</label><select id="dorsal"><option value="">Selecciona</option></select></div>
-            <div class="campo"><label>🧦 Talla de uniforme</label>
+            <div class="grid-2cols">
+                <div class="campo">
+                    <label>🏷️ Nombre en camiseta</label>
+                    <select id="nombreCamiseta"><option value="">Selecciona</option></select>
+                </div>
+                <div class="campo">
+                    <label>🔢 Número dorsal</label>
+                    <select id="dorsal"><option value="">Selecciona</option></select>
+                </div>
+            </div>
+            <div class="campo">
+                <label>🧦 Talla de uniforme</label>
                 <select id="tallaUni">
-                    <option value="">Selecciona talla</option>
-                    <option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option><option value="XXL">XXL</option>
+                    <option value="">Selecciona</option>
+                    <option value="S">S</option><option value="M">M</option>
+                    <option value="L">L</option><option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
                 </select>
             </div>
             <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 6: VALORES -->
         <div id="paso6" class="paso">
-            <div class="campo"><label>🧦 Medias extras (+$2)</label><select id="medias"><option value="">Selecciona</option><option value="NO">No</option><option value="SI">Sí</option></select></div>
-            <div class="campo"><label>💰 N° transacción inscripción ($5)</label><input id="inscripcion" placeholder="Ej: PAGO-12345"></div>
-            <div class="campo"><label>👕 N° transacción uniforme (abono 75% + medias)</label><input id="uniforme" placeholder="Ej: PAGO-67890"></div>
+            <div class="campo">
+                <label>🧦 Medias extras (+$2)</label>
+                <select id="medias">
+                    <option value="">Selecciona</option>
+                    <option value="NO">No</option>
+                    <option value="SI">Sí</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>💰 N° transacción inscripción ($5)</label>
+                <input id="inscripcion" placeholder="Ej: PAGO-12345">
+            </div>
+            <div class="campo">
+                <label>👕 N° transacción uniforme</label>
+                <input id="uniforme" placeholder="Ej: PAGO-67890">
+            </div>
             <button type="button" id="btnFinal" class="btn-primary" disabled>Finalizar registro</button>
         </div>
 
@@ -619,70 +424,20 @@
 </div>
 
 <div id="loader"><div class="spinner"></div><div id="loader-texto">Procesando...</div></div>
-<div id="modalExito"><div class="modal-card"><h2>✅ ¡Registro exitoso!</h2><p>Redirigiendo en <span id="contador">3</span> segundos...</p></div></div>
+<div id="modalExito"><div class="modal-card"><h2>✅ ¡Registro exitoso!</h2><p>Redirigiendo...</p></div></div>
 
 <script>
-    // *** CONFIGURACIÓN: REEMPLAZAR CON URL DE DESPLIEGUE DE Google Apps Script ***
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbzKmwJnV-6zHNK6n72NRfijMcXSGA4HIg5FJGQYF1PWHqwAbbaj_WgRO4UZRSkFkNLP/exec";
-
-    // ================= RELOJ COUNTDOWN =================
-    function actualizarCountdown() {
-        const fechaObjetivo = new Date(2026, 4, 8, 23, 0, 0);
-        const ahora = new Date();
-        const diferencia = fechaObjetivo - ahora;
-        const daysElem = document.getElementById('days');
-        const hoursElem = document.getElementById('hours');
-        const minutesElem = document.getElementById('minutes');
-        const secondsElem = document.getElementById('seconds');
-        const messageElem = document.getElementById('countdownMessage');
-        
-        if (diferencia <= 0) {
-            if(daysElem) daysElem.textContent = '00';
-            if(hoursElem) hoursElem.textContent = '00';
-            if(minutesElem) minutesElem.textContent = '00';
-            if(secondsElem) secondsElem.textContent = '00';
-            if(messageElem) { messageElem.innerHTML = '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔'; messageElem.style.color = '#ff6b6b'; }
-            return;
-        }
-        const days = Math.floor(diferencia / (1000*60*60*24));
-        const hours = Math.floor((diferencia % (86400000)) / 3600000);
-        const minutes = Math.floor((diferencia % 3600000) / 60000);
-        const seconds = Math.floor((diferencia % 60000) / 1000);
-        if(daysElem) daysElem.textContent = String(days).padStart(2,'0');
-        if(hoursElem) hoursElem.textContent = String(hours).padStart(2,'0');
-        if(minutesElem) minutesElem.textContent = String(minutes).padStart(2,'0');
-        if(secondsElem) secondsElem.textContent = String(seconds).padStart(2,'0');
-        if(messageElem && days <= 1) messageElem.innerHTML = '⚠️ ¡ÚLTIMAS HORAS! ⚠️';
-        else if(messageElem) messageElem.innerHTML = '📅 Cierre: Viernes 8 de Mayo - 11:00 PM';
-    }
-    setInterval(actualizarCountdown, 1000);
-    actualizarCountdown();
-
-    // ================= SISTEMA DE TOASTS =================
-    function mostrarToast(mensaje, tipo = 'error', duracion = 4000) {
-        const toastAnterior = document.querySelector('.toast-notification');
-        if (toastAnterior) toastAnterior.remove();
+    function mostrarToast(mensaje, tipo = 'error') {
         const toast = document.createElement('div');
         toast.className = `toast-notification ${tipo}`;
-        toast.innerHTML = `<span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️'}</span><span>${mensaje}</span>`;
+        toast.innerHTML = `<span>${tipo === 'error' ? '❌' : '✅'}</span><span>${mensaje}</span>`;
         document.body.appendChild(toast);
-        setTimeout(() => { toast.style.animation = 'toastSlideUp 0.3s reverse forwards'; setTimeout(() => toast.remove(), 300); }, duracion);
+        setTimeout(() => toast.remove(), 4000);
     }
-
-    function marcarErrorInput(input, mensaje) {
-        input.classList.add('error');
-        mostrarToast(mensaje, 'error', 2500);
-        setTimeout(() => input.classList.remove('error'), 500);
-    }
-
-    // ================= ELEMENTOS DOM =================
-    const loaderDiv = document.getElementById('loader');
-    const loaderTexto = document.getElementById('loader-texto');
-    const modalExito = document.getElementById('modalExito');
 
     function mostrarLoader(visible, texto = "Procesando...") {
-        loaderDiv.style.display = visible ? "flex" : "none";
-        if (texto) loaderTexto.innerText = texto;
+        document.getElementById('loader').style.display = visible ? "flex" : "none";
+        if (texto) document.getElementById('loader-texto').innerText = texto;
     }
 
     function verPaso(n) {
@@ -690,139 +445,191 @@
         document.getElementById(`paso${n}`).classList.add("activo");
     }
 
-    document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
-        inp.addEventListener('input', function() { if (this.id !== 'correo') this.value = this.value.toUpperCase(); });
-    });
+    // Countdown
+    function actualizarCountdown() {
+        const fechaObjetivo = new Date(2026, 4, 8, 23, 0, 0);
+        const ahora = new Date();
+        const diferencia = fechaObjetivo - ahora;
+        if (diferencia <= 0) return;
+        const days = Math.floor(diferencia / (1000*60*60*24));
+        const hours = Math.floor((diferencia % (86400000)) / 3600000);
+        const minutes = Math.floor((diferencia % 3600000) / 60000);
+        const seconds = Math.floor((diferencia % 60000) / 1000);
+        document.getElementById('days').textContent = String(days).padStart(2,'0');
+        document.getElementById('hours').textContent = String(hours).padStart(2,'0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2,'0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2,'0');
+    }
+    setInterval(actualizarCountdown, 1000);
+    actualizarCountdown();
 
-    // ================= PASO 1 =================
+    // PASO 1
     const ced = document.getElementById('ced');
     const btnCedula = document.getElementById('btnCedula');
-    ced.addEventListener('input', () => { ced.value = ced.value.replace(/\D/g, '').slice(0,10); btnCedula.disabled = ced.value.length !== 10; });
-    btnCedula.addEventListener('click', async () => {
-        if (ced.value.length !== 10) { marcarErrorInput(ced, "La cédula debe tener 10 dígitos"); return; }
+    ced.addEventListener('input', () => {
+        ced.value = ced.value.replace(/\D/g, '').slice(0,10);
+        btnCedula.disabled = ced.value.length !== 10;
+    });
+    
+    btnCedula.addEventListener('click', () => {
+        if (ced.value.length !== 10) return;
         mostrarLoader(true, "Validando cédula...");
-        try {
-            const resp = await fetch(`${URL_GAS}?action=validar&cedula=${ced.value}`);
-            const data = await resp.json();
-            if (data.existe) mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
-            else { mostrarToast("✅ Cédula válida", "success"); verPaso(2); }
-        } catch (error) { mostrarToast("Error de conexión. Revisa URL del backend.", "error"); }
-        mostrarLoader(false);
+        google.script.run
+            .withSuccessHandler((resultado) => {
+                mostrarLoader(false);
+                if (resultado.existe) {
+                    mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
+                } else {
+                    mostrarToast("✅ Cédula válida", "success");
+                    verPaso(2);
+                }
+            })
+            .withFailureHandler((error) => {
+                mostrarLoader(false);
+                mostrarToast("Error: " + error.message, "error");
+            })
+            .validarCedula(ced.value);
     });
 
-    // ================= PASO 2 =================
-    const n1 = document.getElementById('n1'), n2 = document.getElementById('n2'), ape = document.getElementById('ape'), fecha = document.getElementById('fecha');
+    // PASO 2
+    const n1 = document.getElementById('n1'), n2 = document.getElementById('n2');
+    const ape = document.getElementById('ape'), fecha = document.getElementById('fecha');
     const btnPaso2 = document.getElementById('btnPaso2');
+    
     function validarPaso2() {
-        const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
-        let fechaOk = true;
-        if (fechaValida) { const hoy = new Date(); hoy.setHours(0,0,0,0); if (new Date(fecha.value) > hoy) fechaOk = false; }
-        btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fechaValida && fechaOk);
+        btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fecha.value);
     }
     [n1, n2, ape, fecha].forEach(el => el.addEventListener('input', validarPaso2));
+    
     btnPaso2.addEventListener('click', () => {
-        if (!n1.value.trim()) { marcarErrorInput(n1, "Primer nombre obligatorio"); return; }
-        if (!ape.value.trim()) { marcarErrorInput(ape, "Apellidos obligatorios"); return; }
-        if (!fecha.value) { marcarErrorInput(fecha, "Fecha de nacimiento obligatoria"); return; }
-        const hoy = new Date(); hoy.setHours(0,0,0,0);
-        if (new Date(fecha.value) > hoy) { marcarErrorInput(fecha, "Fecha no puede ser futura"); return; }
+        if (!n1.value.trim()) return;
+        if (!ape.value.trim()) return;
+        if (!fecha.value) return;
         verPaso(3);
     });
 
-    // ================= PASO 3 =================
-    const tel = document.getElementById('tel'), correo = document.getElementById('correo'), btnPaso3 = document.getElementById('btnPaso3');
-    function validarPaso3() { btnPaso3.disabled = !(tel.value.replace(/\D/g, '').length === 10 && correo.value.includes('@') && correo.value.includes('.')); }
+    // PASO 3
+    const tel = document.getElementById('tel'), correo = document.getElementById('correo');
+    const btnPaso3 = document.getElementById('btnPaso3');
+    
+    function validarPaso3() {
+        btnPaso3.disabled = !(tel.value.replace(/\D/g, '').length === 10 && correo.value.includes('@'));
+    }
     [tel, correo].forEach(el => el.addEventListener('input', validarPaso3));
     tel.addEventListener('input', e => e.target.value = e.target.value.replace(/\D/g, '').slice(0,10));
+    
     btnPaso3.addEventListener('click', () => {
-        if (tel.value.replace(/\D/g, '').length !== 10) { marcarErrorInput(tel, "Teléfono debe tener 10 dígitos"); return; }
-        if (!correo.value.includes('@') || !correo.value.includes('.')) { marcarErrorInput(correo, "Correo inválido"); return; }
+        if (tel.value.replace(/\D/g, '').length !== 10) return;
+        if (!correo.value.includes('@')) return;
         verPaso(4);
     });
 
-    // ================= PASO 4 =================
+    // PASO 4 - Fotos
     const rostro = document.getElementById('rostro'), cedulaFile = document.getElementById('cedulaFile');
-    const fotoRostroB64 = document.getElementById('fotoRostroB64'), fotoCedulaB64 = document.getElementById('fotoCedulaB64');
-    const btnPaso4 = document.getElementById('btnPaso4'), mensajeRostro = document.getElementById('mensajeRostro'), mensajeCedula = document.getElementById('mensajeCedula');
-    const vistoRostro = document.getElementById('vistoRostro'), vistoCedula = document.getElementById('vistoCedula');
-
-    function archivoABase64(file, inputHidden, mensajeElemento, vistoElemento) {
+    const fotoRostroB64 = document.getElementById('fotoRostroB64');
+    const fotoCedulaB64 = document.getElementById('fotoCedulaB64');
+    const btnPaso4 = document.getElementById('btnPaso4');
+    
+    function archivoABase64(file, inputHidden, mensajeElem, vistoElem) {
         return new Promise((resolve) => {
             if (!file) return resolve(null);
             const reader = new FileReader();
             reader.onload = () => {
                 inputHidden.value = reader.result;
-                if (mensajeElemento) { mensajeElemento.style.display = 'flex'; mensajeElemento.innerHTML = '✓ Documento subido con éxito'; mensajeElemento.style.color = '#2ecc71'; }
-                if (vistoElemento) vistoElemento.style.display = 'inline-block';
+                if (mensajeElem) mensajeElem.style.display = 'flex';
+                if (vistoElem) vistoElem.style.display = 'inline-block';
                 resolve(true);
             };
             reader.onerror = () => resolve(null);
             reader.readAsDataURL(file);
         });
     }
-
+    
     function verificarFotos() {
-        const tieneRostro = fotoRostroB64.value && fotoRostroB64.value !== '';
-        const tieneCedula = fotoCedulaB64.value && fotoCedulaB64.value !== '';
-        btnPaso4.disabled = !(tieneRostro && tieneCedula);
-        if (tieneRostro && mensajeRostro.style.display !== 'flex') { mensajeRostro.style.display = 'flex'; vistoRostro.style.display = 'inline-block'; }
-        if (tieneCedula && mensajeCedula.style.display !== 'flex') { mensajeCedula.style.display = 'flex'; vistoCedula.style.display = 'inline-block'; }
+        btnPaso4.disabled = !(fotoRostroB64.value && fotoCedulaB64.value);
     }
+    
     rostro.addEventListener('change', async (e) => {
         const file = e.target.files[0];
-        if (file && !file.type.startsWith('image/')) { mostrarToast("Solo imágenes JPG o PNG", "error"); rostro.value = ''; return; }
-        if (file && file.size > 2*1024*1024) { mostrarToast("Imagen no debe superar 2MB", "error"); rostro.value = ''; return; }
-        await archivoABase64(file, fotoRostroB64, mensajeRostro, vistoRostro);
+        if (file && file.size > 2*1024*1024) {
+            mostrarToast("Imagen no debe superar 2MB", "error");
+            rostro.value = '';
+            return;
+        }
+        await archivoABase64(file, fotoRostroB64, document.getElementById('mensajeRostro'), document.getElementById('vistoRostro'));
         verificarFotos();
     });
+    
     cedulaFile.addEventListener('change', async (e) => {
         const file = e.target.files[0];
-        if (file && !file.type.startsWith('image/')) { mostrarToast("Solo imágenes JPG o PNG", "error"); cedulaFile.value = ''; return; }
-        if (file && file.size > 2*1024*1024) { mostrarToast("Imagen no debe superar 2MB", "error"); cedulaFile.value = ''; return; }
-        await archivoABase64(file, fotoCedulaB64, mensajeCedula, vistoCedula);
+        if (file && file.size > 2*1024*1024) {
+            mostrarToast("Imagen no debe superar 2MB", "error");
+            cedulaFile.value = '';
+            return;
+        }
+        await archivoABase64(file, fotoCedulaB64, document.getElementById('mensajeCedula'), document.getElementById('vistoCedula'));
         verificarFotos();
     });
-    btnPaso4.addEventListener('click', async () => {
-        if (!fotoRostroB64.value) { mostrarToast("Debes subir una foto de perfil", "error"); return; }
-        if (!fotoCedulaB64.value) { mostrarToast("Debes subir foto de cédula", "error"); return; }
+    
+    btnPaso4.addEventListener('click', () => {
+        if (!fotoRostroB64.value || !fotoCedulaB64.value) return;
         mostrarLoader(true, "Cargando dorsales...");
-        const selectNombre = document.getElementById('nombreCamiseta'), selectDorsal = document.getElementById('dorsal');
-        selectNombre.innerHTML = '<option value="">Selecciona</option>'; selectDorsal.innerHTML = '<option value="">Selecciona</option>';
+        const selectNombre = document.getElementById('nombreCamiseta');
+        const selectDorsal = document.getElementById('dorsal');
+        selectNombre.innerHTML = '<option value="">Selecciona</option>';
+        selectDorsal.innerHTML = '<option value="">Selecciona</option>';
         selectNombre.add(new Option(n1.value.trim(), n1.value.trim()));
         if (n2.value.trim()) selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
-        try {
-            const resp = await fetch(`${URL_GAS}?action=getDorsales`);
-            const ocupados = await resp.json();
-            for (let i = 1; i <= 99; i++) if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
-            if (selectDorsal.options.length === 1) mostrarToast("No hay dorsales disponibles.", "error");
-        } catch (error) { mostrarToast("Error cargando dorsales.", "error"); }
-        mostrarLoader(false);
-        verPaso(5);
+        
+        google.script.run
+            .withSuccessHandler((ocupados) => {
+                for (let i = 1; i <= 99; i++) {
+                    if (!ocupados.includes(String(i))) {
+                        selectDorsal.add(new Option(i, i));
+                    }
+                }
+                mostrarLoader(false);
+                verPaso(5);
+            })
+            .withFailureHandler((error) => {
+                mostrarLoader(false);
+                mostrarToast("Error: " + error.message, "error");
+            })
+            .obtenerDorsalesOcupados();
     });
 
-    // ================= PASO 5 =================
-    const nombreCamiseta = document.getElementById('nombreCamiseta'), dorsal = document.getElementById('dorsal'), tallaUni = document.getElementById('tallaUni'), btnPaso5 = document.getElementById('btnPaso5');
-    function validarPaso5() { btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value && tallaUni.value); }
+    // PASO 5
+    const nombreCamiseta = document.getElementById('nombreCamiseta');
+    const dorsal = document.getElementById('dorsal');
+    const tallaUni = document.getElementById('tallaUni');
+    const btnPaso5 = document.getElementById('btnPaso5');
+    
+    function validarPaso5() {
+        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value && tallaUni.value);
+    }
     [nombreCamiseta, dorsal, tallaUni].forEach(el => el.addEventListener('change', validarPaso5));
+    
     btnPaso5.addEventListener('click', () => {
-        if (!nombreCamiseta.value) { mostrarToast("Selecciona nombre para camiseta", "error"); return; }
-        if (!dorsal.value) { mostrarToast("Selecciona número dorsal", "error"); return; }
-        if (!tallaUni.value) { mostrarToast("Selecciona talla de uniforme", "error"); return; }
+        if (!nombreCamiseta.value || !dorsal.value || !tallaUni.value) return;
         verPaso(6);
     });
 
-    // ================= PASO 6 =================
-    const medias = document.getElementById('medias'), inscripcion = document.getElementById('inscripcion'), uniforme = document.getElementById('uniforme'), btnFinal = document.getElementById('btnFinal');
-    function validarPaso6() { btnFinal.disabled = !(medias.value !== "" && inscripcion.value.trim() !== "" && uniforme.value.trim() !== ""); }
+    // PASO 6
+    const medias = document.getElementById('medias');
+    const inscripcion = document.getElementById('inscripcion');
+    const uniforme = document.getElementById('uniforme');
+    const btnFinal = document.getElementById('btnFinal');
+    
+    function validarPaso6() {
+        btnFinal.disabled = !(medias.value && inscripcion.value.trim() && uniforme.value.trim());
+    }
     [medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
-
-    // ================= ENVÍO FINAL =================
-    btnFinal.addEventListener('click', async () => {
-        if (btnFinal.disabled) { mostrarToast("Completa todos los campos del paso 6", "error"); return; }
+    
+    btnFinal.addEventListener('click', () => {
+        if (btnFinal.disabled) return;
         mostrarLoader(true, "Registrando jugador...");
-
-        const payload = {
-            action: 'registrar',
+        
+        const datos = {
             cedula: ced.value,
             primerNombre: n1.value.trim(),
             segundoNombre: n2.value.trim(),
@@ -839,20 +646,25 @@
             transaccionInscripcion: inscripcion.value.trim(),
             transaccionUniforme: uniforme.value.trim()
         };
-
-        try {
-            const response = await fetch(URL_GAS, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            const result = await response.json();
-            if (result.ok) {
+        
+        google.script.run
+            .withSuccessHandler((resultado) => {
                 mostrarLoader(false);
-                modalExito.style.display = 'flex';
-                let segundos = 3;
-                const spanContador = document.getElementById('contador');
-                const intervalo = setInterval(() => { segundos--; if (spanContador) spanContador.innerText = segundos; if (segundos <= 0) { clearInterval(intervalo); window.location.href = 'login.html'; } }, 1000);
-            } else { mostrarLoader(false); mostrarToast("❌ Error: " + (result.msg || result.error || "Desconocido"), "error"); }
-        } catch (error) { mostrarLoader(false); console.error(error); mostrarToast("Error de red. Revisa tu conexión o la URL del backend.", "error"); }
+                if (resultado.ok) {
+                    document.getElementById('modalExito').style.display = 'flex';
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                } else {
+                    mostrarToast("❌ Error: " + resultado.mensaje, "error");
+                }
+            })
+            .withFailureHandler((error) => {
+                mostrarLoader(false);
+                mostrarToast("Error: " + error.message, "error");
+            })
+            .registrarJugador(datos);
     });
-    verificarFotos();
 </script>
 </body>
 </html>
