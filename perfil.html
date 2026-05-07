@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Nápoles F.C. - Mi Perfil</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;40Aquí tienes el código completo con las **dos ID Cards seguidas** en la parte superior. La primera contiene tu identidad (foto, media, CI y botón) y la segunda es la camiseta con la animación de giro constante.
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nápoles F.C. - Mi Perfil</title>
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;700;800&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
     <style>
         :root {
             --primary-gold: #D4AF37;
@@ -46,7 +54,7 @@
             border: 2px solid var(--glass-border);
             padding: 25px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
@@ -83,7 +91,6 @@
             font-size: 1.4rem;
             border: 3px solid #0b1426;
             font-family: 'Outfit', sans-serif;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .ci-badge {
@@ -102,7 +109,6 @@
             font-weight: 800;
             font-size: 0.75rem;
             cursor: pointer;
-            transition: 0.3s;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -121,7 +127,7 @@
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
-            animation: rotateJersey 10s infinite linear;
+            animation: rotateJersey 12s infinite linear;
         }
 
         @keyframes rotateJersey {
@@ -140,15 +146,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            -webkit-backface-visibility: visible;
             backface-visibility: visible;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-        }
-
-        .jersey-stripes {
-            position: absolute;
-            top: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(212, 175, 55, 0.02) 30px, rgba(212, 175, 55, 0.02) 60px);
         }
 
         .jersey-name {
@@ -172,7 +171,7 @@
             filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
         }
 
-        /* --- OTROS ESTILOS --- */
+        /* --- RESTO DE SECCIONES --- */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
         .stat-card {
             background: var(--card-bg); border-radius: 18px; padding: 12px;
@@ -230,7 +229,6 @@
             if (data.success && data.jugador) {
                 const j = data.jugador;
                 
-                // Cálculo de Media (OVR)
                 const comp = Number(j.companerismo) || 8;
                 const respV = Number(j.respeto) || 8;
                 const hum = Number(j.humildad) || 8;
@@ -244,17 +242,17 @@
                         <h1>⚜️ ${CONFIG.APP_NAME} ⚜️</h1>
                     </div>
 
-                    <!-- ID CARD 1: IDENTIDAD -->
+                    <!-- ID CARD 1: FOTO, MEDIA, CI Y BOTÓN -->
                     <div class="id-card-identity">
                         <div class="photo-wrapper">
                             <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
                             <div class="ovr-badge">${ovr}</div>
                         </div>
                         <div style="font-weight:800; font-size:1.3rem;">${escapeHtml(j.primerNombre)} ${escapeHtml(j.apellidos)}</div>
-                        <span class="ci-badge"><i class="fas fa-fingerprint"></i> CI: ${ciLimpia}</span>
+                        <span class="ci-badge"><i class="fas fa-id-card"></i> CI: ${ciLimpia}</span>
                         
                         <button class="btn-sync" onclick="refrescarPerfil()">
-                            <i class="fas fa-sync-alt"></i> ACTUALIZAR PERFIL
+                            <i class="fas fa-sync-alt"></i> ACTUALIZAR DATOS
                         </button>
                     </div>
 
@@ -262,7 +260,6 @@
                     <div class="id-card-jersey-wrap">
                         <div class="jersey-card-inner">
                             <div class="face-jersey">
-                                <div class="jersey-stripes"></div>
                                 <div class="jersey-name">${escapeHtml(nombreDorso)}</div>
                                 <div class="jersey-number">${j.dorsal || '00'}</div>
                             </div>
@@ -285,10 +282,9 @@
                         <div class="info-row"><span>Puntualidad</span><span>${punt}/10</span></div>
                     </div>
 
-                    <!-- VOCALÍA -->
                     <div class="section-box">
                         <div class="box-title"><i class="fas fa-wallet"></i> ESTADO DE CUENTA</div>
-                        <div class="info-row"><span>Deuda Vocalía</span><span style="color:${Number(j.deudaVocalia) > 0 ? '#e74c3c' : '#2ecc71'}">$${j.deudaVocalia || 0}</span></div>
+                        <div class="info-row"><span>Deuda</span><span style="color:${Number(j.deudaVocalia) > 0 ? '#e74c3c' : '#2ecc71'}">$${j.deudaVocalia || 0}</span></div>
                         <div class="info-row"><span>Inscripción</span><span>${j.inscripEstado || 'PENDIENTE'}</span></div>
                         <div class="info-row"><span>Uniforme</span><span>${j.unifEstado || 'PENDIENTE'}</span></div>
                     </div>
@@ -297,7 +293,7 @@
                 `;
 
             } else {
-                container.innerHTML = `<div style="text-align:center; padding:50px;">❌ Jugador no encontrado</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:50px;">❌ Error cargando jugador</div>`;
             }
         } catch (e) {
             container.innerHTML = `<div style="text-align:center; padding:50px;">❌ Error de conexión</div>`;
