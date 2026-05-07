@@ -71,7 +71,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* GRUPO DE ENTRADA CON MARGEN */
         .input-group { margin-bottom: 2rem; }
 
         .input-group label {
@@ -105,7 +104,6 @@
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
         }
 
-        /* BOTÓN CON MARGEN SUPERIOR */
         .btn-submit {
             width: 100%;
             padding: 1.2rem;
@@ -152,7 +150,6 @@
             font-size: 0.85rem;
         }
 
-        /* Detectar si ya es APP instalada */
         @media (display-mode: standalone) {
             #containerDownload { display: none !important; }
         }
@@ -177,7 +174,7 @@
 
     <div class="footer-links">
         ¿Eres nuevo en el club? <br><br>
-        <a href="index.html">CREAR CUENTA NUEVA ✨</a>
+        <a href="registro.html">CREAR CUENTA NUEVA ✨</a>
         
         <div id="containerDownload">
             <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
@@ -186,6 +183,7 @@
 </div>
 
 <script>
+    // REEMPLAZA con tu URL del Web App de Google Apps Script
     const URL_GAS = "https://script.google.com/macros/s/AKfycbxGkRjKO-6HXVBUdzLPzoiPYAd5wR_zSfAHRWHaRKW0bxHxAm7HDL3eJY7s6QPU6S2g/exec";
     
     const cedulaInput = document.getElementById('loginCedula');
@@ -194,12 +192,10 @@
     const manualBtn = document.getElementById('manualDownloadBtn');
     const containerDownload = document.getElementById('containerDownload');
 
-    // 1. OCULTAR SI YA ESTÁ INSTALADA
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
         containerDownload.style.display = 'none';
     }
 
-    // 2. VALIDACIÓN DE INPUT
     cedulaInput.addEventListener('input', (e) => {
         let value = e.target.value.replace(/\D/g, '');
         e.target.value = value.slice(0, 10);
@@ -207,7 +203,6 @@
         errorDiv.style.display = 'none';
     });
 
-    // 3. LÓGICA DE INICIO DE SESIÓN
     btnLogin.addEventListener('click', async () => {
         const cedula = cedulaInput.value;
         btnLogin.disabled = true;
@@ -215,21 +210,27 @@
         errorDiv.style.display = 'none';
 
         try {
+            // Llamada corregida: obtener datos completos del jugador
             const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${cedula}`);
             const data = await resp.json();
 
-            if (data.cedulaExiste && data.estado === "APROBADO") {
-                localStorage.setItem('jugador_aprobado', JSON.stringify({
+            if (data.cedulaExiste && data.estado === "APROBADO" && data.datosJugador) {
+                // Guardar TODOS los datos del jugador en localStorage
+                localStorage.setItem('jugador_actual', JSON.stringify({
+                    ...data.datosJugador,
                     cedula: cedula,
                     expira: Date.now() + 86400000
                 }));
                 window.location.href = 'perfil.html';
             } else if (!data.cedulaExiste) {
                 mostrarError("La cédula no está registrada.");
+            } else if (data.estado !== "APROBADO") {
+                mostrarError("Tu cuenta está en revisión por el delegado. Estado actual: " + (data.estado || "PENDIENTE"));
             } else {
-                mostrarError("Tu cuenta está en revisión por el delegado.");
+                mostrarError("No se pudieron cargar tus datos. Contacta al administrador.");
             }
         } catch (err) {
+            console.error(err);
             mostrarError("Error de conexión con el servidor.");
         } finally {
             btnLogin.disabled = false;
@@ -242,7 +243,6 @@
         errorDiv.style.display = 'block';
     }
 
-    // 4. LÓGICA DE INSTALACIÓN
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
