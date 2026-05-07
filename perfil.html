@@ -123,7 +123,6 @@
 
         /* TARJETA DE IDENTIDAD */
         .id-card-identity {
-            composes: glass-card;
             padding: 15px;
             text-align: center;
             display: flex;
@@ -167,9 +166,9 @@
             transform: scale(1.05);
         }
 
-        /* TARJETA DE CAMISETA 3D MEJORADA */
+        /* --- TARJETA DE CAMISETA 3D CORREGIDA --- */
         .id-card-jersey-wrap { 
-            perspective: 1000px; 
+            perspective: 800px; 
             height: 180px;
             position: relative;
             z-index: 2;
@@ -180,38 +179,43 @@
             width: 100%; 
             height: 100%;
             transform-style: preserve-3d;
-            transition: transform 0.1s linear;
             border-radius: 20px;
+            /* Animación de rotación continua y suave */
+            animation: rotateJerseySmooth 12s infinite linear;
+            will-change: transform;
         }
 
-        /* Animación de rotación más suave y continua */
+        /* Rotación completa en 3D sobre el eje Y */
         @keyframes rotateJerseySmooth {
-            from { transform: rotateY(0); }
-            to { transform: rotateY(360deg); }
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
         }
 
-        .jersey-card-inner {
-            animation: rotateJerseySmooth 15s infinite linear;
-        }
-
-        /* Pausar animación al hacer hover */
+        /* Pausar animación al hacer hover sobre el contenedor */
         .id-card-jersey-wrap:hover .jersey-card-inner {
             animation-play-state: paused;
         }
 
+        /* Caras de la tarjeta 3D */
         .face-jersey {
             position: absolute; 
             width: 100%; 
             height: 100%;
             background: linear-gradient(145deg, #0a1428, #000814);
             border-radius: 20px; 
-            border: 2px solid rgba(212, 175, 55, 0.4);
+            border: 2px solid rgba(212, 175, 55, 0.5);
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center;
             backface-visibility: hidden;
             box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+        }
+        
+        /* Cara frontal (por defecto) */
+        .face-jersey {
+            transform: rotateY(0deg);
         }
 
         /* Luz reflejante en la camiseta */
@@ -222,9 +226,9 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.4s ease;
             pointer-events: none;
         }
 
@@ -234,9 +238,9 @@
         }
 
         @keyframes lensFlare {
-            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-            50% { transform: translate(10%, 10%) rotate(45deg); opacity: 0.6; }
-            100% { transform: translate(-10%, -10%) rotate(90deg); opacity: 0; }
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translate(15%, 15%) rotate(45deg); opacity: 0.7; }
+            100% { transform: translate(-15%, -15%) rotate(90deg); opacity: 0.3; }
         }
 
         .jersey-number { 
@@ -252,7 +256,7 @@
         .jersey-name {
             font-size: 0.7rem; 
             font-weight: 800; 
-            opacity: 0.8; 
+            opacity: 0.9; 
             letter-spacing: 2px;
             color: var(--primary-gold-light);
             text-transform: uppercase;
@@ -441,13 +445,13 @@
                             </div>
                         </div>
 
-                        <!-- TARJETA DE CAMISETA 3D MEJORADA -->
+                        <!-- TARJETA DE CAMISETA 3D CORREGIDA: ROTACIÓN CONTINUA Y SUAVE -->
                         <div class="id-card-jersey-wrap">
                             <div class="jersey-card-inner">
                                 <div class="face-jersey">
                                     <div class="jersey-name">${j.nombreCamiseta || 'NÁPOLES'}</div>
                                     <div class="jersey-number">${j.dorsal || '00'}</div>
-                                    <div style="font-size:0.55rem; opacity:0.5; margin-top:5px;">
+                                    <div style="font-size:0.55rem; opacity:0.6; margin-top:5px;">
                                         <i class="fas fa-tshirt"></i> ${j.tallaUni || 'M'}
                                     </div>
                                 </div>
