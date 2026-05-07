@@ -4,26 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Nápoles F.C. - Perfil Oficial</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
     <style>
         :root {
-            --primary-gold: #D4AF37;
+            --primary-gold: #D4AF37```
+
+### ¿Por qué veías el 8?
+;
             --light-gold: #FFD700;
             --dark-bg: #060912;
             --card-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(212, 175, 55, 0.2);
             --text-main: #ffffff;
-            --text-muted: #a0a0a0;
+            --text-muted: #a0aLo pusimos inicialmente para que la "Media de Jugador" no saliera en 0 mientras probabas, pero tienes razón: **el sistema no debe editar0a0;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight- tu base de datos sin permiso.**
+
+**Pasos a seguir:**
+1. Ve a tu hoja de cálculo.
+2. Ve a **Extensiones**color: transparent; }
 
         body {
             background: radial-gradient(circle at top, #111a33 0%, #060912 100%);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            padding: 15px;
+            padding: > **Apps Script**.
+3. Revisa la función que busca al jugador. Si ves algún `.setValue(8)`, **bórralo**.
+4 15px;
             color: var(--text-main);
             display: flex;
             justify-content: center;
@@ -31,10 +40,12 @@
 
         .profile-container { width: 100%; max-width: 450px; }
 
-        .profile-header { text-align: center; margin-bottom: 20px; }
+        .profile-header { text-align: center; margin-. Dale a **Implementar** > **Nueva implementación** para que los cambios surtan efecto.
+
+¿Quieres que te ayude a redactar el códigobottom: 20px; }
         .profile-header h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.4rem;
+            font-size: exacto del servidor (GAS) para que solo lea y no escriba nada en esas celdas? 1.4rem;
             color: var(--primary-gold);
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -178,7 +189,7 @@
         .stat-lab { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
 
         /* Iconos específicos */
-        .icon-goal { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .icon-goal { color: #fff; }
         .icon-yellow { color: #f1c40f; }
         .icon-red { color: #e74c3c; }
         .icon-match { color: var(--primary-gold); }
@@ -238,22 +249,22 @@
             if (data.success && data.jugador) {
                 const j = data.jugador;
                 
-                // Cálculo de Media
+                // Lógica de valores: Usa el valor de la celda o 0 si está vacía
                 const comp = Number(j.companerismo) || 0;
                 const respV = Number(j.respeto) || 0;
                 const hum = Number(j.humildad) || 0;
                 const punt = Number(j.puntualidad) || 0;
                 const ovr = Math.round(((comp + respV + hum + punt) / 4) * 10);
                 
-                const nombreDorso = j.nombreCamiseta || j.primerNombre || 'NÁPOLES';
+                const nombreDorso = j.nombreCamiseta || j.primerNombre || 'JUGADOR';
 
                 container.innerHTML = `
                     <div class="profile-header">
                         <h1>⚜️ PERFIL OFICIAL ⚜️</h1>
                     </div>
 
-                    <!-- ID CARDS SUPERIORES -->
                     <div class="cards-row">
+                        <!-- ID FOTO -->
                         <div class="id-card-identity">
                             <div class="photo-wrapper">
                                 <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
@@ -263,6 +274,7 @@
                             <div style="font-size:0.65rem; color:var(--text-muted);">CI: ${ciLimpia}</div>
                         </div>
 
+                        <!-- ID CAMISETA -->
                         <div class="id-card-jersey-wrap">
                             <div class="jersey-card-inner">
                                 <div class="face-jersey">
@@ -303,22 +315,20 @@
                         </div>
                     </div>
 
-                    <!-- ATRIBUTOS -->
                     <div class="section-box">
-                        <div class="section-title"><i class="fas fa-chart-pie"></i> Rendimiento Humano</div>
+                        <div class="section-title"><i class="fas fa-chart-pie"></i> Valores Humanos</div>
                         <div class="info-row"><span>Compañerismo</span><span class="val-gold">${comp}/10</span></div>
                         <div class="info-row"><span>Respeto</span><span class="val-gold">${respV}/10</span></div>
                         <div class="info-row"><span>Humildad</span><span class="val-gold">${hum}/10</span></div>
                         <div class="info-row"><span>Puntualidad</span><span class="val-gold">${punt}/10</span></div>
                     </div>
 
-                    <!-- ADMINISTRACIÓN -->
                     <div class="section-box">
                         <div class="section-title"><i class="fas fa-file-invoice"></i> Administrativo</div>
                         <div class="info-row"><span>Deuda Vocalía</span><span style="color:${Number(j.deudaVocalia) > 0 ? '#e74c3c' : '#2ecc71'}">$${j.deudaVocalia || 0}</span></div>
                         <div class="info-row"><span>Inscripción</span><span>${j.inscripEstado || 'PENDIENTE'}</span></div>
                         <div class="info-row"><span>Uniforme</span><span>${j.unifEstado || 'PENDIENTE'}</span></div>
-                        <div class="info-row"><span>Talla Camiseta</span><span class="val-gold">${j.tallaUni || 'N/A'}</span></div>
+                        <div class="info-row"><span>Talla</span><span class="val-gold">${j.tallaUni || '-'}</span></div>
                     </div>
 
                     <button class="btn-logout" onclick="cerrarSesion()">CERRAR SESIÓN</button>
