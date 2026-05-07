@@ -6,8 +6,10 @@
     <title>Nápoles F.C. - Registro Oficial</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
+        /* ==================== RESET Y VARIABLES ==================== */
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
             margin: 0;
             padding: 0;
         }
@@ -26,7 +28,7 @@
 
         body {
             background: radial-gradient(circle at 10% 20%, #0a1928, #020c1a);
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'Inter', 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -36,6 +38,7 @@
             position: relative;
         }
 
+        /* ==================== CONTENEDOR PRINCIPAL ==================== */
         .contenedor-principal {
             max-width: 520px;
             width: 100%;
@@ -44,22 +47,29 @@
             backdrop-filter: blur(18px);
             border-radius: 2rem;
             border: 1px solid rgba(181, 148, 97, 0.4);
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(181, 148, 97, 0.15) inset;
             padding: 2rem 1.8rem;
-            transition: transform 0.25s ease;
+            transition: transform 0.25s ease, box-shadow 0.3s;
             animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateX(-50%) scale(1); }
-            to { opacity: 0; transform: translateX(-50%) scale(0.9); }
+        .contenedor-principal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 55px rgba(0, 0, 0, 0.5);
         }
 
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==================== HEADER ==================== */
         header {
             text-align: center;
             margin-bottom: 2rem;
@@ -93,6 +103,7 @@
             font-weight: 500;
         }
 
+        /* ==================== RELOJ COUNTDOWN ==================== */
         .countdown-container {
             background: rgba(0, 0, 0, 0.5);
             border-radius: 1rem;
@@ -137,11 +148,20 @@
             font-size: 0.6rem;
             color: #b0c4de;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
+        .countdown-message {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
+        /* ==================== PASOS ==================== */
         .paso {
             display: none;
-            animation: fadeSlide 0.4s ease;
+            animation: fadeSlide 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
         .paso.activo {
@@ -149,10 +169,17 @@
         }
 
         @keyframes fadeSlide {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
+        /* ==================== CAMPOS ==================== */
         .campo {
             margin-bottom: 1.2rem;
         }
@@ -184,6 +211,7 @@
             border-color: var(--cardenillo);
             box-shadow: 0 0 0 3px rgba(0, 139, 148, 0.3);
             background: rgba(0, 0, 0, 0.7);
+            transform: scale(1.01);
         }
 
         input.error, select.error {
@@ -197,6 +225,17 @@
             75% { transform: translateX(5px); }
         }
 
+        input::placeholder, select::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+
+        select option {
+            background: var(--azul-noche);
+            color: white;
+            padding: 10px;
+        }
+
         .help-note {
             font-size: 0.7rem;
             color: #8db5d0;
@@ -207,16 +246,30 @@
             gap: 6px;
         }
 
+        /* Mensaje de éxito al subir foto */
         .mensaje-exito-foto {
             color: var(--verde-exito);
             font-size: 0.75rem;
             margin-top: 5px;
             margin-left: 12px;
-            display: none;
+            display: flex;
             align-items: center;
             gap: 5px;
+            animation: fadeInLeft 0.3s ease;
         }
 
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Visto al lado del input */
         .visto-icon {
             font-size: 1.3rem;
             display: none;
@@ -234,6 +287,7 @@
             flex: 1;
         }
 
+        /* ==================== BOTONES ==================== */
         .btn-primary {
             background: linear-gradient(105deg, var(--cardenillo), #006b74);
             border: none;
@@ -249,6 +303,9 @@
             margin-top: 1.2rem;
             transition: all 0.25s;
             box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
         .btn-primary:hover:not(:disabled) {
@@ -257,18 +314,43 @@
             box-shadow: 0 10px 20px rgba(0, 139, 148, 0.4);
         }
 
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
         .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
 
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+            z-index: -1;
+        }
+
+        .btn-primary:active::after {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Grid para paso 5 */
         .grid-2cols {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
 
+        /* ==================== LOADER ==================== */
         #loader {
             display: none;
             position: fixed;
@@ -296,6 +378,13 @@
             100% { transform: rotate(360deg); }
         }
 
+        #loader-texto {
+            color: white;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* ==================== MODAL ÉXITO ==================== */
         #modalExito {
             display: none;
             position: fixed;
@@ -326,8 +415,14 @@
         }
 
         @keyframes modalZoom {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .modal-card h2 {
@@ -350,8 +445,15 @@
             color: transparent;
             display: inline-block;
             min-width: 50px;
+            animation: pulse 1s infinite;
         }
 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ==================== TOASTS ==================== */
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -367,48 +469,70 @@
             align-items: center;
             gap: 10px;
             z-index: 10001;
+            animation: toastSlideUp 0.3s ease forwards;
             border-left: 4px solid var(--dorado);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             font-size: 0.85rem;
             max-width: 90%;
-            animation: toastSlideUp 0.3s ease;
-        }
-        
-        @keyframes toastSlideUp {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
         .toast-notification.error {
             border-left-color: var(--rojo-error);
-        }
-        
-        .toast-notification.success {
-            border-left-color: var(--verde-exito);
+            background: rgba(30, 20, 20, 0.95);
         }
 
+        .toast-notification.success {
+            border-left-color: var(--verde-exito);
+            background: rgba(20, 30, 20, 0.95);
+        }
+
+        @keyframes toastSlideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
         @media (max-width: 550px) {
-            body { padding: 1rem; }
-            .contenedor-principal { padding: 1.5rem; }
-            h1 { font-size: 1.5rem; }
-            .grid-2cols { grid-template-columns: 1fr; gap: 10px; }
-            .countdown-number { font-size: 1.2rem; }
-            .countdown-item { min-width: 45px; }
+            body {
+                padding: 1rem;
+            }
+            .contenedor-principal {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            input, select, .btn-primary {
+                padding: 0.8rem 1rem;
+            }
+            .grid-2cols {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .countdown-number {
+                font-size: 1.2rem;
+            }
+            .countdown-item {
+                min-width: 45px;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- IFRAME PARA COMUNICACIÓN CON GOOGLE APPS SCRIPT -->
-<!-- ⚠️ IMPORTANTE: Reemplaza con la URL de tu Google Apps Script -->
-<iframe id="puenteGS" src="https://script.google.com/macros/s/AKfycbw-2-u73tCp9Pd7XXVTYfBBA1bODPKszx_f76Gsi66_k9tZT7y7mL-kXWZOcGlHRr0/exec" style="display: none;" onload="onPuenteListo()"></iframe>
-
 <div class="contenedor-principal">
     <header>
-        <h1>⚓ NÁPOLES F.C.</h1>
+        <h1> NÁPOLES F.C.</h1>
         <p class="subtitulo">Formulario de registro oficial</p>
         <div class="badge">🏆 Temporada 2026 - 2027</div>
         
+        <!-- ==================== RELOJ COUNTDOWN ==================== -->
         <div class="countdown-container">
             <div class="countdown-title">⏰ CIERRE DE INSCRIPCIONES</div>
             <div class="countdown" id="countdown">
@@ -429,7 +553,7 @@
                     <span class="countdown-label">Segundos</span>
                 </div>
             </div>
-            <div class="countdown-message" id="countdownMessage" style="margin-top:0.5rem; font-size:0.75rem; color:#8db5d0;">📅 Cierre: Viernes 8 de Mayo - 11:00 PM</div>
+            <div class="countdown-message" id="countdownMessage"></div>
         </div>
     </header>
 
@@ -460,7 +584,7 @@
             <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
         </div>
 
-        <!-- PASO 4: FOTOS -->
+        <!-- PASO 4: FOTOS (CORREGIDO CON VISTOS PERMANENTES) -->
         <div id="paso4" class="paso">
             <div class="campo">
                 <label>📸 Foto de perfil (sonríe)</label>
@@ -468,7 +592,7 @@
                     <input type="file" id="rostro" accept="image/jpeg,image/png">
                     <span id="vistoRostro" class="visto-icon">✅</span>
                 </div>
-                <div id="mensajeRostro" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
+                <div id="mensajeRostro" class="mensaje-exito-foto">none,✓ Documento subido con éxito</div>
             </div>
             <div class="campo">
                 <label>🪪 Foto de tu cédula (frontal)</label>
@@ -476,7 +600,7 @@
                     <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
                     <span id="vistoCedula" class="visto-icon">✅</span>
                 </div>
-                <div id="mensajeCedula" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
+                <div id="mensajeCedula" class="mensaje-exito-foto">none,✓ Documento subido con éxito</div>
             </div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
@@ -496,17 +620,6 @@
                         <option value="">Selecciona</option>
                     </select>
                 </div>
-            </div>
-            <div class="campo">
-                <label>🧦 Talla de uniforme</label>
-                <select id="tallaUni">
-                    <option value="">Selecciona talla</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                </select>
             </div>
             <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
         </div>
@@ -551,163 +664,11 @@
 
 <script>
     // ================= CONFIGURACIÓN =================
-    let puenteListo = false;
-    let callbacks = {};
-    let nextId = 1;
-    let reconnectAttempts = 0;
-    const MAX_RECONNECT_ATTEMPTS = 5;
-    
-    // ================= COMUNICACIÓN CON IFRAME =================
-    const iframe = document.getElementById('puenteGS');
-    
-    // Función para verificar conexión periódicamente
-    function startHeartbeat() {
-        setInterval(() => {
-            if (puenteListo) {
-                pingBridge().catch(() => {
-                    console.log('❤️ Heartbeat falló, reintentando conexión...');
-                    puenteListo = false;
-                    reconnectBridge();
-                });
-            }
-        }, 30000);
-    }
-    
-    // Función para reconectar
-    function reconnectBridge() {
-        if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
-            console.error('❌ Máximos intentos de reconexión alcanzados');
-            mostrarToast('Error de conexión persistente. Recarga la página.', 'error', 5000);
-            return;
-        }
-        
-        reconnectAttempts++;
-        console.log(`🔄 Intento de reconexión ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}`);
-        
-        const currentSrc = iframe.src;
-        iframe.src = 'about:blank';
-        setTimeout(() => {
-            iframe.src = currentSrc;
-        }, 100);
-    }
-    
-    // Función para hacer ping al puente
-    async function pingBridge() {
-        return new Promise((resolve, reject) => {
-            if (!iframe.contentWindow) {
-                reject(new Error('No hay ventana del iframe'));
-                return;
-            }
-            
-            const id = nextId++;
-            const timeout = setTimeout(() => {
-                delete callbacks[id];
-                reject(new Error('Timeout ping'));
-            }, 5000);
-            
-            callbacks[id] = {
-                resolve: () => { clearTimeout(timeout); resolve(); },
-                reject: (err) => { clearTimeout(timeout); reject(err); }
-            };
-            
-            iframe.contentWindow.postMessage({ action: 'ping', id: id }, '*');
-        });
-    }
-    
-    function onPuenteListo() {
-        console.log('✅ Iframe cargado correctamente');
-        setTimeout(async () => {
-            try {
-                await pingBridge();
-                console.log('✅ Conexión con puente establecida');
-            } catch (error) {
-                console.log('⚠️ Ping inicial falló, esperando mensaje ready...');
-            }
-        }, 500);
-    }
-    
-    // Escuchar mensajes del iframe
-    window.addEventListener('message', function(event) {
-        const data = event.data;
-        console.log('📨 Mensaje recibido en ventana principal:', data);
-        
-        if (data.action === 'ready') {
-            puenteListo = true;
-            reconnectAttempts = 0;
-            console.log('🎉 Puente listo para comunicarse!');
-            mostrarToast('Conexión establecida correctamente', 'success', 2000);
-            return;
-        }
-        
-        if (data.action === 'pong') {
-            if (data.id && callbacks[data.id]) {
-                callbacks[data.id].resolve();
-                delete callbacks[data.id];
-            }
-            return;
-        }
-        
-        if (data.id && callbacks[data.id]) {
-            if (data.error) {
-                callbacks[data.id].reject(new Error(data.error));
-            } else {
-                callbacks[data.id].resolve(data.result);
-            }
-            delete callbacks[data.id];
-        }
-    });
-    
-    function llamarBackend(action, data = {}) {
-        return new Promise((resolve, reject) => {
-            let waitTime = 0;
-            const maxWait = 10000;
-            const interval = setInterval(() => {
-                if (puenteListo || waitTime >= maxWait) {
-                    clearInterval(interval);
-                    
-                    if (!puenteListo) {
-                        reject(new Error('El puente de comunicación no está listo. Verifica tu conexión a internet.'));
-                        return;
-                    }
-                    
-                    const id = nextId++;
-                    callbacks[id] = { resolve, reject };
-                    
-                    const timeout = setTimeout(() => {
-                        if (callbacks[id]) {
-                            delete callbacks[id];
-                            reject(new Error('Timeout: El servidor no respondió'));
-                        }
-                    }, 30000);
-                    
-                    callbacks[id].timeout = timeout;
-                    
-                    try {
-                        iframe.contentWindow.postMessage({ action, id, ...data }, '*');
-                    } catch (error) {
-                        clearTimeout(timeout);
-                        delete callbacks[id];
-                        reject(new Error('Error enviando mensaje: ' + error.message));
-                    }
-                }
-                waitTime += 100;
-            }, 100);
-        });
-    }
-    
-    // Iniciar heartbeat cuando el puente esté listo
-    let heartbeatStarted = false;
-    const originalOnPuenteListo = onPuenteListo;
-    window.onPuenteListo = function() {
-        originalOnPuenteListo();
-        if (!heartbeatStarted) {
-            heartbeatStarted = true;
-            startHeartbeat();
-        }
-    };
-    
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbwWrnKreSdqBVW-x1rGeSnT_eVs0SL7rFWEAKvZ96t23MvmNLIKu_EBXn-YzkdLab8a/exec";
+
     // ================= RELOJ COUNTDOWN =================
     function actualizarCountdown() {
+        // Fecha objetivo: Viernes 8 de mayo de 2026 a las 23:00:00
         const fechaObjetivo = new Date(2026, 4, 8, 23, 0, 0);
         const ahora = new Date();
         const diferencia = fechaObjetivo - ahora;
@@ -716,70 +677,95 @@
         const hoursElem = document.getElementById('hours');
         const minutesElem = document.getElementById('minutes');
         const secondsElem = document.getElementById('seconds');
+        const messageElem = document.getElementById('countdownMessage');
         
         if (diferencia <= 0) {
-            if(daysElem) daysElem.textContent = '00';
-            if(hoursElem) hoursElem.textContent = '00';
-            if(minutesElem) minutesElem.textContent = '00';
-            if(secondsElem) secondsElem.textContent = '00';
+            // Tiempo expirado
+            if (daysElem) daysElem.textContent = '00';
+            if (hoursElem) hoursElem.textContent = '00';
+            if (minutesElem) minutesElem.textContent = '00';
+            if (secondsElem) secondsElem.textContent = '00';
+            if (messageElem) {
+                messageElem.innerHTML = '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
+                messageElem.style.color = '#ff6b6b';
+            }
+            
+            // Deshabilitar el formulario completo
+            const inputs = document.querySelectorAll('#formRegistro input, #formRegistro select, #formRegistro button');
+            inputs.forEach(input => {
+                if (input.id !== 'btnCedula' && input.id !== 'btnPaso2' && input.id !== 'btnPaso3' && 
+                    input.id !== 'btnPaso4' && input.id !== 'btnPaso5' && input.id !== 'btnFinal') {
+                    input.disabled = true;
+                }
+            });
             return;
         }
         
-        const days = Math.floor(diferencia / (1000*60*60*24));
-        const hours = Math.floor((diferencia % (86400000)) / 3600000);
-        const minutes = Math.floor((diferencia % 3600000) / 60000);
-        const seconds = Math.floor((diferencia % 60000) / 1000);
+        const days = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diferencia % (1000 * 60)) / 1000);
         
-        if(daysElem) daysElem.textContent = String(days).padStart(2,'0');
-        if(hoursElem) hoursElem.textContent = String(hours).padStart(2,'0');
-        if(minutesElem) minutesElem.textContent = String(minutes).padStart(2,'0');
-        if(secondsElem) secondsElem.textContent = String(seconds).padStart(2,'0');
+        if (daysElem) daysElem.textContent = String(days).padStart(2, '0');
+        if (hoursElem) hoursElem.textContent = String(hours).padStart(2, '0');
+        if (minutesElem) minutesElem.textContent = String(minutes).padStart(2, '0');
+        if (secondsElem) secondsElem.textContent = String(seconds).padStart(2, '0');
+        
+        if (messageElem && days <= 1) {
+            messageElem.innerHTML = '⚠️ ¡ÚLTIMAS HORAS PARA INSCRIBIRTE! ⚠️';
+            messageElem.style.color = '#ffaa00';
+        } else if (messageElem) {
+            messageElem.innerHTML = '📅 Cierre: Viernes 8 de Mayo - 11:00 PM';
+            messageElem.style.color = '#8db5d0';
+        }
     }
+    
+    // Actualizar cada segundo
     setInterval(actualizarCountdown, 1000);
     actualizarCountdown();
-    
+
     // ================= SISTEMA DE TOASTS =================
-    function mostrarToast(mensaje, tipo = 'error', duracion = 4000) {
+    function mostrarToast(mensaje, tipo = 'info', duracion = 4000) {
         const toastAnterior = document.querySelector('.toast-notification');
         if (toastAnterior) toastAnterior.remove();
         const toast = document.createElement('div');
         toast.className = `toast-notification ${tipo}`;
-        toast.innerHTML = `<span>${tipo === 'error' ? '❌' : '✅'}</span><span>${mensaje}</span>`;
+        toast.innerHTML = `<span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️'}</span><span>${mensaje}</span>`;
         document.body.appendChild(toast);
         setTimeout(() => {
-            toast.style.animation = 'fadeOut 0.3s forwards';
+            toast.style.animation = 'toastSlideUp 0.3s reverse forwards';
             setTimeout(() => toast.remove(), 300);
         }, duracion);
     }
-    
+
     function marcarErrorInput(input, mensaje) {
         input.classList.add('error');
         mostrarToast(mensaje, 'error', 2500);
         setTimeout(() => input.classList.remove('error'), 500);
     }
-    
-    // ================= LOADER =================
+
+    // ================= ELEMENTOS DOM =================
     const loaderDiv = document.getElementById('loader');
     const loaderTexto = document.getElementById('loader-texto');
     const modalExito = document.getElementById('modalExito');
-    
+
     function mostrarLoader(visible, texto = "Procesando...") {
         loaderDiv.style.display = visible ? "flex" : "none";
         if (texto) loaderTexto.innerText = texto;
     }
-    
+
     function verPaso(n) {
         document.querySelectorAll(".paso").forEach(p => p.classList.remove("activo"));
         document.getElementById(`paso${n}`).classList.add("activo");
     }
-    
+
     // Convertir a mayúsculas excepto email
     document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
         inp.addEventListener('input', function() {
             if (this.id !== 'correo') this.value = this.value.toUpperCase();
         });
     });
-    
+
     // ================= PASO 1 =================
     const ced = document.getElementById('ced');
     const btnCedula = document.getElementById('btnCedula');
@@ -787,7 +773,6 @@
         ced.value = ced.value.replace(/\D/g, '').slice(0, 10);
         btnCedula.disabled = ced.value.length !== 10;
     });
-    
     btnCedula.addEventListener('click', async () => {
         if (ced.value.length !== 10) {
             marcarErrorInput(ced, "La cédula debe tener 10 dígitos");
@@ -795,20 +780,21 @@
         }
         mostrarLoader(true, "Validando cédula...");
         try {
-            const resultado = await llamarBackend('validarCedula', { cedula: ced.value });
-            mostrarLoader(false);
-            if (resultado.existe) {
+            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+            const data = await resp.json();
+            if (data.cedulaExiste) {
                 mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
             } else {
                 mostrarToast("✅ Cédula válida", "success");
                 verPaso(2);
             }
         } catch (error) {
-            mostrarLoader(false);
-            mostrarToast("Error: " + error.message, "error");
+            console.error(error);
+            mostrarToast("Error de conexión. Revisa tu URL del backend.", "error");
         }
+        mostrarLoader(false);
     });
-    
+
     // ================= PASO 2 =================
     const n1 = document.getElementById('n1');
     const n2 = document.getElementById('n2');
@@ -819,11 +805,16 @@
     function validarPaso2() {
         const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
         let fechaOk = true;
+        
         if (fechaValida) {
             const hoy = new Date();
             hoy.setHours(0, 0, 0, 0);
-            if (new Date(fecha.value) > hoy) fechaOk = false;
+            const fechaSeleccionada = new Date(fecha.value);
+            if (fechaSeleccionada > hoy) {
+                fechaOk = false;
+            }
         }
+        
         btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fechaValida && fechaOk);
     }
     
@@ -844,13 +835,14 @@
         }
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0);
-        if (new Date(fecha.value) > hoy) {
+        const fechaNac = new Date(fecha.value);
+        if (fechaNac > hoy) {
             marcarErrorInput(fecha, "La fecha no puede ser futura");
             return;
         }
         verPaso(3);
     });
-    
+
     // ================= PASO 3 =================
     const tel = document.getElementById('tel');
     const correo = document.getElementById('correo');
@@ -879,7 +871,7 @@
         }
         verPaso(4);
     });
-    
+
     // ================= PASO 4 =================
     const rostro = document.getElementById('rostro');
     const cedulaFile = document.getElementById('cedulaFile');
@@ -890,32 +882,47 @@
     const mensajeCedula = document.getElementById('mensajeCedula');
     const vistoRostro = document.getElementById('vistoRostro');
     const vistoCedula = document.getElementById('vistoCedula');
-    
+
     function archivoABase64(file, inputHidden, mensajeElemento, vistoElemento) {
         return new Promise((resolve, reject) => {
             if (!file) return resolve(null);
             const reader = new FileReader();
             reader.onload = () => {
                 inputHidden.value = reader.result;
+                
                 if (mensajeElemento) {
                     mensajeElemento.style.display = 'flex';
+                    mensajeElemento.innerHTML = '✓ Documento subido con éxito';
+                    mensajeElemento.style.color = '#2ecc71';
                 }
+                
                 if (vistoElemento) {
                     vistoElemento.style.display = 'inline-block';
                 }
+                
                 resolve(true);
             };
             reader.onerror = reject;
             reader.readAsDataURL(file);
         });
     }
-    
+
     function verificarFotos() {
         const tieneRostro = fotoRostroB64.value && fotoRostroB64.value !== '';
         const tieneCedula = fotoCedulaB64.value && fotoCedulaB64.value !== '';
         btnPaso4.disabled = !(tieneRostro && tieneCedula);
+        
+        if (tieneRostro && mensajeRostro.style.display !== 'flex') {
+            mensajeRostro.style.display = 'flex';
+            if (vistoRostro) vistoRostro.style.display = 'inline-block';
+        }
+        
+        if (tieneCedula && mensajeCedula.style.display !== 'flex') {
+            mensajeCedula.style.display = 'flex';
+            if (vistoCedula) vistoCedula.style.display = 'inline-block';
+        }
     }
-    
+
     rostro.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file && !file.type.startsWith('image/')) {
@@ -931,7 +938,7 @@
         await archivoABase64(file, fotoRostroB64, mensajeRostro, vistoRostro);
         verificarFotos();
     });
-    
+
     cedulaFile.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file && !file.type.startsWith('image/')) {
@@ -947,7 +954,7 @@
         await archivoABase64(file, fotoCedulaB64, mensajeCedula, vistoCedula);
         verificarFotos();
     });
-    
+
     btnPaso4.addEventListener('click', async () => {
         if (!fotoRostroB64.value) {
             mostrarToast("Debes subir una foto de perfil", "error");
@@ -970,36 +977,35 @@
         }
         
         try {
-            const ocupados = await llamarBackend('obtenerDorsales');
+            const resp = await fetch(`${URL_GAS}?action=getDorsales`);
+            const ocupados = await resp.json();
             for (let i = 1; i <= 99; i++) {
-                if (!ocupados.includes(String(i))) {
-                    selectDorsal.add(new Option(i, i));
-                }
+                if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
             }
             if (selectDorsal.options.length === 1) {
                 mostrarToast("No hay dorsales disponibles. Contacta al administrador.", "error");
                 mostrarLoader(false);
                 return;
             }
-            mostrarLoader(false);
-            verPaso(5);
         } catch (error) {
-            mostrarLoader(false);
-            mostrarToast("Error: " + error.message, "error");
+            mostrarToast("No se pudieron cargar los dorsales.", "error");
+            console.error(error);
         }
+        mostrarLoader(false);
+        verPaso(5);
     });
-    
+
     // ================= PASO 5 =================
     const nombreCamiseta = document.getElementById('nombreCamiseta');
     const dorsal = document.getElementById('dorsal');
-    const tallaUni = document.getElementById('tallaUni');
     const btnPaso5 = document.getElementById('btnPaso5');
     
     function validarPaso5() {
-        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value && tallaUni.value);
+        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
     }
     
-    [nombreCamiseta, dorsal, tallaUni].forEach(el => el.addEventListener('change', validarPaso5));
+    nombreCamiseta.addEventListener('change', validarPaso5);
+    dorsal.addEventListener('change', validarPaso5);
     
     btnPaso5.addEventListener('click', () => {
         if (!nombreCamiseta.value) {
@@ -1010,60 +1016,62 @@
             mostrarToast("Selecciona un número dorsal", "error");
             return;
         }
-        if (!tallaUni.value) {
-            mostrarToast("Selecciona una talla de uniforme", "error");
-            return;
-        }
         verPaso(6);
     });
-    
+
     // ================= PASO 6 =================
     const medias = document.getElementById('medias');
     const inscripcion = document.getElementById('inscripcion');
     const uniforme = document.getElementById('uniforme');
     const btnFinal = document.getElementById('btnFinal');
-    
+
     function validarPaso6() {
         const mediasValida = medias.value !== "";
         const inscripcionValida = inscripcion.value.trim() !== "";
         const uniformeValida = uniforme.value.trim() !== "";
         btnFinal.disabled = !(mediasValida && inscripcionValida && uniformeValida);
+        
+        if (!mediasValida) medias.style.borderColor = "#e74c3c";
+        else medias.style.borderColor = "";
+        if (!inscripcionValida) inscripcion.style.borderColor = "#e74c3c";
+        else inscripcion.style.borderColor = "";
+        if (!uniformeValida) uniforme.style.borderColor = "#e74c3c";
+        else uniforme.style.borderColor = "";
     }
     
     [medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
-    
+
     // ================= ENVÍO FINAL =================
     btnFinal.addEventListener('click', async () => {
         if (btnFinal.disabled) {
             mostrarToast("Completa todos los campos del paso 6", "error");
             return;
         }
-        
+
         mostrarLoader(true, "Registrando jugador...");
-        
-        const datos = {
-            cedula: ced.value,
-            primerNombre: n1.value.trim(),
-            segundoNombre: n2.value.trim(),
-            apellidos: ape.value.trim(),
-            fechaNacimiento: fecha.value,
-            telefono: tel.value.replace(/\D/g, ''),
-            correo: correo.value.trim().toLowerCase(),
-            fotoRostro: fotoRostroB64.value,
-            fotoCedula: fotoCedulaB64.value,
-            nombreCamiseta: nombreCamiseta.value,
-            dorsal: dorsal.value,
-            tallaUniforme: tallaUni.value,
-            mediasExtras: medias.value,
-            transaccionInscripcion: inscripcion.value.trim(),
-            transaccionUniforme: uniforme.value.trim()
-        };
-        
+
+        const formData = new FormData();
+        formData.append('ced', ced.value);
+        formData.append('n1', n1.value.trim());
+        formData.append('n2', n2.value.trim());
+        formData.append('ape', ape.value.trim());
+        formData.append('fecha', fecha.value);
+        formData.append('tel', tel.value.replace(/\D/g, ''));
+        formData.append('correo', correo.value.trim().toLowerCase());
+        formData.append('medias', medias.value);
+        formData.append('dorsal', dorsal.value);
+        formData.append('nombreCamiseta', nombreCamiseta.value);
+        formData.append('inscripcion', inscripcion.value.trim());
+        formData.append('uniforme', uniforme.value.trim());
+        formData.append('fotoRostroB64', fotoRostroB64.value);
+        formData.append('fotoCedulaB64', fotoCedulaB64.value);
+
         try {
-            const resultado = await llamarBackend('registrar', { datos });
-            mostrarLoader(false);
-            
-            if (resultado.ok) {
+            const response = await fetch(URL_GAS, { method: 'POST', body: formData });
+            const result = await response.json();
+
+            if (result.ok) {
+                mostrarLoader(false);
                 modalExito.style.display = 'flex';
                 let segundos = 3;
                 const spanContador = document.getElementById('contador');
@@ -1072,16 +1080,23 @@
                     if (spanContador) spanContador.innerText = segundos;
                     if (segundos <= 0) {
                         clearInterval(intervalo);
-                        window.location.reload();
+                        window.location.href = 'login.html';
                     }
                 }, 1000);
             } else {
-                mostrarToast("❌ Error: " + (resultado.mensaje || "Desconocido"), "error");
+                mostrarLoader(false);
+                mostrarToast("❌ Error: " + (result.msg || result.error || "Desconocido"), "error");
             }
         } catch (error) {
             mostrarLoader(false);
-            mostrarToast("Error: " + error.message, "error");
+            console.error("Error de red:", error);
+            mostrarToast("Error de red. Revisa tu conexión o la URL del backend.", "error");
         }
+    });
+    
+    // Verificar fotos al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+        verificarFotos();
     });
 </script>
 </body>
