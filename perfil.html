@@ -1,295 +1,554 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Nápoles F.C. - Mi Perfil</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root {
-            --primary-gold: #D4AF37;
-            --light-gold: #FFD700;
-            --dark-bg: #060912;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(212, 175, 55, 0.2);
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-        }
+// ================= CONFIGURACIÓN INICIAL =================
+const SPREADSHEET_ID = '1RIW76k-tLe41P6mf0PPUStKcchMYLt7sHTOaN0MwFZM';
+const SHEET_NAME = 'Jugadores';
+const SHEET_PARTIDOS = 'Partidos Hombres';  // ✅ CORREGIDO: con S al final
+const CARPETA_PRINCIPAL_ID = '11rYr6psxvsYmFn3H57Vna7qdeNSsWoe9';
+const CARPETA_PRINCIPAL_NOMBRE = 'Jugadores Napoles F.C';
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+// ================= MANEJADOR PRINCIPAL POST =================
+function doPost(e) {
+  try {
+    const params = e.parameter;
+    const accion = params.action;
 
-        body {
-            background: radial-gradient(circle at top, #111a33 0%, #060912 100%);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            padding: 20px 16px;
-            color: var(--text-main);
-        }
-
-        .profile-container { max-width: 450px; margin: 0 auto; }
-
-        /* --- Header --- */
-        .profile-header { text-align: center; margin-bottom: 25px; }
-        .profile-header h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--light-gold), var(--primary-gold));
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: 5px;
-        }
-
-        /* --- Tarjeta Jugador --- */
-        .player-card {
-            background: linear-gradient(145deg, rgba(212, 175, 55, 0.1), rgba(10, 20, 40, 0.9));
-            backdrop-filter: blur(15px);
-            border-radius: 28px;
-            padding: 30px 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--glass-border);
-            position: relative;
-            text-align: center;
-        }
-
-        .player-photo-wrapper { position: relative; width: 130px; margin: 0 auto 15px; }
-        .player-photo {
-            width: 130px; height: 130px; border-radius: 50%;
-            border: 3px solid var(--primary-gold); padding: 5px; background: #060912;
-        }
-        .player-photo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-
-        .ovr-badge {
-            position: absolute; bottom: 5px; right: -5px;
-            background: var(--primary-gold); color: #000;
-            font-weight: 800; width: 45px; height: 45px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; border: 3px solid #060912;
-            font-family: 'Outfit', sans-serif; font-size: 1.2rem;
-            transform: rotate(-5deg);
-        }
-
-        .player-name { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; }
-        .dorsal-badge {
-            background: var(--primary-gold); color: #000;
-            padding: 4px 15px; border-radius: 8px;
-            font-weight: 700; font-size: 0.8rem; margin-top: 8px; display: inline-block;
-        }
-
-        /* --- Stats --- */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-        .stat-card {
-            background: var(--card-bg); border-radius: 20px; padding: 15px 10px;
-            text-align: center; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .stat-icon { font-size: 1.2rem; margin-bottom: 8px; color: var(--primary-gold); }
-        .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
-        .stat-value { font-size: 1.4rem; font-weight: 800; font-family: 'Outfit', sans-serif; }
-
-        /* --- Secciones --- */
-        .section-box {
-            background: var(--card-bg); border-radius: 24px; padding: 20px;
-            margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .section-title {
-            font-size: 0.9rem; font-weight: 700; margin-bottom: 15px;
-            color: var(--primary-gold); display: flex; align-items: center; gap: 10px; text-transform: uppercase;
-        }
-
-        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .info-item {
-            background: rgba(255,255,255,0.03); padding: 12px; border-radius: 15px;
-            display: flex; flex-direction: column;
-        }
-        .info-item span:first-child { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
-        .info-value { font-weight: 700; color: var(--primary-gold); }
-
-        /* --- Pagos --- */
-        .payments-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .payment-pill {
-            text-align: center; padding: 10px 5px; border-radius: 15px; background: rgba(0,0,0,0.2);
-            font-size: 0.65rem;
-        }
-        .status-tag {
-            display: block; margin-top: 5px; padding: 2px 0; border-radius: 5px; font-weight: 700;
-        }
-        .pagado { background: rgba(46, 204, 113, 0.15); color: #2ecc71; }
-        .pendiente { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
-
-        /* --- Botones --- */
-        .btn {
-            width: 100%; padding: 15px; border-radius: 15px; border: none;
-            font-weight: 700; cursor: pointer; transition: 0.3s;
-        }
-        .btn-refresh {
-            background: transparent; border: 1px solid var(--primary-gold);
-            color: var(--primary-gold); margin-bottom: 15px;
-        }
-        .btn-logout { background: #e74c3c; color: white; margin-top: 10px; }
-        
-        /* --- Loading --- */
-        .loading-screen { text-align: center; padding: 60px 0; }
-        .spinner {
-            width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.1);
-            border-top-color: var(--primary-gold); border-radius: 50%;
-            animation: spin 1s infinite linear; margin: 0 auto 15px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
-</head>
-<body>
-
-<div class="profile-container" id="mainContainer">
-    <div id="perfilContent">
-        <div class="loading-screen">
-            <div class="spinner"></div>
-            <p style="opacity: 0.6; font-size: 0.8rem;">CONECTANDO CON EL CLUB...</p>
-        </div>
-    </div>
-</div>
-
-<!-- Importamos tu CONFIG -->
-<script src="config.js"></script>
-
-<script>
-    // Tu lógica de sesión usando el CONFIG proporcionado
-    const session = JSON.parse(localStorage.getItem('jugador_actual'));
-    
-    if (!session || !session.cedula || Date.now() > session.expira) {
-        localStorage.removeItem('jugador_actual');
-        window.location.href = 'login.html';
+    if (accion === 'validarRegistro') {
+      return validarRegistro(params.cedula);
+    } else if (accion === 'getDorsales') {
+      return obtenerDorsalesOcupados();
+    } else if (accion === 'registrar') {
+      return guardarRegistroCompleto(params);
     } else {
-        cargarPerfil(session.cedula);
+      return guardarRegistroCompleto(params);
+    }
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ================= MANEJADOR PRINCIPAL GET =================
+function doGet(e) {
+  const accion = e.parameter.action;
+
+  if (accion === 'validarRegistro') {
+    return validarRegistro(e.parameter.cedula);
+  } else if (accion === 'getDorsales') {
+    return obtenerDorsalesOcupados();
+  } else if (accion === 'getPerfil') {
+    return obtenerPerfilCompleto(e.parameter.cedula);
+  } else if (accion === 'actualizarEstadisticas') {
+    return actualizarEstadisticasDesdePartidos(e.parameter.cedula);
+  }
+
+  return ContentService.createTextOutput(JSON.stringify({
+    ok: false,
+    error: 'Acción no válida'
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
+// ================= 1. ACTUALIZAR ESTADÍSTICAS DESDE PARTIDOS HOMBRES =================
+function actualizarEstadisticasDesdePartidos(cedula) {
+  try {
+    const sheetPartidos = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_PARTIDOS);
+    if (!sheetPartidos) {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: `Hoja '${SHEET_PARTIDOS}' no encontrada. Verifica el nombre exacto.`
+      })).setMimeType(ContentService.MimeType.JSON);
     }
 
-    async function cargarPerfil(cedula) {
-        const container = document.getElementById('perfilContent');
-        const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
+    const datosPartidos = sheetPartidos.getDataRange().getValues();
+    
+    // Mostrar encabezados para depuración
+    if (datosPartidos.length > 0) {
+      console.log("Encabezados de Partidos Hombres:", datosPartidos[0]);
+    }
+    
+    let totalGoles = 0;
+    let totalAmarillas = 0;
+    let totalRojas = 0;
+    let totalVocaliasPendientes = 0;
+    let sumaPuntualidad = 0;
+    let sumaCompanerismo = 0;
+    let sumaRespeto = 0;
+    let sumaHumildad = 0;
+    let contadorPartidos = 0;
+
+    // Recorrer todos los partidos
+    for (let i = 1; i < datosPartidos.length; i++) {
+      const cedulaPartido = datosPartidos[i][3] ? datosPartidos[i][3].toString() : '';
+      if (cedulaPartido === cedula) {
+        totalGoles += Number(datosPartidos[i][6]) || 0;      // GOLES (columna G, índice 6)
+        totalAmarillas += Number(datosPartidos[i][4]) || 0;  // AMARILLAS (columna E, índice 4)
+        totalRojas += Number(datosPartidos[i][5]) || 0;      // ROJAS (columna F, índice 5)
+        totalVocaliasPendientes += Number(datosPartidos[i][8]) || 0; // VOCALIAS PENDIENTES (columna I, índice 8)
         
-        try {
-            // Usamos CONFIG.URL_GAS de tu archivo config.js
-            const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
-            const resp = await fetch(url);
-            const data = await resp.json();
-            
-            if (data.success && data.jugador) {
-                const j = data.jugador;
-                
-                // Cálculo de OVR (Media)
-                const v = {
-                    comp: Number(j.companerismo) || 8,
-                    resp: Number(j.respeto) || 8,
-                    humi: Number(j.humildad) || 8,
-                    punt: Number(j.puntualidad) || 8
-                };
-                const promedio = (v.comp + v.resp + v.humi + v.punt) / 4;
-                const ovr = Math.min(99, Math.max(40, Math.round(promedio * 10)));
-                
-                // Fotos y Nombres
-                const fotoUrl = j.urlFotoRostro || CONFIG.DEFAULT_AVATAR;
-                const nombre = `${j.primerNombre || ''} ${j.apellidos || ''}`.trim() || j.nombreCamiseta || 'Jugador';
+        sumaPuntualidad += Number(datosPartidos[i][11]) || 0;   // PUNTUALIDAD (columna L, índice 11)
+        sumaCompanerismo += Number(datosPartidos[i][12]) || 0;   // COMPAÑERISMO (columna M, índice 12)
+        sumaRespeto += Number(datosPartidos[i][13]) || 0;        // RESPETO (columna N, índice 13)
+        sumaHumildad += Number(datosPartidos[i][14]) || 0;       // HUMILDAD (columna O, índice 14)
+        
+        contadorPartidos++;
+      }
+    }
 
-                container.innerHTML = `
-                    <button class="btn btn-refresh" onclick="location.reload()">
-                        <i class="fas fa-sync-alt"></i> ACTUALIZAR PERFIL
-                    </button>
+    // Calcular promedios (si no hay partidos, usar 8 como valor por defecto)
+    const promedioPuntualidad = contadorPartidos > 0 ? Math.round(sumaPuntualidad / contadorPartidos) : 8;
+    const promedioCompanerismo = contadorPartidos > 0 ? Math.round(sumaCompanerismo / contadorPartidos) : 8;
+    const promedioRespeto = contadorPartidos > 0 ? Math.round(sumaRespeto / contadorPartidos) : 8;
+    const promedioHumildad = contadorPartidos > 0 ? Math.round(sumaHumildad / contadorPartidos) : 8;
 
-                    <div class="profile-header">
-                        <h1>⚜️ ${CONFIG.APP_NAME} ⚜️</h1>
-                        <p>Miembro Oficial • v${CONFIG.VERSION}</p>
-                    </div>
+    // Actualizar hoja Jugadores
+    const sheetJugadores = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
+    if (!sheetJugadores) {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: `Hoja '${SHEET_NAME}' no encontrada`
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
 
-                    <div class="player-card">
-                        <div class="player-photo-wrapper">
-                            <div class="player-photo">
-                                <img src="${fotoUrl}" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
-                            </div>
-                            <div class="ovr-badge">${ovr}</div>
-                        </div>
-                        <div class="player-name">${escapeHtml(nombre)}</div>
-                        <div class="dorsal-badge">DORSAL ${j.dorsal || '--'}</div>
-                    </div>
+    const datosJugadores = sheetJugadores.getDataRange().getValues();
+    let filaEncontrada = -1;
 
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-futbol"></i></div>
-                            <div class="stat-label">Goles</div>
-                            <div class="stat-value">${j.goles || 0}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon" style="color:#f1c40f"><i class="fas fa-square"></i></div>
-                            <div class="stat-label">Amarillas</div>
-                            <div class="stat-value">${j.amarillas || 0}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon" style="color:#e74c3c"><i class="fas fa-square"></i></div>
-                            <div class="stat-label">Rojas</div>
-                            <div class="stat-value">${j.rojas || 0}</div>
-                        </div>
-                    </div>
+    for (let i = 1; i < datosJugadores.length; i++) {
+      if (datosJugadores[i][4] == cedula) {
+        filaEncontrada = i + 1;
+        break;
+      }
+    }
 
-                    <div class="section-box">
-                        <div class="section-title"><i class="fas fa-chart-line"></i> Valores Humanos</div>
-                        <div class="info-grid">
-                            <div class="info-item"><span>Compañerismo</span><span class="info-value">${v.comp}/10</span></div>
-                            <div class="info-item"><span>Respeto</span><span class="info-value">${v.resp}/10</span></div>
-                            <div class="info-item"><span>Humildad</span><span class="info-value">${v.humi}/10</span></div>
-                            <div class="info-item"><span>Puntualidad</span><span class="info-value">${v.punt}/10</span></div>
-                        </div>
-                    </div>
+    if (filaEncontrada === -1) {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'Jugador no encontrado en hoja Jugadores'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
 
-                    <div class="section-box">
-                        <div class="section-title"><i class="fas fa-wallet"></i> Vocalía</div>
-                        <div class="info-grid" style="margin-bottom:10px">
-                            <div class="info-item"><span>Valor Base</span><span class="info-value">$${j.valorVocalia || 0}</span></div>
-                            <div class="info-item"><span>Pendientes</span><span class="info-value">${j.vocaliasPendientes || 0}</span></div>
-                        </div>
-                        <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:15px; display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:0.8rem">Deuda Total:</span>
-                            <strong style="color:${(j.deudaVocalia || 0) > 0 ? '#e74c3c' : '#2ecc71'}; font-size:1.2rem">
-                                $${j.deudaVocalia || 0}
-                            </strong>
-                        </div>
-                    </div>
-
-                    <div class="section-box">
-                        <div class="section-title"><i class="fas fa-credit-card"></i> Estado de Pagos</div>
-                        <div class="payments-grid">
-                            <div class="payment-pill">
-                                Inscrip.
-                                <span class="status-tag ${j.inscripEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.inscripEstado || 'PEND.'}</span>
-                            </div>
-                            <div class="payment-pill">
-                                Uniforme
-                                <span class="status-tag ${j.unifEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.unifEstado || 'PEND.'}</span>
-                            </div>
-                            <div class="payment-pill">
-                                Medias
-                                <span class="status-tag ${j.mediasEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.mediasEstado || 'N/A'}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-logout" onclick="cerrarSesion()">
-                        <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
-                    </button>
-                `;
-            }
-        } catch (e) {
-            container.innerHTML = `<div class="loading-screen">❌ Error de conexión</div>`;
+    // Actualizar celdas en hoja Jugadores
+    sheetJugadores.getRange(filaEncontrada, 12).setValue(totalGoles);      // GOLES
+    sheetJugadores.getRange(filaEncontrada, 13).setValue(totalAmarillas);  // AMARILLAS
+    sheetJugadores.getRange(filaEncontrada, 14).setValue(totalRojas);      // ROJAS
+    sheetJugadores.getRange(filaEncontrada, 15).setValue(totalVocaliasPendientes); // DEUDA VOCALIA
+    
+    // Guardar valores humanos (columnas 28-31)
+    // Primero asegurar que las columnas existan
+    const ultimaColumna = datosJugadores[0].length;
+    if (ultimaColumna < 31) {
+      const nuevosEncabezados = ['COMPAÑERISMO', 'RESPETO', 'HUMILDAD', 'PUNTUALIDAD'];
+      for (let j = 0; j < nuevosEncabezados.length; j++) {
+        if (datosJugadores[0].length <= 27 + j) {
+          sheetJugadores.getRange(1, 28 + j).setValue(nuevosEncabezados[j]);
         }
+      }
+    }
+    
+    sheetJugadores.getRange(filaEncontrada, 28).setValue(promedioCompanerismo);
+    sheetJugadores.getRange(filaEncontrada, 29).setValue(promedioRespeto);
+    sheetJugadores.getRange(filaEncontrada, 30).setValue(promedioHumildad);
+    sheetJugadores.getRange(filaEncontrada, 31).setValue(promedioPuntualidad);
+
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      msg: 'Estadísticas actualizadas correctamente',
+      datos: {
+        goles: totalGoles,
+        amarillas: totalAmarillas,
+        rojas: totalRojas,
+        vocaliasPendientes: totalVocaliasPendientes,
+        companerismo: promedioCompanerismo,
+        respeto: promedioRespeto,
+        humildad: promedioHumildad,
+        puntualidad: promedioPuntualidad,
+        partidosJugados: contadorPartidos
+      }
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ================= 2. OBTENER PERFIL COMPLETO =================
+function obtenerPerfilCompleto(cedula) {
+  try {
+    // Actualizar estadísticas desde partidos
+    const actualizacion = actualizarEstadisticasDesdePartidos(cedula);
+    const datosActualizados = JSON.parse(actualizacion.getContent());
+    
+    // Obtener datos de la hoja Jugadores
+    const sheetJugadores = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
+    if (!sheetJugadores) {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'Hoja Jugadores no encontrada'
+      })).setMimeType(ContentService.MimeType.JSON);
     }
 
-    function cerrarSesion() {
-        localStorage.removeItem('jugador_actual');
-        window.location.href = 'login.html';
+    const datosJugadores = sheetJugadores.getDataRange().getValues();
+    let datosJugador = null;
+
+    for (let i = 1; i < datosJugadores.length; i++) {
+      if (datosJugadores[i][4] == cedula) {
+        datosJugador = {
+          timestamp: datosJugadores[i][0] || '',
+          primerNombre: datosJugadores[i][1] || '',
+          segundoNombre: datosJugadores[i][2] || '',
+          apellidos: datosJugadores[i][3] || '',
+          cedula: datosJugadores[i][4] || '',
+          fechaNacimiento: datosJugadores[i][5] || '',
+          telefono: datosJugadores[i][6] || '',
+          correo: datosJugadores[i][7] || '',
+          urlFotoRostro: datosJugadores[i][8] || '',
+          urlFotoCedula: datosJugadores[i][9] || '',
+          estado: datosJugadores[i][10] || 'PENDIENTE',
+          goles: datosJugadores[i][11] || 0,
+          amarillas: datosJugadores[i][12] || 0,
+          rojas: datosJugadores[i][13] || 0,
+          deudaVocalia: datosJugadores[i][14] || 0,
+          notificaciones: datosJugadores[i][15] || '',
+          nombreCamiseta: datosJugadores[i][16] || '',
+          dorsal: datosJugadores[i][17] || '',
+          vInscripcion: datosJugadores[i][18] || 0,
+          vUniforme: datosJugadores[i][19] || 0,
+          vMedias: datosJugadores[i][20] || 0,
+          nTransInscri: datosJugadores[i][21] || '',
+          nTransUnifo: datosJugadores[i][22] || '',
+          inscripEstado: datosJugadores[i][23] || 'PENDIENTE',
+          unifEstado: datosJugadores[i][24] || 'PENDIENTE',
+          mediasEstado: datosJugadores[i][25] || 'null',
+          tallaUni: datosJugadores[i][26] || '',
+          companerismo: datosJugadores[i][27] || 8,
+          respeto: datosJugadores[i][28] || 8,
+          humildad: datosJugadores[i][29] || 8,
+          puntualidad: datosJugadores[i][30] || 8
+        };
+        break;
+      }
     }
 
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+    if (!datosJugador) {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'Jugador no encontrado'
+      })).setMimeType(ContentService.MimeType.JSON);
     }
-</script>
 
-</body>
-</html>
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      jugador: datosJugador,
+      actualizacion: datosActualizados.success ? datosActualizados.datos : null
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ================= 3. VALIDAR REGISTRO =================
+function validarRegistro(cedula) {
+  try {
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify({
+        cedulaExiste: false,
+        error: 'Hoja no encontrada'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const datos = sheet.getDataRange().getValues();
+    let jugadorEncontrado = null;
+
+    for (let i = 1; i < datos.length; i++) {
+      if (datos[i][4] == cedula) {
+        jugadorEncontrado = {
+          timestamp: datos[i][0] || '',
+          primerNombre: datos[i][1] || '',
+          segundoNombre: datos[i][2] || '',
+          apellidos: datos[i][3] || '',
+          cedula: datos[i][4] || '',
+          fechaNacimiento: datos[i][5] || '',
+          telefono: datos[i][6] || '',
+          correo: datos[i][7] || '',
+          urlFotoRostro: datos[i][8] || '',
+          urlFotoCedula: datos[i][9] || '',
+          estado: datos[i][10] || 'PENDIENTE',
+          goles: datos[i][11] || 0,
+          amarillas: datos[i][12] || 0,
+          rojas: datos[i][13] || 0,
+          deudaVocalia: datos[i][14] || 0,
+          notificaciones: datos[i][15] || '',
+          nombreCamiseta: datos[i][16] || '',
+          dorsal: datos[i][17] || '',
+          vInscripcion: datos[i][18] || 0,
+          vUniforme: datos[i][19] || 0,
+          vMedias: datos[i][20] || 0,
+          nTransInscri: datos[i][21] || '',
+          nTransUnifo: datos[i][22] || '',
+          inscripEstado: datos[i][23] || 'PENDIENTE',
+          unifEstado: datos[i][24] || 'PENDIENTE',
+          mediasEstado: datos[i][25] || 'null',
+          tallaUni: datos[i][26] || ''
+        };
+        break;
+      }
+    }
+
+    const cedulaExiste = (jugadorEncontrado !== null);
+    const estado = cedulaExiste ? jugadorEncontrado.estado : null;
+
+    return ContentService.createTextOutput(JSON.stringify({
+      cedulaExiste: cedulaExiste,
+      estado: estado,
+      datosJugador: jugadorEncontrado
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      cedulaExiste: false,
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ================= 4. OBTENER DORSALES OCUPADOS =================
+function obtenerDorsalesOcupados() {
+  try {
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify([]))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const datos = sheet.getDataRange().getValues();
+    const dorsalesOcupados = [];
+
+    for (let i = 1; i < datos.length; i++) {
+      const dorsal = datos[i][17];
+      if (dorsal && dorsal.toString().trim() !== '' && dorsal.toString() !== '0') {
+        dorsalesOcupados.push(dorsal.toString());
+      }
+    }
+
+    return ContentService.createTextOutput(JSON.stringify(dorsalesOcupados))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify([]))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ================= 5. GUARDAR REGISTRO COMPLETO =================
+function guardarRegistroCompleto(params) {
+  try {
+    if (!params.ced || !params.n1 || !params.ape) {
+      return ContentService.createTextOutput(JSON.stringify({
+        ok: false,
+        msg: 'Faltan datos obligatorios'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const existe = validarCedulaEnSheet(params.ced);
+    if (existe) {
+      return ContentService.createTextOutput(JSON.stringify({
+        ok: false,
+        msg: 'La cédula ya está registrada'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const dorsalOcupado = validarDorsalOcupado(params.dorsal);
+    if (dorsalOcupado) {
+      return ContentService.createTextOutput(JSON.stringify({
+        ok: false,
+        msg: 'El dorsal seleccionado ya está ocupado'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const nombreCarpeta = `${params.ape}_${params.n1}_${params.ced}`.replace(/[\\/:*?"<>|]/g, '_');
+    const carpetaPersonal = crearCarpetaPersonal(nombreCarpeta);
+
+    let urlFotoRostro = '';
+    let urlFotoCedula = '';
+
+    if (params.fotoRostroB64 && params.fotoRostroB64 !== '') {
+      urlFotoRostro = guardarImagen(carpetaPersonal, params.fotoRostroB64, 'foto_rostro.jpg');
+    }
+
+    if (params.fotoCedulaB64 && params.fotoCedulaB64 !== '') {
+      urlFotoCedula = guardarImagen(carpetaPersonal, params.fotoCedulaB64, 'foto_cedula.jpg');
+    }
+
+    const valorMedias = params.medias === 'SI' ? 2 : 0;
+    const valorUniforme = 75 + valorMedias;
+
+    insertarEnSheet({
+      timestamp: new Date(),
+      primerNombre: (params.n1 || '').toUpperCase(),
+      segundoNombre: (params.n2 || '').toUpperCase(),
+      apellidos: (params.ape || '').toUpperCase(),
+      cedula: params.ced,
+      fechaNacimiento: params.fecha,
+      telefono: params.tel,
+      correo: (params.correo || '').toLowerCase(),
+      urlFotoRostro: urlFotoRostro,
+      urlFotoCedula: urlFotoCedula,
+      estado: 'PENDIENTE',
+      goles: 0,
+      amarillas: 0,
+      rojas: 0,
+      deudaVocalia: 0,
+      notificaciones: '',
+      nombreCamiseta: (params.nombreCamiseta || '').toUpperCase(),
+      dorsal: params.dorsal,
+      vInscripcion: 5,
+      vUniforme: valorUniforme,
+      vMedias: valorMedias,
+      nTransInscri: params.inscripcion || '',
+      nTransUnifo: params.uniforme || '',
+      inscripEstado: 'PENDIENTE',
+      unifEstado: 'PENDIENTE',
+      mediasEstado: params.medias === 'SI' ? 'PENDIENTE' : 'null',
+      tallaUni: (params.talla || '').toUpperCase()
+    });
+
+    return ContentService.createTextOutput(JSON.stringify({
+      ok: true,
+      msg: 'Registro exitoso'
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      ok: false,
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ================= FUNCIONES AUXILIARES =================
+
+function validarCedulaEnSheet(cedula) {
+  try {
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
+    const datos = sheet.getDataRange().getValues();
+    for (let i = 1; i < datos.length; i++) {
+      if (datos[i][4] == cedula) return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+function validarDorsalOcupado(dorsal) {
+  try {
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
+    const datos = sheet.getDataRange().getValues();
+    for (let i = 1; i < datos.length; i++) {
+      if (datos[i][17] == dorsal) return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+function crearCarpetaPersonal(nombreCarpeta) {
+  try {
+    let carpetaPrincipal;
+    try {
+      carpetaPrincipal = DriveApp.getFolderById(CARPETA_PRINCIPAL_ID);
+    } catch (e) {
+      const carpetas = DriveApp.getFoldersByName(CARPETA_PRINCIPAL_NOMBRE);
+      if (carpetas.hasNext()) {
+        carpetaPrincipal = carpetas.next();
+      } else {
+        carpetaPrincipal = DriveApp.createFolder(CARPETA_PRINCIPAL_NOMBRE);
+      }
+    }
+    const carpetasExistentes = carpetaPrincipal.getFoldersByName(nombreCarpeta);
+    if (carpetasExistentes.hasNext()) {
+      return carpetasExistentes.next();
+    }
+    return carpetaPrincipal.createFolder(nombreCarpeta);
+  } catch (error) {
+    throw new Error(`Error al crear carpeta: ${error.toString()}`);
+  }
+}
+
+function guardarImagen(carpeta, base64String, nombreArchivo) {
+  if (!base64String || base64String === '') return '';
+  try {
+    let base64Data = base64String;
+    if (base64String.includes(',')) {
+      base64Data = base64String.split(',')[1];
+    }
+    const blob = Utilities.newBlob(Utilities.base64Decode(base64Data), 'image/jpeg', nombreArchivo);
+    const archivo = carpeta.createFile(blob);
+    archivo.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    return archivo.getUrl();
+  } catch (error) {
+    return '';
+  }
+}
+
+function insertarEnSheet(datos) {
+  try {
+    let sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+      const nuevaHoja = ss.insertSheet(SHEET_NAME);
+      const encabezados = [
+        'Marca de Tiempo', 'Primer Nombre', 'Segundo Nombre', 'Apellidos', 'Cedula',
+        'Fecha de Nacimiento', 'Telefono', 'Correo', 'URL Foto Rostro', 'URL Foto Cedula',
+        'ESTADO', 'GOLES', 'AMARILLAS', 'ROJAS', 'DEUDA VOCALIA', 'NOTIFICACIONES',
+        'Nombre en Camiseta', 'Número de Dorsal', 'V_Inscripción', 'V_Uniforme', 'V_Medias',
+        'N_Trans_Inscri', 'N_Trans_Unifo', 'Inscrip_Estado', 'Unif_Estado', 'Medias_Estado',
+        'TALLA UNI.', 'COMPAÑERISMO', 'RESPETO', 'HUMILDAD', 'PUNTUALIDAD'
+      ];
+      nuevaHoja.getRange(1, 1, 1, encabezados.length).setValues([encabezados]);
+      sheet = nuevaHoja;
+    }
+    const fila = [
+      datos.timestamp, datos.primerNombre, datos.segundoNombre, datos.apellidos,
+      datos.cedula, datos.fechaNacimiento, datos.telefono, datos.correo,
+      datos.urlFotoRostro, datos.urlFotoCedula, datos.estado,
+      datos.goles, datos.amarillas, datos.rojas, datos.deudaVocalia,
+      datos.notificaciones, datos.nombreCamiseta, datos.dorsal,
+      datos.vInscripcion, datos.vUniforme, datos.vMedias,
+      datos.nTransInscri, datos.nTransUnifo, datos.inscripEstado,
+      datos.unifEstado, datos.mediasEstado, datos.tallaUni,
+      8, 8, 8, 8
+    ];
+    sheet.appendRow(fila);
+    return true;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function testConexion() {
+  return ContentService.createTextOutput(JSON.stringify({
+    ok: true,
+    msg: 'Conexión exitosa'
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
+// ================= FUNCIÓN PARA VER ESTRUCTURA =================
+function verEstructuraPartidos() {
+  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_PARTIDOS);
+  if (!sheet) {
+    Logger.log(`Hoja '${SHEET_PARTIDOS}' no encontrada`);
+    return;
+  }
+  const datos = sheet.getDataRange().getValues();
+  Logger.log(`=== Encontrada hoja: ${SHEET_PARTIDOS} ===`);
+  Logger.log(`Columnas: ${datos[0].length}`);
+  Logger.log(`Filas: ${datos.length}`);
+  Logger.log(`Encabezados: ${datos[0].join(' | ')}`);
+}
