@@ -187,13 +187,11 @@
             if (data.success && data.jugador) {
                 const j = data.jugador;
                 
-                // VALORES HUMANOS
                 let companerismo = Number(j.companerismo) || 8;
                 let respeto = Number(j.respeto) || 8;
                 let humildad = Number(j.humildad) || 8;
                 let puntualidad = Number(j.puntualidad) || 8;
                 
-                // Si hay datos actualizados de partidos, usar esos promedios
                 if (data.actualizacion) {
                     companerismo = data.actualizacion.companerismo || companerismo;
                     respeto = data.actualizacion.respeto || respeto;
@@ -201,19 +199,15 @@
                     puntualidad = data.actualizacion.puntualidad || puntualidad;
                 }
                 
-                // Calcular OVR (promedio de valores humanos * 10, escala 40-99)
                 const promedio = (companerismo + respeto + humildad + puntualidad) / 4;
                 const ovr = Math.min(99, Math.max(40, Math.round(promedio * 10)));
                 
-                // Foto
                 const fotoUrl = j.urlFotoRostro || CONFIG.DEFAULT_AVATAR;
                 
-                // Nombre para mostrar (priorizar nombre en camiseta)
                 const nombreMostrar = j.nombreCamiseta && j.nombreCamiseta !== '' 
                     ? j.nombreCamiseta 
                     : `${j.primerNombre || ''} ${j.apellidos || ''}`.trim() || 'Jugador';
                 
-                // Estado de medias
                 let mediasEstado = j.mediasEstado || 'null';
                 let mediasClass = '';
                 let mediasLabel = '';
@@ -228,11 +222,9 @@
                     mediasLabel = 'NO REQUIERE';
                 }
                 
-                // Deuda vocalía
                 const deudaVocalia = Number(j.deudaVocalia) || 0;
                 const deudaColor = deudaVocalia > 0 ? '#e74c3c' : '#2ecc71';
                 
-                // Estadísticas
                 const goles = Number(j.goles) || 0;
                 const amarillas = Number(j.amarillas) || 0;
                 const rojas = Number(j.rojas) || 0;
@@ -267,7 +259,6 @@
                         </div>` : ''}
                     </div>
 
-                    <!-- Estadísticas de juego -->
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-icon"><i class="fas fa-futbol"></i></div>
@@ -286,7 +277,6 @@
                         </div>
                     </div>
 
-                    <!-- Valores Humanos -->
                     <div class="section-box">
                         <div class="section-title"><i class="fas fa-chart-line"></i> VALORES HUMANOS</div>
                         <div class="info-grid">
@@ -312,7 +302,6 @@
                         </div>
                     </div>
 
-                    <!-- Vocalía -->
                     <div class="section-box">
                         <div class="section-title"><i class="fas fa-money-bill-wave"></i> VOCALÍA</div>
                         <div class="info-grid">
@@ -332,7 +321,6 @@
                         ${j.sancionEspecial ? `<div class="warning-text"><i class="fas fa-exclamation-triangle"></i> Sanción: ${escapeHtml(j.sancionEspecial)}</div>` : ''}
                     </div>
 
-                    <!-- Pagos -->
                     <div class="section-box">
                         <div class="section-title"><i class="fas fa-credit-card"></i> ESTADO DE PAGOS</div>
                         <div class="payments-grid">
@@ -406,7 +394,6 @@
         return div.innerHTML;
     }
     
-    // Exponer funciones globalmente
     window.refrescarPerfil = refrescarPerfil;
     window.cerrarSesion = cerrarSesion;
 </script>
