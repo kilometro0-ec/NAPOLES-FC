@@ -3,1020 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Nápoles F.C. - Registro Oficial</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <title>Nápoles F.C. - Acceso Jugadores</title>
+    
+    <!-- Configuración PWA e iOS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nápoles FC">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1165/1165187.png">
+    <meta name="theme-color" content="#020c1a">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            margin: 0;
-            padding: 0;
+        :root {
+            --primary: #00d2ff;
+            --primary-dark: #008f9b;
+            --accent: #FFD700;
+            --bg-dark: #020c1a;
+            --glass: rgba(12, 25, 45, 0.7);
         }
 
-        :root {
-            --azul-noche: #1A2B48;
-            --cardenillo: #008B94;
-            --dorado: #D4AF37;
-            --dorado-oscuro: #B59461;
-            --blanco-puro: #ffffff;
-            --gris-suave: rgba(255, 255, 255, 0.1);
-            --negro-trans: rgba(0, 0, 0, 0.4);
-            --rojo-error: #e74c3c;
-            --verde-exito: #2ecc71;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: radial-gradient(circle at 10% 20%, #0a1928, #020c1a);
-            font-family: 'Inter', 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 210, 255, 0.15), transparent 50%),
+                linear-gradient(rgba(2, 12, 26, 0.8), rgba(2, 12, 26, 0.8)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300d2ff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            position: relative;
+            color: white;
+            overflow-x: hidden;
         }
 
-        .contenedor-principal {
-            max-width: 520px;
+        .login-card {
+            max-width: 420px;
             width: 100%;
-            margin: 20px auto;
-            background: rgba(26, 43, 72, 0.75);
-            backdrop-filter: blur(18px);
-            border-radius: 2rem;
-            border: 1px solid rgba(181, 148, 97, 0.4);
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(181, 148, 97, 0.15) inset;
-            padding: 2rem 1.8rem;
-            transition: transform 0.25s ease, box-shadow 0.3s;
-            animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        .contenedor-principal:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 35px 55px rgba(0, 0, 0, 0.5);
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 2.5rem;
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 3rem 2.5rem;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        h1 {
-            font-size: 2rem;
+        .logo-area { text-align: center; margin-bottom: 2.5rem; }
+        .logo-area h1 {
+            font-size: 2.2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--dorado), #F3D572);
+            background: linear-gradient(to right, #fff, var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
-            margin-bottom: 0.4rem;
-        }
-
-        .subtitulo {
-            color: #b0c4de;
-            font-size: 0.85rem;
-            font-weight: 400;
-        }
-
-        .badge {
-            display: inline-block;
-            background: rgba(0, 139, 148, 0.2);
-            border-radius: 60px;
-            padding: 0.3rem 1rem;
-            font-size: 0.7rem;
-            color: var(--dorado);
-            margin-top: 0.6rem;
-            font-weight: 500;
-        }
-
-        .countdown-container {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 1rem;
-            padding: 0.8rem;
-            margin-top: 1rem;
-            text-align: center;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .countdown-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--dorado);
             margin-bottom: 0.5rem;
         }
 
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
+        .input-group { margin-bottom: 2rem; }
 
-        .countdown-item {
-            text-align: center;
-            min-width: 60px;
-        }
-
-        .countdown-number {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--dorado), #ffd700);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .input-group label {
             display: block;
-            line-height: 1;
-        }
-
-        .countdown-label {
-            font-size: 0.6rem;
-            color: #b0c4de;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .countdown-message {
-            margin-top: 0.5rem;
-            font-size: 0.75rem;
-            color: #ff6b6b;
-            font-weight: 500;
-        }
-
-        .paso {
-            display: none;
-            animation: fadeSlide 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        .paso.activo {
-            display: block;
-        }
-
-        @keyframes fadeSlide {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .campo {
-            margin-bottom: 1.2rem;
-        }
-
-        label {
-            display: block;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #9ab3cf;
-            margin-bottom: 0.25rem;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(181, 148, 97, 0.5);
-            border-radius: 1rem;
-            color: white;
-            font-size: 1rem;
-            font-family: 'Inter', monospace;
-            transition: all 0.25s;
-            outline: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--cardenillo);
-            box-shadow: 0 0 0 3px rgba(0, 139, 148, 0.3);
-            background: rgba(0, 0, 0, 0.7);
-            transform: scale(1.01);
-        }
-
-        input.error, select.error {
-            border-color: var(--rojo-error);
-            animation: shake 0.3s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .help-note {
-            font-size: 0.7rem;
-            color: #8db5d0;
-            margin-top: 0.3rem;
-            margin-left: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .mensaje-exito-foto {
-            color: var(--verde-exito);
-            font-size: 0.75rem;
-            margin-top: 5px;
-            margin-left: 12px;
-            display: none;
-            align-items: center;
-            gap: 5px;
-            animation: fadeInLeft 0.3s ease;
-        }
-
-        @keyframes fadeInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .visto-icon {
-            font-size: 1.3rem;
-            display: none;
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .file-input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .file-input-wrapper input {
-            flex: 1;
-        }
-
-        .btn-primary {
-            background: linear-gradient(105deg, var(--cardenillo), #006b74);
-            border: none;
-            padding: 0.9rem;
-            width: 100%;
-            border-radius: 3rem;
-            font-weight: 700;
-            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 1.2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.2rem;
             color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 4px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1.2rem;
+            border-radius: 1.2rem;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #00d2ff 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.7; }
+
+        .footer-links { margin-top: 2rem; text-align: center; font-size: 0.9rem; }
+        .footer-links a { color: var(--accent); text-decoration: none; font-weight: 700; }
+
+        .btn-download {
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.7rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
             cursor: pointer;
             margin-top: 1.2rem;
-            transition: all 0.25s;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            background: linear-gradient(105deg, #00a5b3, #00808a);
-            box-shadow: 0 10px 20px rgba(0, 139, 148, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(1px);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .grid-2cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        #loader {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(8px);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
-            z-index: 10000;
-        }
-
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(212, 175, 55, 0.25);
-            border-top: 4px solid var(--dorado);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        #loader-texto {
-            color: white;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        #modalExito {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            justify-content: center;
-            align-items: center;
-            z-index: 10002;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-card {
-            background: linear-gradient(145deg, #1A2B48, #0f1a2e);
-            border-radius: 2rem;
-            padding: 2rem;
-            text-align: center;
-            border: 2px solid var(--dorado);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            max-width: 320px;
-            width: 85%;
-            animation: modalZoom 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
-        }
-
-        @keyframes modalZoom {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal-card h2 {
-            color: var(--dorado);
-            margin-bottom: 0.8rem;
-            font-size: 1.5rem;
-        }
-
-        .modal-card p {
-            color: white !important;
-            font-size: 1rem;
-        }
-
-        #contador {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--dorado), #ffd700);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
             display: inline-block;
-            min-width: 50px;
-            animation: pulse 1s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .toast-notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(12px);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 60px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 10001;
-            animation: toastSlideUp 0.3s ease forwards;
-            border-left: 4px solid var(--dorado);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        .error-toast {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            display: none;
+            text-align: center;
             font-size: 0.85rem;
-            max-width: 90%;
         }
 
-        .toast-notification.error {
-            border-left-color: var(--rojo-error);
-            background: rgba(30, 20, 20, 0.95);
-        }
-
-        .toast-notification.success {
-            border-left-color: var(--verde-exito);
-            background: rgba(20, 30, 20, 0.95);
-        }
-
-        @keyframes toastSlideUp {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
-        @media (max-width: 550px) {
-            body {
-                padding: 1rem;
-            }
-            .contenedor-principal {
-                padding: 1.5rem;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-            input, select, .btn-primary {
-                padding: 0.8rem 1rem;
-            }
-            .grid-2cols {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            .countdown-number {
-                font-size: 1.2rem;
-            }
-            .countdown-item {
-                min-width: 45px;
-            }
+        @media (display-mode: standalone) {
+            #containerDownload { display: none !important; }
         }
     </style>
 </head>
 <body>
 
-<div class="contenedor-principal">
-    <header>
-        <h1>⚽ NÁPOLES F.C.</h1>
-        <p class="subtitulo">Formulario de registro oficial</p>
-        <div class="badge">🏆 Temporada 2026 - 2027</div>
+<div class="login-card">
+    <div class="logo-area">
+        <h1>NÁPOLES F.C.</h1>
+        <p>Panel de Control de Jugadores</p>
+    </div>
+
+    <div class="input-group">
+        <label>Número de Cédula</label>
+        <input type="text" id="loginCedula" maxlength="10" placeholder="0000000000" inputmode="numeric">
+    </div>
+
+    <button id="btnLogin" class="btn-submit" disabled>Iniciar Sesión</button>
+
+    <div id="mensajeError" class="error-toast"></div>
+
+    <div class="footer-links">
+        ¿Eres nuevo en el club? <br><br>
+        <a href="registro.html">CREAR CUENTA NUEVA ✨</a>
         
-        <div class="countdown-container">
-            <div class="countdown-title">⏰ CIERRE DE INSCRIPCIONES</div>
-            <div class="countdown" id="countdown">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="days">00</span>
-                    <span class="countdown-label">Días</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="hours">00</span>
-                    <span class="countdown-label">Horas</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">00</span>
-                    <span class="countdown-label">Minutos</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">00</span>
-                    <span class="countdown-label">Segundos</span>
-                </div>
-            </div>
-            <div class="countdown-message" id="countdownMessage"></div>
+        <div id="containerDownload">
+            <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
         </div>
-    </header>
-
-    <form id="formRegistro">
-        <div id="paso1" class="paso activo">
-            <div class="campo">
-                <label>🔢 CÉDULA (10 dígitos)</label>
-                <input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890" autocomplete="off">
-                <div class="help-note"><span>🔑</span> Ingresa tu número de cédula para empezar</div>
-            </div>
-            <button type="button" id="btnCedula" class="btn-primary" disabled>Validar cédula</button>
-        </div>
-
-        <div id="paso2" class="paso">
-            <div class="campo"><label>📝 Primer nombre</label><input type="text" id="n1" placeholder="Ej: LEONARDO"></div>
-            <div class="campo"><label>📝 Segundo nombre (opcional)</label><input type="text" id="n2" placeholder="Ej: ADRIAN"></div>
-            <div class="campo"><label>📝 Apellidos</label><input type="text" id="ape" placeholder="Ej: MUÑOZ BUENDIA"></div>
-            <div class="campo"><label>📅 Fecha de nacimiento</label><input type="date" id="fecha"></div>
-            <button type="button" id="btnPaso2" class="btn-primary" disabled>Siguiente</button>
-        </div>
-
-        <div id="paso3" class="paso">
-            <div class="campo"><label>📞 Teléfono (10 dígitos)</label><input type="tel" id="tel" maxlength="10" placeholder="Ej: 0991234567"></div>
-            <div class="campo"><label>✉️ Correo electrónico</label><input type="email" id="correo" placeholder="tú@ejemplo.com"></div>
-            <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
-        </div>
-
-        <div id="paso4" class="paso">
-            <div class="campo">
-                <label>📸 Foto de perfil (sonríe)</label>
-                <div class="file-input-wrapper">
-                    <input type="file" id="rostro" accept="image/jpeg,image/png">
-                    <span id="vistoRostro" class="visto-icon">✅</span>
-                </div>
-                <div id="mensajeRostro" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
-            </div>
-            <div class="campo">
-                <label>🪪 Foto de tu cédula (frontal)</label>
-                <div class="file-input-wrapper">
-                    <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
-                    <span id="vistoCedula" class="visto-icon">✅</span>
-                </div>
-                <div id="mensajeCedula" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
-            </div>
-            <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
-        </div>
-
-        <div id="paso5" class="paso">
-            <div class="grid-2cols">
-                <div class="campo">
-                    <label>🏷️ Nombre en tu camiseta</label>
-                    <select id="nombreCamiseta">
-                        <option value="">Selecciona</option>
-                    </select>
-                </div>
-                <div class="campo">
-                    <label>🔢 Número en tu dorsal</label>
-                    <select id="dorsal">
-                        <option value="">Selecciona</option>
-                    </select>
-                </div>
-            </div>
-            <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
-        </div>
-
-        <div id="paso6" class="paso">
-            <div class="campo">
-                <label>👕 Talla de uniforme</label>
-                <select id="talla">
-                    <option value="">Selecciona</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                </select>
-            </div>
-            <div class="campo">
-                <label>🧦 Medias extras (+$2)</label>
-                <select id="medias">
-                    <option value="">Selecciona</option>
-                    <option value="NO">No</option>
-                    <option value="SI">Sí</option>
-                </select>
-            </div>
-            <div class="campo">
-                <label>💰 N° transacción inscripción ($5)</label>
-                <input id="inscripcion" placeholder="Ej: PAGO-12345">
-            </div>
-            <div class="campo">
-                <label>👕 N° transacción uniforme (abono 75% + medias)</label>
-                <input id="uniforme" placeholder="Ej: PAGO-67890">
-            </div>
-            <button type="button" id="btnFinal" class="btn-primary" disabled>Finalizar registro</button>
-        </div>
-
-        <input type="hidden" id="fotoRostroB64">
-        <input type="hidden" id="fotoCedulaB64">
-    </form>
-</div>
-
-<div id="loader">
-    <div class="spinner"></div>
-    <div id="loader-texto">Procesando...</div>
-</div>
-
-<div id="modalExito">
-    <div class="modal-card">
-        <h2>✅ ¡Registro exitoso!</h2>
-        <p>Redirigiendo en <span id="contador">3</span> segundos...</p>
     </div>
 </div>
 
+<!-- Cargar configuración primero -->
+<script src="config.js"></script>
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbw93aokkZs0TTqSHv5LgJsBG3yLN2eOEmcwcvjNFzbtOnUeCCtMx5lQP4mq8loPC9Ky/exec";
+    const cedulaInput = document.getElementById('loginCedula');
+    const btnLogin = document.getElementById('btnLogin');
+    const errorDiv = document.getElementById('mensajeError');
+    const manualBtn = document.getElementById('manualDownloadBtn');
+    const containerDownload = document.getElementById('containerDownload');
 
-    // ================= RELOJ COUNTDOWN =================
-    function actualizarCountdown() {
-        const fechaObjetivo = new Date(2026, 4, 8, 23, 0, 0);
-        const ahora = new Date();
-        const diferencia = fechaObjetivo - ahora;
-        
-        const daysElem = document.getElementById('days');
-        const hoursElem = document.getElementById('hours');
-        const minutesElem = document.getElementById('minutes');
-        const secondsElem = document.getElementById('seconds');
-        const messageElem = document.getElementById('countdownMessage');
-        
-        if (diferencia <= 0) {
-            if (daysElem) daysElem.textContent = '00';
-            if (hoursElem) hoursElem.textContent = '00';
-            if (minutesElem) minutesElem.textContent = '00';
-            if (secondsElem) secondsElem.textContent = '00';
-            if (messageElem) {
-                messageElem.innerHTML = '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
-                messageElem.style.color = '#ff6b6b';
-            }
-            return;
-        }
-        
-        const days = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diferencia % (1000 * 60)) / 1000);
-        
-        if (daysElem) daysElem.textContent = String(days).padStart(2, '0');
-        if (hoursElem) hoursElem.textContent = String(hours).padStart(2, '0');
-        if (minutesElem) minutesElem.textContent = String(minutes).padStart(2, '0');
-        if (secondsElem) secondsElem.textContent = String(seconds).padStart(2, '0');
-        
-        if (messageElem && days <= 1) {
-            messageElem.innerHTML = '⚠️ ¡ÚLTIMAS HORAS PARA INSCRIBIRTE! ⚠️';
-            messageElem.style.color = '#ffaa00';
-        } else if (messageElem) {
-            messageElem.innerHTML = '📅 Cierre: Viernes 8 de Mayo - 11:00 PM';
-            messageElem.style.color = '#8db5d0';
-        }
-    }
-    
-    setInterval(actualizarCountdown, 1000);
-    actualizarCountdown();
-
-    // ================= TOASTS =================
-    function mostrarToast(mensaje, tipo = 'info', duracion = 4000) {
-        const toastAnterior = document.querySelector('.toast-notification');
-        if (toastAnterior) toastAnterior.remove();
-        const toast = document.createElement('div');
-        toast.className = `toast-notification ${tipo}`;
-        toast.innerHTML = `<span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️'}</span><span>${mensaje}</span>`;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.animation = 'toastSlideUp 0.3s reverse forwards';
-            setTimeout(() => toast.remove(), 300);
-        }, duracion);
+    // Verificar que CONFIG esté cargado
+    if (typeof CONFIG === 'undefined') {
+        console.error('Error: No se pudo cargar config.js');
+        mostrarError('Error de configuración. Recarga la página.');
     }
 
-    function marcarErrorInput(input, mensaje) {
-        input.classList.add('error');
-        mostrarToast(mensaje, 'error', 2500);
-        setTimeout(() => input.classList.remove('error'), 500);
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        containerDownload.style.display = 'none';
     }
 
-    // ================= LOADER =================
-    const loaderDiv = document.getElementById('loader');
-    const loaderTexto = document.getElementById('loader-texto');
-    const modalExito = document.getElementById('modalExito');
-
-    function mostrarLoader(visible, texto = "Procesando...") {
-        loaderDiv.style.display = visible ? "flex" : "none";
-        if (texto) loaderTexto.innerText = texto;
-    }
-
-    function verPaso(n) {
-        document.querySelectorAll(".paso").forEach(p => p.classList.remove("activo"));
-        document.getElementById(`paso${n}`).classList.add("activo");
-    }
-
-    // Mayúsculas
-    document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
-        inp.addEventListener('input', function() {
-            if (this.id !== 'correo') this.value = this.value.toUpperCase();
-        });
+    cedulaInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        e.target.value = value.slice(0, 10);
+        btnLogin.disabled = e.target.value.length !== 10;
+        errorDiv.style.display = 'none';
     });
 
-    // ================= PASO 1 =================
-    const ced = document.getElementById('ced');
-    const btnCedula = document.getElementById('btnCedula');
-    ced.addEventListener('input', () => {
-        ced.value = ced.value.replace(/\D/g, '').slice(0, 10);
-        btnCedula.disabled = ced.value.length !== 10;
-    });
-    btnCedula.addEventListener('click', async () => {
-        if (ced.value.length !== 10) {
-            marcarErrorInput(ced, "La cédula debe tener 10 dígitos");
-            return;
-        }
-        mostrarLoader(true, "Validando cédula...");
+    btnLogin.addEventListener('click', async () => {
+        const cedula = cedulaInput.value;
+        btnLogin.disabled = true;
+        btnLogin.innerText = 'VERIFICANDO...';
+        errorDiv.style.display = 'none';
+
         try {
-            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+            const resp = await fetch(`${CONFIG.URL_GAS}?action=validarRegistro&cedula=${cedula}`);
             const data = await resp.json();
-            if (data.cedulaExiste) {
-                mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
+
+            if (data.cedulaExiste && data.estado === "APROBADO" && data.datosJugador) {
+                localStorage.setItem('jugador_actual', JSON.stringify({
+                    ...data.datosJugador,
+                    cedula: cedula,
+                    expira: Date.now() + CONFIG.TIEMPO_SESION
+                }));
+                window.location.href = 'perfil.html';
+            } else if (!data.cedulaExiste) {
+                mostrarError("La cédula no está registrada.");
+            } else if (data.estado !== "APROBADO") {
+                mostrarError("Tu cuenta está en revisión por el delegado. Estado actual: " + (data.estado || "PENDIENTE"));
             } else {
-                mostrarToast("✅ Cédula válida", "success");
-                verPaso(2);
+                mostrarError("No se pudieron cargar tus datos. Contacta al administrador.");
             }
-        } catch (error) {
-            console.error(error);
-            mostrarToast("Error de conexión. Revisa tu URL del backend.", "error");
+        } catch (err) {
+            console.error(err);
+            mostrarError("Error de conexión con el servidor.");
+        } finally {
+            btnLogin.disabled = false;
+            btnLogin.innerText = 'INICIAR SESIÓN';
         }
-        mostrarLoader(false);
     });
 
-    // ================= PASO 2 =================
-    const n1 = document.getElementById('n1');
-    const n2 = document.getElementById('n2');
-    const ape = document.getElementById('ape');
-    const fecha = document.getElementById('fecha');
-    const btnPaso2 = document.getElementById('btnPaso2');
-    
-    function validarPaso2() {
-        const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
-        let fechaOk = true;
-        if (fechaValida) {
-            const hoy = new Date();
-            hoy.setHours(0, 0, 0, 0);
-            const fechaSeleccionada = new Date(fecha.value);
-            if (fechaSeleccionada > hoy) fechaOk = false;
-        }
-        btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fechaValida && fechaOk);
-    }
-    
-    [n1, n2, ape, fecha].forEach(el => el.addEventListener('input', validarPaso2));
-    
-    btnPaso2.addEventListener('click', () => {
-        if (!n1.value.trim()) {
-            marcarErrorInput(n1, "El primer nombre es obligatorio");
-            return;
-        }
-        if (!ape.value.trim()) {
-            marcarErrorInput(ape, "Los apellidos son obligatorios");
-            return;
-        }
-        if (!fecha.value) {
-            marcarErrorInput(fecha, "La fecha de nacimiento es obligatoria");
-            return;
-        }
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
-        const fechaNac = new Date(fecha.value);
-        if (fechaNac > hoy) {
-            marcarErrorInput(fecha, "La fecha no puede ser futura");
-            return;
-        }
-        verPaso(3);
-    });
-
-    // ================= PASO 3 =================
-    const tel = document.getElementById('tel');
-    const correo = document.getElementById('correo');
-    const btnPaso3 = document.getElementById('btnPaso3');
-    
-    function validarPaso3() {
-        const telOk = tel.value.replace(/\D/g, '').length === 10;
-        const emailOk = correo.value.includes('@') && correo.value.includes('.');
-        btnPaso3.disabled = !(telOk && emailOk);
-    }
-    
-    [tel, correo].forEach(el => el.addEventListener('input', validarPaso3));
-    tel.addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10); });
-    
-    btnPaso3.addEventListener('click', () => {
-        if (tel.value.replace(/\D/g, '').length !== 10) {
-            marcarErrorInput(tel, "El teléfono debe tener 10 dígitos");
-            return;
-        }
-        if (!correo.value.includes('@') || !correo.value.includes('.')) {
-            marcarErrorInput(correo, "Ingresa un correo válido");
-            return;
-        }
-        verPaso(4);
-    });
-
-    // ================= PASO 4 =================
-    const rostro = document.getElementById('rostro');
-    const cedulaFile = document.getElementById('cedulaFile');
-    const fotoRostroB64 = document.getElementById('fotoRostroB64');
-    const fotoCedulaB64 = document.getElementById('fotoCedulaB64');
-    const btnPaso4 = document.getElementById('btnPaso4');
-    const mensajeRostro = document.getElementById('mensajeRostro');
-    const mensajeCedula = document.getElementById('mensajeCedula');
-    const vistoRostro = document.getElementById('vistoRostro');
-    const vistoCedula = document.getElementById('vistoCedula');
-
-    function archivoABase64(file, inputHidden, mensajeElemento, vistoElemento) {
-        return new Promise((resolve, reject) => {
-            if (!file) return resolve(null);
-            const reader = new FileReader();
-            reader.onload = () => {
-                inputHidden.value = reader.result;
-                if (mensajeElemento) mensajeElemento.style.display = 'flex';
-                if (vistoElemento) vistoElemento.style.display = 'inline-block';
-                resolve(true);
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
+    function mostrarError(msj) {
+        errorDiv.innerText = "⚠️ " + msj;
+        errorDiv.style.display = 'block';
     }
 
-    function verificarFotos() {
-        const tieneRostro = fotoRostroB64.value && fotoRostroB64.value !== '';
-        const tieneCedula = fotoCedulaB64.value && fotoCedulaB64.value !== '';
-        btnPaso4.disabled = !(tieneRostro && tieneCedula);
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        manualBtn.innerHTML = "👕 INSTALAR APP (CAMISETA)";
+        manualBtn.style.background = "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)";
+        manualBtn.style.color = "#000";
+    });
+
+    manualBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') containerDownload.style.display = 'none';
+            deferredPrompt = null;
+        } else {
+            alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar' o 'Añadir a pantalla de inicio'.");
+        }
+    });
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
     }
-
-    rostro.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (file && !file.type.startsWith('image/')) {
-            mostrarToast("Solo imágenes JPG o PNG", "error");
-            rostro.value = '';
-            return;
-        }
-        if (file && file.size > 2 * 1024 * 1024) {
-            mostrarToast("La imagen no debe superar 2MB", "error");
-            rostro.value = '';
-            return;
-        }
-        await archivoABase64(file, fotoRostroB64, mensajeRostro, vistoRostro);
-        verificarFotos();
-    });
-
-    cedulaFile.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (file && !file.type.startsWith('image/')) {
-            mostrarToast("Solo imágenes JPG o PNG", "error");
-            cedulaFile.value = '';
-            return;
-        }
-        if (file && file.size > 2 * 1024 * 1024) {
-            mostrarToast("La imagen no debe superar 2MB", "error");
-            cedulaFile.value = '';
-            return;
-        }
-        await archivoABase64(file, fotoCedulaB64, mensajeCedula, vistoCedula);
-        verificarFotos();
-    });
-
-    btnPaso4.addEventListener('click', async () => {
-        if (!fotoRostroB64.value) {
-            mostrarToast("Debes subir una foto de perfil", "error");
-            return;
-        }
-        if (!fotoCedulaB64.value) {
-            mostrarToast("Debes subir una foto de tu cédula", "error");
-            return;
-        }
-        
-        mostrarLoader(true, "Cargando dorsales...");
-        const selectNombre = document.getElementById('nombreCamiseta');
-        const selectDorsal = document.getElementById('dorsal');
-        selectNombre.innerHTML = '<option value="">Selecciona</option>';
-        selectDorsal.innerHTML = '<option value="">Selecciona</option>';
-        
-        selectNombre.add(new Option(n1.value.trim(), n1.value.trim()));
-        if (n2.value.trim()) selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
-        
-        try {
-            const resp = await fetch(`${URL_GAS}?action=getDorsales`);
-            const ocupados = await resp.json();
-            for (let i = 1; i <= 99; i++) {
-                if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
-            }
-            if (selectDorsal.options.length === 1) {
-                mostrarToast("No hay dorsales disponibles. Contacta al administrador.", "error");
-                mostrarLoader(false);
-                return;
-            }
-        } catch (error) {
-            mostrarToast("No se pudieron cargar los dorsales.", "error");
-        }
-        mostrarLoader(false);
-        verPaso(5);
-    });
-
-    // ================= PASO 5 =================
-    const nombreCamiseta = document.getElementById('nombreCamiseta');
-    const dorsal = document.getElementById('dorsal');
-    const btnPaso5 = document.getElementById('btnPaso5');
-    
-    function validarPaso5() {
-        btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value);
-    }
-    
-    nombreCamiseta.addEventListener('change', validarPaso5);
-    dorsal.addEventListener('change', validarPaso5);
-    
-    btnPaso5.addEventListener('click', () => {
-        if (!nombreCamiseta.value) {
-            mostrarToast("Selecciona un nombre para la camiseta", "error");
-            return;
-        }
-        if (!dorsal.value) {
-            mostrarToast("Selecciona un número dorsal", "error");
-            return;
-        }
-        verPaso(6);
-    });
-
-    // ================= PASO 6 =================
-    const talla = document.getElementById('talla');
-    const medias = document.getElementById('medias');
-    const inscripcion = document.getElementById('inscripcion');
-    const uniforme = document.getElementById('uniforme');
-    const btnFinal = document.getElementById('btnFinal');
-
-    function validarPaso6() {
-        const tallaValida = talla.value !== "";
-        const mediasValida = medias.value !== "";
-        const inscripcionValida = inscripcion.value.trim() !== "";
-        const uniformeValida = uniforme.value.trim() !== "";
-        btnFinal.disabled = !(tallaValida && mediasValida && inscripcionValida && uniformeValida);
-    }
-    
-    [talla, medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
-    [talla, medias, inscripcion, uniforme].forEach(el => el.addEventListener('change', validarPaso6));
-
-    // ================= ENVÍO FINAL =================
-    btnFinal.addEventListener('click', async () => {
-        if (btnFinal.disabled) {
-            mostrarToast("Completa todos los campos del paso 6", "error");
-            return;
-        }
-
-        mostrarLoader(true, "Registrando jugador...");
-
-        // Construir objeto con datos para enviar como JSON
-        const datos = {
-            action: 'registrar',
-            ced: ced.value,
-            n1: n1.value.trim(),
-            n2: n2.value.trim(),
-            ape: ape.value.trim(),
-            fecha: fecha.value,
-            tel: tel.value.replace(/\D/g, ''),
-            correo: correo.value.trim().toLowerCase(),
-            medias: medias.value,
-            dorsal: dorsal.value,
-            nombreCamiseta: nombreCamiseta.value,
-            inscripcion: inscripcion.value.trim(),
-            uniforme: uniforme.value.trim(),
-            talla: talla.value,
-            fotoRostroB64: fotoRostroB64.value,
-            fotoCedulaB64: fotoCedulaB64.value
-        };
-
-        try {
-            const response = await fetch(URL_GAS, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams(datos)
-            });
-            
-            // IMPORTANTE: Con no-cors no podemos leer la respuesta directamente
-            // Asumimos éxito si no hay error de red
-            mostrarLoader(false);
-            modalExito.style.display = 'flex';
-            let segundos = 3;
-            const spanContador = document.getElementById('contador');
-            const intervalo = setInterval(() => {
-                segundos--;
-                if (spanContador) spanContador.innerText = segundos;
-                if (segundos <= 0) {
-                    clearInterval(intervalo);
-                    window.location.href = 'login.html';
-                }
-            }, 1000);
-            
-        } catch (error) {
-            mostrarLoader(false);
-            console.error("Error de red:", error);
-            mostrarToast("Error de red. Revisa tu conexión.", "error");
-        }
-    });
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        verificarFotos();
-    });
 </script>
 </body>
 </html>
