@@ -161,244 +161,269 @@
     </div>
 </div>
 
-<script src="config.js"></script>
-
 <script>
-    // Verificar sesión
-    const session = JSON.parse(localStorage.getItem('jugador_actual'));
+// Configuración - CAMBIAR ESTA URL POR LA DE TU WEB APP
+const CONFIG = {
+    URL_GAS: 'https://script.google.com/macros/s/AKfycbxTu_4MZP5RENN8YQZSYjD0QhqnKOVDlU0uH-fK-cWm0xH9O1w/exec', // 🔴 REEMPLAZAR CON TU URL
+    DEFAULT_AVATAR: 'https://via.placeholder.com/130/060912/D4AF37?text=NAPOLES'
+};
+
+// Verificar sesión
+const session = JSON.parse(localStorage.getItem('jugador_actual'));
+
+if (!session || !session.cedula || Date.now() > session.expira) {
+    localStorage.removeItem('jugador_actual');
+    window.location.href = 'login.html';
+} else {
+    cargarPerfil(session.cedula);
+}
+
+async function cargarPerfil(cedula) {
+    const container = document.getElementById('perfilContent');
+    const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
     
-    if (!session || !session.cedula || Date.now() > session.expira) {
-        localStorage.removeItem('jugador_actual');
-        window.location.href = 'login.html';
-    } else {
-        cargarPerfil(session.cedula);
-    }
-
-    async function cargarPerfil(cedula) {
-        const container = document.getElementById('perfilContent');
-        const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
+    try {
+        container.innerHTML = `
+            <div class="loading-screen">
+                <div class="spinner"></div>
+                <p style="opacity: 0.6; font-size: 0.8rem;">ACTUALIZANDO ESTADÍSTICAS...</p>
+            </div>
+        `;
         
-        try {
-            // Mostrar loading
-            container.innerHTML = `
-                <div class="loading-screen">
-                    <div class="spinner"></div>
-                    <p style="opacity: 0.6; font-size: 0.8rem;">ACTUALIZANDO ESTADÍSTICAS...</p>
-                </div>
-            `;
+        // Obtener perfil completo (ya incluye actualización de estadísticas)
+        const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
+        const resp = await fetch(url);
+        const data = await resp.json();
+        
+        console.log('Datos completos:', data);
+        
+        if (data.success && data.jugador) {
+            const j = data.jugador;
             
-            // Obtener perfil con datos actualizados
-            const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
-            const resp = await fetch(url);
-            const data = await resp.json();
+            // VALORES HUMANOS (desde hoja Jugadores o actualizados)
+            let companerismo = Number(j.companerismo) || 8;
+            let respeto = Number(j.respeto) || 8;
+            let humildad = Number(j.humildad) || 8;
+            let puntualidad = Number(j.puntualidad) || 8;
             
-            console.log('Datos recibidos:', data); // Para depuración
-            
-            if (data.success && data.jugador) {
-                const j = data.jugador;
-                
-                // Valores humanos
-                const companerismo = Number(j.companerismo) || 8;
-                const respeto = Number(j.respeto) || 8;
-                const humildad = Number(j.humildad) || 8;
-                const puntualidad = Number(j.puntualidad) || 8;
-                
-                // Calcular OVR (promedio de valores humanos)
-                const promedio = (companerismo + respeto + humildad + puntualidad) / 4;
-                const ovr = Math.min(99, Math.max(40, Math.round(promedio * 10)));
-                
-                // Foto
-                const fotoUrl = j.urlFotoRostro || CONFIG.DEFAULT_AVATAR;
-                
-                // Nombre completo
-                const nombreCompleto = `${j.primerNombre || ''} ${j.segundoNombre || ''} ${j.apellidos || ''}`.trim();
-                const nombreMostrar = nombreCompleto || j.nombreCamiseta || 'Jugador';
-                
-                // Estado de medias
-                let mediasEstado = j.mediasEstado || 'null';
-                let mediasClass = '';
-                let mediasLabel = '';
-                if (mediasEstado === 'PAGADO') {
-                    mediasClass = 'pagado';
-                    mediasLabel = 'PAGADO';
-                } else if (mediasEstado === 'PENDIENTE') {
-                    mediasClass = 'pendiente';
-                    mediasLabel = 'PENDIENTE';
-                } else {
-                    mediasClass = 'null';
-                    mediasLabel = 'NO REQUIERE';
-                }
-                
-                // Deuda vocalía
-                const deudaVocalia = Number(j.deudaVocalia) || 0;
-                const deudaColor = deudaVocalia > 0 ? '#e74c3c' : '#2ecc71';
-                
-                // Mostrar perfil
-                container.innerHTML = `
-                    <button class="btn btn-refresh" onclick="refrescarPerfil()">
-                        <i class="fas fa-sync-alt"></i> ACTUALIZAR PERFIL
-                    </button>
-
-                    <div class="profile-header">
-                        <h1>⚜️ NÁPOLES F.C. ⚜️</h1>
-                        <p>Club Atlético Nápoles - Miembro Oficial</p>
-                    </div>
-
-                    <div class="player-card">
-                        <div class="player-photo-wrapper">
-                            <div class="player-photo">
-                                <img src="${fotoUrl}" alt="foto" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
-                            </div>
-                            <div class="ovr-badge">${ovr}</div>
-                        </div>
-                        <div class="player-name">${escapeHtml(nombreMostrar)}</div>
-                        <div class="dorsal-badge">
-                            <i class="fas fa-hashtag"></i> DORSAL ${j.dorsal || '--'}
-                        </div>
-                        <div style="font-size:0.7rem; margin-top:8px; color:var(--text-muted);">
-                            <i class="fas fa-id-card"></i> ${cedulaLimpia}
-                        </div>
-                    </div>
-
-                    <!-- Estadísticas de juego -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-futbol"></i></div>
-                            <div class="stat-label">GOLES</div>
-                            <div class="stat-value">${j.goles || 0}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-square" style="color:#f1c40f;"></i></div>
-                            <div class="stat-label">AMARILLAS</div>
-                            <div class="stat-value">${j.amarillas || 0}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon"><i class="fas fa-square" style="color:#e74c3c;"></i></div>
-                            <div class="stat-label">ROJAS</div>
-                            <div class="stat-value">${j.rojas || 0}</div>
-                        </div>
-                    </div>
-
-                    <!-- Valores Humanos -->
-                    <div class="section-box">
-                        <div class="section-title"><i class="fas fa-chart-line"></i> VALORES HUMANOS</div>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <span><i class="fas fa-handshake"></i> Compañerismo</span>
-                                <span class="info-value">${companerismo}/10</span>
-                            </div>
-                            <div class="info-item">
-                                <span><i class="fas fa-heart"></i> Respeto</span>
-                                <span class="info-value">${respeto}/10</span>
-                            </div>
-                            <div class="info-item">
-                                <span><i class="fas fa-leaf"></i> Humildad</span>
-                                <span class="info-value">${humildad}/10</span>
-                            </div>
-                            <div class="info-item">
-                                <span><i class="fas fa-clock"></i> Puntualidad</span>
-                                <span class="info-value">${puntualidad}/10</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Vocalía -->
-                    <div class="section-box">
-                        <div class="section-title"><i class="fas fa-money-bill-wave"></i> VOCALÍA</div>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <span>💰 Valor por Vocalía</span>
-                                <span class="info-value">$${j.valorVocalia || 0}</span>
-                            </div>
-                            <div class="info-item">
-                                <span>📋 Vocalías Pendientes</span>
-                                <span class="info-value">${j.vocaliasPendientes || 0}</span>
-                            </div>
-                        </div>
-                        <div class="deuda-box">
-                            <span class="deuda-label"><i class="fas fa-coins"></i> Deuda Total Vocalía:</span>
-                            <strong class="deuda-value" style="color:${deudaColor}">$${deudaVocalia}</strong>
-                        </div>
-                        ${j.sancionEspecial ? `<div class="warning-text"><i class="fas fa-exclamation-triangle"></i> Sanción: ${escapeHtml(j.sancionEspecial)}</div>` : ''}
-                    </div>
-
-                    <!-- Pagos -->
-                    <div class="section-box">
-                        <div class="section-title"><i class="fas fa-credit-card"></i> ESTADO DE PAGOS</div>
-                        <div class="payments-grid">
-                            <div class="payment-pill">
-                                <i class="fas fa-file-signature"></i> Inscripción
-                                <span class="status-tag ${j.inscripEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.inscripEstado || 'PENDIENTE'}</span>
-                            </div>
-                            <div class="payment-pill">
-                                <i class="fas fa-tshirt"></i> Uniforme
-                                <span class="status-tag ${j.unifEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.unifEstado || 'PENDIENTE'}</span>
-                            </div>
-                            <div class="payment-pill">
-                                <i class="fas fa-socks"></i> Medias
-                                <span class="status-tag ${mediasClass}">${mediasLabel}</span>
-                            </div>
-                        </div>
-                        <div style="margin-top:12px; text-align:center; font-size:0.7rem; color:var(--text-muted);">
-                            <i class="fas fa-tag"></i> Talla: ${j.tallaUni || 'No asignada'} | 
-                            <i class="fas fa-tshirt"></i> Camiseta: ${j.nombreCamiseta || '-'}
-                        </div>
-                    </div>
-
-                    <button class="btn btn-logout" onclick="cerrarSesion()">
-                        <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
-                    </button>
-                `;
-            } else {
-                container.innerHTML = `
-                    <div class="loading-screen">
-                        <p class="error-message">❌ ${data.error || 'JUGADOR NO ENCONTRADO'}</p>
-                        <button class="btn btn-refresh" onclick="cerrarSesion()" style="margin-top:20px;">
-                            VOLVER AL LOGIN
-                        </button>
-                    </div>
-                `;
+            // Si hay datos actualizados de partidos, usar esos promedios
+            if (data.actualizacion) {
+                companerismo = data.actualizacion.companerismo || companerismo;
+                respeto = data.actualizacion.respeto || respeto;
+                humildad = data.actualizacion.humildad || humildad;
+                puntualidad = data.actualizacion.puntualidad || puntualidad;
             }
-        } catch (error) {
-            console.error('Error cargando perfil:', error);
+            
+            // Calcular OVR (promedio de valores humanos * 10, escala 40-99)
+            const promedio = (companerismo + respeto + humildad + puntualidad) / 4;
+            const ovr = Math.min(99, Math.max(40, Math.round(promedio * 10)));
+            
+            // Foto
+            const fotoUrl = j.urlFotoRostro || CONFIG.DEFAULT_AVATAR;
+            
+            // Nombre para mostrar (priorizar nombre en camiseta)
+            const nombreMostrar = j.nombreCamiseta && j.nombreCamiseta !== '' 
+                ? j.nombreCamiseta 
+                : `${j.primerNombre || ''} ${j.apellidos || ''}`.trim() || 'Jugador';
+            
+            // Estado de medias
+            let mediasEstado = j.mediasEstado || 'null';
+            let mediasClass = '';
+            let mediasLabel = '';
+            if (mediasEstado === 'PAGADO') {
+                mediasClass = 'pagado';
+                mediasLabel = 'PAGADO';
+            } else if (mediasEstado === 'PENDIENTE') {
+                mediasClass = 'pendiente';
+                mediasLabel = 'PENDIENTE';
+            } else {
+                mediasClass = 'null';
+                mediasLabel = 'NO REQUIERE';
+            }
+            
+            // Deuda vocalía (sumada desde partidos)
+            const deudaVocalia = Number(j.deudaVocalia) || 0;
+            const deudaColor = deudaVocalia > 0 ? '#e74c3c' : '#2ecc71';
+            
+            // Estadísticas (actualizadas desde partidos)
+            const goles = data.actualizacion ? data.actualizacion.goles : (j.goles || 0);
+            const amarillas = data.actualizacion ? data.actualizacion.amarillas : (j.amarillas || 0);
+            const rojas = data.actualizacion ? data.actualizacion.rojas : (j.rojas || 0);
+            
+            // Partidos jugados
+            const partidosJugados = data.actualizacion ? data.actualizacion.partidosJugados : 0;
+            
+            container.innerHTML = `
+                <button class="btn btn-refresh" onclick="window.refrescarPerfil()">
+                    <i class="fas fa-sync-alt"></i> ACTUALIZAR PERFIL
+                </button>
+
+                <div class="profile-header">
+                    <h1>⚜️ NÁPOLES F.C. ⚜️</h1>
+                    <p>Club Atlético Nápoles - Miembro Oficial</p>
+                </div>
+
+                <div class="player-card">
+                    <div class="player-photo-wrapper">
+                        <div class="player-photo">
+                            <img src="${fotoUrl}" alt="foto" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
+                        </div>
+                        <div class="ovr-badge">${ovr}</div>
+                    </div>
+                    <div class="player-name">${escapeHtml(nombreMostrar)}</div>
+                    <div class="dorsal-badge">
+                        <i class="fas fa-hashtag"></i> DORSAL ${j.dorsal || '--'}
+                    </div>
+                    <div style="font-size:0.7rem; margin-top:8px; color:var(--text-muted);">
+                        <i class="fas fa-id-card"></i> ${cedulaLimpia}
+                    </div>
+                    ${partidosJugados > 0 ? `<div style="font-size:0.65rem; margin-top:5px; color:var(--primary-gold);">
+                        <i class="fas fa-futbol"></i> ${partidosJugados} partido${partidosJugados !== 1 ? 's' : ''} jugado${partidosJugados !== 1 ? 's' : ''}
+                    </div>` : ''}
+                </div>
+
+                <!-- Estadísticas de juego (acumuladas de Partidos Hombres) -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-futbol"></i></div>
+                        <div class="stat-label">GOLES</div>
+                        <div class="stat-value">${goles}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-square" style="color:#f1c40f;"></i></div>
+                        <div class="stat-label">AMARILLAS</div>
+                        <div class="stat-value">${amarillas}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-square" style="color:#e74c3c;"></i></div>
+                        <div class="stat-label">ROJAS</div>
+                        <div class="stat-value">${rojas}</div>
+                    </div>
+                </div>
+
+                <!-- Valores Humanos (promedio de todos los partidos) -->
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-chart-line"></i> VALORES HUMANOS</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span><i class="fas fa-handshake"></i> Compañerismo</span>
+                            <span class="info-value">${companerismo}/10</span>
+                        </div>
+                        <div class="info-item">
+                            <span><i class="fas fa-heart"></i> Respeto</span>
+                            <span class="info-value">${respeto}/10</span>
+                        </div>
+                        <div class="info-item">
+                            <span><i class="fas fa-leaf"></i> Humildad</span>
+                            <span class="info-value">${humildad}/10</span>
+                        </div>
+                        <div class="info-item">
+                            <span><i class="fas fa-clock"></i> Puntualidad</span>
+                            <span class="info-value">${puntualidad}/10</span>
+                        </div>
+                    </div>
+                    <div style="text-align:center; margin-top:12px; font-size:0.7rem; color:var(--text-muted);">
+                        <i class="fas fa-chart-simple"></i> OVR: ${ovr} | Promedio: ${promedio.toFixed(1)}/10
+                    </div>
+                </div>
+
+                <!-- Vocalía -->
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-money-bill-wave"></i> VOCALÍA</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span>💰 Valor por Vocalía</span>
+                            <span class="info-value">$${j.valorVocalia || 0}</span>
+                        </div>
+                        <div class="info-item">
+                            <span>📋 Vocalías Pendientes</span>
+                            <span class="info-value">${j.vocaliasPendientes || 0}</span>
+                        </div>
+                    </div>
+                    <div class="deuda-box">
+                        <span class="deuda-label"><i class="fas fa-coins"></i> Deuda Total Vocalía:</span>
+                        <strong class="deuda-value" style="color:${deudaColor}">$${deudaVocalia}</strong>
+                    </div>
+                    ${j.sancionEspecial ? `<div class="warning-text"><i class="fas fa-exclamation-triangle"></i> Sanción: ${escapeHtml(j.sancionEspecial)}</div>` : ''}
+                </div>
+
+                <!-- Pagos -->
+                <div class="section-box">
+                    <div class="section-title"><i class="fas fa-credit-card"></i> ESTADO DE PAGOS</div>
+                    <div class="payments-grid">
+                        <div class="payment-pill">
+                            <i class="fas fa-file-signature"></i> Inscripción
+                            <span class="status-tag ${j.inscripEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.inscripEstado || 'PENDIENTE'}</span>
+                        </div>
+                        <div class="payment-pill">
+                            <i class="fas fa-tshirt"></i> Uniforme
+                            <span class="status-tag ${j.unifEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.unifEstado || 'PENDIENTE'}</span>
+                        </div>
+                        <div class="payment-pill">
+                            <i class="fas fa-socks"></i> Medias
+                            <span class="status-tag ${mediasClass}">${mediasLabel}</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; text-align:center; font-size:0.7rem; color:var(--text-muted);">
+                        <i class="fas fa-tag"></i> Talla: ${j.tallaUni || 'No asignada'} | 
+                        <i class="fas fa-tshirt"></i> Nombre Camiseta: ${j.nombreCamiseta || '-'}
+                    </div>
+                </div>
+
+                <button class="btn btn-logout" onclick="window.cerrarSesion()">
+                    <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
+                </button>
+            `;
+        } else {
             container.innerHTML = `
                 <div class="loading-screen">
-                    <p class="error-message">❌ ERROR DE CONEXIÓN</p>
-                    <button class="btn btn-refresh" onclick="refrescarPerfil()" style="margin-top:20px;">
-                        REINTENTAR
-                    </button>
-                    <button class="btn btn-logout" onclick="cerrarSesion()" style="margin-top:10px;">
+                    <p class="error-message">❌ ${data.error || 'JUGADOR NO ENCONTRADO'}</p>
+                    <button class="btn btn-refresh" onclick="window.cerrarSesion()" style="margin-top:20px;">
                         VOLVER AL LOGIN
                     </button>
                 </div>
             `;
         }
+    } catch (error) {
+        console.error('Error cargando perfil:', error);
+        container.innerHTML = `
+            <div class="loading-screen">
+                <p class="error-message">❌ ERROR DE CONEXIÓN: ${error.message}</p>
+                <button class="btn btn-refresh" onclick="window.refrescarPerfil()" style="margin-top:20px;">
+                    REINTENTAR
+                </button>
+                <button class="btn btn-logout" onclick="window.cerrarSesion()" style="margin-top:10px;">
+                    VOLVER AL LOGIN
+                </button>
+            </div>
+        `;
     }
-    
-    async function refrescarPerfil() {
-        const sessionActual = JSON.parse(localStorage.getItem('jugador_actual'));
-        if (sessionActual && sessionActual.cedula) {
-            await cargarPerfil(sessionActual.cedula);
-        } else {
-            window.location.href = 'login.html';
-        }
-    }
-    
-    function cerrarSesion() {
-        localStorage.removeItem('jugador_actual');
+}
+
+async function refrescarPerfil() {
+    const sessionActual = JSON.parse(localStorage.getItem('jugador_actual'));
+    if (sessionActual && sessionActual.cedula) {
+        await cargarPerfil(sessionActual.cedula);
+    } else {
         window.location.href = 'login.html';
     }
-    
-    function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    
-    // Exponer funciones globalmente
-    window.refrescarPerfil = refrescarPerfil;
-    window.cerrarSesion = cerrarSesion;
+}
+
+function cerrarSesion() {
+    localStorage.removeItem('jugador_actual');
+    window.location.href = 'login.html';
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Exponer funciones globalmente
+window.refrescarPerfil = refrescarPerfil;
+window.cerrarSesion = cerrarSesion;
 </script>
 
 </body>
