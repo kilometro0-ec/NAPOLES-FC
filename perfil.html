@@ -144,6 +144,8 @@
 
         .spinner { width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.1); border-top-color: var(--primary-gold); border-radius: 50%; animation: spin 1s infinite linear; margin: 100px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .error-message { text-align: center; padding: 50px; color: var(--danger); }
     </style>
 </head>
 <body>
@@ -154,18 +156,30 @@
 
 <script src="config.js"></script>
 <script>
-    const session = JSON.parse(localStorage.getItem('jugador_actual'));
-    
-    if (!session || !session.cedula) {
-        window.location.href = 'login.html';
-    } else {
+    (function() {
+        // Verificar que CONFIG existe
+        if (typeof CONFIG === 'undefined') {
+            document.getElementById('perfilContent').innerHTML = 
+                '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><br>Error de configuración: No se pudo cargar config.js</div>';
+            return;
+        }
+        
+        const session = JSON.parse(localStorage.getItem('jugador_actual'));
+        
+        if (!session || !session.cedula) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
         cargarPerfil(session.cedula);
-    }
+    })();
 
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
         try {
             const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${cedula}&t=${Date.now()}`;
+            console.log('Consultando:', url);
+            
             const resp = await fetch(url);
             const data = await resp.json();
             
@@ -189,8 +203,8 @@
                     <div class="cards-row">
                         <!-- TARJETA DE IDENTIDAD -->
                         <div class="id-card-identity">
-                            <img src="${j.urlFotoRostro || 'https://via.placeholder.com/150'}" class="player-img">
-                            <div style="font-weight:900; font-family:'Outfit'; text-transform:uppercase; font-size:0.9rem;">${j.primerNombre}</div>
+                            <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
+                            <div style="font-weight:900; font-family:'Outfit'; text-transform:uppercase; font-size:0.9rem;">${j.primerNombre || ''} ${j.segundoNombre || ''}</div>
                             <div style="font-size:0.6rem; color:var(--text-muted); margin-top:2px;">C.I. ${cedula}</div>
                         </div>
 
@@ -205,7 +219,7 @@
                         </div>
                     </div>
 
-                    <button class="btn-sync" onclick="location.reload()">
+                    <button class="btn-sync" onclick="recargarPerfil()">
                         <i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN
                     </button>
 
@@ -279,15 +293,25 @@
                         </div>
                     </div>
 
-                    <button class="btn-logout" onclick="cerrarSesion()">CERRAR SESIÓN</button>
+                    <button class="btn-logout" onclick="cerrarSesion()">
+                        <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
+                    </button>
                     <div style="height: 30px;"></div>
                 `;
             } else {
-                container.innerHTML = `<p style="text-align:center; padding:50px;">Jugador no encontrado.</p>`;
+                container.innerHTML = `<p class="error-message">Jugador no encontrado.<br><small>${data.error || ''}</small></p>`;
             }
         } catch (e) {
-            console.error(e);
-            container.innerHTML = `<p style="text-align:center; padding:50px;">Error de conexión.</p>`;
+            console.error('Error:', e);
+            container.innerHTML = `<p class="error-message"><i class="fas fa-wifi"></i><br>Error de conexión.<br><small>${e.message}</small></p>`;
+        }
+    }
+    
+    function recargarPerfil() {
+        const session = JSON.parse(localStorage.getItem('jugador_actual'));
+        if (session && session.cedula) {
+            document.getElementById('perfilContent').innerHTML = '<div class="spinner"></div>';
+            cargarPerfil(session.cedula);
         }
     }
 
