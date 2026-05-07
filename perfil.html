@@ -3,36 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Nápoles F.C. - Perfil Oficial</title>
-    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap)" rel="stylesheet">
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
+    <title>Nápoles F.C. - Mi Perfil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --primary-gold: #D4AF37```
-
-### ¿Por qué veías el 8?
-;
-            --light-gold: #FFD700;
+            --primary-gold: #D4AF37;
             --dark-bg: #060912;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(212, 175, 55, 0.2);
+            --card-bg: rgba(255, 255, 255, 0.05);
             --text-main: #ffffff;
-            --text-muted: #a0aLo pusimos inicialmente para que la "Media de Jugador" no saliera en 0 mientras probabas, pero tienes razón: **el sistema no debe editar0a0;
+            --text-muted: #a0a0a0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight- tu base de datos sin permiso.**
-
-**Pasos a seguir:**
-1. Ve a tu hoja de cálculo.
-2. Ve a **Extensiones**color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             background: radial-gradient(circle at top, #111a33 0%, #060912 100%);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            padding: > **Apps Script**.
-3. Revisa la función que busca al jugador. Si ves algún `.setValue(8)`, **bórralo**.
-4 15px;
+            padding: 15px;
             color: var(--text-main);
             display: flex;
             justify-content: center;
@@ -40,18 +31,16 @@
 
         .profile-container { width: 100%; max-width: 450px; }
 
-        .profile-header { text-align: center; margin-. Dale a **Implementar** > **Nueva implementación** para que los cambios surtan efecto.
-
-¿Quieres que te ayude a redactar el códigobottom: 20px; }
+        .profile-header { text-align: center; margin-bottom: 20px; }
         .profile-header h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: exacto del servidor (GAS) para que solo lea y no escriba nada en esas celdas? 1.4rem;
+            font-size: 1.4rem;
             color: var(--primary-gold);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        /* --- FILA DE TARJETAS (ID CARDS) --- */
+        /* --- FILA DE TARJETAS --- */
         .cards-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -59,161 +48,88 @@
             margin-bottom: 20px;
         }
 
-        /* TARJETA 1: FOTO E IDENTIDAD (PALPITANTE) */
         .id-card-identity {
             background: linear-gradient(145deg, rgba(212, 175, 55, 0.15), rgba(10, 20, 40, 0.95));
             border-radius: 20px;
             border: 2px solid var(--primary-gold);
-            padding: 20px 10px;
+            padding: 15px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             animation: pulseGlow 2.5s infinite ease-in-out;
         }
 
         @keyframes pulseGlow {
-            0% { transform: scale(1); box-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
-            50% { transform: scale(1.03); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
-            100% { transform: scale(1); box-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
-        }
-
-        .photo-wrapper {
-            position: relative;
-            width: 90px;
-            margin-bottom: 10px;
+            0%, 100% { transform: scale(1); box-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
         }
 
         .player-img {
-            width: 85px; height: 85px;
+            width: 80px; height: 80px;
             border-radius: 50%;
             border: 2px solid var(--primary-gold);
             object-fit: cover;
-            background: #000;
-            padding: 3px;
+            margin-bottom: 10px;
         }
 
-        .ovr-badge {
-            position: absolute;
-            bottom: 0; right: 0;
-            background: var(--primary-gold);
-            color: #000;
-            width: 34px; height: 34px;
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 1rem;
-            border: 2px solid #060912;
-            font-family: 'Outfit';
-        }
-
-        /* TARJETA 2: CAMISETA (GIRO 3D) */
-        .id-card-jersey-wrap {
-            perspective: 1000px;
-            height: 190px;
-        }
-
+        .id-card-jersey-wrap { perspective: 1000px; height: 180px; }
         .jersey-card-inner {
-            position: relative;
-            width: 100%; height: 100%;
+            position: relative; width: 100%; height: 100%;
             transform-style: preserve-3d;
             animation: rotateJersey 12s infinite linear;
         }
-
-        @keyframes rotateJersey {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
+        @keyframes rotateJersey { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
 
         .face-jersey {
-            position: absolute;
-            width: 100%; height: 100%;
+            position: absolute; width: 100%; height: 100%;
             background: linear-gradient(145deg, #0a1428, #000);
-            border-radius: 20px;
-            border: 2px solid var(--glass-border);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            backface-visibility: visible;
+            border-radius: 20px; border: 2px solid var(--glass-border);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .jersey-name {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem; font-weight: 800;
-            text-transform: uppercase; color: #fff;
-            margin-bottom: -5px;
-        }
+        .jersey-number { font-size: 4.5rem; font-weight: 900; color: var(--primary-gold); font-family: 'Outfit'; line-height: 1; }
 
-        .jersey-number {
-            font-family: 'Outfit', sans-serif;
-            font-size: 4.8rem; font-weight: 900;
-            color: var(--primary-gold);
-            line-height: 1;
-        }
-
-        /* --- BOTÓN ACTUALIZAR --- */
-        .sync-container { text-align: center; margin-bottom: 20px; }
-        .btn-sync {
-            background: transparent;
-            border: 1px solid var(--primary-gold);
-            color: var(--primary-gold);
-            padding: 8px 20px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        /* --- ESTADÍSTICAS CON ICONOS --- */
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 12px; 
-            margin-bottom: 15px; 
-        }
-        
+        /* --- ESTADÍSTICAS --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
         .stat-card {
-            background: var(--card-bg); 
-            border-radius: 15px; 
-            padding: 15px;
-            text-align: center; 
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
+            background: var(--card-bg); border-radius: 12px; padding: 10px 5px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.05);
         }
-        
-        .stat-icon { font-size: 1.2rem; margin-bottom: 2px; }
-        .stat-val { font-size: 1.4rem; font-weight: 800; color: #fff; font-family: 'Outfit'; }
-        .stat-lab { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+        .stat-val { display: block; font-size: 1.1rem; font-weight: 800; }
+        .stat-lab { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
 
-        /* Iconos específicos */
-        .icon-goal { color: #fff; }
-        .icon-yellow { color: #f1c40f; }
-        .icon-red { color: #e74c3c; }
-        .icon-match { color: var(--primary-gold); }
-
-        /* --- BLOQUES DE INFORMACIÓN --- */
+        /* --- BLOQUES DE INFO --- */
         .section-box {
-            background: var(--card-bg); border-radius: 20px; padding: 18px;
+            background: var(--card-bg); border-radius: 18px; padding: 15px;
             margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05);
         }
         .section-title {
             font-size: 0.8rem; font-weight: 800; color: var(--primary-gold);
-            margin-bottom: 12px; text-transform: uppercase;
-            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 8px;
         }
 
-        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; }
-        .info-row span:first-child { color: var(--text-muted); }
-        .info-row span:last-child { font-weight: 700; color: #fff; }
-        .val-gold { color: var(--primary-gold) !important; }
+        .info-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.85rem;
+        }
+        .info-row:last-child { border: none; }
+        .info-label { display: flex; align-items: center; gap: 10px; color: var(--text-muted); }
+        .info-label i { width: 16px; text-align: center; color: var(--primary-gold); }
+        .info-value { font-weight: 700; color: #fff; }
+
+        /* COLORES DINÁMICOS */
+        .status-red { color: var(--danger) !important; }
+        .status-green { color: var(--success) !important; }
+
+        .btn-sync {
+            width: 100%; background: transparent; border: 1px solid var(--primary-gold);
+            color: var(--primary-gold); padding: 10px; border-radius: 12px;
+            font-weight: 700; font-size: 0.8rem; cursor: pointer; margin-bottom: 15px;
+        }
 
         .btn-logout {
             width: 100%; padding: 15px; border-radius: 15px; border: none;
             background: rgba(231, 76, 60, 0.1); color: #e74c3c;
-            font-weight: 800; cursor: pointer; margin-top: 10px;
+            font-weight: 800; cursor: pointer;
         }
 
         .spinner { width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.1); border-top-color: var(--primary-gold); border-radius: 50%; animation: spin 1s infinite linear; margin: 100px auto; }
@@ -230,8 +146,7 @@
 <script>
     const session = JSON.parse(localStorage.getItem('jugador_actual'));
     
-    if (!session || !session.cedula || Date.now() > session.expira) {
-        localStorage.removeItem('jugador_actual');
+    if (!session || !session.cedula) {
         window.location.href = 'login.html';
     } else {
         cargarPerfil(session.cedula);
@@ -239,119 +154,102 @@
 
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
-        const ciLimpia = String(cedula).replace(/[^0-9]/g, '');
-        
         try {
-            const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(ciLimpia)}&t=${Date.now()}`;
+            const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${cedula}&t=${Date.now()}`;
             const resp = await fetch(url);
             const data = await resp.json();
             
             if (data.success && data.jugador) {
                 const j = data.jugador;
                 
-                // Lógica de valores: Usa el valor de la celda o 0 si está vacía
-                const comp = Number(j.companerismo) || 0;
-                const respV = Number(j.respeto) || 0;
-                const hum = Number(j.humildad) || 0;
-                const punt = Number(j.puntualidad) || 0;
-                const ovr = Math.round(((comp + respV + hum + punt) / 4) * 10);
-                
-                const nombreDorso = j.nombreCamiseta || j.primerNombre || 'JUGADOR';
+                // Formateo de colores para estados
+                const getStatusClass = (val) => {
+                    const v = String(val).toUpperCase();
+                    if (v.includes('PENDIENTE') || v.includes('DEBE') || Number(val) > 0) return 'status-red';
+                    if (v.includes('PAGADO') || v.includes('ENTREGADO') || v.includes('OK')) return 'status-green';
+                    return '';
+                };
 
                 container.innerHTML = `
                     <div class="profile-header">
-                        <h1>⚜️ PERFIL OFICIAL ⚜️</h1>
+                        <h1>⚜️ PANEL NÁPOLES ⚜️</h1>
                     </div>
 
                     <div class="cards-row">
-                        <!-- ID FOTO -->
                         <div class="id-card-identity">
-                            <div class="photo-wrapper">
-                                <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
-                                <div class="ovr-badge">${ovr}</div>
-                            </div>
-                            <div style="font-weight:800; font-size:0.95rem;">${escapeHtml(j.primerNombre)}</div>
-                            <div style="font-size:0.65rem; color:var(--text-muted);">CI: ${ciLimpia}</div>
+                            <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img">
+                            <div style="font-weight:900; font-family:'Outfit';">${j.primerNombre}</div>
+                            <div style="font-size:0.6rem; color:var(--text-muted);">ID: ${cedula}</div>
                         </div>
 
-                        <!-- ID CAMISETA -->
                         <div class="id-card-jersey-wrap">
                             <div class="jersey-card-inner">
                                 <div class="face-jersey">
-                                    <div class="jersey-name">${escapeHtml(nombreDorso)}</div>
+                                    <div style="font-size:0.7rem; font-weight:800; opacity:0.7;">${j.nombreCamiseta || 'NÁPOLES'}</div>
                                     <div class="jersey-number">${j.dorsal || '00'}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="sync-container">
-                        <button class="btn-sync" onclick="refrescarPerfil()">
-                            <i class="fas fa-sync-alt"></i> Sincronizar Datos
-                        </button>
-                    </div>
+                    <button class="btn-sync" onclick="location.reload()"><i class="fas fa-sync-alt"></i> ACTUALIZAR PANEL</button>
 
-                    <!-- ESTADÍSTICAS CON ICONOS -->
                     <div class="stats-grid">
-                        <div class="stat-card">
-                            <i class="fas fa-stopwatch stat-icon icon-match"></i>
-                            <span class="stat-val">${j.partidosJugados || 0}</span>
-                            <span class="stat-lab">Partidos</span>
+                        <div class="stat-card"><i class="fas fa-stopwatch" style="color:var(--primary-gold)"></i><span class="stat-val">${j.partidosJugados || 0}</span><span class="stat-lab">PJ</span></div>
+                        <div class="stat-card"><i class="fas fa-futbol"></i><span class="stat-val">${j.goles || 0}</span><span class="stat-lab">Goles</span></div>
+                        <div class="stat-card"><i class="fas fa-clone" style="color:#f1c40f"></i><span class="stat-val">${j.amarillas || 0}</span><span class="stat-lab">Amas</span></div>
+                        <div class="stat-card"><i class="fas fa-clone" style="color:#e74c3c"></i><span class="stat-val">${j.rojas || 0}</span><span class="stat-lab">Rojas</span></div>
+                    </div>
+
+                    <div class="section-box">
+                        <div class="section-title"><i class="fas fa-star"></i> Valores Humanos</div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-handshake"></i> Compañerismo</div>
+                            <div class="info-value">${j.companerismo || 0}/10</div>
                         </div>
-                        <div class="stat-card">
-                            <i class="fas fa-futbol stat-icon icon-goal"></i>
-                            <span class="stat-val">${j.goles || 0}</span>
-                            <span class="stat-lab">Goles</span>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-gavel"></i> Respeto</div>
+                            <div class="info-value">${j.respeto || 0}/10</div>
                         </div>
-                        <div class="stat-card">
-                            <i class="fas fa-square stat-icon icon-yellow"></i>
-                            <span class="stat-val">${j.amarillas || 0}</span>
-                            <span class="stat-lab">Amarillas</span>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-heart"></i> Humildad</div>
+                            <div class="info-value">${j.humildad || 0}/10</div>
                         </div>
-                        <div class="stat-card">
-                            <i class="fas fa-square stat-icon icon-red"></i>
-                            <span class="stat-val">${j.rojas || 0}</span>
-                            <span class="stat-lab">Rojas</span>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-clock"></i> Puntualidad</div>
+                            <div class="info-value">${j.puntualidad || 0}/10</div>
                         </div>
                     </div>
 
                     <div class="section-box">
-                        <div class="section-title"><i class="fas fa-chart-pie"></i> Valores Humanos</div>
-                        <div class="info-row"><span>Compañerismo</span><span class="val-gold">${comp}/10</span></div>
-                        <div class="info-row"><span>Respeto</span><span class="val-gold">${respV}/10</span></div>
-                        <div class="info-row"><span>Humildad</span><span class="val-gold">${hum}/10</span></div>
-                        <div class="info-row"><span>Puntualidad</span><span class="val-gold">${punt}/10</span></div>
-                    </div>
-
-                    <div class="section-box">
-                        <div class="section-title"><i class="fas fa-file-invoice"></i> Administrativo</div>
-                        <div class="info-row"><span>Deuda Vocalía</span><span style="color:${Number(j.deudaVocalia) > 0 ? '#e74c3c' : '#2ecc71'}">$${j.deudaVocalia || 0}</span></div>
-                        <div class="info-row"><span>Inscripción</span><span>${j.inscripEstado || 'PENDIENTE'}</span></div>
-                        <div class="info-row"><span>Uniforme</span><span>${j.unifEstado || 'PENDIENTE'}</span></div>
-                        <div class="info-row"><span>Talla</span><span class="val-gold">${j.tallaUni || '-'}</span></div>
+                        <div class="section-title"><i class="fas fa-wallet"></i> Administrativo</div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-comment-dollar"></i> Deuda Vocalía</div>
+                            <div class="info-value ${Number(j.deudaVocalia) > 0 ? 'status-red' : 'status-green'}">$${j.deudaVocalia || 0}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-file-signature"></i> Inscripción</div>
+                            <div class="info-value ${getStatusClass(j.inscripEstado)}">${j.inscripEstado || 'PENDIENTE'}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-tshirt"></i> Uniforme</div>
+                            <div class="info-value ${getStatusClass(j.unifEstado)}">${j.unifEstado || 'PENDIENTE'}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-ruler-combined"></i> Talla Camiseta</div>
+                            <div class="info-value" style="color:var(--primary-gold)">${j.tallaUni || 'S/N'}</div>
+                        </div>
                     </div>
 
                     <button class="btn-logout" onclick="cerrarSesion()">CERRAR SESIÓN</button>
                 `;
             }
         } catch (e) {
-            container.innerHTML = `<div style="text-align:center; padding:50px;">❌ Error de conexión</div>`;
+            container.innerHTML = `<p style="text-align:center">Error al cargar datos</p>`;
         }
     }
 
-    function refrescarPerfil() { 
-        document.getElementById('perfilContent').innerHTML = '<div class="spinner"></div>';
-        cargarPerfil(session.cedula); 
-    }
-    
     function cerrarSesion() { localStorage.removeItem('jugador_actual'); window.location.href = 'login.html'; }
-    
-    function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
 </script>
 
 </body>
