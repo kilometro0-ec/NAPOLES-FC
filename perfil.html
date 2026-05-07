@@ -92,6 +92,14 @@
             background-clip: text;
             color: transparent;
         }
+        .dorsal-badge {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-top: 8px;
+        }
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -105,6 +113,8 @@
             padding: 12px;
             text-align: center;
         }
+        .stat-icon { font-size: 1.5rem; margin-bottom: 6px; }
+        .stat-label { font-size: 0.7rem; opacity: 0.7; }
         .stat-value { font-size: 1.5rem; font-weight: 800; color: #D4AF37; }
         .values-section, .payments-section {
             background: rgba(10, 20, 40, 0.5);
@@ -112,6 +122,14 @@
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #D4AF37;
         }
         .values-grid {
             display: grid;
@@ -147,6 +165,7 @@
         }
         .pagado { background: #2ecc71; color: #fff; }
         .pendiente { background: #e74c3c; color: #fff; }
+        .null { background: #7f8c8d; color: #fff; }
         .logout-btn {
             width: 100%;
             background: rgba(231, 76, 60, 0.15);
@@ -157,6 +176,10 @@
             font-weight: 700;
             cursor: pointer;
             margin-top: 20px;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
         }
         .loading-screen { text-align: center; padding: 60px 20px; }
         .spinner {
@@ -169,6 +192,17 @@
             margin: 0 auto 20px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .refresh-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid #D4AF37;
+            border-radius: 50px;
+            padding: 8px 16px;
+            color: #D4AF37;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 16px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -178,12 +212,21 @@
     </div>
 </div>
 
-<script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbwWrnKreSdqBVW-x1rGeSnT_eVs0SL7rFWEAKvZ96t23MvmNLIKu_EBXn-YzkdLab8a/exec";
+<!-- Cargar configuración centralizada -->
+<script src="config.js"></script>
 
-    const session = JSON.parse(localStorage.getItem('jugador_aprobado'));
+<script>
+    // Verificar que config.js se cargó correctamente
+    if (typeof CONFIG === 'undefined') {
+        console.error('❌ config.js no cargado correctamente');
+        alert('Error de configuración. Recarga la página o contacta al administrador.');
+    }
+
+    // IMPORTANTE: Usar la misma clave que en login.html
+    const session = JSON.parse(localStorage.getItem('jugador_actual'));
+    
     if (!session || !session.cedula || Date.now() > session.expira) {
-        localStorage.removeItem('jugador_aprobado');
+        localStorage.removeItem('jugador_actual');
         window.location.href = 'login.html';
     } else {
         cargarPerfil(session.cedula);
@@ -194,20 +237,41 @@
         const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
         
         try {
-            const url = `${URL_GAS}?action=obtenerJugador&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
+            // Usar CONFIG.URL_GAS en lugar de URL_GAS
+            const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
             const resp = await fetch(url);
             const data = await resp.json();
             
-            if (data.ok && data.jugador) {
-                const j = data.jugador;
+            if (data.cedulaExiste && data.datosJugador) {
+                const j = data.datosJugador;
                 
-                const promedio = (Number(j.companerismo) + Number(j.respeto) + Number(j.humildad) + Number(j.puntualidad)) / 4;
+                // Calcular promedio de valores (si existen, si no usar valores por defecto)
+                const companerismo = Number(j.companerismo) || 8;
+                const respeto = Number(j.respeto) || 8;
+                const humildad = Number(j.humildad) || 8;
+                const puntualidad = Number(j.puntualidad) || 8;
+                const promedio = (companerismo + respeto + humildad + puntualidad) / 4;
                 const ovrMostrar = Math.min(99, Math.max(40, Math.round(promedio * 10) || 60));
                 
-                // Usar Base64 si existe, sino avatar
-                let fotoUrl = j.fotoBase64 || `https://ui-avatars.com/api/?background=D4AF37&color=0a1428&bold=true&size=130&name=${encodeURIComponent((j.nombreCamiseta || 'J').charAt(0))}`;
+                // Usar URL de foto o avatar por defecto
+                let fotoUrl = j.urlFotoRostro || CONFIG.DEFAULT_AVATAR;
+                
+                // Formatear nombres
+                const nombreCompleto = `${j.primerNombre || ''} ${j.segundoNombre || ''} ${j.apellidos || ''}`.trim();
+                const nombreMostrar = nombreCompleto || j.nombreCamiseta || 'Jugador';
+                
+                // Determinar estado de medias
+                let mediasEstadoText = j.mediasEstado || 'null';
+                let mediasClass = '';
+                if (mediasEstadoText === 'PAGADO') mediasClass = 'pagado';
+                else if (mediasEstadoText === 'PENDIENTE') mediasClass = 'pendiente';
+                else mediasClass = 'null';
+                
+                let mediasLabel = mediasEstadoText;
+                if (mediasEstadoText === 'null') mediasLabel = 'NO REQUIERE';
                 
                 container.innerHTML = `
+                    <button class="refresh-btn" onclick="refrescarPerfil()"><i class="fas fa-sync-alt"></i> REFRESCAR DATOS</button>
                     <div class="profile-header">
                         <h1>⚜️ NÁPOLES F.C. ⚜️</h1>
                         <p>Club Atlético Nápoles - Miembro Oficial</p>
@@ -216,12 +280,12 @@
                         <div class="player-photo-section">
                             <div class="player-photo-wrapper">
                                 <div class="player-photo">
-                                    <img src="${fotoUrl}" alt="foto" onerror="this.src='https://ui-avatars.com/api/?background=0a1428&color=D4AF37&bold=true&size=130&name=${encodeURIComponent((j.nombreCamiseta || 'J').charAt(0))}'">
+                                    <img src="${fotoUrl}" alt="foto" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
                                 </div>
                                 <div class="ovr-badge">${ovrMostrar}</div>
                             </div>
                             <div class="player-info">
-                                <div class="player-name">${(j.nombre1 || '')} ${(j.apellidos || '')}</div>
+                                <div class="player-name">${escapeHtml(nombreMostrar)}</div>
                                 <div class="dorsal-badge"><i class="fas fa-hashtag"></i> DORSAL ${j.dorsal || '--'}</div>
                                 <div style="font-size:0.7rem; margin-top:8px;"><i class="fas fa-id-card"></i> ${cedulaLimpia}</div>
                             </div>
@@ -233,12 +297,12 @@
                         <div class="stat-card"><div class="stat-icon"><i class="fas fa-square" style="color:#e74c3c;"></i></div><div class="stat-label">ROJAS</div><div class="stat-value">${j.rojas || 0}</div></div>
                     </div>
                     <div class="values-section">
-                        <div class="section-title"><i class="fas fa-chart-line"></i> VALORES HUMANOS <span style="font-size:0.6rem; margin-left:auto;">(${j.partidosJugados || 0} partidos)</span></div>
+                        <div class="section-title"><i class="fas fa-chart-line"></i> VALORES HUMANOS</div>
                         <div class="values-grid">
-                            <div class="value-item"><span><i class="fas fa-handshake"></i> Compañerismo</span><span class="value-score">${j.companerismo || 0}/10</span></div>
-                            <div class="value-item"><span><i class="fas fa-heart"></i> Respeto</span><span class="value-score">${j.respeto || 0}/10</span></div>
-                            <div class="value-item"><span><i class="fas fa-leaf"></i> Humildad</span><span class="value-score">${j.humildad || 0}/10</span></div>
-                            <div class="value-item"><span><i class="fas fa-clock"></i> Puntualidad</span><span class="value-score">${j.puntualidad || 0}/10</span></div>
+                            <div class="value-item"><span><i class="fas fa-handshake"></i> Compañerismo</span><span class="value-score">${companerismo}/10</span></div>
+                            <div class="value-item"><span><i class="fas fa-heart"></i> Respeto</span><span class="value-score">${respeto}/10</span></div>
+                            <div class="value-item"><span><i class="fas fa-leaf"></i> Humildad</span><span class="value-score">${humildad}/10</span></div>
+                            <div class="value-item"><span><i class="fas fa-clock"></i> Puntualidad</span><span class="value-score">${puntualidad}/10</span></div>
                         </div>
                     </div>
                     <div class="payments-section">
@@ -246,26 +310,51 @@
                         <div class="payments-grid">
                             <div class="payment-item"><i class="fas fa-file-signature"></i><div>Inscripción</div><span class="payment-status-badge ${j.inscripEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.inscripEstado || 'PENDIENTE'}</span></div>
                             <div class="payment-item"><i class="fas fa-tshirt"></i><div>Uniforme</div><span class="payment-status-badge ${j.unifEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.unifEstado || 'PENDIENTE'}</span></div>
-                            <div class="payment-item"><i class="fas fa-socks"></i><div>Medias</div><span class="payment-status-badge ${j.mediasEstado === 'PAGADO' ? 'pagado' : 'pendiente'}">${j.mediasEstado || 'PENDIENTE'}</span></div>
+                            <div class="payment-item"><i class="fas fa-socks"></i><div>Medias</div><span class="payment-status-badge ${mediasClass}">${mediasLabel}</span></div>
                         </div>
                         <div style="margin-top:12px; text-align:center; padding:10px; background:rgba(0,0,0,0.3); border-radius:16px;">
-                            <i class="fas fa-coins"></i> Vocalía: <strong style="color:${j.estadoPagoVocalia === 'PAGADO' ? '#2ecc71' : '#e74c3c'}">${j.estadoPagoVocalia || 'PENDIENTE'}</strong>
+                            <i class="fas fa-coins"></i> Deuda Vocalía: <strong style="color:${(j.deudaVocalia || 0) > 0 ? '#e74c3c' : '#2ecc71'}">$${j.deudaVocalia || 0}</strong>
+                        </div>
+                        <div style="margin-top:8px; text-align:center; font-size:0.7rem; opacity:0.7;">
+                            <i class="fas fa-tag"></i> Talla: ${j.tallaUni || 'No asignada'} | <i class="fas fa-tshirt"></i> Camiseta: ${j.nombreCamiseta || '-'}
                         </div>
                     </div>
                     <button class="logout-btn" id="cerrarSesion"><i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN</button>
                 `;
                 
                 document.getElementById('cerrarSesion').onclick = () => {
-                    localStorage.removeItem('jugador_aprobado');
+                    localStorage.removeItem('jugador_actual');
                     window.location.href = 'login.html';
                 };
             } else {
-                container.innerHTML = `<div class="loading-screen"><p>❌ ${data.mensaje || 'JUGADOR NO ENCONTRADO'}</p><button onclick="localStorage.removeItem('jugador_aprobado');location.href='login.html'" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">VOLVER</button></div>`;
+                container.innerHTML = `<div class="loading-screen"><p>❌ ${data.error || 'JUGADOR NO ENCONTRADO'}</p><button onclick="localStorage.removeItem('jugador_actual');location.href='login.html'" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px; cursor:pointer;">VOLVER</button></div>`;
             }
         } catch (error) {
-            container.innerHTML = `<div class="loading-screen"><p>❌ ERROR DE CONEXIÓN</p><button onclick="location.reload()" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px;">REINTENTAR</button></div>`;
+            console.error('Error cargando perfil:', error);
+            container.innerHTML = `<div class="loading-screen"><p>❌ ERROR DE CONEXIÓN</p><button onclick="location.reload()" style="margin-top:20px; background:#D4AF37; border:none; padding:10px 20px; border-radius:50px; cursor:pointer;">REINTENTAR</button></div>`;
         }
     }
+    
+    // Función para refrescar el perfil
+    async function refrescarPerfil() {
+        const sessionActual = JSON.parse(localStorage.getItem('jugador_actual'));
+        if (sessionActual && sessionActual.cedula) {
+            await cargarPerfil(sessionActual.cedula);
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+    
+    // Función para escapar HTML y prevenir XSS
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // Exponer función global para el botón refresh
+    window.refrescarPerfil = refrescarPerfil;
 </script>
 </body>
 </html>
