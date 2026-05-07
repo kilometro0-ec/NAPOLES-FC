@@ -212,7 +212,7 @@
     </div>
 </div>
 
-<!-- Cargar configuración centralizada -->
+<!-- 🔥 Cargar configuración centralizada - SIN URL hardcodeada -->
 <script src="config.js"></script>
 
 <script>
@@ -222,7 +222,7 @@
         alert('Error de configuración. Recarga la página o contacta al administrador.');
     }
 
-    // IMPORTANTE: Usar la misma clave que en login.html
+    // 🔥 Usar 'jugador_actual' que es como se guarda en login.html
     const session = JSON.parse(localStorage.getItem('jugador_actual'));
     
     if (!session || !session.cedula || Date.now() > session.expira) {
@@ -237,7 +237,7 @@
         const cedulaLimpia = String(cedula).replace(/[^0-9]/g, '');
         
         try {
-            // Usar CONFIG.URL_GAS en lugar de URL_GAS
+            // 🔥 Usar CONFIG.URL_GAS (viene de config.js) - SIN URL hardcodeada
             const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(cedulaLimpia)}&t=${Date.now()}`;
             const resp = await fetch(url);
             const data = await resp.json();
@@ -245,7 +245,7 @@
             if (data.cedulaExiste && data.datosJugador) {
                 const j = data.datosJugador;
                 
-                // Calcular promedio de valores (si existen, si no usar valores por defecto)
+                // Calcular promedio de valores
                 const companerismo = Number(j.companerismo) || 8;
                 const respeto = Number(j.respeto) || 8;
                 const humildad = Number(j.humildad) || 8;
@@ -335,7 +335,6 @@
         }
     }
     
-    // Función para refrescar el perfil
     async function refrescarPerfil() {
         const sessionActual = JSON.parse(localStorage.getItem('jugador_actual'));
         if (sessionActual && sessionActual.cedula) {
@@ -345,7 +344,6 @@
         }
     }
     
-    // Función para escapar HTML y prevenir XSS
     function escapeHtml(text) {
         if (!text) return '';
         const div = document.createElement('div');
@@ -353,7 +351,6 @@
         return div.innerHTML;
     }
     
-    // Exponer función global para el botón refresh
     window.refrescarPerfil = refrescarPerfil;
 </script>
 </body>
