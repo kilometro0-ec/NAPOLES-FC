@@ -1,5 +1,5 @@
 const CONFIG = {
-    URL_GAS: 'https://script.google.com/macros/s/AKfycbzTS9-73_YFUBzzwYcZfE0nAybR6CrVk4fPXnGaqTnhUPeiBXtLPuRZCmZEiGI-drJ1/exec',  // ✅ Cambia por tu URL real
+    URL_GAS: 'https://script.google.com/macros/s/AKfycby2Dy9Uh1YV2rRN7dzMnnxBBqIQ5RV4LMQ0Hkre08rBWdA9Lky-cJWjTHsgjwx1F7j7/exec',  // ✅ Cambia por tu URL real
     APP_NAME: 'Nápoles F.C.',
     VERSION: '1.0.0',
     TIEMPO_SESION: 86400000,
