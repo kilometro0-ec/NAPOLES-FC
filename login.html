@@ -22,8 +22,9 @@
             --accent: #FFD700;
             --bg-dark: #020c1a;
             --glass: rgba(12, 25, 45, 0.7);
-            --admin-morado: #b794f4;
-            --admin-bg-morado: rgba(139, 92, 246, 0.25);
+            --admin-glow: rgba(139, 92, 246, 0.4);
+            --admin-border: #a78bfa;
+            --admin-bg-morado: rgba(139, 92, 246, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,6 +43,40 @@
             padding: 1.5rem;
             color: white;
             overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Modo ADMIN - cambio sutil en todo el HTML */
+        body.admin-mode-body {
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2), transparent 55%),
+                linear-gradient(rgba(2, 12, 26, 0.85), rgba(2, 12, 26, 0.85)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a78bfa' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            transition: all 0.3s ease;
+        }
+
+        body.admin-mode-body .login-card {
+            border-color: var(--admin-border);
+            box-shadow: 0 0 18px rgba(139, 92, 246, 0.5), 0 25px 50px -12px black;
+            background: rgba(18, 25, 55, 0.75);
+            backdrop-filter: blur(20px) saturate(200%);
+        }
+
+        body.admin-mode-body .logo-area h1 {
+            background: linear-gradient(to right, #e9d5ff, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        body.admin-mode-body .input-group label {
+            color: #c084fc;
+            text-shadow: 0 0 2px rgba(192, 132, 252, 0.5);
+        }
+
+        /* Sutil resplandor en el botón cuando está en modo admin */
+        body.admin-mode-body .btn-submit {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            box-shadow: 0 0 8px #a78bfa;
         }
 
         .login-card {
@@ -55,6 +90,7 @@
             box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             padding: 3rem 2.5rem;
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.25s ease;
         }
 
         @keyframes slideUp {
@@ -71,6 +107,7 @@
             background-clip: text;
             color: transparent;
             margin-bottom: 0.5rem;
+            transition: 0.2s;
         }
 
         .input-group { margin-bottom: 2rem; }
@@ -83,6 +120,7 @@
             margin-bottom: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            transition: 0.2s;
         }
 
         input {
@@ -106,17 +144,13 @@
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
         }
 
-        /* Estilo especial cuando el campo contiene "Gata" (modo administrador visual) */
+        /* Estilo especial cuando el campo contiene "Gata" (adicional) */
         input.admin-mode {
             background: var(--admin-bg-morado);
-            border-color: var(--admin-morado);
+            border-color: var(--admin-border);
             color: #f0e6ff;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
-        }
-        input.admin-mode:focus {
-            border-color: #c084fc;
-            background: rgba(139, 92, 246, 0.3);
         }
 
         .btn-submit {
@@ -214,35 +248,37 @@
     const errorDiv = document.getElementById('mensajeError');
     const manualBtn = document.getElementById('manualDownloadBtn');
     const containerDownload = document.getElementById('containerDownload');
+    const bodyElem = document.body;
 
     // Clave secreta de administrador (exacta)
     const ADMIN_SECRET = "GataFiera54321";
-    // Subcadena que activa el color morado
+    // Subcadena que activa el modo visual sutil (y también feedback en input)
     const ADMIN_COLOR_TRIGGER = "Gata";
 
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
         containerDownload.style.display = 'none';
     }
 
-    // Función para actualizar el estado del botón y el color morado
-    function actualizarInputYboton() {
+    // Función para actualizar el estado del botón, el modo visual global y el input
+    function actualizarModoVisual() {
         const valor = cedulaInput.value;
-        // Habilitar botón si el campo no está vacío (para permitir admin con longitud variable)
+        const contieneGata = valor.includes(ADMIN_COLOR_TRIGGER);
+        
+        // Habilitar botón si el campo no está vacío
         btnLogin.disabled = valor.trim() === "";
         
-        // Cambiar color a morado si el valor contiene "Gata" (case sensitive)
-        if (valor.includes(ADMIN_COLOR_TRIGGER)) {
+        // Cambiar clase en el body para efecto sutil en todo el HTML
+        if (contieneGata) {
+            bodyElem.classList.add('admin-mode-body');
             cedulaInput.classList.add('admin-mode');
         } else {
+            bodyElem.classList.remove('admin-mode-body');
             cedulaInput.classList.remove('admin-mode');
         }
     }
 
     cedulaInput.addEventListener('input', (e) => {
-        // Ya no filtramos solo dígitos, permitimos cualquier caracter para la clave admin.
-        // Pero si el usuario ingresa la clave, no debemos limitar a 10 dígitos.
-        // Solo actualizamos el botón y el color.
-        actualizarInputYboton();
+        actualizarModoVisual();
         errorDiv.style.display = 'none';
     });
 
@@ -255,7 +291,7 @@
             return;
         }
 
-        // ---- COMPROBAR SI ES LA CLAVE ADMIN ----
+        // ---- COMPROBAR SI ES LA CLAVE ADMIN (exacta) ----
         if (valorIngresado === ADMIN_SECRET) {
             // Redirigir al panel de administración
             window.location.href = 'admin.html';
@@ -300,7 +336,7 @@
         } finally {
             btnLogin.disabled = false;
             btnLogin.innerText = 'INICIAR SESIÓN';
-            actualizarInputYboton(); // recuperar estado del botón según el campo
+            actualizarModoVisual(); // restaurar estado visual (por si se borró)
         }
     });
 
@@ -314,8 +350,8 @@
         }, 5000);
     }
 
-    // Inicializar estado del botón y color
-    actualizarInputYboton();
+    // Inicializar
+    actualizarModoVisual();
 
     // PWA: instalación
     let deferredPrompt;
