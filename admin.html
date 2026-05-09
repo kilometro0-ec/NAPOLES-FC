@@ -3,41 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nápoles FC · Administración</title>
+    <title>Nápoles F.C. · Administración</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background: #f0f4f8; padding: 24px; }
         .container { max-width: 1400px; margin: 0 auto; }
-        .header { background: white; border-radius: 28px; padding: 20px 32px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Header */
+        .header { background: white; border-radius: 28px; padding: 20px 32px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .logo-area { display: flex; align-items: center; gap: 12px; }
         .logo-icon { background: #1a4a76; width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
         .header h1 { color: #1a4a76; font-size: 1.5rem; }
-        .badge { background: #eef2ff; padding: 6px 14px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; color: #1f4a8c; margin-left: 12px; }
-        .logout-btn { background: white; border: 1px solid #e2e8f0; padding: 10px 28px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .btn-refresh { background: #e2e8f0; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: 500; margin-right: 12px; }
+        .btn-refresh:hover { background: #cbd5e1; }
+        .logout-btn { background: #dc2626; color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        
+        /* Tabs */
         .tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
-        .tab { background: white; border: 1px solid #e2e8f0; padding: 12px 28px; border-radius: 60px; cursor: pointer; font-weight: 600; color: #4a5568; }
-        .tab.active { background: #1a4a76; color: white; }
-        .panel { background: white; border-radius: 28px; padding: 28px; display: none; }
+        .tab { background: white; border: 1px solid #e2e8f0; padding: 12px 28px; border-radius: 60px; cursor: pointer; font-weight: 600; color: #4a5568; transition: all 0.2s; }
+        .tab.active { background: #1a4a76; color: white; border-color: #1a4a76; }
+        .badge-count { background: #dc2626; color: white; border-radius: 30px; padding: 2px 10px; font-size: 0.75rem; margin-left: 8px; }
+        
+        /* Paneles */
+        .panel { background: white; border-radius: 28px; padding: 28px; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .panel.active { display: block; }
-        .panel h2 { font-size: 1.4rem; margin-bottom: 20px; color: #0f2b4d; }
-        .table-wrapper { overflow-x: auto; }
+        .panel h2 { font-size: 1.4rem; margin-bottom: 20px; color: #0f2b4d; display: flex; align-items: center; gap: 10px; }
+        
+        /* Tablas */
+        .table-wrapper { overflow-x: auto; border-radius: 20px; }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 14px 12px; background: #f8fafc; border-bottom: 2px solid #e2e8f0; }
+        th { text-align: left; padding: 14px 12px; background: #f8fafc; border-bottom: 2px solid #e2e8f0; font-weight: 600; }
         td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
+        tr:hover td { background: #fafcff; }
+        
+        /* Botones */
         .btn-success { background: #059669; color: white; border: none; padding: 6px 18px; border-radius: 30px; cursor: pointer; margin: 2px; }
         .btn-danger { background: #dc2626; color: white; border: none; padding: 6px 18px; border-radius: 30px; cursor: pointer; }
         .btn-primary { background: #1a4a76; color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .btn-secondary { background: #64748b; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; }
+        
+        /* Grids y cards */
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 24px; }
         .card { background: #f8fafc; border-radius: 20px; padding: 20px; border-left: 4px solid #1a4a76; margin-bottom: 12px; }
         .info-card { background: #fefce8; border-radius: 16px; padding: 16px; border-left: 4px solid #eab308; margin-top: 12px; }
-        input, select, textarea { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 16px; margin-bottom: 12px; }
+        
+        /* Formularios */
+        input, select, textarea { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 16px; margin-bottom: 12px; font-size: 0.9rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #1a4a76; }
         label { font-weight: 500; margin-bottom: 6px; display: block; color: #334155; }
+        
+        /* Calificación - versión mejorada */
+        .calificacion-grid { background: #f8fafc; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .calificacion-header { display: grid; grid-template-columns: 200px repeat(7, 100px); gap: 10px; font-weight: 600; padding: 12px; background: #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
+        .calificacion-row { display: grid; grid-template-columns: 200px repeat(7, 100px); gap: 10px; padding: 10px; background: white; border-radius: 12px; margin-bottom: 8px; align-items: center; }
+        .calificacion-row input, .calificacion-row select { margin-bottom: 0; padding: 8px; }
+        @media (max-width: 1000px) { .calificacion-header, .calificacion-row { grid-template-columns: 180px repeat(7, 80px); } }
+        
         .spinner { border: 3px solid #e2e8f0; border-top: 3px solid #1a4a76; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin: 20px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000; }
         .modal-content { background: white; max-width: 500px; width: 90%; border-radius: 28px; padding: 24px; }
-        .badge-count { background: #dc2626; color: white; border-radius: 30px; padding: 2px 10px; font-size: 0.75rem; margin-left: 8px; }
-        hr { margin: 20px 0; }
+        
+        .btn-outline { background: transparent; border: 1px solid #cbd5e1; padding: 8px 20px; border-radius: 40px; cursor: pointer; }
+        hr { margin: 20px 0; border: none; border-top: 1px solid #e2e8f0; }
     </style>
 </head>
 <body>
@@ -45,9 +74,12 @@
     <div class="header">
         <div class="logo-area">
             <div class="logo-icon">⚽</div>
-            <h1>Nápoles F.C. <span class="badge">STAFF</span></h1>
+            <h1>Nápoles F.C. · Administración</h1>
         </div>
-        <button class="logout-btn" onclick="logout()">🔐 Cerrar sesión</button>
+        <div>
+            <button class="btn-refresh" onclick="recargarPagina()">🔄 Actualizar</button>
+            <button class="logout-btn" onclick="logout()">🔐 Cerrar sesión</button>
+        </div>
     </div>
 
     <div class="tabs">
@@ -55,66 +87,125 @@
         <button class="tab" data-tab="jugadores">👥 Plantilla</button>
         <button class="tab" data-tab="vocalia">💰 Cobros</button>
         <button class="tab" data-tab="notificaciones">📢 Anuncios</button>
-        <button class="tab" data-tab="partidos">⭐ Calificar</button>
-        <button class="tab" data-tab="proximos">📅 Próximos</button>
+        <button class="tab" data-tab="partidos">⭐ Calificar Partido</button>
+        <button class="tab" data-tab="proximos">📅 Próximos Partidos</button>
     </div>
 
+    <!-- PENDIENTES -->
     <div id="panel-pendientes" class="panel active">
-        <h2>📋 Solicitudes pendientes</h2>
+        <h2>📋 Solicitudes de registro pendientes</h2>
         <div class="table-wrapper"><table id="tablaPendientes"><thead><tr><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Correo</th><th>Dorsal</th><th>Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="spinner"></div></td></tr></tbody></table></div>
     </div>
 
+    <!-- JUGADORES -->
     <div id="panel-jugadores" class="panel">
         <h2>👥 Todos los jugadores</h2>
         <div class="table-wrapper"><table id="tablaJugadores"><thead><tr><th>Nombre</th><th>Cédula</th><th>Estado</th><th>Deuda</th><th>Goles</th><th>TA</th><th>TR</th></tr></thead><tbody><tr><td colspan="7"><div class="spinner"></div></td></tr></tbody></table></div>
     </div>
 
+    <!-- VOCALÍA -->
     <div id="panel-vocalia" class="panel">
-        <h2>💰 Registrar pago</h2>
+        <h2>💰 Registrar pago de vocalía</h2>
         <div class="grid-2">
-            <div><label>Cédula</label><input type="text" id="buscarCedula"><button class="btn-primary" onclick="buscarDeudor()">Buscar</button></div>
+            <div><label>🔍 Cédula del jugador</label><input type="text" id="buscarCedula" placeholder="Ej: 1716001431"><button class="btn-primary" onclick="buscarDeudor()" style="margin-top: 8px;">Buscar</button></div>
             <div id="infoDeudor"></div>
         </div>
-        <div id="formPago" style="display:none;"><label>Monto</label><input type="number" id="montoPago"><button class="btn-success" onclick="registrarPago()">Registrar pago</button></div>
-        <hr><h3>Deudores</h3>
-        <div class="table-wrapper"><table id="tablaDeudores"><thead><tr><th>Jugador</th><th>Cédula</th><th>Deuda</th><th>Acción</th></tr></thead><tbody></td></tbody></table></div>
+        <div id="formPago" style="display:none;"><label>💵 Monto a pagar</label><input type="number" id="montoPago" step="0.01"><button class="btn-success" onclick="registrarPago()">Registrar pago</button></div>
+        <hr>
+        <h3>⚠️ Jugadores con deuda activa</h3>
+        <div class="table-wrapper"><table id="tablaDeudores"><thead><tr><th>Jugador</th><th>Cédula</th><th>Deuda</th><th>Acción</th></tr></thead><tbody><tr><td colspan="4"><div class="spinner"></div></td></tr></tbody></table></div>
     </div>
 
+    <!-- NOTIFICACIONES -->
     <div id="panel-notificaciones" class="panel">
         <h2>📢 Publicar anuncio</h2>
-        <input type="text" id="notiTitulo" placeholder="Título">
-        <textarea id="notiMensaje" rows="3" placeholder="Mensaje"></textarea>
-        <select id="notiTipo"><option value="info">Informativo</option><option value="warning">Advertencia</option><option value="success">Éxito</option></select>
+        <input type="text" id="notiTitulo" placeholder="Título del anuncio">
+        <textarea id="notiMensaje" rows="3" placeholder="Mensaje..."></textarea>
+        <select id="notiTipo"><option value="info">📘 Informativo</option><option value="warning">⚠️ Advertencia</option><option value="success">✅ Éxito</option></select>
         <button class="btn-primary" onclick="publicarNotificacion()">Publicar</button>
-        <div id="listaNotificaciones"></div>
+        <div id="listaNotificaciones" style="margin-top: 24px;"></div>
     </div>
 
+    <!-- CALIFICAR PARTIDOS - VERSIÓN MEJORADA -->
     <div id="panel-partidos" class="panel">
-        <h2>⭐ Calificar partido</h2>
+        <h2>⭐ Calificar jugadores en partido</h2>
+        
+        <!-- Selección de partido -->
         <div class="grid-2">
-            <div><label>Fecha</label><input type="date" id="fechaPartido"></div>
-            <div><label>Rival</label><input type="text" id="rivalPartido"></div>
+            <div>
+                <label>📅 Fecha del partido</label>
+                <select id="fechaPartido" class="fecha-select">
+                    <option value="">Seleccionar fecha...</option>
+                </select>
+            </div>
+            <div>
+                <label>🕐 Hora</label>
+                <select id="horaPartido">
+                    <option value="">Seleccionar hora...</option>
+                    <option value="08:00">8:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="14:00">2:00 PM</option>
+                    <option value="16:00">4:00 PM</option>
+                </select>
+            </div>
         </div>
-        <button class="btn-primary" onclick="cargarJugadoresParaCalificar()">Cargar jugadores</button>
-        <div id="listaCalificaciones"></div>
-        <button class="btn-primary" onclick="guardarCalificaciones()">Guardar partido</button>
+        
+        <div class="grid-2">
+            <div>
+                <label>⚽ Rival</label>
+                <input type="text" id="rivalPartido" placeholder="Nombre del equipo rival">
+            </div>
+            <div>
+                <label>🏟️ Lugar</label>
+                <input type="text" id="lugarPartido" placeholder="Estadio/Cancha">
+            </div>
+        </div>
+        
+        <button class="btn-primary" onclick="cargarJugadoresParaCalificar()" style="margin-bottom: 20px;">📌 Cargar jugadores convocados</button>
+        
+        <!-- Lista de jugadores para calificar (formato mejorado) -->
+        <div id="listaCalificaciones" style="margin-top: 20px;"></div>
+        
+        <button class="btn-primary" onclick="guardarCalificaciones()" style="margin-top: 20px;">💾 Guardar partido completo</button>
     </div>
 
+    <!-- PRÓXIMOS PARTIDOS -->
     <div id="panel-proximos" class="panel">
-        <h2>📅 Próximos partidos</h2>
-        <div class="grid-2"><div><label>Fecha</label><input type="datetime-local" id="proxFecha"></div><div><label>Rival</label><input type="text" id="proxRival"></div></div>
-        <div><label>Lugar</label><input type="text" id="proxLugar"><label>Observaciones</label><textarea id="proxObs"></textarea></div>
-        <button class="btn-primary" onclick="guardarProximoPartido()">Guardar</button>
-        <div id="listaProximos"></div>
+        <h2>📅 Programar próximo partido</h2>
+        <div class="grid-2">
+            <div>
+                <label>📅 Fecha</label>
+                <select id="proxFecha" class="fecha-select"></select>
+            </div>
+            <div>
+                <label>🕐 Hora</label>
+                <select id="proxHora">
+                    <option value="08:00">8:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="14:00">2:00 PM</option>
+                    <option value="16:00">4:00 PM</option>
+                </select>
+            </div>
+        </div>
+        <div class="grid-2">
+            <div><label>⚽ Rival</label><input type="text" id="proxRival" placeholder="Equipo rival"></div>
+            <div><label>📍 Lugar</label><input type="text" id="proxLugar" placeholder="Estadio/Cancha"></div>
+        </div>
+        <div><label>📝 Observaciones</label><textarea id="proxObs" rows="2" placeholder="Información adicional..."></textarea></div>
+        <button class="btn-primary" onclick="guardarProximoPartido()">Guardar partido</button>
+        <div id="listaProximos" style="margin-top: 24px;"></div>
     </div>
 </div>
 
+<!-- Modal para motivo de rechazo -->
 <div id="modalRechazo" class="modal">
     <div class="modal-content">
         <h3>Motivo del rechazo</h3>
-        <textarea id="motivoRechazo" rows="3" placeholder="Ingrese el motivo..."></textarea>
-        <button class="btn-primary" onclick="confirmarRechazo()">Confirmar</button>
-        <button onclick="cerrarModalRechazo()">Cancelar</button>
+        <textarea id="motivoRechazo" rows="3" placeholder="Ingrese el motivo por el cual se rechaza esta solicitud..."></textarea>
+        <button class="btn-primary" onclick="confirmarRechazo()" style="margin-top: 12px;">Confirmar rechazo</button>
+        <button class="btn-outline" onclick="cerrarModalRechazo()" style="margin-top: 8px;">Cancelar</button>
     </div>
 </div>
 
@@ -122,14 +213,55 @@
 <script>
     const API_URL = CONFIG.URL_GAS;
     let currentCedulaRechazo = null;
+    let jugadoresActivos = [];
 
-    async function fetchAPI(action, params = {}) {
-        const urlParams = new URLSearchParams({ action, ...params });
-        const res = await fetch(`${API_URL}?${urlParams}`);
-        return res.json();
+    // Función para recargar página
+    function recargarPagina() { location.reload(); }
+
+    // Generar opciones de fechas (próximos 60 días incluyendo sábados y domingos)
+    function generarOpcionesFechas() {
+        const fechas = [];
+        const hoy = new Date();
+        for (let i = 0; i < 60; i++) {
+            const fecha = new Date();
+            fecha.setDate(hoy.getDate() + i);
+            const diaSemana = fecha.getDay();
+            // Solo sábados (6) y domingos (0)
+            if (diaSemana === 0 || diaSemana === 6) {
+                const año = fecha.getFullYear();
+                const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+                const dia = String(fecha.getDate()).padStart(2, '0');
+                const nombreDia = diaSemana === 0 ? 'Domingo' : 'Sábado';
+                fechas.push({ value: `${año}-${mes}-${dia}}, texto: `${nombreDia} ${dia}/${mes}/${año}` });
+            }
+        }
+        return fechas;
     }
 
-    // Tabs
+    // Llenar selects de fechas
+    function llenarSelectsFechas() {
+        const fechas = generarOpcionesFechas();
+        const selects = document.querySelectorAll('.fecha-select');
+        selects.forEach(select => {
+            select.innerHTML = '<option value="">Seleccionar fecha...</option>' + 
+                fechas.map(f => `<option value="${f.value}">${f.texto}</option>`).join('');
+        });
+    }
+
+    async function fetchAPI(action, params = {}) {
+        try {
+            const urlParams = new URLSearchParams({ action, ...params });
+            const url = `${API_URL}?${urlParams.toString()}`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return await res.json();
+        } catch (error) {
+            console.error('Error:', error);
+            return { ok: false, error: error.message };
+        }
+    }
+
+    // TABS
     document.querySelectorAll('.tab').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -138,7 +270,7 @@
             document.getElementById(`panel-${btn.dataset.tab}`).classList.add('active');
             if (btn.dataset.tab === 'pendientes') cargarPendientes();
             if (btn.dataset.tab === 'jugadores') cargarJugadores();
-            if (btn.dataset.tab === 'vocalia') cargarDeudores();
+            if (btn.dataset.tab === 'vocalia') { cargarDeudores(); document.getElementById('formPago').style.display = 'none'; }
             if (btn.dataset.tab === 'notificaciones') cargarNotificaciones();
             if (btn.dataset.tab === 'proximos') cargarProximos();
         });
@@ -147,17 +279,41 @@
     async function cargarPendientes() {
         const data = await fetchAPI('getPendientes');
         const tbody = document.querySelector('#tablaPendientes tbody');
-        document.getElementById('pendientesCount').textContent = data.total || 0;
+        const countSpan = document.getElementById('pendientesCount');
         if (data.jugadores?.length) {
-            tbody.innerHTML = data.jugadores.map(j => `<tr><td>${j.nombre}</td><td>${j.cedula}</td><td>${j.telefono || '-'}</td><td>${j.correo || '-'}</td><td>#${j.dorsal || '?'}</td><td><button class="btn-success" onclick="aprobar('${j.cedula}')">✓ Aprobar</button> <button class="btn-danger" onclick="mostrarModalRechazo('${j.cedula}')">✗ Rechazar</button></td></tr>`).join('');
-        } else tbody.innerHTML = '<tr><td colspan="6">✅ Sin solicitudes pendientes</td></tr>';
+            countSpan.textContent = data.total;
+            tbody.innerHTML = data.jugadores.map(j => `
+                <tr>
+                    <td>${j.nombre}侧
+                    <td>${j.cedula}侧
+                    <td>${j.telefono || '-'}侧
+                    <td>${j.correo || '-'}侧
+                    <td><strong>#${j.dorsal || '?'}</strong>侧
+                    <td><button class="btn-success" onclick="aprobar('${j.cedula}')">✓ Aprobar</button> 
+                        <button class="btn-danger" onclick="mostrarModalRechazo('${j.cedula}')">✗ Rechazar</button>侧
+                </tr>
+            `).join('');
+        } else {
+            countSpan.textContent = '0';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">✅ No hay solicitudes pendientes</td></tr>';
+        }
     }
 
     async function cargarJugadores() {
         const data = await fetchAPI('getAllJugadores');
         const tbody = document.querySelector('#tablaJugadores tbody');
         if (data.jugadores?.length) {
-            tbody.innerHTML = data.jugadores.map(j => `<tr><td>${j.nombre}</td><td>${j.cedula}</td><td style="color:${j.estado === 'APROBADO' ? '#059669' : '#eab308'}">${j.estado}</td><td>$${j.deuda}</td><td>${j.goles}</td><td>${j.amarillas}</td><td>${j.rojas}</td></tr>`).join('');
+            tbody.innerHTML = data.jugadores.map(j => `
+                <tr>
+                    <td>${j.nombre}侧
+                    <td>${j.cedula}侧
+                    <td><span style="color:${j.estado === 'APROBADO' ? '#059669' : j.estado === 'RECHAZADO' ? '#dc2626' : '#eab308'}">${j.estado}</span>侧
+                    <td>$${j.deuda}侧
+                    <td>${j.goles}侧
+                    <td>${j.amarillas}侧
+                    <td>${j.rojas}侧
+                </tr>
+            `).join('');
         }
     }
 
@@ -165,83 +321,169 @@
         const data = await fetchAPI('getDeudores');
         const tbody = document.querySelector('#tablaDeudores tbody');
         if (data.jugadores?.length) {
-            tbody.innerHTML = data.jugadores.map(j => `<tr><td>${j.nombre}</td><td>${j.cedula}</td><td>$${j.deuda}</td><td><button class="btn-primary" onclick="prepararCobro('${j.cedula}')">Cobrar</button></td></tr>`).join('');
-        } else tbody.innerHTML = '<tr><td colspan="4">🎉 Sin deudores</td></tr>';
-    }
-
-    async function cargarNotificaciones() {
-        const data = await fetchAPI('getNotificaciones');
-        const container = document.getElementById('listaNotificaciones');
-        if (data.notificaciones?.length) {
-            container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
-        } else container.innerHTML = '<p>📭 Sin notificaciones</p>';
-    }
-
-    async function cargarProximos() {
-        const data = await fetchAPI('getProximosPartidos');
-        const container = document.getElementById('listaProximos');
-        if (data.partidos?.length) {
-            container.innerHTML = data.partidos.map(p => `<div class="card"><strong>📅 ${new Date(p.fecha).toLocaleString()}</strong><br>⚽ vs ${p.rival}<br>📍 ${p.lugar || 'Por definir'}</div>`).join('');
-        } else container.innerHTML = '<p>⚽ No hay partidos</p>';
+            tbody.innerHTML = data.jugadores.map(j => `
+                <tr>
+                    <td>${j.nombre}侧
+                    <td>${j.cedula}侧
+                    <td><strong>$${j.deuda}</strong>侧
+                    <td><button class="btn-primary" onclick="prepararCobro('${j.cedula}')">💰 Cobrar</button>侧
+                </tr>
+            `).join('');
+        } else tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">🎉 No hay deudores</td></tr>';
     }
 
     window.prepararCobro = (ced) => { document.getElementById('buscarCedula').value = ced; buscarDeudor(); };
+    
     window.buscarDeudor = async () => {
         const ced = document.getElementById('buscarCedula').value;
         if (!ced) return;
         const data = await fetchAPI('obtenerJugador', { cedula: ced });
         if (data.ok) {
-            document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🧑 ${data.jugador.nombre1} ${data.jugador.apellidos}<br>💰 Deuda: $${data.jugador.deuda}</div>`;
+            document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🧑 ${data.jugador.nombre1} ${data.jugador.apellidos}<br>💰 Deuda actual: <strong>$${data.jugador.deuda}</strong></div>`;
             document.getElementById('formPago').style.display = 'block';
             document.getElementById('montoPago').value = data.jugador.deuda;
-        }
+        } else document.getElementById('infoDeudor').innerHTML = '<div class="info-card" style="color:red;">❌ Jugador no encontrado</div>';
     };
+    
     window.registrarPago = async () => {
         const ced = document.getElementById('buscarCedula').value;
         const monto = parseFloat(document.getElementById('montoPago').value);
-        const res = await fetchAPI('registrarPago', { cedula: ced, monto });
-        if (res.ok) { alert('✅ Pago registrado'); cargarDeudores(); cargarJugadores(); document.getElementById('formPago').style.display = 'none'; document.getElementById('infoDeudor').innerHTML = ''; }
+        if (isNaN(monto) || monto <= 0) return alert('Monto inválido');
+        const res = await fetchAPI('registrarPago', { cedula: ced, monto: monto });
+        if (res.ok) { 
+            alert(`✅ Pago registrado. Nueva deuda: $${res.nuevaDeuda}`);
+            cargarDeudores(); cargarJugadores(); 
+            document.getElementById('formPago').style.display = 'none'; 
+            document.getElementById('infoDeudor').innerHTML = ''; 
+            document.getElementById('buscarCedula').value = '';
+        } else alert('Error: ' + (res.error || 'No se pudo registrar'));
     };
 
-    window.aprobar = async (ced) => { if(confirm('¿Aprobar?')){ await fetchAPI('aprobarJugador', { cedula: ced }); cargarPendientes(); cargarJugadores(); } };
+    window.aprobar = async (ced) => { 
+        if(confirm('¿Aprobar este jugador?')){ 
+            const res = await fetchAPI('aprobarJugador', { cedula: ced }); 
+            if(res.ok) { alert('✅ Jugador aprobado'); cargarPendientes(); cargarJugadores(); }
+            else alert('Error al aprobar');
+        } 
+    };
+    
     window.mostrarModalRechazo = (ced) => { currentCedulaRechazo = ced; document.getElementById('modalRechazo').style.display = 'flex'; };
     window.cerrarModalRechazo = () => { document.getElementById('modalRechazo').style.display = 'none'; document.getElementById('motivoRechazo').value = ''; };
     window.confirmarRechazo = async () => {
         const motivo = document.getElementById('motivoRechazo').value;
         if (!motivo) return alert('Ingrese un motivo');
-        await fetchAPI('rechazarJugador', { cedula: currentCedulaRechazo, motivo });
-        alert('❌ Jugador rechazado'); cargarPendientes(); cerrarModalRechazo();
+        const res = await fetchAPI('rechazarJugador', { cedula: currentCedulaRechazo, motivo: motivo });
+        if(res.ok) { alert('❌ Jugador rechazado'); cargarPendientes(); cerrarModalRechazo(); }
+        else alert('Error al rechazar');
     };
 
+    async function cargarNotificaciones() {
+        const data = await fetchAPI('getNotificaciones');
+        const container = document.getElementById('listaNotificaciones');
+        if (data.notificaciones?.length) {
+            container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>📅 ${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
+        } else container.innerHTML = '<p class="card">📭 Sin notificaciones recientes</p>';
+    }
+    
     window.publicarNotificacion = async () => {
-        const titulo = document.getElementById('notiTitulo').value, mensaje = document.getElementById('notiMensaje').value, tipo = document.getElementById('notiTipo').value;
-        if (!titulo || !mensaje) return alert('Complete los campos');
-        await fetchAPI('publicarNotificacion', { titulo, mensaje, tipo });
-        alert('✅ Publicado'); document.getElementById('notiTitulo').value = ''; document.getElementById('notiMensaje').value = ''; cargarNotificaciones();
+        const tit = document.getElementById('notiTitulo').value, msg = document.getElementById('notiMensaje').value, tipo = document.getElementById('notiTipo').value;
+        if (!tit || !msg) return alert('Complete título y mensaje');
+        const res = await fetchAPI('publicarNotificacion', { titulo: tit, mensaje: msg, tipo: tipo });
+        if (res.ok) { 
+            alert('✅ Notificación publicada'); 
+            document.getElementById('notiTitulo').value = ''; 
+            document.getElementById('notiMensaje').value = ''; 
+            cargarNotificaciones(); 
+        } else alert('Error al publicar');
     };
 
+    async function cargarProximos() {
+        const data = await fetchAPI('getProximosPartidos');
+        const container = document.getElementById('listaProximos');
+        if (data.partidos?.length) {
+            container.innerHTML = data.partidos.map(p => `<div class="card"><strong>📅 ${new Date(p.fecha).toLocaleString()}</strong><br>⚽ vs <strong>${p.rival}</strong><br>📍 ${p.lugar || 'Por definir'}${p.observaciones ? `<br>📝 ${p.observaciones}` : ''}</div>`).join('');
+        } else container.innerHTML = '<p class="card">⚽ No hay partidos programados</p>';
+    }
+    
     window.guardarProximoPartido = async () => {
-        const fecha = document.getElementById('proxFecha').value, rival = document.getElementById('proxRival').value, lugar = document.getElementById('proxLugar').value, observaciones = document.getElementById('proxObs').value;
-        if (!fecha || !rival) return alert('Complete fecha y rival');
-        await fetchAPI('guardarProximoPartido', { fecha, rival, lugar, observaciones });
-        alert('✅ Guardado'); cargarProximos();
+        const fecha = document.getElementById('proxFecha').value;
+        const hora = document.getElementById('proxHora').value;
+        const fechaCompleta = fecha && hora ? `${fecha}T${hora}:00` : '';
+        const rival = document.getElementById('proxRival').value.trim();
+        const lugar = document.getElementById('proxLugar').value;
+        const obs = document.getElementById('proxObs').value;
+        if (!fechaCompleta || !rival) return alert('Fecha y rival requeridos');
+        const res = await fetchAPI('guardarProximoPartido', { fecha: fechaCompleta, rival, lugar, observaciones: obs });
+        if (res.ok) { 
+            alert('✅ Partido guardado'); 
+            cargarProximos(); 
+            document.getElementById('proxFecha').value = ''; 
+            document.getElementById('proxHora').value = '';
+            document.getElementById('proxRival').value = ''; 
+            document.getElementById('proxLugar').value = ''; 
+            document.getElementById('proxObs').value = ''; 
+        } else alert('Error: ' + (res.error || 'No se pudo guardar'));
     };
 
+    // CALIFICAR PARTIDOS - VERSIÓN MEJORADA
     window.cargarJugadoresParaCalificar = async () => {
-        const fecha = document.getElementById('fechaPartido').value, rival = document.getElementById('rivalPartido').value;
-        if (!fecha || !rival) return alert('Complete fecha y rival');
+        const fecha = document.getElementById('fechaPartido').value;
+        const hora = document.getElementById('horaPartido').value;
+        const rival = document.getElementById('rivalPartido').value.trim();
+        const lugar = document.getElementById('lugarPartido').value;
+        
+        if (!fecha || !hora || !rival) return alert('📅 Complete fecha, hora y rival');
+        
         const data = await fetchAPI('getJugadoresAprobados');
         if (!data.jugadores?.length) return alert('No hay jugadores aprobados');
-        document.getElementById('listaCalificaciones').innerHTML = `<div class="table-wrapper"><table><thead><tr><th>Jugador</th><th>Amarillas</th><th>Rojas</th><th>Goles</th><th>Puntualidad</th><th>Compañerismo</th><th>Respeto</th><th>Humildad</th></tr></thead><tbody>${data.jugadores.map(j => `<tr><td>${j.nombre}</td><td><input type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2" style="width:70px"></td><td><input type="number" id="rojas_${j.cedula}" value="0" min="0" max="1" style="width:70px"></td><td><input type="number" id="goles_${j.cedula}" value="0" min="0" style="width:70px"></td><td><select id="punt_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></td><td><select id="comp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></td><td><select id="resp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></td><td><select id="hum_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></td></tr>`).join('')}</tbody></table></div>`;
+        
+        jugadoresActivos = data.jugadores;
+        
+        const html = `
+            <div style="background: #f1f5f9; padding: 15px; border-radius: 16px; margin-bottom: 15px;">
+                <strong>📋 Partido:</strong> ${fecha} ${hora} vs ${rival} ${lugar ? `- ${lugar}` : ''}
+            </div>
+            <div class="calificacion-header">
+                <span>Jugador</span>
+                <span>🟨 Amarillas</span>
+                <span>🟥 Rojas</span>
+                <span>⚽ Goles</span>
+                <span>⭐ Puntualidad</span>
+                <span>🤝 Compañerismo</span>
+                <span>🙏 Respeto</span>
+                <span>💪 Humildad</span>
+            </div>
+            ${jugadoresActivos.map(j => `
+                <div class="calificacion-row">
+                    <span><strong>${j.nombre}</strong></span>
+                    <input type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2" step="1">
+                    <input type="number" id="rojas_${j.cedula}" value="0" min="0" max="1" step="1">
+                    <input type="number" id="goles_${j.cedula}" value="0" min="0" step="1">
+                    <select id="punt_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}⭐</option>`).join('')}</select>
+                    <select id="comp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}⭐</option>`).join('')}</select>
+                    <select id="resp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}⭐</option>`).join('')}</select>
+                    <select id="hum_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}⭐</option>`).join('')}</select>
+                </div>
+            `).join('')}
+        `;
+        document.getElementById('listaCalificaciones').innerHTML = html;
     };
-
+    
     window.guardarCalificaciones = async () => {
-        const fecha = document.getElementById('fechaPartido').value, rival = document.getElementById('rivalPartido').value;
-        const data = await fetchAPI('getJugadoresAprobados');
-        if (!data.jugadores?.length) return;
-        const cedulas = [], nombres = [], amarillas = [], rojas = [], goles = [], puntualidades = [], companerismos = [], respetos = [], humildades = [];
-        for (const j of data.jugadores) {
-            cedulas.push(j.cedula); nombres.push(j.nombre);
+        const fecha = document.getElementById('fechaPartido').value;
+        const hora = document.getElementById('horaPartido').value;
+        const fechaCompleta = `${fecha}T${hora}:00`;
+        const rival = document.getElementById('rivalPartido').value;
+        const lugar = document.getElementById('lugarPartido').value;
+        
+        if (!fechaCompleta || !rival || jugadoresActivos.length === 0) return alert('Primero cargue los jugadores');
+        
+        const cedulas = [], nombres = [], amarillas = [], rojas = [], goles = [];
+        const puntualidades = [], companerismos = [], respetos = [], humildades = [];
+        
+        for (const j of jugadoresActivos) {
+            cedulas.push(j.cedula);
+            nombres.push(j.nombre);
             amarillas.push(document.getElementById(`amarillas_${j.cedula}`)?.value || 0);
             rojas.push(document.getElementById(`rojas_${j.cedula}`)?.value || 0);
             goles.push(document.getElementById(`goles_${j.cedula}`)?.value || 0);
@@ -250,14 +492,35 @@
             respetos.push(document.getElementById(`resp_${j.cedula}`)?.value || 3);
             humildades.push(document.getElementById(`hum_${j.cedula}`)?.value || 3);
         }
-        const res = await fetchAPI('guardarPartido', { fecha, rival, cedulas: cedulas.join(','), nombres: nombres.join(','), amarillas: amarillas.join(','), rojas: rojas.join(','), goles: goles.join(','), puntualidades: puntualidades.join(','), companerismos: companerismos.join(','), respetos: respetos.join(','), humildades: humildades.join(',') });
-        if (res.ok) alert('✅ Partido guardado');
-        else alert('Error: ' + res.error);
+        
+        const res = await fetchAPI('guardarPartido', { 
+            fecha: fechaCompleta, rival, lugar,
+            cedulas: cedulas.join(','), nombres: nombres.join(','), 
+            amarillas: amarillas.join(','), rojas: rojas.join(','), goles: goles.join(','),
+            puntualidades: puntualidades.join(','), companerismos: companerismos.join(','),
+            respetos: respetos.join(','), humildades: humildades.join(',')
+        });
+        
+        if (res.ok) { 
+            alert(`✅ ${res.msg || 'Partido guardado correctamente'}`); 
+            document.getElementById('listaCalificaciones').innerHTML = ''; 
+            document.getElementById('fechaPartido').value = ''; 
+            document.getElementById('horaPartido').value = '';
+            document.getElementById('rivalPartido').value = ''; 
+            document.getElementById('lugarPartido').value = '';
+            cargarJugadores(); 
+        } else alert('Error: ' + (res.error || 'No se pudo guardar'));
     };
 
-    function logout() { localStorage.removeItem('admin_auth'); location.reload(); }
+    function logout() { localStorage.removeItem('admin_auth'); alert('Sesión cerrada'); location.reload(); }
 
-    cargarPendientes(); cargarJugadores(); cargarDeudores(); cargarNotificaciones(); cargarProximos();
+    // Inicializar
+    llenarSelectsFechas();
+    cargarPendientes();
+    cargarJugadores();
+    cargarDeudores();
+    cargarNotificaciones();
+    cargarProximos();
 </script>
 </body>
 </html>
