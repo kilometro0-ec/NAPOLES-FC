@@ -16,7 +16,11 @@
             --text-main: #ffffff;
             --text-muted: #a0a0a0;
             --success: #2ecc71;
+            --success-dark: #27ae60;
             --danger: #e74c3c;
+            --danger-dark: #c0392b;
+            --warning: #f39c12;
+            --info: #3498db;
             --glass-border: rgba(255, 255, 255, 0.1);
         }
 
@@ -63,7 +67,6 @@
             transition: all 0.3s ease;
         }
 
-        /* EFECTO DE LUZ BRILLANTE (SHIMMER) PARA AMBAS TARJETAS */
         .glass-card::before {
             content: '';
             position: absolute;
@@ -71,14 +74,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(212, 175, 55, 0.15),
-                rgba(212, 175, 55, 0.3),
-                rgba(212, 175, 55, 0.15),
-                transparent
-            );
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.15), transparent);
             animation: shimmer 3s infinite;
             pointer-events: none;
             z-index: 1;
@@ -90,7 +86,6 @@
             100% { left: 100%; }
         }
 
-        /* EFECTO DE BRILLO EN LOS BORDES */
         .glass-card::after {
             content: '';
             position: absolute;
@@ -98,12 +93,7 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, 
-                transparent 30%, 
-                rgba(212, 175, 55, 0.4), 
-                rgba(212, 175, 55, 0.1),
-                rgba(212, 175, 55, 0.4),
-                transparent 70%);
+            background: linear-gradient(45deg, transparent 30%, rgba(212, 175, 55, 0.4), rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.4), transparent 70%);
             border-radius: 22px;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -121,7 +111,6 @@
             50% { opacity: 0.8; }
         }
 
-        /* TARJETA DE IDENTIDAD */
         .id-card-identity {
             padding: 15px;
             text-align: center;
@@ -131,22 +120,12 @@
             justify-content: center;
             position: relative;
             z-index: 2;
-        }
-
-        /* ANIMACIÓN DE PULSO SUAVE PARA LA TARJETA DE IDENTIDAD */
-        .id-card-identity {
             animation: softPulse 3s infinite ease-in-out;
         }
 
         @keyframes softPulse {
-            0%, 100% { 
-                box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
-                border-color: rgba(212, 175, 55, 0.3);
-            }
-            50% { 
-                box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-                border-color: rgba(212, 175, 55, 0.6);
-            }
+            0%, 100% { box-shadow: 0 0 5px rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); border-color: rgba(212, 175, 55, 0.6); }
         }
 
         .player-img {
@@ -162,76 +141,44 @@
             z-index: 2;
         }
 
-        .player-img:hover {
-            transform: scale(1.05);
-        }
+        .player-img:hover { transform: scale(1.05); }
 
-        /* --- TARJETA DE CAMISETA 3D CORREGIDA --- */
-        .id-card-jersey-wrap { 
-            perspective: 800px; 
-            height: 180px;
-            position: relative;
-            z-index: 2;
-        }
+        /* --- TARJETA DE CAMISETA 3D --- */
+        .id-card-jersey-wrap { perspective: 800px; height: 180px; position: relative; z-index: 2; }
         
         .jersey-card-inner {
-            position: relative; 
-            width: 100%; 
-            height: 100%;
+            position: relative; width: 100%; height: 100%;
             transform-style: preserve-3d;
             border-radius: 20px;
-            /* Animación de rotación continua y suave */
             animation: rotateJerseySmooth 12s infinite linear;
             will-change: transform;
         }
 
-        /* Rotación completa en 3D sobre el eje Y */
         @keyframes rotateJerseySmooth {
             0% { transform: rotateY(0deg); }
             100% { transform: rotateY(360deg); }
         }
 
-        /* Pausar animación al hacer hover sobre el contenedor */
-        .id-card-jersey-wrap:hover .jersey-card-inner {
-            animation-play-state: paused;
-        }
+        .id-card-jersey-wrap:hover .jersey-card-inner { animation-play-state: paused; }
 
-        /* Caras de la tarjeta 3D */
         .face-jersey-front, .face-jersey-back {
-            position: absolute; 
-            width: 100%; 
-            height: 100%;
+            position: absolute; width: 100%; height: 100%;
             background: linear-gradient(145deg, #0a1428, #000814);
-            border-radius: 20px; 
-            border: 2px solid rgba(212, 175, 55, 0.5);
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
+            border-radius: 20px; border: 2px solid rgba(212, 175, 55, 0.5);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             backface-visibility: hidden;
             box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
             overflow: hidden;
         }
         
-        /* Cara frontal (por defecto) */
-        .face-jersey-front {
-            transform: rotateY(0deg);
-        }
+        .face-jersey-front { transform: rotateY(0deg); }
+        .face-jersey-back { transform: rotateY(180deg); background: linear-gradient(145deg, #1a0f2a, #0a0418); }
 
-        /* Cara trasera */
-        .face-jersey-back {
-            transform: rotateY(180deg);
-            background: linear-gradient(145deg, #1a0f2a, #0a0418);
-        }
-
-        /* Luz reflejante en la camiseta */
         .face-jersey-front::before, .face-jersey-back::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -250,34 +197,14 @@
             100% { transform: translate(-15%, -15%) rotate(90deg); opacity: 0.3; }
         }
 
-        .jersey-number { 
-            font-size: 4.5rem; 
-            font-weight: 900; 
-            color: var(--primary-gold); 
-            font-family: 'Outfit'; 
-            line-height: 1;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            letter-spacing: 2px;
-        }
-
-        .jersey-name {
-            font-size: 0.7rem; 
-            font-weight: 800; 
-            opacity: 0.9; 
-            letter-spacing: 2px;
-            color: var(--primary-gold-light);
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
+        .jersey-number { font-size: 4.5rem; font-weight: 900; color: var(--primary-gold); font-family: 'Outfit'; line-height: 1; text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); letter-spacing: 2px; }
+        .jersey-name { font-size: 0.7rem; font-weight: 800; opacity: 0.9; letter-spacing: 2px; color: var(--primary-gold-light); text-transform: uppercase; margin-bottom: 5px; }
 
         /* --- ESTADÍSTICAS --- */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
         .stat-card {
-            background: var(--card-bg); 
-            border-radius: 12px; 
-            padding: 10px 5px;
-            text-align: center; 
-            border: 1px solid rgba(255,255,255,0.05);
+            background: var(--card-bg); border-radius: 12px; padding: 10px 5px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.05);
             transition: all 0.3s ease;
         }
         .stat-card:hover {
@@ -288,7 +215,7 @@
         .stat-val { display: block; font-size: 1.1rem; font-weight: 800; }
         .stat-lab { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
 
-        /* --- BLOQUES DE INFO --- */
+        /* --- BLOQUES DE INFO MEJORADOS --- */
         .section-box {
             background: var(--card-bg); 
             border-radius: 18px; 
@@ -300,6 +227,7 @@
         }
         .section-box:hover {
             border-color: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
         }
         .section-title {
             font-size: 0.8rem; 
@@ -310,6 +238,166 @@
             display: flex; 
             align-items: center; 
             gap: 8px;
+        }
+
+        /* --- ESTILOS MEJORADOS PARA ESTADO ADMINISTRATIVO --- */
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .admin-stat-card {
+            background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .admin-stat-card:hover::before {
+            left: 100%;
+        }
+
+        .admin-stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .admin-stat-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .admin-stat-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .admin-stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-stat-status {
+            font-size: 0.7rem;
+            margin-top: 6px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .status-badge-paid { background: rgba(46, 204, 113, 0.2); color: var(--success); border: 1px solid rgba(46, 204, 113, 0.3); }
+        .status-badge-pending { background: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid rgba(231, 76, 60, 0.3); }
+        .status-badge-warning { background: rgba(243, 156, 18, 0.2); color: var(--warning); border: 1px solid rgba(243, 156, 18, 0.3); }
+        .status-badge-info { background: rgba(52, 152, 219, 0.2); color: var(--info); border: 1px solid rgba(52, 152, 219, 0.3); }
+
+        /* Barra de progreso para deuda */
+        .debt-container {
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .debt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .debt-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .debt-amount {
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .debt-amount.danger { color: var(--danger); }
+        .debt-amount.success { color: var(--success); }
+
+        .progress-bar-bg {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--danger), var(--warning));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-bar-fill.low-debt { background: linear-gradient(90deg, var(--success), var(--warning)); }
+        .progress-bar-fill.medium-debt { background: linear-gradient(90deg, var(--warning), var(--danger)); }
+        .progress-bar-fill.high-debt { background: linear-gradient(90deg, var(--danger), #8b0000); }
+
+        .debt-message {
+            font-size: 0.7rem;
+            margin-top: 8px;
+            text-align: center;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        /* Detalles adicionales */
+        .admin-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin-top: 10px;
+        }
+
+        .detail-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .detail-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-gold);
         }
 
         .info-row {
@@ -325,7 +413,6 @@
         .info-label i { width: 16px; text-align: center; color: var(--primary-gold); }
         .info-value { font-weight: 700; color: #fff; }
 
-        /* COLORES DINÁMICOS */
         .status-red { color: var(--danger) !important; }
         .status-green { color: var(--success) !important; }
 
@@ -351,10 +438,7 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
         .btn-sync:active:not(:disabled) { transform: scale(0.98); }
-        .btn-sync:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
+        .btn-sync:disabled { opacity: 0.7; cursor: not-allowed; }
 
         .btn-logout {
             width: 100%; 
@@ -386,11 +470,12 @@
         
         .error-message { text-align: center; padding: 50px; color: var(--danger); }
         
-        /* Ajustes responsivos */
         @media (max-width: 400px) {
             .jersey-number { font-size: 3.5rem; }
             .player-img { width: 65px; height: 65px; }
             .id-card-jersey-wrap { height: 160px; }
+            .admin-stat-value { font-size: 1rem; }
+            .admin-stat-icon { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -402,7 +487,6 @@
 
 <script src="config.js"></script>
 <script>
-    // Función de escape HTML para prevenir XSS
     function escapeHtml(str) {
         if (!str) return '';
         return String(str)
@@ -413,20 +497,12 @@
             .replace(/'/g, '&#39;');
     }
 
-    // Validar configuración
     function validateConfig() {
-        if (typeof CONFIG === 'undefined') {
-            throw new Error('No se pudo cargar config.js');
-        }
-        if (!CONFIG.URL_GAS) {
-            throw new Error('URL_GAS no está definida en la configuración');
-        }
-        if (!CONFIG.DEFAULT_AVATAR) {
-            CONFIG.DEFAULT_AVATAR = 'https://via.placeholder.com/80/111a33/D4AF37?text=PLAYER';
-        }
+        if (typeof CONFIG === 'undefined') throw new Error('No se pudo cargar config.js');
+        if (!CONFIG.URL_GAS) throw new Error('URL_GAS no está definida');
+        if (!CONFIG.DEFAULT_AVATAR) CONFIG.DEFAULT_AVATAR = 'https://via.placeholder.com/80/111a33/D4AF37?text=PLAYER';
     }
 
-    // Función para obtener estado de clase CSS
     function getStatusClass(val) {
         if (!val) return 'status-red';
         const v = String(val).toUpperCase();
@@ -435,7 +511,30 @@
         return '';
     }
 
-    // Función para manejar errores de sesión
+    function getStatusBadgeClass(val) {
+        if (!val) return 'status-badge-pending';
+        const v = String(val).toUpperCase();
+        if (v.includes('PENDIENTE') || v.includes('DEBE') || v === 'NO') return 'status-badge-pending';
+        if (v.includes('PAGADO') || v.includes('ENTREGADO') || v === 'SI' || v === 'OK') return 'status-badge-paid';
+        return 'status-badge-info';
+    }
+
+    function getDebtProgress(debtAmount) {
+        const maxDebt = 200;
+        let percentage = Math.min((debtAmount / maxDebt) * 100, 100);
+        let fillClass = 'low-debt';
+        if (debtAmount > 100) fillClass = 'high-debt';
+        else if (debtAmount > 50) fillClass = 'medium-debt';
+        return { percentage, fillClass };
+    }
+
+    function getDebtMessage(debtAmount) {
+        if (debtAmount === 0) return { text: '✅ ¡AL DÍA! No tienes deudas pendientes', type: 'success' };
+        if (debtAmount < 50) return { text: '⚠️ Deuda baja. Regulariza pronto para seguir participando', type: 'warning' };
+        if (debtAmount < 100) return { text: '⚠️⚠️ Deuda moderada. Comunícate con vocalía', type: 'warning' };
+        return { text: '🔴 ¡ATENCIÓN! Deuda crítica. Riesgo de suspensión', type: 'danger' };
+    }
+
     function handleSessionError(error) {
         if (error && (error.includes('sesión') || error.includes('token') || error.includes('auth'))) {
             localStorage.removeItem('jugador_actual');
@@ -445,7 +544,6 @@
         return false;
     }
 
-    // Función principal para cargar el perfil
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
         
@@ -456,22 +554,15 @@
             console.log('Consultando:', url);
             
             const resp = await fetch(url);
-            
-            if (!resp.ok) {
-                throw new Error(`Error HTTP: ${resp.status}`);
-            }
+            if (!resp.ok) throw new Error(`Error HTTP: ${resp.status}`);
             
             const data = await resp.json();
             
-            // Verificar si hay error de sesión
-            if (!data.success && data.error && handleSessionError(data.error)) {
-                return;
-            }
+            if (!data.success && data.error && handleSessionError(data.error)) return;
             
             if (data.success && data.jugador) {
                 const j = data.jugador;
                 
-                // Sanitizar todos los datos
                 const sanitized = {
                     primerNombre: escapeHtml(j.primerNombre || ''),
                     segundoNombre: escapeHtml(j.segundoNombre || ''),
@@ -492,6 +583,9 @@
                     unifEstado: escapeHtml(j.unifEstado || 'PENDIENTE'),
                     mediasEstado: (j.mediasEstado === 'null' || !j.mediasEstado || j.mediasEstado === 'undefined') ? 'N/A' : escapeHtml(j.mediasEstado)
                 };
+
+                const debtProgress = getDebtProgress(sanitized.deudaVocalia);
+                const debtMessage = getDebtMessage(sanitized.deudaVocalia);
                 
                 container.innerHTML = `
                     <div class="profile-header">
@@ -499,7 +593,6 @@
                     </div>
 
                     <div class="cards-row">
-                        <!-- TARJETA DE IDENTIDAD -->
                         <div class="id-card-identity glass-card">
                             <img src="${sanitized.urlFotoRostro}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
                             <div style="font-weight:900; font-family:'Outfit'; text-transform:uppercase; font-size:0.9rem;">
@@ -510,7 +603,6 @@
                             </div>
                         </div>
 
-                        <!-- TARJETA DE CAMISETA 3D CORREGIDA -->
                         <div class="id-card-jersey-wrap">
                             <div class="jersey-card-inner">
                                 <div class="face-jersey-front">
@@ -535,7 +627,6 @@
                         <i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN
                     </button>
 
-                    <!-- ESTADÍSTICAS DE JUEGO -->
                     <div class="stats-grid">
                         <div class="stat-card">
                             <i class="fas fa-running" style="color:var(--primary-gold)"></i>
@@ -559,7 +650,6 @@
                         </div>
                     </div>
 
-                    <!-- RENDIMIENTO HUMANO -->
                     <div class="section-box">
                         <div class="section-title"><i class="fas fa-star"></i> Rendimiento Humano</div>
                         <div class="info-row">
@@ -580,38 +670,77 @@
                         </div>
                     </div>
 
-                    <!-- GESTIÓN ADMINISTRATIVA -->
+                    <!-- ESTADO ADMINISTRATIVO MEJORADO -->
                     <div class="section-box">
-                        <div class="section-title"><i class="fas fa-wallet"></i> Estado Administrativo</div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-exclamation-circle"></i> Deuda Vocalía</div>
-                            <div class="info-value ${sanitized.deudaVocalia > 0 ? 'status-red' : 'status-green'}">
-                                $${sanitized.deudaVocalia}
+                        <div class="section-title">
+                            <i class="fas fa-chart-line"></i> Estado Administrativo
+                            <i class="fas fa-shield-alt" style="margin-left:auto; font-size:0.7rem; opacity:0.7;"></i>
+                        </div>
+
+                        <!-- Tarjetas de estado rápido -->
+                        <div class="admin-stats-grid">
+                            <div class="admin-stat-card">
+                                <div class="admin-stat-icon">
+                                    <i class="fas fa-file-signature"></i>
+                                </div>
+                                <div class="admin-stat-value">${sanitized.inscripEstado}</div>
+                                <div class="admin-stat-label">Inscripción</div>
+                                <div class="admin-stat-status ${getStatusBadgeClass(sanitized.inscripEstado)}">
+                                    <i class="fas ${sanitized.inscripEstado === 'PAGADO' ? 'fa-check-circle' : 'fa-clock'}"></i>
+                                    ${sanitized.inscripEstado === 'PAGADO' ? 'Completada' : 'Pendiente'}
+                                </div>
+                            </div>
+                            <div class="admin-stat-card">
+                                <div class="admin-stat-icon">
+                                    <i class="fas fa-tshirt"></i>
+                                </div>
+                                <div class="admin-stat-value">${sanitized.unifEstado}</div>
+                                <div class="admin-stat-label">Uniforme</div>
+                                <div class="admin-stat-status ${getStatusBadgeClass(sanitized.unifEstado)}">
+                                    <i class="fas ${sanitized.unifEstado === 'ENTREGADO' ? 'fa-check-circle' : 'fa-truck'}"></i>
+                                    ${sanitized.unifEstado === 'ENTREGADO' ? 'Entregado' : 'Pendiente'}
+                                </div>
                             </div>
                         </div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-file-invoice-dollar"></i> Inscripción</div>
-                            <div class="info-value ${getStatusClass(sanitized.inscripEstado)}">
-                                ${sanitized.inscripEstado}
+
+                        <!-- Sección de Deuda con barra de progreso -->
+                        <div class="debt-container">
+                            <div class="debt-header">
+                                <span class="debt-label"><i class="fas fa-dollar-sign"></i> DEUDA CON VOCALÍA</span>
+                                <span class="debt-amount ${sanitized.deudaVocalia > 0 ? 'danger' : 'success'}">
+                                    $${sanitized.deudaVocalia.toFixed(2)}
+                                </span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill ${debtProgress.fillClass}" style="width: ${debtProgress.percentage}%"></div>
+                            </div>
+                            <div class="debt-message" style="background: ${debtMessage.type === 'success' ? 'rgba(46,204,113,0.1)' : debtMessage.type === 'warning' ? 'rgba(243,156,18,0.1)' : 'rgba(231,76,60,0.1)'}">
+                                <i class="fas ${debtMessage.type === 'success' ? 'fa-smile-wink' : debtMessage.type === 'warning' ? 'fa-exclamation-triangle' : 'fa-skull-crosswalk'}"></i>
+                                ${debtMessage.text}
                             </div>
                         </div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-tshirt"></i> Uniforme</div>
-                            <div class="info-value ${getStatusClass(sanitized.unifEstado)}">
-                                ${sanitized.unifEstado}
+
+                        <!-- Detalles adicionales -->
+                        <div class="admin-details">
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-socks"></i> Medias</div>
+                                <div class="detail-value">${sanitized.mediasEstado}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-ruler-combined"></i> Talla</div>
+                                <div class="detail-value">${sanitized.tallaUni}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"><i class="fas fa-calendar-alt"></i> Última cuota</div>
+                                <div class="detail-value">${new Date().toLocaleDateString()}</div>
                             </div>
                         </div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-socks"></i> Medias</div>
-                            <div class="info-value ${getStatusClass(sanitized.mediasEstado)}">
-                                ${sanitized.mediasEstado}
-                            </div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-ruler"></i> Talla</div>
-                            <div class="info-value" style="color:var(--primary-gold)">
-                                ${sanitized.tallaUni}
-                            </div>
+
+                        <!-- Leyenda de estados -->
+                        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.6rem;">
+                            <span><i class="fas fa-circle" style="color: var(--success); font-size: 0.5rem;"></i> Pagado/Entregado</span>
+                            <span><i class="fas fa-circle" style="color: var(--danger); font-size: 0.5rem;"></i> Pendiente</span>
+                            <span><i class="fas fa-circle" style="color: var(--warning); font-size: 0.5rem;"></i> En proceso</span>
                         </div>
                     </div>
 
@@ -652,10 +781,8 @@
         }
     }
     
-    // Función global para recargar el perfil
     window.recargarPerfil = async function() {
         const session = JSON.parse(localStorage.getItem('jugador_actual'));
-        
         if (!session || !session.cedula) {
             window.location.href = 'login.html';
             return;
@@ -680,7 +807,6 @@
         }
     };
 
-    // Función global para cerrar sesión
     window.cerrarSesion = function() {
         if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
             localStorage.removeItem('jugador_actual');
@@ -688,18 +814,14 @@
         }
     };
 
-    // Inicialización
     (function() {
         try {
             validateConfig();
-            
             const session = JSON.parse(localStorage.getItem('jugador_actual'));
-            
             if (!session || !session.cedula) {
                 window.location.href = 'login.html';
                 return;
             }
-            
             cargarPerfil(session.cedula);
         } catch (e) {
             console.error('Error de inicialización:', e);
