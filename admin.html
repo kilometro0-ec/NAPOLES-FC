@@ -6,8 +6,6 @@
     <title>Nápoles F.C. · Admin</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        
-        /* Fondo con efecto neón y gradiente animado */
         body { 
             background: linear-gradient(135deg, #0a0f1a 0%, #0f172a 50%, #1e1b4b 100%);
             min-height: 100vh;
@@ -15,8 +13,6 @@
             position: relative;
             overflow-x: hidden;
         }
-        
-        /* Partículas de fondo animadas */
         body::before {
             content: '';
             position: fixed;
@@ -24,182 +20,120 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(59,130,246,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(139,92,246,0.1) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 20% 50%, rgba(59,130,246,0.1) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
-        
         .container { max-width: 100%; margin: 0 auto; position: relative; z-index: 1; }
         
-        /* Header moderno */
         .header { 
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             border-radius: 28px;
-            padding: 16px;
+            padding: 12px 16px;
             margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
         .logo-area { display: flex; align-items: center; gap: 10px; }
         .logo-icon { 
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            width: 42px;
-            height: 42px;
-            border-radius: 21px;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            box-shadow: 0 0 20px rgba(59,130,246,0.5);
+            font-size: 1.3rem;
         }
-        .header h1 { 
-            font-size: 1.2rem;
-            background: linear-gradient(135deg, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
+        .header h1 { font-size: 1.1rem; color: white; }
         .header-buttons { display: flex; gap: 8px; }
-        .btn-icon { 
+        .btn-icon, .btn-logout { 
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: white;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
-        .btn-icon:hover { background: rgba(255,255,255,0.2); transform: scale(1.02); }
-        .btn-logout { 
-            background: rgba(220,38,38,0.2);
-            border: 1px solid rgba(220,38,38,0.4);
-            color: #fecaca;
-            padding: 8px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-        }
-        .btn-logout:hover { background: rgba(220,38,38,0.4); transform: scale(1.02); }
+        .btn-logout { background: rgba(220,38,38,0.2); color: #fecaca; }
+        .btn-icon:active, .btn-logout:active { transform: scale(0.95); }
         
-        /* Dashboard con efecto glassmorphism */
         .welcome-card { 
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             border-radius: 28px;
-            padding: 24px 20px;
-            margin-bottom: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
-        .welcome-card h2 { 
-            font-size: 1.6rem;
-            background: linear-gradient(135deg, #fff, #c084fc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 8px;
-        }
-        .welcome-card p { color: #94a3b8; font-size: 0.9rem; }
+        .welcome-card h2 { font-size: 1.3rem; color: white; margin-bottom: 5px; }
+        .welcome-card p { color: #94a3b8; font-size: 0.85rem; }
         
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 20px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 16px; }
         .dashboard-card { 
             background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 16px 12px;
+            padding: 14px 10px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
+            transition: all 0.2s ease;
             border: 1px solid rgba(255,255,255,0.1);
         }
-        .dashboard-card:hover { 
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-5px);
-            border-color: rgba(59,130,246,0.5);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .dashboard-card .emoji { font-size: 2rem; display: block; margin-bottom: 8px; }
-        .dashboard-card .title { font-size: 0.9rem; font-weight: 600; display: block; margin-bottom: 4px; color: white; }
-        .dashboard-card .description { font-size: 0.65rem; opacity: 0.7; display: block; color: #94a3b8; }
+        .dashboard-card:active { transform: scale(0.96); }
+        .dashboard-card .emoji { font-size: 1.8rem; display: block; margin-bottom: 6px; }
+        .dashboard-card .title { font-size: 0.85rem; font-weight: 600; color: white; }
+        .dashboard-card .description { font-size: 0.6rem; opacity: 0.7; color: #94a3b8; }
         .badge-pending { 
-            position: absolute; top: 8px; right: 8px; 
+            position: absolute; top: 5px; right: 8px; 
             background: #ef4444; color: white; 
-            border-radius: 30px; padding: 2px 8px; 
-            font-size: 0.7rem; font-weight: bold;
-            box-shadow: 0 0 10px rgba(239,68,68,0.5);
-            animation: pulse 1.5s infinite;
+            border-radius: 20px; padding: 1px 6px; 
+            font-size: 0.65rem;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-        
-        /* Loader animado */
         .loader-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.5s;
-        }
-        .loader-content {
-            text-align: center;
         }
         .loader-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(59,130,246,0.2);
-            border-top: 4px solid #3b82f6;
-            border-right: 4px solid #8b5cf6;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(59,130,246,0.2);
+            border-top: 3px solid #3b82f6;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
         }
-        .loader-text {
-            color: white;
-            font-size: 1rem;
-            letter-spacing: 2px;
-        }
-        .loader-dots {
-            display: inline-block;
-            width: 20px;
-            text-align: left;
-        }
+        .loader-text { color: white; text-align: center; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
         .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; display: none; }
         .tab { 
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #94a3b8;
-            transition: all 0.3s;
         }
-        .tab:hover { background: rgba(255,255,255,0.1); color: white; }
-        .tab.active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
-        .badge-count { background: #ef4444; color: white; border-radius: 20px; padding: 1px 8px; font-size: 0.7rem; margin-left: 6px; }
+        .tab.active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; }
+        .badge-count { background: #ef4444; color: white; border-radius: 20px; padding: 1px 6px; font-size: 0.65rem; margin-left: 5px; }
         
         .panel { 
             background: rgba(255,255,255,0.05);
@@ -210,59 +144,61 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
         .panel.active { display: block; }
-        .panel h2 { font-size: 1.2rem; margin-bottom: 16px; color: white; }
+        .panel h2 { font-size: 1.1rem; margin-bottom: 12px; color: white; }
         
         .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        th { text-align: left; padding: 10px 8px; background: rgba(255,255,255,0.05); color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; }
-        td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        th { text-align: left; padding: 8px; background: rgba(255,255,255,0.05); color: #94a3b8; }
+        td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; }
         
-        .btn-success { background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; margin: 2px; transition: all 0.2s; }
-        .btn-success:hover { transform: scale(1.02); box-shadow: 0 2px 10px rgba(16,185,129,0.3); }
-        .btn-danger { background: linear-gradient(135deg, #dc2626, #ef4444); color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; }
-        .btn-primary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; padding: 10px 16px; border-radius: 30px; cursor: pointer; font-weight: 500; font-size: 0.85rem; width: 100%; margin-top: 8px; transition: all 0.3s; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(59,130,246,0.3); }
-        .btn-warning { background: linear-gradient(135deg, #d97706, #f59e0b); color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; }
+        .btn-success { background: #059669; color: white; border: none; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .btn-danger { background: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; padding: 10px; border-radius: 30px; cursor: pointer; font-weight: 500; font-size: 0.8rem; width: 100%; margin-top: 8px; }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-warning { background: #d97706; color: white; border: none; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .btn-sm { padding: 3px 8px; font-size: 0.65rem; margin-left: 5px; background: rgba(239,68,68,0.3); color: #fecaca; border: none; border-radius: 15px; cursor: pointer; }
         
-        .grid-2 { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-        @media (min-width: 640px) { .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } }
+        .grid-2 { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+        @media (min-width: 640px) { .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } }
         
-        .card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 14px; border-left: 3px solid #3b82f6; margin-bottom: 10px; color: #cbd5e1; }
-        .info-card { background: rgba(245,158,11,0.1); border-radius: 16px; padding: 14px; border-left: 3px solid #f59e0b; margin-top: 10px; color: #fde68a; }
+        .card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 12px; border-left: 3px solid #3b82f6; margin-bottom: 8px; color: #cbd5e1; }
+        .info-card { background: rgba(245,158,11,0.1); border-radius: 16px; padding: 12px; border-left: 3px solid #f59e0b; margin-top: 8px; color: #fde68a; font-size: 0.8rem; }
         
         input, select, textarea { 
-            width: 100%; padding: 10px 14px; 
+            width: 100%; padding: 8px 12px; 
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
             color: white;
         }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #3b82f6; }
-        input::placeholder, textarea::placeholder { color: #64748b; }
-        label { font-weight: 500; margin-bottom: 4px; display: block; color: #94a3b8; font-size: 0.8rem; }
+        input:focus, select:focus { outline: none; border-color: #3b82f6; }
+        label { font-weight: 500; margin-bottom: 3px; display: block; color: #94a3b8; font-size: 0.75rem; }
         
         .cal-grid { overflow-x: auto; }
-        .cal-header, .cal-row { display: flex; gap: 6px; padding: 8px; min-width: 700px; }
-        .cal-header { background: rgba(255,255,255,0.05); border-radius: 12px; font-weight: 600; font-size: 0.7rem; margin-bottom: 6px; color: #94a3b8; }
-        .cal-row { background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 4px; align-items: center; }
-        .col-jugador { width: 120px; flex-shrink: 0; color: white; }
-        .col-num { width: 60px; flex-shrink: 0; }
-        .col-select { width: 70px; flex-shrink: 0; }
-        .cal-row input, .cal-row select { width: 100%; margin-bottom: 0; padding: 6px; font-size: 0.75rem; }
+        .cal-header, .cal-row { display: flex; gap: 6px; padding: 6px; min-width: 650px; }
+        .cal-header { background: rgba(255,255,255,0.05); border-radius: 10px; font-weight: 600; font-size: 0.65rem; color: #94a3b8; }
+        .cal-row { background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 4px; }
+        .col-jugador { width: 110px; flex-shrink: 0; color: white; font-size: 0.75rem; }
+        .col-num { width: 55px; flex-shrink: 0; }
+        .col-select { width: 65px; flex-shrink: 0; }
+        .cal-row input, .cal-row select { width: 100%; margin-bottom: 0; padding: 4px; font-size: 0.7rem; }
         
-        .spinner { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 0.8s linear infinite; margin: 20px auto; }
+        .spinner { border: 2px solid rgba(255,255,255,0.1); border-top: 2px solid #3b82f6; border-radius: 50%; width: 25px; height: 25px; animation: spin 0.8s linear infinite; margin: 20px auto; }
         
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); align-items: center; justify-content: center; z-index: 10000; }
-        .modal-content { background: #1e293b; max-width: 90%; width: 320px; border-radius: 24px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .modal-content h3 { color: white; margin-bottom: 16px; }
+        .modal-content { background: #1e293b; max-width: 90%; width: 300px; border-radius: 24px; padding: 16px; border: 1px solid rgba(255,255,255,0.1); }
+        .modal-content h3 { color: white; font-size: 1rem; margin-bottom: 12px; }
         
-        .equipo-item { background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #cbd5e1; }
-        hr { margin: 16px 0; border: none; border-top: 1px solid rgba(255,255,255,0.1); }
+        .equipo-item { background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 12px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #cbd5e1; }
+        hr { margin: 12px 0; border: none; border-top: 1px solid rgba(255,255,255,0.1); }
         .text-center { text-align: center; }
-        .btn-back { background: rgba(100,116,139,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 30px; margin-bottom: 16px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; }
-        .btn-back:hover { background: rgba(100,116,139,0.5); }
+        .btn-back { background: rgba(100,116,139,0.3); color: white; border: none; padding: 8px 16px; border-radius: 30px; margin-bottom: 12px; font-size: 0.8rem; cursor: pointer; }
+        .partido-item { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .partido-info { flex: 1; }
+        .partido-fecha { font-weight: bold; color: #fbbf24; font-size: 0.75rem; }
+        .partido-rival { color: white; font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -278,10 +214,9 @@
         </div>
     </div>
 
-    <!-- DASHBOARD PRINCIPAL -->
     <div id="dashboard" class="welcome-card">
         <h2>🐾 ¡Bienvenida, Gata Fiera! 🐾</h2>
-        <p>Selecciona una opción para administrar el club</p>
+        <p>Selecciona una opción</p>
         <div class="dashboard-grid" id="dashboardGrid"></div>
     </div>
 
@@ -297,33 +232,17 @@
         <button class="tab" data-tab="proximos">📅 Próximos</button>
     </div>
 
-    <!-- PANELES -->
     <div id="panel-pendientes" class="panel"><h2>📋 Solicitudes</h2><div class="table-wrapper"><table id="tablaPendientes"><thead><tr><th>Nombre Camiseta</th><th># Dorsal</th><th>Acciones</th></tr></thead><tbody><tr><td colspan="3"><div class="spinner"></div></tbody></table></div></div>
-    <div id="panel-jugadores" class="panel"><h2>👥 Plantilla</h2><div class="table-wrapper"><table id="tablaJugadores"><thead><tr><th>Nombre</th><th>Cédula</th><th>Estado</th><th>Deuda</th><th>Goles</th><th>TA</th><th>TR</th></tr></thead><tbody><tr><td colspan="7"><div class="spinner"></div></tbody></table></div></div>
-    <div id="panel-vocalia" class="panel"><h2>💰 Cobros</h2><div><label>Cédula</label><input type="text" id="buscarCedula" placeholder="Ej: 1716001431"><button class="btn-primary" onclick="buscarDeudor()">Buscar</button></div><div id="infoDeudor"></div><div id="formPago" style="display:none;"><label>Monto</label><input type="number" id="montoPago" step="0.01"><button class="btn-success" onclick="registrarPago()">Registrar pago</button></div><hr><h3>Deudores</h3><div class="table-wrapper"><table id="tablaDeudores"><thead><tr><th>Jugador</th><th>Cédula</th><th>Deuda</th><th>Acción</th></tr></thead><tbody><tr><td colspan="4"><div class="spinner"></div></tbody></table></div></div>
+    <div id="panel-jugadores" class="panel"><h2>👥 Plantilla (Solo Aprobados)</h2><div class="table-wrapper"><table id="tablaJugadores"><thead><tr><th>Nombre</th><th>Cédula</th><th>Deuda</th><th>Goles</th><th>TA</th><th>TR</th></tr></thead><tbody><tr><td colspan="6"><div class="spinner"></div></tbody></table></div></div>
+    <div id="panel-vocalia" class="panel"><h2>💰 Cobros</h2><div><label>Cédula</label><input type="text" id="buscarCedula" placeholder="Buscar por cédula"><button class="btn-primary" onclick="buscarDeudor()">Buscar</button></div><div id="infoDeudor"></div><div id="formPago" style="display:none;"><label>Monto a pagar</label><input type="number" id="montoPago" step="0.01"><button class="btn-success" onclick="registrarPago()">Registrar pago</button></div><hr><h3>Deudores (Inscripción/Uniforme/Medias)</h3><div class="table-wrapper"><table id="tablaDeudores"><thead><tr><th>Jugador</th><th>Cédula</th><th>Deuda</th><th>Acción</th></tr></thead><tbody><tr><td colspan="4"><div class="spinner"></div></tbody></table></div></div>
     <div id="panel-equipos" class="panel"><h2>🏆 Rivales</h2><div class="card"><h3>➕ Agregar rival</h3><input type="text" id="nuevoEquipo" placeholder="Nombre del equipo"><button class="btn-primary" onclick="agregarEquipo()">Agregar</button></div><div class="card"><h3>📋 Lista de rivales</h3><div id="listaEquipos"></div></div></div>
-    <div id="panel-notificaciones" class="panel"><h2>📢 Anuncios</h2><input type="text" id="notiTitulo" placeholder="Título"><textarea id="notiMensaje" rows="3" placeholder="Mensaje"></textarea><select id="notiTipo"><option value="info">📘 Informativo</option><option value="warning">⚠️ Advertencia</option><option value="success">✅ Éxito</option></select><button class="btn-primary" onclick="publicarNotificacion()">Publicar</button><div id="listaNotificaciones" style="margin-top: 16px;"></div></div>
-    <div id="panel-partidos" class="panel"><h2>⭐ Calificar</h2><div class="grid-2"><div><label>Fecha</label><select id="fechaPartido"></select></div><div><label>Hora</label><select id="horaPartido"><option value="08:00">8:00 AM</option><option value="10:00">10:00 AM</option><option value="12:00">12:00 PM</option><option value="14:00">2:00 PM</option><option value="16:00">4:00 PM</option></select></div></div><div class="grid-2"><div><label>Rival</label><select id="rivalPartido"></select></div><div><label>Cancha</label><select id="canchaPartido"><option value="Cancha 1">Cancha 1</option><option value="Cancha 2">Cancha 2</option></select></div></div><div><label>💰 Valor Vocalía</label><input type="number" id="valorVocaliaPartido" value="5" step="0.5"></div><button class="btn-primary" onclick="cargarJugadoresParaCalificar()">📌 Cargar jugadores</button><div id="listaCalificaciones" style="margin-top: 16px;"></div><button class="btn-primary" onclick="guardarCalificaciones()">💾 Guardar</button></div>
-    <div id="panel-proximos" class="panel"><h2>📅 Programar</h2><div class="grid-2"><div><label>Fecha</label><select id="proxFecha"></select></div><div><label>Hora</label><select id="proxHora"><option value="08:00">8:00 AM</option><option value="10:00">10:00 AM</option><option value="12:00">12:00 PM</option><option value="14:00">2:00 PM</option><option value="16:00">4:00 PM</option></select></div></div><div class="grid-2"><div><label>Rival</label><select id="proxRival"></select></div><div><label>Cancha</label><select id="proxCancha"><option value="Cancha 1">Cancha 1</option><option value="Cancha 2">Cancha 2</option></select></div></div><div><label>💰 Valor Vocalía</label><input type="number" id="proxValorVocalia" value="5" step="0.5"></div><div><label>Observaciones</label><textarea id="proxObs" rows="2"></textarea></div><button class="btn-primary" onclick="guardarProximoPartido()">Guardar</button><div id="listaProximos" style="margin-top: 16px;"></div></div>
+    <div id="panel-notificaciones" class="panel"><h2>📢 Anuncios</h2><input type="text" id="notiTitulo" placeholder="Título"><textarea id="notiMensaje" rows="2" placeholder="Mensaje"></textarea><select id="notiTipo"><option value="info">📘 Informativo</option><option value="warning">⚠️ Advertencia</option><option value="success">✅ Éxito</option></select><button class="btn-primary" onclick="publicarNotificacion()">Publicar</button><div id="listaNotificaciones" style="margin-top: 12px;"></div></div>
+    <div id="panel-partidos" class="panel"><h2>⭐ Calificar Partido</h2><div class="grid-2"><div><label>Fecha</label><select id="fechaPartido" onchange="cargarDatosPartido()"></select></div><div><label>Hora</label><select id="horaPartido"><option value="08:00">8:00 AM</option><option value="10:00">10:00 AM</option><option value="12:00">12:00 PM</option><option value="14:00">2:00 PM</option><option value="16:00">4:00 PM</option></select></div></div><div class="grid-2"><div><label>Rival</label><select id="rivalPartido"></select></div><div><label>Cancha</label><select id="canchaPartido"><option value="Cancha 1">Cancha 1</option><option value="Cancha 2">Cancha 2</option></select></div></div><div><label>💰 Valor Vocalía</label><input type="number" id="valorVocaliaPartido" value="5" step="0.5"></div><button class="btn-primary" id="btnCargarJugadores" onclick="cargarJugadoresParaCalificar()">📌 Cargar jugadores</button><div id="listaCalificaciones" style="margin-top: 12px;"></div><button class="btn-primary" id="btnGuardarCalificaciones" onclick="guardarCalificaciones()">💾 Guardar partido</button></div>
+    <div id="panel-proximos" class="panel"><h2>📅 Próximos Partidos</h2><div class="grid-2"><div><label>Fecha</label><select id="proxFecha"></select></div><div><label>Hora</label><select id="proxHora"><option value="08:00">8:00 AM</option><option value="10:00">10:00 AM</option><option value="12:00">12:00 PM</option><option value="14:00">2:00 PM</option><option value="16:00">4:00 PM</option></select></div></div><div class="grid-2"><div><label>Rival</label><select id="proxRival"></select></div><div><label>Cancha</label><select id="proxCancha"><option value="Cancha 1">Cancha 1</option><option value="Cancha 2">Cancha 2</option></select></div></div><div><label>💰 Valor Vocalía</label><input type="number" id="proxValorVocalia" value="5" step="0.5"></div><div><label>Observaciones</label><textarea id="proxObs" rows="2"></textarea></div><button class="btn-primary" id="btnGuardarProximo" onclick="guardarProximoPartido()">Guardar partido</button><div id="listaProximos" style="margin-top: 16px;"></div></div>
 </div>
 
-<!-- Loader -->
-<div id="loaderOverlay" class="loader-overlay" style="display: flex;">
-    <div class="loader-content">
-        <div class="loader-spinner"></div>
-        <div class="loader-text">Cargando panel <span class="loader-dots">...</span></div>
-    </div>
-</div>
-
-<!-- Modal rechazo -->
-<div id="modalRechazo" class="modal">
-    <div class="modal-content">
-        <h3>Motivo del rechazo</h3>
-        <textarea id="motivoRechazo" rows="3" placeholder="Motivo..."></textarea>
-        <button class="btn-primary" onclick="confirmarRechazo()">Confirmar</button>
-        <button onclick="cerrarModalRechazo()" style="background:transparent;border:1px solid #ccc;padding:8px;border-radius:30px;margin-top:8px;color:white;">Cancelar</button>
-    </div>
-</div>
+<div id="loaderOverlay" class="loader-overlay"><div><div class="loader-spinner"></div><div class="loader-text">Cargando panel...</div></div></div>
+<div id="modalRechazo" class="modal"><div class="modal-content"><h3>Motivo del rechazo</h3><textarea id="motivoRechazo" rows="2" placeholder="Motivo..."></textarea><button class="btn-primary" onclick="confirmarRechazo()">Confirmar</button><button onclick="cerrarModalRechazo()" style="background:transparent;border:1px solid #ccc;padding:8px;border-radius:30px;margin-top:8px;color:white;">Cancelar</button></div></div>
 
 <script src="config.js"></script>
 <script>
@@ -332,46 +251,30 @@
     let currentCedulaRechazo = null;
     let jugadoresActivos = [];
     let solicitudesPendientes = 0;
+    let guardando = false;
 
-    // Ocultar loader cuando todo cargue
     window.addEventListener('load', function() {
         setTimeout(function() {
             const loader = document.getElementById('loaderOverlay');
-            if (loader) {
-                loader.style.opacity = '0';
-                setTimeout(function() {
-                    loader.style.display = 'none';
-                }, 500);
-            }
+            if (loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 500); }
         }, 800);
     });
 
     const dashboardCards = [
-        { tab: "pendientes", emoji: "📋", title: "Solicitudes", description: "Revisar y aprobar nuevos jugadores", badge: true },
-        { tab: "jugadores", emoji: "👥", title: "Plantilla", description: "Ver todos los jugadores", badge: false },
-        { tab: "vocalia", emoji: "💰", title: "Cobros", description: "Registrar pagos de vocalía", badge: false },
-        { tab: "equipos", emoji: "🏆", title: "Rivales", description: "Gestionar equipos de la liga", badge: false },
-        { tab: "notificaciones", emoji: "📢", title: "Anuncios", description: "Publicar avisos importantes", badge: false },
-        { tab: "partidos", emoji: "⭐", title: "Calificar", description: "Calificar rendimiento", badge: false },
-        { tab: "proximos", emoji: "📅", title: "Próximos", description: "Programar fechas", badge: false }
+        { tab: "pendientes", emoji: "📋", title: "Solicitudes", description: "Aprobar nuevos jugadores", badge: true },
+        { tab: "jugadores", emoji: "👥", title: "Plantilla", description: "Jugadores activos", badge: false },
+        { tab: "vocalia", emoji: "💰", title: "Cobros", description: "Deudas inscripción/uniforme", badge: false },
+        { tab: "equipos", emoji: "🏆", title: "Rivales", description: "Equipos competidores", badge: false },
+        { tab: "notificaciones", emoji: "📢", title: "Anuncios", description: "Publicar avisos", badge: false },
+        { tab: "partidos", emoji: "⭐", title: "Calificar", description: "Rendimiento jugadores", badge: false },
+        { tab: "proximos", emoji: "📅", title: "Próximos", description: "Programar partidos", badge: false }
     ];
 
     function renderDashboard() {
         const grid = document.getElementById('dashboardGrid');
         if (!grid) return;
-        grid.innerHTML = dashboardCards.map(card => {
-            const badgeHtml = (card.badge && solicitudesPendientes > 0) ? `<span class="badge-pending">${solicitudesPendientes}</span>` : '';
-            return `<div class="dashboard-card" data-tab="${card.tab}">
-                ${badgeHtml}
-                <span class="emoji">${card.emoji}</span>
-                <span class="title">${card.title}</span>
-                <span class="description">${card.description}</span>
-            </div>`;
-        }).join('');
-        
-        document.querySelectorAll('.dashboard-card').forEach(card => {
-            card.addEventListener('click', () => mostrarPanel(card.dataset.tab));
-        });
+        grid.innerHTML = dashboardCards.map(card => `<div class="dashboard-card" data-tab="${card.tab}">${card.badge && solicitudesPendientes > 0 ? `<span class="badge-pending">${solicitudesPendientes}</span>` : ''}<span class="emoji">${card.emoji}</span><span class="title">${card.title}</span><span class="description">${card.description}</span></div>`).join('');
+        document.querySelectorAll('.dashboard-card').forEach(card => card.addEventListener('click', () => mostrarPanel(card.dataset.tab)));
     }
 
     document.getElementById('btnActualizar').onclick = () => location.reload();
@@ -385,16 +288,13 @@
         dashboardDiv.style.display = 'none';
         tabsContainer.style.display = 'flex';
         btnVolver.style.display = 'block';
-        
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         const tabBtn = document.querySelector(`.tab[data-tab="${tabId}"]`);
         if (tabBtn) tabBtn.classList.add('active');
-        const panel = document.getElementById(`panel-${tabId}`);
-        if (panel) panel.classList.add('active');
-        
+        document.getElementById(`panel-${tabId}`).classList.add('active');
         if (tabId === 'pendientes') cargarPendientes();
-        if (tabId === 'jugadores') cargarJugadores();
+        if (tabId === 'jugadores') cargarJugadoresAprobados();
         if (tabId === 'vocalia') { cargarDeudores(); document.getElementById('formPago').style.display = 'none'; document.getElementById('infoDeudor').innerHTML = ''; }
         if (tabId === 'equipos') cargarEquipos();
         if (tabId === 'notificaciones') cargarNotificaciones();
@@ -418,7 +318,7 @@
             btn.classList.add('active');
             document.getElementById(`panel-${tabId}`).classList.add('active');
             if (tabId === 'pendientes') cargarPendientes();
-            if (tabId === 'jugadores') cargarJugadores();
+            if (tabId === 'jugadores') cargarJugadoresAprobados();
             if (tabId === 'vocalia') { cargarDeudores(); document.getElementById('formPago').style.display = 'none'; document.getElementById('infoDeudor').innerHTML = ''; }
             if (tabId === 'equipos') cargarEquipos();
             if (tabId === 'notificaciones') cargarNotificaciones();
@@ -426,46 +326,33 @@
         });
     });
 
+    // MENSAJE WHATSAPP COMPLETO
+    async function enviarWhatsApp(telefono, nombreCamiseta, dorsal) {
+        let tel = telefono ? telefono.toString().replace(/\s/g, '') : '';
+        let telFormateado = tel;
+        if (!tel.startsWith('+') && !tel.startsWith('593')) telFormateado = '+593' + tel;
+        else if (tel.startsWith('593') && !tel.startsWith('+')) telFormateado = '+' + tel;
+        if (!telFormateado || telFormateado.length < 12) { alert('⚠️ Teléfono no válido: ' + telefono); return false; }
+        const mensaje = `⚽💙 *¡FELICIDADES ${nombreCamiseta} !* 💙⚽%0a%0aEs un gusto contar contigo como parte de nuestro club.%0aTe deseamos muchos éxitos en esta nueva etapa deportiva.%0a%0a🎽 *Tu dorsal oficial es: #${dorsal}*%0a%0a📲 *Para ingresar:*%0a${LINK_APP}%0a%0a✅ Ingresa con tu *número de cédula*%0a%0aAtentamente,%0a🐾 *Alejandra Buendía* 🐾%0a*Presidenta — Nápoles Fútbol Club*`;
+        window.open(`https://wa.me/${telFormateado}?text=${mensaje}`, '_blank');
+        return true;
+    }
+
     async function cargarPendientesCount() {
         const data = await fetchAPI('getPendientes');
         solicitudesPendientes = (data.jugadores && data.jugadores.length) ? data.jugadores.length : 0;
         renderDashboard();
     }
 
-    function formatearTelefono(telefono) {
-        if (!telefono) return null;
-        let tel = telefono.toString().replace(/\s/g, '').replace(/^0+/, '');
-        if (tel.startsWith('593')) return '+' + tel;
-        if (tel.startsWith('+593')) return tel;
-        return '+593' + tel;
-    }
-
-    async function enviarWhatsApp(telefono, nombreCamiseta, dorsal) {
-        const telFormateado = formatearTelefono(telefono);
-        if (!telFormateado || telFormateado.length < 12) {
-            console.log('Teléfono no válido:', telefono);
-            alert('⚠️ No se pudo enviar WhatsApp. Teléfono: ' + telefono + '. Verifica que tenga 10 dígitos.');
-            return false;
-        }
-        const mensaje = `🏆✨ *¡FELICIDADES, ${nombreCamiseta} !* ✨🏆%0a%0a🔵⚪ Tu perfil ha sido *HABILITADO OFICIALMENTE*.%0a%0a🎽 *Tu dorsal oficial es:* *#${dorsal}*%0a%0a🚀 Ya puedes ingresar y visualizar toda tu información deportiva dentro de la plataforma oficial del club.%0a%0a🌐 *Ingresa aquí:*%0a${LINK_APP}%0a%0a📲 También puedes descargar la APP oficial del club para acceder más rápido desde tu celular.%0a%0a🪪 *¿Cómo ingresar?*%0a✅ Digita tu número de cédula%0a✅ Inicia sesión%0a✅ ¡Y listo! Ya podrás ver tu perfil completo ⚽🔥%0a%0a😎 *Tranquilo crack… la APP no tiene virus jajaja* 🚫🦠%0a%0a💙 Gracias por formar parte de esta gran familia deportiva.%0a🔥 *NÁPOLES F.C. — MÁS QUE UN CLUB, UNA FAMILIA* 🔥%0a%0a━━━━━━━━━━━━━━━%0a⚽ *ATENTAMENTE*%0a🐾 *GATA FIERA* 🐾%0a🏆 *PRESIDENTA — NÁPOLES FÚTBOL CLUB*%0a━━━━━━━━━━━━━━━`;
-        const url = `https://wa.me/${telFormateado}?text=${mensaje}`;
-        window.open(url, '_blank');
-        return true;
-    }
-
     function generarFechas() {
         const fechas = [];
         const hoy = new Date();
         for (let i = 0; i < 60; i++) {
-            const fecha = new Date();
-            fecha.setDate(hoy.getDate() + i);
+            const fecha = new Date(); fecha.setDate(hoy.getDate() + i);
             const dia = fecha.getDay();
             if (dia === 0 || dia === 6) {
-                const year = fecha.getFullYear();
-                const month = String(fecha.getMonth() + 1).padStart(2, '0');
-                const day = String(fecha.getDate()).padStart(2, '0');
-                const nombreDia = dia === 0 ? 'Domingo' : 'Sábado';
-                fechas.push({ value: `${year}-${month}-${day}`, texto: `${nombreDia} ${day}/${month}` });
+                const year = fecha.getFullYear(), month = String(fecha.getMonth() + 1).padStart(2,'0'), day = String(fecha.getDate()).padStart(2,'0');
+                fechas.push({ value: `${year}-${month}-${day}`, texto: `${dia===0?'Domingo':'Sábado'} ${day}/${month}` });
             }
         }
         return fechas;
@@ -473,75 +360,43 @@
 
     function llenarSelectsFechas() {
         const fechas = generarFechas();
-        const selects = ['#fechaPartido', '#proxFecha'];
-        selects.forEach(sel => {
+        ['#fechaPartido', '#proxFecha'].forEach(sel => {
             const select = document.querySelector(sel);
-            if (select) {
-                select.innerHTML = '<option value="">Seleccionar...</option>';
-                fechas.forEach(f => {
-                    const option = document.createElement('option');
-                    option.value = f.value;
-                    option.textContent = f.texto;
-                    select.appendChild(option);
-                });
-            }
+            if (select) { select.innerHTML = '<option value="">Seleccionar...</option>';
+            fechas.forEach(f => { const opt = document.createElement('option'); opt.value = f.value; opt.textContent = f.texto; select.appendChild(opt); }); }
         });
     }
 
     let equipos = [];
     async function cargarEquipos() {
         const res = await fetchAPI('getEquipos');
-        if (res.ok && res.equipos) equipos = res.equipos;
-        else equipos = ['Napoles F.C.'];
+        equipos = (res.ok && res.equipos) ? res.equipos : ['Napoles F.C.'];
         actualizarListaEquipos();
         actualizarSelectsRivales();
     }
-
     function actualizarListaEquipos() {
         const container = document.getElementById('listaEquipos');
-        if (container) {
-            container.innerHTML = equipos.map(e => `<div class="equipo-item">${e} <button class="btn-danger" style="padding:2px 10px" onclick="eliminarEquipo('${e.replace(/'/g, "\\'")}')">X</button></div>`).join('');
-        }
+        if (container) container.innerHTML = equipos.map(e => `<div class="equipo-item">${e}<button class="btn-sm" onclick="eliminarEquipo('${e.replace(/'/g,"\\'")}')">X</button></div>`).join('');
     }
-
     function actualizarSelectsRivales() {
-        const selects = ['#rivalPartido', '#proxRival'];
-        selects.forEach(sel => {
+        ['#rivalPartido', '#proxRival'].forEach(sel => {
             const select = document.querySelector(sel);
-            if (select) {
-                select.innerHTML = '<option value="">Seleccionar...</option>';
-                equipos.forEach(e => {
-                    const option = document.createElement('option');
-                    option.value = e;
-                    option.textContent = e;
-                    select.appendChild(option);
-                });
-            }
+            if (select) { select.innerHTML = '<option value="">Seleccionar...</option>';
+            equipos.forEach(e => { const opt = document.createElement('option'); opt.value = e; opt.textContent = e; select.appendChild(opt); }); }
         });
     }
-
     window.agregarEquipo = async () => {
         const nuevo = document.getElementById('nuevoEquipo').value.trim();
         if (nuevo && !equipos.includes(nuevo)) {
             const res = await fetchAPI('agregarEquipo', { nombre: nuevo });
-            if (res.ok) {
-                equipos.push(nuevo);
-                actualizarListaEquipos();
-                actualizarSelectsRivales();
-                document.getElementById('nuevoEquipo').value = '';
-                alert('✅ Rival agregado');
-            } else alert('❌ Error');
-        } else alert('⚠️ Equipo ya existe o nombre vacío');
+            if (res.ok) { equipos.push(nuevo); actualizarListaEquipos(); actualizarSelectsRivales(); document.getElementById('nuevoEquipo').value = ''; alert('✅ Rival agregado'); }
+            else alert('❌ Error');
+        } else alert('Equipo ya existe');
     };
-
     window.eliminarEquipo = async (equipo) => {
         const res = await fetchAPI('eliminarEquipo', { nombre: equipo });
-        if (res.ok) {
-            equipos = equipos.filter(e => e !== equipo);
-            actualizarListaEquipos();
-            actualizarSelectsRivales();
-            alert('✅ Rival eliminado');
-        } else alert('❌ Error');
+        if (res.ok) { equipos = equipos.filter(e => e !== equipo); actualizarListaEquipos(); actualizarSelectsRivales(); alert('✅ Rival eliminado'); }
+        else alert('Error');
     };
 
     async function cargarPendientes() {
@@ -551,45 +406,16 @@
         if (data.jugadores && data.jugadores.length) {
             solicitudesPendientes = data.jugadores.length;
             if (countSpan) countSpan.textContent = solicitudesPendientes;
-            tbody.innerHTML = data.jugadores.map(j => `
-                <tr>
-                    <td><strong>${escapeHtml(j.nombreCamiseta || j.nombre || 'Sin nombre')}</strong>侧
-                    <td><span style="font-size:1rem;font-weight:bold;color:#fbbf24;">#${j.dorsal || '?'}</span>侧
-                    <td>
-                        <button class="btn-success" onclick="aprobar('${j.cedula}', '${escapeHtml(j.nombreCamiseta || j.nombre)}', '${j.dorsal || '?'}', '${j.telefono || ''}')">✓</button>
-                        <button class="btn-danger" onclick="mostrarModalRechazo('${j.cedula}')">✗</button>
-                    侧
-                </tr>
-            `).join('');
-        } else {
-            solicitudesPendientes = 0;
-            if (countSpan) countSpan.textContent = '0';
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center">✨ Sin solicitudes ✨</td></tr>';
-        }
+            tbody.innerHTML = data.jugadores.map(j => `<tr><td><strong>${j.nombreCamiseta || j.nombre}</strong></td><td><span style="color:#fbbf24;">#${j.dorsal || '?'}</span></td><td><button class="btn-success" onclick="aprobar('${j.cedula}','${(j.nombreCamiseta||j.nombre).replace(/'/g,"\\'")}','${j.dorsal||'?'}','${j.telefono||''}')">✓ Aprobar</button><button class="btn-danger" onclick="mostrarModalRechazo('${j.cedula}')">✗ Rechazar</button></td></tr>`).join('');
+        } else { solicitudesPendientes = 0; if(countSpan) countSpan.textContent='0'; tbody.innerHTML='<tr><td colspan="3" class="text-center">✨ Sin solicitudes</td></tr>'; }
         renderDashboard();
     }
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
     window.aprobar = async (ced, nombreCamiseta, dorsal, telefono) => {
-        if (confirm(`🐾 ¿Aprobar a ${nombreCamiseta}? 🐾`)) {
+        if (confirm(`¿Aprobar a ${nombreCamiseta}?`)) {
             const res = await fetchAPI('aprobarJugador', { cedula: ced });
-            if (res.ok) {
-                alert('✅ Jugador aprobado');
-                await enviarWhatsApp(telefono, nombreCamiseta, dorsal);
-                cargarPendientes();
-                cargarJugadores();
-            } else {
-                alert('❌ Error al aprobar');
-            }
+            if (res.ok) { alert('✅ Jugador aprobado'); await enviarWhatsApp(telefono, nombreCamiseta, dorsal); cargarPendientes(); cargarJugadoresAprobados(); }
+            else alert('Error');
         }
     };
 
@@ -599,167 +425,129 @@
         const motivo = document.getElementById('motivoRechazo').value;
         if (!motivo) return alert('Ingrese un motivo');
         await fetchAPI('rechazarJugador', { cedula: currentCedulaRechazo, motivo });
-        alert('❌ Jugador rechazado');
-        cargarPendientes();
-        cerrarModalRechazo();
+        alert('❌ Rechazado'); cargarPendientes(); cerrarModalRechazo();
     };
 
-    async function cargarJugadores() {
-        const data = await fetchAPI('getAllJugadores');
+    async function cargarJugadoresAprobados() {
+        const data = await fetchAPI('getJugadoresAprobados');
         const tbody = document.querySelector('#tablaJugadores tbody');
         if (data.jugadores && data.jugadores.length) {
-            tbody.innerHTML = data.jugadores.map(j => `
-                <tr>
-                    <td>${j.nombre}侧
-                    <td>${j.cedula}侧
-                    <td style="color:${j.estado === 'APROBADO' ? '#22c55e' : '#eab308'}">${j.estado}侧
-                    <td>$${j.deuda}侧
-                    <td>${j.goles}侧
-                    <td>${j.amarillas}侧
-                    <td>${j.rojas}侧
-                </tr>
-            `).join('');
-        } else {
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center">No hay jugadores</td></tr>';
-        }
+            const deudas = await fetchAPI('getDeudasPendientes'); // De vocalías
+            tbody.innerHTML = data.jugadores.map(j => `<tr>
+                <td>${j.nombre}侧
+                <td>${j.cedula}侧
+                <td>$${j.deuda || 0}侧
+                <td>${j.goles || 0}侧
+                <td>${j.amarillas || 0}侧
+                <td>${j.rojas || 0}侧
+                </tr>`).join('');
+        } else tbody.innerHTML = '<tr><td colspan="6" class="text-center">No hay jugadores aprobados</td></tr>';
     }
 
     async function cargarDeudores() {
-        const data = await fetchAPI('getDeudores');
+        const data = await fetchAPI('getDeudoresInscripcion');
         const tbody = document.querySelector('#tablaDeudores tbody');
         if (data.jugadores && data.jugadores.length) {
-            tbody.innerHTML = data.jugadores.map(j => `
-                <tr>
-                    <td>${j.nombre}侧
-                    <td>${j.cedula}侧
-                    <td>$${j.deuda}侧
-                    <td><button class="btn-warning" onclick="prepararCobro('${j.cedula}')">💰</button>侧
-                </tr>
-            `).join('');
-        } else {
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center">✨ Sin deudores ✨</td></tr>';
-        }
+            tbody.innerHTML = data.jugadores.map(j => `<tr>
+                <td>${j.nombre}侧
+                <td>${j.cedula}侧
+                <td>$${j.totalDeuda} (${j.inscripEstado}/${j.unifEstado}/${j.mediasEstado})侧
+                <td><button class="btn-warning" onclick="prepararCobro('${j.cedula}')">💰 Cobrar</button>侧
+                </tr>`).join('');
+        } else tbody.innerHTML = '<tr><td colspan="4" class="text-center">✨ Sin deudores ✨</td></tr>';
     }
 
-    window.prepararCobro = (ced) => { document.getElementById('buscarCedula').value = ced; buscarDeudor(); };
     window.buscarDeudor = async () => {
         const ced = document.getElementById('buscarCedula').value;
         if (!ced) return;
-        const data = await fetchAPI('obtenerJugador', { cedula: ced });
+        const data = await fetchAPI('obtenerDeudasJugador', { cedula: ced });
         if (data.ok) {
-            document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🐾 ${data.jugador.nombre1} ${data.jugador.apellidos}<br>💰 Deuda: <strong>$${data.jugador.deuda}</strong></div>`;
+            document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🐾 ${data.jugador.nombre}<br>💰 Deuda: <strong>$${data.deudaTotal}</strong><br>📝 Inscripción: ${data.inscripEstado} | Uniforme: ${data.unifEstado} | Medias: ${data.mediasEstado}</div>`;
             document.getElementById('formPago').style.display = 'block';
-            document.getElementById('montoPago').value = data.jugador.deuda;
-        } else {
-            document.getElementById('infoDeudor').innerHTML = '<div class="info-card">❌ No encontrado</div>';
-        }
+            document.getElementById('montoPago').value = data.deudaTotal;
+        } else document.getElementById('infoDeudor').innerHTML = '<div class="info-card">❌ No encontrado</div>';
     };
     window.registrarPago = async () => {
+        if (guardando) return;
+        guardando = true;
         const ced = document.getElementById('buscarCedula').value;
         const monto = parseFloat(document.getElementById('montoPago').value);
-        if (isNaN(monto) || monto <= 0) return alert('Monto inválido');
-        const res = await fetchAPI('registrarPago', { cedula: ced, monto });
-        if (res.ok) {
-            alert('✅ Pago registrado');
-            cargarDeudores();
-            cargarJugadores();
-            document.getElementById('formPago').style.display = 'none';
-            document.getElementById('infoDeudor').innerHTML = '';
-            document.getElementById('buscarCedula').value = '';
-        } else {
-            alert('❌ Error al registrar pago');
-        }
+        if (isNaN(monto) || monto <= 0) { guardando = false; return alert('Monto inválido'); }
+        const res = await fetchAPI('registrarPagoInscripcion', { cedula: ced, monto });
+        if (res.ok) { alert('✅ Pago registrado'); cargarDeudores(); cargarJugadoresAprobados(); document.getElementById('formPago').style.display = 'none'; document.getElementById('infoDeudor').innerHTML = ''; document.getElementById('buscarCedula').value = ''; }
+        else alert('Error');
+        guardando = false;
     };
+    window.prepararCobro = (ced) => { document.getElementById('buscarCedula').value = ced; buscarDeudor(); };
 
     async function cargarNotificaciones() {
         const data = await fetchAPI('getNotificaciones');
         const container = document.getElementById('listaNotificaciones');
-        if (data.notificaciones && data.notificaciones.length) {
-            container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
-        } else {
-            container.innerHTML = '<p class="text-center">📭 Sin anuncios</p>';
-        }
+        if (data.notificaciones && data.notificaciones.length) container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
+        else container.innerHTML = '<p class="text-center">📭 Sin anuncios</p>';
     }
     window.publicarNotificacion = async () => {
-        const tit = document.getElementById('notiTitulo').value;
-        const msg = document.getElementById('notiMensaje').value;
-        const tipo = document.getElementById('notiTipo').value;
+        const tit = document.getElementById('notiTitulo').value, msg = document.getElementById('notiMensaje').value, tipo = document.getElementById('notiTipo').value;
         if (!tit || !msg) return alert('Complete campos');
         const res = await fetchAPI('publicarNotificacion', { titulo: tit, mensaje: msg, tipo });
-        if (res.ok) {
-            alert('✅ Publicado');
-            document.getElementById('notiTitulo').value = '';
-            document.getElementById('notiMensaje').value = '';
-            cargarNotificaciones();
-        } else {
-            alert('❌ Error al publicar');
-        }
+        if (res.ok) { alert('✅ Publicado'); document.getElementById('notiTitulo').value = ''; document.getElementById('notiMensaje').value = ''; cargarNotificaciones(); }
+        else alert('Error');
     };
 
     async function cargarProximos() {
         const data = await fetchAPI('getProximosPartidos');
         const container = document.getElementById('listaProximos');
         if (data.partidos && data.partidos.length) {
-            container.innerHTML = data.partidos.map(p => `<div class="card"><strong>📅 ${new Date(p.fecha).toLocaleString()}</strong><br>⚽ vs ${p.rival}<br>🏟️ ${p.cancha || 'Cancha 1'}<br>💰 $${p.valorVocalia || 5}</div>`).join('');
-        } else {
-            container.innerHTML = '<p class="text-center">⚽ No hay partidos</p>';
-        }
+            container.innerHTML = data.partidos.map((p, idx) => `<div class="partido-item"><div class="partido-info"><div class="partido-fecha">📅 ${new Date(p.fecha).toLocaleString()}</div><div class="partido-rival">⚽ vs ${p.rival} | 🏟️ ${p.cancha || 'Cancha 1'} | 💰 $${p.valorVocalia || 5}</div>${p.observaciones ? `<div class="partido-obs">📝 ${p.observaciones}</div>` : ''}</div><button class="btn-danger" style="padding:3px 10px" onclick="eliminarPartido(${idx})">🗑️</button></div>`).join('');
+        } else container.innerHTML = '<p class="text-center">⚽ No hay partidos</p>';
     }
-    window.guardarProximoPartido = async () => {
-        const fecha = document.getElementById('proxFecha').value;
-        const hora = document.getElementById('proxHora').value;
-        const fechaCompleta = (fecha && hora) ? `${fecha}T${hora}:00` : '';
-        const rival = document.getElementById('proxRival').value;
-        const cancha = document.getElementById('proxCancha').value;
-        const valorVocalia = document.getElementById('proxValorVocalia').value;
-        const obs = document.getElementById('proxObs').value;
-        if (!fechaCompleta || !rival) return alert('Complete fecha y rival');
-        const res = await fetchAPI('guardarProximoPartido', { fecha: fechaCompleta, rival, cancha, observaciones: obs, valorVocalia });
-        if (res.ok) {
-            alert('✅ Guardado');
-            cargarProximos();
-            document.getElementById('proxFecha').value = '';
-            document.getElementById('proxRival').value = '';
-            document.getElementById('proxObs').value = '';
-        } else {
-            alert('❌ Error al guardar');
+    window.eliminarPartido = async (idx) => {
+        if (confirm('¿Eliminar este partido?')) {
+            const res = await fetchAPI('eliminarProximoPartido', { index: idx });
+            if (res.ok) { alert('✅ Eliminado'); cargarProximos(); }
+            else alert('Error');
         }
     };
+    window.guardarProximoPartido = async () => {
+        if (guardando) return;
+        guardando = true;
+        const fecha = document.getElementById('proxFecha').value, hora = document.getElementById('proxHora').value;
+        const fechaCompleta = (fecha && hora) ? `${fecha}T${hora}:00` : '';
+        const rival = document.getElementById('proxRival').value, cancha = document.getElementById('proxCancha').value, valorVocalia = document.getElementById('proxValorVocalia').value, obs = document.getElementById('proxObs').value;
+        if (!fechaCompleta || !rival) { guardando = false; return alert('Complete fecha y rival'); }
+        const res = await fetchAPI('guardarProximoPartido', { fecha: fechaCompleta, rival, cancha, observaciones: obs, valorVocalia });
+        if (res.ok) { alert('✅ Guardado'); cargarProximos(); document.getElementById('proxFecha').value = ''; document.getElementById('proxRival').value = ''; document.getElementById('proxObs').value = ''; }
+        else alert('Error');
+        guardando = false;
+    };
 
+    function cargarDatosPartido() { /* Cargar datos del partido seleccionado */ }
     window.cargarJugadoresParaCalificar = async () => {
-        const fecha = document.getElementById('fechaPartido').value;
-        const hora = document.getElementById('horaPartido').value;
-        const rival = document.getElementById('rivalPartido').value;
+        const fecha = document.getElementById('fechaPartido').value, hora = document.getElementById('horaPartido').value, rival = document.getElementById('rivalPartido').value;
         if (!fecha || !hora || !rival) return alert('Complete fecha, hora y rival');
         const data = await fetchAPI('getJugadoresAprobados');
         if (!data.jugadores || !data.jugadores.length) return alert('No hay jugadores');
         jugadoresActivos = data.jugadores;
         let html = `<div class="cal-grid"><div class="cal-header"><span class="col-jugador">Jugador</span><span class="col-num">🟨</span><span class="col-num">🟥</span><span class="col-num">⚽</span><span class="col-select">⭐P</span><span class="col-select">🤝C</span><span class="col-select">🙏R</span><span class="col-select">💪H</span></div>`;
-        jugadoresActivos.forEach(j => {
-            html += `<div class="cal-row"><span class="col-jugador"><strong>${escapeHtml(j.nombre)}</strong></span>
-                <input class="col-num" type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2">
-                <input class="col-num" type="number" id="rojas_${j.cedula}" value="0" min="0" max="1">
-                <input class="col-num" type="number" id="goles_${j.cedula}" value="0" min="0">
-                <select class="col-select" id="punt_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
-                <select class="col-select" id="comp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
-                <select class="col-select" id="resp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
-                <select class="col-select" id="hum_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></div>`;
-        });
+        jugadoresActivos.forEach(j => { html += `<div class="cal-row"><span class="col-jugador"><strong>${j.nombre}</strong></span>
+            <input class="col-num" type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2">
+            <input class="col-num" type="number" id="rojas_${j.cedula}" value="0" min="0" max="1">
+            <input class="col-num" type="number" id="goles_${j.cedula}" value="0" min="0">
+            <select class="col-select" id="punt_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+            <select class="col-select" id="comp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+            <select class="col-select" id="resp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+            <select class="col-select" id="hum_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></div>`; });
         html += `</div>`;
         document.getElementById('listaCalificaciones').innerHTML = html;
     };
     window.guardarCalificaciones = async () => {
-        const fecha = document.getElementById('fechaPartido').value;
-        const hora = document.getElementById('horaPartido').value;
-        const fechaCompleta = `${fecha}T${hora}:00`;
-        const rival = document.getElementById('rivalPartido').value;
-        const cancha = document.getElementById('canchaPartido').value;
-        const valorVocalia = document.getElementById('valorVocaliaPartido').value;
-        if (!fechaCompleta || !rival || jugadoresActivos.length === 0) return alert('Cargue jugadores');
+        if (guardando) return;
+        guardando = true;
+        const fecha = document.getElementById('fechaPartido').value, hora = document.getElementById('horaPartido').value, fechaCompleta = `${fecha}T${hora}:00`, rival = document.getElementById('rivalPartido').value, cancha = document.getElementById('canchaPartido').value, valorVocalia = document.getElementById('valorVocaliaPartido').value;
+        if (!fechaCompleta || !rival || jugadoresActivos.length === 0) { guardando = false; return alert('Cargue jugadores'); }
         const cedulas = [], nombres = [], amarillas = [], rojas = [], goles = [], punt = [], comp = [], resp = [], hum = [];
         for (const j of jugadoresActivos) {
-            cedulas.push(j.cedula);
-            nombres.push(j.nombre);
+            cedulas.push(j.cedula); nombres.push(j.nombre);
             amarillas.push(document.getElementById(`amarillas_${j.cedula}`)?.value || 0);
             rojas.push(document.getElementById(`rojas_${j.cedula}`)?.value || 0);
             goles.push(document.getElementById(`goles_${j.cedula}`)?.value || 0);
@@ -773,25 +561,19 @@
             goles: goles.join(','), puntualidades: punt.join(','), companerismos: comp.join(','),
             respetos: resp.join(','), humildades: hum.join(',') });
         if (res.ok) alert('✅ Partido guardado');
-        else alert('❌ Error al guardar partido');
+        else alert('Error');
+        guardando = false;
     };
 
     async function fetchAPI(action, params = {}) {
-        try {
-            const urlParams = new URLSearchParams({ action, ...params });
-            const res = await fetch(`${API_URL}?${urlParams.toString()}`);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return await res.json();
-        } catch (error) {
-            console.error('Fetch error:', error);
-            return { ok: false, error: error.message };
-        }
+        try { const urlParams = new URLSearchParams({ action, ...params }); const res = await fetch(`${API_URL}?${urlParams.toString()}`); return await res.json(); }
+        catch (error) { return { ok: false, error: error.message }; }
     }
 
     llenarSelectsFechas();
     cargarEquipos();
     cargarPendientes();
-    cargarJugadores();
+    cargarJugadoresAprobados();
     cargarDeudores();
     cargarNotificaciones();
     cargarProximos();
