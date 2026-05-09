@@ -622,17 +622,8 @@
     </div>
 </div>
 
-<!-- 🔥 CONFIGURACIÓN CENTRALIZADA - CAMBIA LA URL SOLO EN config.js -->
-<script src="config.js"></script>
-
 <script>
-    // Verificar que config.js se cargó correctamente
-    if (typeof CONFIG === 'undefined') {
-        console.error('❌ config.js no cargado correctamente');
-        alert('Error de configuración. Recarga la página o contacta al administrador.');
-    } else {
-        console.log('✅ Configuración cargada:', CONFIG.URL_GAS);
-    }
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbxGkRjKO-6HXVBUdzLPzoiPYAd5wR_zSfAHRWHaRKW0bxHxAm7HDL3eJY7s6QPU6S2g/exec";
 
     // ================= RELOJ COUNTDOWN =================
     function actualizarCountdown() {
@@ -736,7 +727,7 @@
         }
         mostrarLoader(true, "Validando cédula...");
         try {
-            const resp = await fetch(`${CONFIG.URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+            const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
             const data = await resp.json();
             if (data.cedulaExiste) {
                 mostrarToast("⚠️ Esta cédula ya está registrada.", "error");
@@ -746,7 +737,7 @@
             }
         } catch (error) {
             console.error(error);
-            mostrarToast("Error de conexión. Revisa tu conexión a internet.", "error");
+            mostrarToast("Error de conexión. Revisa tu URL del backend.", "error");
         }
         mostrarLoader(false);
     });
@@ -905,7 +896,7 @@
         if (n2.value.trim()) selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
         
         try {
-            const resp = await fetch(`${CONFIG.URL_GAS}?action=getDorsales`);
+            const resp = await fetch(`${URL_GAS}?action=getDorsales`);
             const ocupados = await resp.json();
             for (let i = 1; i <= 99; i++) {
                 if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
@@ -973,6 +964,7 @@
 
         mostrarLoader(true, "Registrando jugador...");
 
+        // Construir objeto con datos para enviar como JSON
         const datos = {
             action: 'registrar',
             ced: ced.value,
@@ -993,13 +985,15 @@
         };
 
         try {
-            const response = await fetch(CONFIG.URL_GAS, {
+            const response = await fetch(URL_GAS, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(datos)
             });
             
+            // IMPORTANTE: Con no-cors no podemos leer la respuesta directamente
+            // Asumimos éxito si no hay error de red
             mostrarLoader(false);
             modalExito.style.display = 'flex';
             let segundos = 3;
