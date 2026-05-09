@@ -240,7 +240,6 @@
             gap: 8px;
         }
 
-        /* Grid de métricas de rendimiento */
         .performance-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -248,7 +247,6 @@
             margin-bottom: 20px;
         }
 
-        /* Tarjeta de métrica circular */
         .metric-card {
             background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
             border-radius: 20px;
@@ -281,7 +279,6 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
-        /* Contenedor del círculo de progreso */
         .progress-circle {
             position: relative;
             width: 100px;
@@ -341,7 +338,6 @@
             color: var(--text-muted);
         }
 
-        /* Promedio general */
         .average-container {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
             border-radius: 16px;
@@ -388,6 +384,20 @@
         }
 
         /* --- ESTILOS PARA ESTADO ADMINISTRATIVO --- */
+        .section-box {
+            background: var(--card-bg); 
+            border-radius: 18px; 
+            padding: 15px;
+            margin-bottom: 12px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .section-box:hover {
+            border-color: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
         .admin-stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -459,7 +469,7 @@
         .status-badge-warning { background: rgba(243, 156, 18, 0.2); color: var(--warning); border: 1px solid rgba(243, 156, 18, 0.3); }
         .status-badge-info { background: rgba(52, 152, 219, 0.2); color: var(--info); border: 1px solid rgba(52, 152, 219, 0.3); }
 
-        /* Barra de progreso para deuda */
+        /* Barra de progreso para deuda (máximo $7) */
         .debt-container {
             background: rgba(0,0,0,0.5);
             border-radius: 10px;
@@ -500,7 +510,7 @@
         }
 
         .progress-bar-fill {
-            background: linear-gradient(90deg, var(--danger), var(--warning));
+            background: linear-gradient(90deg, var(--success), var(--warning));
             height: 100%;
             border-radius: 10px;
             transition: width 0.5s ease;
@@ -546,22 +556,6 @@
             font-weight: 700;
             color: var(--primary-gold);
         }
-
-        .info-row {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            padding: 10px 0; 
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            font-size: 0.85rem;
-        }
-        .info-row:last-child { border: none; }
-        .info-label { display: flex; align-items: center; gap: 10px; color: var(--text-muted); }
-        .info-label i { width: 16px; text-align: center; color: var(--primary-gold); }
-        .info-value { font-weight: 700; color: #fff; }
-
-        .status-red { color: var(--danger) !important; }
-        .status-green { color: var(--success) !important; }
 
         .btn-sync {
             width: 100%; 
@@ -617,7 +611,6 @@
         
         .error-message { text-align: center; padding: 50px; color: var(--danger); }
 
-        /* Tooltip */
         .tooltip {
             position: relative;
             display: inline-block;
@@ -698,23 +691,23 @@
         return 'status-badge-info';
     }
 
+    // Deuda máxima ahora es $7
     function getDebtProgress(debtAmount) {
-        const maxDebt = 200;
+        const maxDebt = 7;
         let percentage = Math.min((debtAmount / maxDebt) * 100, 100);
         let fillClass = 'low-debt';
-        if (debtAmount > 100) fillClass = 'high-debt';
-        else if (debtAmount > 50) fillClass = 'medium-debt';
+        if (debtAmount > 5) fillClass = 'high-debt';
+        else if (debtAmount > 3) fillClass = 'medium-debt';
         return { percentage, fillClass };
     }
 
     function getDebtMessage(debtAmount) {
         if (debtAmount === 0) return { text: '✅ ¡AL DÍA! No tienes deudas pendientes', type: 'success' };
-        if (debtAmount < 50) return { text: '⚠️ Deuda baja. Regulariza pronto para seguir participando', type: 'warning' };
-        if (debtAmount < 100) return { text: '⚠️⚠️ Deuda moderada. Comunícate con vocalía', type: 'warning' };
-        return { text: '🔴 ¡ATENCIÓN! Deuda crítica. Riesgo de suspensión', type: 'danger' };
+        if (debtAmount < 3) return { text: '⚠️ Deuda baja. Regulariza pronto', type: 'warning' };
+        if (debtAmount < 5) return { text: '⚠️⚠️ Deuda moderada. Comunícate con vocalía', type: 'warning' };
+        return { text: '🔴 ¡ATENCIÓN! Deuda cercana al límite máximo ($7)', type: 'danger' };
     }
 
-    // Función para generar el círculo de progreso SVG
     function renderProgressCircle(value, colorClass, size = 90) {
         const radius = 40;
         const circumference = 2 * Math.PI * radius;
@@ -734,7 +727,6 @@
         `;
     }
 
-    // Función para obtener mensaje según el promedio
     function getPerformanceMessage(average) {
         if (average >= 9) return { text: '🏆 ¡Excelente! Eres un ejemplo para el equipo', emoji: '🏆', color: 'var(--success)' };
         if (average >= 7) return { text: '👍 Muy bien. Sigue mejorando cada día', emoji: '👍', color: 'var(--info)' };
@@ -794,17 +786,19 @@
                 const debtProgress = getDebtProgress(sanitized.deudaVocalia);
                 const debtMessage = getDebtMessage(sanitized.deudaVocalia);
                 
-                // Calcular promedio de rendimiento humano
                 const performanceAverage = Math.round(
                     (sanitized.puntualidad + sanitized.companerismo + sanitized.respeto + sanitized.humildad) / 4
                 );
                 const performanceMsg = getPerformanceMessage(performanceAverage);
                 
-                // Generar estrellas
                 const stars = Math.floor(performanceAverage / 2);
                 const starHtml = Array(5).fill(0).map((_, i) => 
                     `<i class="fas fa-star${i < stars ? '' : '-half-alt'}" style="color: var(--warning); opacity: ${i < stars ? 1 : 0.3}"></i>`
                 ).join('');
+                
+                // Icono para uniforme: reloj si está pendiente, check si está entregado
+                const uniformIcon = sanitized.unifEstado === 'ENTREGADO' ? 'fa-check-circle' : 'fa-clock';
+                const uniformStatusText = sanitized.unifEstado === 'ENTREGADO' ? 'Entregado' : 'Pendiente';
                 
                 container.innerHTML = `
                     <div class="profile-header">
@@ -880,7 +874,6 @@
                         </div>
 
                         <div class="performance-grid">
-                            <!-- Puntualidad -->
                             <div class="metric-card">
                                 ${renderProgressCircle(sanitized.puntualidad, 'puntualidad', 85)}
                                 <div class="metric-title">
@@ -890,7 +883,6 @@
                                 <div class="metric-value-text">Asistencia a tiempo</div>
                             </div>
 
-                            <!-- Compañerismo -->
                             <div class="metric-card">
                                 ${renderProgressCircle(sanitized.companerismo, 'companerismo', 85)}
                                 <div class="metric-title">
@@ -900,7 +892,6 @@
                                 <div class="metric-value-text">Trabajo en equipo</div>
                             </div>
 
-                            <!-- Respeto -->
                             <div class="metric-card">
                                 ${renderProgressCircle(sanitized.respeto, 'respeto', 85)}
                                 <div class="metric-title">
@@ -910,7 +901,6 @@
                                 <div class="metric-value-text">Con compañeros y árbitros</div>
                             </div>
 
-                            <!-- Humildad -->
                             <div class="metric-card">
                                 ${renderProgressCircle(sanitized.humildad, 'humildad', 85)}
                                 <div class="metric-title">
@@ -921,7 +911,6 @@
                             </div>
                         </div>
 
-                        <!-- Promedio General -->
                         <div class="average-container">
                             <div class="average-label">
                                 <i class="fas fa-chart-line"></i> PROMEDIO GENERAL
@@ -965,8 +954,8 @@
                                 <div class="admin-stat-value">${sanitized.unifEstado}</div>
                                 <div class="admin-stat-label">Uniforme</div>
                                 <div class="admin-stat-status ${getStatusBadgeClass(sanitized.unifEstado)}">
-                                    <i class="fas ${sanitized.unifEstado === 'ENTREGADO' ? 'fa-check-circle' : 'fa-truck'}"></i>
-                                    ${sanitized.unifEstado === 'ENTREGADO' ? 'Entregado' : 'Pendiente'}
+                                    <i class="fas ${uniformIcon}"></i>
+                                    ${uniformStatusText}
                                 </div>
                             </div>
                         </div>
@@ -1000,12 +989,6 @@
                                 <div class="detail-label"><i class="fas fa-calendar-alt"></i> Última cuota</div>
                                 <div class="detail-value">${new Date().toLocaleDateString()}</div>
                             </div>
-                        </div>
-
-                        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.6rem;">
-                            <span><i class="fas fa-circle" style="color: var(--success); font-size: 0.5rem;"></i> Pagado/Entregado</span>
-                            <span><i class="fas fa-circle" style="color: var(--danger); font-size: 0.5rem;"></i> Pendiente</span>
-                            <span><i class="fas fa-circle" style="color: var(--warning); font-size: 0.5rem;"></i> En proceso</span>
                         </div>
                     </div>
 
