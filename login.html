@@ -46,37 +46,17 @@
             transition: all 0.3s ease;
         }
 
-        /* Modo ADMIN - cambio sutil en todo el HTML */
         body.admin-mode-body {
             background-image: 
                 radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2), transparent 55%),
                 linear-gradient(rgba(2, 12, 26, 0.85), rgba(2, 12, 26, 0.85)),
                 url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a78bfa' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            transition: all 0.3s ease;
         }
 
         body.admin-mode-body .login-card {
             border-color: var(--admin-border);
             box-shadow: 0 0 18px rgba(139, 92, 246, 0.5), 0 25px 50px -12px black;
             background: rgba(18, 25, 55, 0.75);
-            backdrop-filter: blur(20px) saturate(200%);
-        }
-
-        body.admin-mode-body .logo-area h1 {
-            background: linear-gradient(to right, #e9d5ff, #c084fc);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        body.admin-mode-body .input-group label {
-            color: #c084fc;
-            text-shadow: 0 0 2px rgba(192, 132, 252, 0.5);
-        }
-
-        /* Sutil resplandor en el botón cuando está en modo admin */
-        body.admin-mode-body .btn-submit {
-            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-            box-shadow: 0 0 8px #a78bfa;
         }
 
         .login-card {
@@ -84,21 +64,17 @@
             width: 100%;
             background: var(--glass);
             backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 2.5rem;
             border: 1px solid rgba(0, 210, 255, 0.4);
             box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             padding: 3rem 2.5rem;
-            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            transition: all 0.25s ease;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+        .logo-area {
+            text-align: center;
+            margin-bottom: 2.5rem;
         }
 
-        .logo-area { text-align: center; margin-bottom: 2.5rem; }
         .logo-area h1 {
             font-size: 2.2rem;
             font-weight: 800;
@@ -106,11 +82,11 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 0.5rem;
-            transition: 0.2s;
         }
 
-        .input-group { margin-bottom: 2rem; }
+        .input-group {
+            margin-bottom: 2rem;
+        }
 
         .input-group label {
             display: block;
@@ -120,7 +96,6 @@
             margin-bottom: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            transition: 0.2s;
         }
 
         input {
@@ -135,22 +110,6 @@
             text-align: center;
             letter-spacing: 4px;
             outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--primary);
-            background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
-        }
-
-        /* Estilo especial cuando el campo contiene "Gata" (adicional) */
-        input.admin-mode {
-            background: var(--admin-bg-morado);
-            border-color: var(--admin-border);
-            color: #f0e6ff;
-            letter-spacing: 2px;
-            box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
         }
 
         .btn-submit {
@@ -162,51 +121,29 @@
             color: white;
             font-size: 1rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 0.5rem;
         }
 
-        .btn-submit:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.7; }
-
-        .footer-links { margin-top: 2rem; text-align: center; font-size: 0.9rem; }
-        .footer-links a { color: var(--accent); text-decoration: none; font-weight: 700; }
-
-        .btn-download {
-            background: rgba(0, 210, 255, 0.15);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 0.7rem 1.2rem;
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1.2rem;
-            display: inline-block;
+        .btn-submit:disabled {
+            opacity: .6;
         }
 
         .error-toast {
             background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
             color: #fca5a5;
             padding: 1rem;
             border-radius: 1rem;
             margin-top: 1.5rem;
             display: none;
             text-align: center;
-            font-size: 0.85rem;
         }
 
-        @media (display-mode: standalone) {
-            #containerDownload { display: none !important; }
-        }
     </style>
 </head>
 <body>
 
 <div class="login-card">
+
     <div class="logo-area">
         <h1>NÁPOLES F.C.</h1>
         <p>Panel de Control de Jugadores</p>
@@ -214,169 +151,215 @@
 
     <div class="input-group">
         <label>Número de Cédula</label>
-        <input type="text" id="loginCedula" maxlength="20" placeholder="0000000000" inputmode="text">
+
+        <input
+            type="text"
+            id="loginCedula"
+            maxlength="20"
+            placeholder="0000000000"
+            inputmode="numeric"
+        >
     </div>
 
-    <button id="btnLogin" class="btn-submit" disabled>Iniciar Sesión</button>
+    <button id="btnLogin" class="btn-submit" disabled>
+        Iniciar Sesión
+    </button>
 
     <div id="mensajeError" class="error-toast"></div>
 
-    <div class="footer-links">
-        ¿Eres nuevo en el club? <br><br>
-        <a href="registro.html">CREAR CUENTA NUEVA ✨</a>
-        
-        <div id="containerDownload">
-            <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
-        </div>
-    </div>
 </div>
 
-<!-- Cargar configuración centralizada -->
 <script src="config.js"></script>
 
 <script>
-    // Verificar que config.js se cargó correctamente
-    if (typeof CONFIG === 'undefined') {
-        console.error('❌ config.js no cargado correctamente');
-        alert('Error de configuración. Recarga la página o contacta al administrador.');
-    } else {
-        console.log('✅ Configuración cargada:', CONFIG.URL_GAS);
+
+const cedulaInput =
+document.getElementById('loginCedula');
+
+const btnLogin =
+document.getElementById('btnLogin');
+
+const errorDiv =
+document.getElementById('mensajeError');
+
+const bodyElem =
+document.body;
+
+const ADMIN_SECRET = "GataFiera54321";
+
+const ADMIN_COLOR_TRIGGER = "Gata";
+
+// =======================
+
+function actualizarModoVisual(){
+
+    const valor = cedulaInput.value;
+
+    btnLogin.disabled =
+    valor.trim() === "";
+
+    if(valor.includes(ADMIN_COLOR_TRIGGER)){
+
+        bodyElem.classList.add(
+            'admin-mode-body'
+        );
+
+    }else{
+
+        bodyElem.classList.remove(
+            'admin-mode-body'
+        );
+
     }
 
-    const cedulaInput = document.getElementById('loginCedula');
-    const btnLogin = document.getElementById('btnLogin');
-    const errorDiv = document.getElementById('mensajeError');
-    const manualBtn = document.getElementById('manualDownloadBtn');
-    const containerDownload = document.getElementById('containerDownload');
-    const bodyElem = document.body;
+}
 
-    // Clave secreta de administrador (exacta)
-    const ADMIN_SECRET = "GataFiera54321";
-    // Subcadena que activa el modo visual sutil (y también feedback en input)
-    const ADMIN_COLOR_TRIGGER = "Gata";
+cedulaInput.addEventListener('input',()=>{
 
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-        containerDownload.style.display = 'none';
-    }
-
-    // Función para actualizar el estado del botón, el modo visual global y el input
-    function actualizarModoVisual() {
-        const valor = cedulaInput.value;
-        const contieneGata = valor.includes(ADMIN_COLOR_TRIGGER);
-        
-        // Habilitar botón si el campo no está vacío
-        btnLogin.disabled = valor.trim() === "";
-        
-        // Cambiar clase en el body para efecto sutil en todo el HTML
-        if (contieneGata) {
-            bodyElem.classList.add('admin-mode-body');
-            cedulaInput.classList.add('admin-mode');
-        } else {
-            bodyElem.classList.remove('admin-mode-body');
-            cedulaInput.classList.remove('admin-mode');
-        }
-    }
-
-    cedulaInput.addEventListener('input', (e) => {
-        actualizarModoVisual();
-        errorDiv.style.display = 'none';
-    });
-
-    // Lógica principal del login
-    btnLogin.addEventListener('click', async () => {
-        const valorIngresado = cedulaInput.value.trim();
-        
-        if (valorIngresado === "") {
-            mostrarError("📛 Ingresa una cédula o la clave de administrador.");
-            return;
-        }
-
-        // ---- COMPROBAR SI ES LA CLAVE ADMIN (exacta) ----
-        if (valorIngresado === ADMIN_SECRET) {
-            // Redirigir al panel de administración
-            window.location.href = 'admin.html';
-            return;
-        }
-
-        // ---- FLUJO NORMAL DE JUGADOR (CÉDULA) ----
-        // Debe ser exactamente 10 dígitos numéricos
-        if (!/^\d{10}$/.test(valorIngresado)) {
-            mostrarError("❌ Cédula inválida. Debe tener 10 dígitos numéricos.");
-            return;
-        }
-
-        const cedula = valorIngresado;
-        btnLogin.disabled = true;
-        btnLogin.innerText = 'VERIFICANDO...';
-        errorDiv.style.display = 'none';
-
-        try {
-            const resp = await fetch(`${CONFIG.URL_GAS}?action=validarRegistro&cedula=${cedula}`);
-            const data = await resp.json();
-
-            console.log('Respuesta del servidor:', data);
-
-            if (data.cedulaExiste && data.estado === "APROBADO" && data.datosJugador) {
-                localStorage.setItem('jugador_actual', JSON.stringify({
-                    ...data.datosJugador,
-                    cedula: cedula,
-                    expira: Date.now() + (CONFIG.TIEMPO_SESION || 86400000)
-                }));
-                window.location.href = 'perfil.html';
-            } else if (!data.cedulaExiste) {
-                mostrarError("❌ La cédula no está registrada. Por favor, regístrate primero.");
-            } else if (data.estado !== "APROBADO") {
-                mostrarError("⏳ Tu cuenta está en revisión por el delegado. Estado actual: " + (data.estado || "PENDIENTE"));
-            } else {
-                mostrarError("⚠️ No se pudieron cargar tus datos. Contacta al administrador.");
-            }
-        } catch (err) {
-            console.error('Error de conexión:', err);
-            mostrarError("🔌 Error de conexión con el servidor. Verifica tu internet.");
-        } finally {
-            btnLogin.disabled = false;
-            btnLogin.innerText = 'INICIAR SESIÓN';
-            actualizarModoVisual(); // restaurar estado visual (por si se borró)
-        }
-    });
-
-    function mostrarError(msj) {
-        errorDiv.innerText = msj;
-        errorDiv.style.display = 'block';
-        setTimeout(() => {
-            if (errorDiv.style.display === 'block') {
-                errorDiv.style.display = 'none';
-            }
-        }, 5000);
-    }
-
-    // Inicializar
     actualizarModoVisual();
 
-    // PWA: instalación
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        manualBtn.innerHTML = "👕 INSTALAR APP (CAMISETA)";
-        manualBtn.style.background = "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)";
-        manualBtn.style.color = "#000";
-    });
+    errorDiv.style.display='none';
 
-    manualBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') containerDownload.style.display = 'none';
-            deferredPrompt = null;
-        } else {
-            alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar' o 'Añadir a pantalla de inicio'.");
-        }
-    });
+});
 
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log('Service Worker error:', err));
+// =======================
+
+btnLogin.addEventListener('click', async()=>{
+
+    const valorIngresado =
+    cedulaInput.value.trim();
+
+    if(!valorIngresado){
+
+        mostrarError(
+            'Ingresa la cédula'
+        );
+
+        return;
+
     }
+
+    // ADMIN
+    if(valorIngresado === ADMIN_SECRET){
+
+        window.location.href='admin.html';
+
+        return;
+
+    }
+
+    // VALIDAR CÉDULA
+    if(!/^\d{10}$/.test(valorIngresado)){
+
+        mostrarError(
+            'La cédula debe tener 10 dígitos'
+        );
+
+        return;
+
+    }
+
+    try{
+
+        btnLogin.disabled=true;
+
+        btnLogin.innerText='VERIFICANDO...';
+
+        const resp = await fetch(
+            `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valorIngresado}&t=${Date.now()}`
+        );
+
+        const text =
+        await resp.text();
+
+        console.log(
+            'LOGIN RAW:',
+            text
+        );
+
+        const data =
+        JSON.parse(text);
+
+        console.log(data);
+
+        if(
+            data &&
+            data.cedulaExiste === true &&
+            data.estado === 'APROBADO'
+        ){
+
+            localStorage.setItem(
+                'jugador_actual',
+                JSON.stringify({
+
+                    cedula:
+                    valorIngresado,
+
+                    expira:
+                    Date.now() +
+                    (CONFIG.TIEMPO_SESION || 86400000)
+
+                })
+            );
+
+            window.location.href =
+            'perfil.html';
+
+            return;
+
+        }
+
+        if(
+            data.cedulaExiste &&
+            data.estado !== 'APROBADO'
+        ){
+
+            mostrarError(
+                'Cuenta en revisión'
+            );
+
+            return;
+
+        }
+
+        mostrarError(
+            'La cédula no existe'
+        );
+
+    }catch(err){
+
+        console.error(err);
+
+        mostrarError(
+            'Error de conexión'
+        );
+
+    }finally{
+
+        btnLogin.disabled=false;
+
+        btnLogin.innerText=
+        'INICIAR SESIÓN';
+
+    }
+
+});
+
+// =======================
+
+function mostrarError(msj){
+
+    errorDiv.innerText=msj;
+
+    errorDiv.style.display='block';
+
+}
+
+// =======================
+
+actualizarModoVisual();
+
 </script>
+
 </body>
 </html>
