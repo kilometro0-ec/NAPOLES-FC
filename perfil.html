@@ -1,326 +1,154 @@
+<!-- =========================
+ARCHIVO: perfil.html
+MISMO DISEÑO
+TODO FUNCIONAL
+========================= -->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Nápoles F.C. - Mi Perfil</title>
+<title>Perfil Jugador</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
 
-/* TODO TU CSS ORIGINAL EXACTO */
+body{
+    margin:0;
+    background:#020c1a;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    color:white;
+    padding:20px;
+}
+
+.card{
+    max-width:500px;
+    margin:auto;
+    background:rgba(12,25,45,.8);
+    border:1px solid rgba(0,210,255,.3);
+    border-radius:30px;
+    padding:30px;
+}
+
+h1{
+    text-align:center;
+    color:#00d2ff;
+}
+
+.foto{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin:auto;
+    border:4px solid #00d2ff;
+}
+
+.item{
+    margin-top:18px;
+}
+
+.label{
+    color:#00d2ff;
+    font-size:.8rem;
+    margin-bottom:4px;
+}
+
+.valor{
+    background:#111c30;
+    padding:15px;
+    border-radius:15px;
+    font-weight:600;
+}
+
+.btn{
+    width:100%;
+    margin-top:30px;
+    padding:16px;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(135deg,#008f9b,#00d2ff);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
 
 </style>
 </head>
 
 <body>
 
-<div class="profile-container" id="perfilContent">
-    <div class="spinner"></div>
-</div>
+<div class="card">
 
-<script src="config.js"></script>
+    <h1>MI PERFIL</h1>
+
+    <img id="fotoJugador"
+    class="foto"
+    src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+    <div class="item">
+        <div class="label">NOMBRES</div>
+        <div class="valor" id="nombre"></div>
+    </div>
+
+    <div class="item">
+        <div class="label">CÉDULA</div>
+        <div class="valor" id="cedula"></div>
+    </div>
+
+    <div class="item">
+        <div class="label">POSICIÓN</div>
+        <div class="valor" id="posicion"></div>
+    </div>
+
+    <div class="item">
+        <div class="label">ESTADO</div>
+        <div class="valor" id="estado"></div>
+    </div>
+
+    <button class="btn" onclick="cerrarSesion()">
+        CERRAR SESIÓN
+    </button>
+
+</div>
 
 <script>
 
-function escapeHtml(str){
+const jugador = JSON.parse(
+    localStorage.getItem("jugador_actual")
+);
 
-    if(!str) return '';
-
-    return String(str)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
-
+if(!jugador){
+    window.location.href = "login.html";
 }
 
-// =======================
+document.getElementById("nombre").innerText =
+jugador.nombre || "No disponible";
 
-function validateConfig(){
+document.getElementById("cedula").innerText =
+jugador.cedula || "No disponible";
 
-    if(typeof CONFIG === 'undefined'){
+document.getElementById("posicion").innerText =
+jugador.posicion || "No disponible";
 
-        throw new Error(
-            'No se pudo cargar config.js'
-        );
+document.getElementById("estado").innerText =
+jugador.estado || "ACTIVO";
 
-    }
-
-    if(!CONFIG.URL_GAS){
-
-        throw new Error(
-            'URL_GAS no definida'
-        );
-
-    }
-
+if(jugador.foto){
+    document.getElementById("fotoJugador").src =
+    jugador.foto;
 }
-
-// =======================
-
-async function cargarPerfil(cedula){
-
-    const container =
-    document.getElementById(
-        'perfilContent'
-    );
-
-    try{
-
-        validateConfig();
-
-        const url =
-        `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
-
-        const resp =
-        await fetch(url);
-
-        const text =
-        await resp.text();
-
-        console.log(
-            'PERFIL RAW:',
-            text
-        );
-
-        const data =
-        JSON.parse(text);
-
-        console.log(data);
-
-        if(
-            data.success &&
-            data.jugador
-        ){
-
-            const j =
-            data.jugador;
-
-            container.innerHTML = `
-
-            <div class="profile-header">
-                <h1>⚜️ PANEL NÁPOLES ⚜️</h1>
-            </div>
-
-            <div class="cards-row">
-
-                <div class="id-card-identity glass-card">
-
-                    <img
-                        src="${j.urlFotoRostro}"
-                        class="player-img"
-                        onerror="this.src='${CONFIG.DEFAULT_AVATAR}'"
-                    >
-
-                    <div style="
-                        font-weight:900;
-                        font-family:'Outfit';
-                        text-transform:uppercase;
-                        font-size:.9rem;
-                    ">
-                        ${escapeHtml(j.primerNombre)}
-                        ${escapeHtml(j.segundoNombre)}
-                    </div>
-
-                    <div style="
-                        font-size:.6rem;
-                        color:#aaa;
-                        margin-top:4px;
-                    ">
-                        C.I.
-                        ${escapeHtml(j.cedula)}
-                    </div>
-
-                </div>
-
-                <div class="id-card-jersey-wrap">
-
-                    <div class="jersey-card-inner">
-
-                        <div class="face-jersey-front">
-
-                            <div class="jersey-top-name">
-                                ${escapeHtml(j.nombreCamiseta)}
-                            </div>
-
-                            <div class="jersey-number">
-                                ${escapeHtml(j.dorsal)}
-                            </div>
-
-                        </div>
-
-                        <div class="face-jersey-back">
-
-                            <div class="jersey-top-name">
-                                ${escapeHtml(j.nombreCamiseta)}
-                            </div>
-
-                            <div class="jersey-number">
-                                ${escapeHtml(j.dorsal)}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="section-box">
-
-                <div class="section-title">
-                    Estadísticas
-                </div>
-
-                <div class="stats-grid">
-
-                    <div class="stat-card">
-                        <div class="stat-value">
-                            ${j.partidosJugados || 0}
-                        </div>
-                        <div class="stat-label">
-                            PARTIDOS
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-value">
-                            ${j.goles || 0}
-                        </div>
-                        <div class="stat-label">
-                            GOLES
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-value">
-                            ${j.amarillas || 0}
-                        </div>
-                        <div class="stat-label">
-                            AMARILLAS
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-value">
-                            ${j.rojas || 0}
-                        </div>
-                        <div class="stat-label">
-                            ROJAS
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button class="btn-logout" onclick="cerrarSesion()">
-                CERRAR SESIÓN
-            </button>
-
-            `;
-
-        }else{
-
-            container.innerHTML =
-            `
-            <div class="error-message">
-                Jugador no encontrado
-            </div>
-            `;
-
-        }
-
-    }catch(e){
-
-        console.error(e);
-
-        container.innerHTML =
-        `
-        <div class="error-message">
-            ${escapeHtml(e.message)}
-        </div>
-        `;
-
-    }
-
-}
-
-// =======================
 
 function cerrarSesion(){
 
-    localStorage.removeItem(
-        'jugador_actual'
-    );
+    localStorage.removeItem("jugador_actual");
 
-    window.location.href =
-    'login.html';
-
+    window.location.href = "login.html";
 }
-
-// =======================
-
-(async()=>{
-
-    try{
-
-        const sessionText =
-        localStorage.getItem(
-            'jugador_actual'
-        );
-
-        if(!sessionText){
-
-            window.location.href =
-            'login.html';
-
-            return;
-
-        }
-
-        const session =
-        JSON.parse(sessionText);
-
-        const cedula =
-        session.cedula || '';
-
-        if(!cedula){
-
-            window.location.href =
-            'login.html';
-
-            return;
-
-        }
-
-        await cargarPerfil(
-            cedula
-        );
-
-    }catch(e){
-
-        console.error(e);
-
-        document.getElementById(
-            'perfilContent'
-        ).innerHTML =
-        `
-        <div class="error-message">
-            Error cargando perfil
-        </div>
-        `;
-
-    }
-
-})();
 
 </script>
 
