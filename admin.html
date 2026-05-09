@@ -14,9 +14,11 @@
         .logo-area { display: flex; align-items: center; gap: 12px; }
         .logo-icon { background: #1a4a76; width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
         .header h1 { color: #1a4a76; font-size: 1.5rem; }
-        .btn-refresh { background: #e2e8f0; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: 500; margin-right: 12px; }
+        .header-buttons { display: flex; gap: 12px; }
+        .btn-refresh { background: #e2e8f0; border: none; padding: 10px 24px; border-radius: 40px; cursor: pointer; font-weight: 500; }
         .btn-refresh:hover { background: #cbd5e1; }
         .logout-btn { background: #dc2626; color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .logout-btn:hover { background: #b91c1c; }
         
         /* Tabs */
         .tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
@@ -40,7 +42,6 @@
         .btn-success { background: #059669; color: white; border: none; padding: 6px 18px; border-radius: 30px; cursor: pointer; margin: 2px; }
         .btn-danger { background: #dc2626; color: white; border: none; padding: 6px 18px; border-radius: 30px; cursor: pointer; }
         .btn-primary { background: #1a4a76; color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; font-weight: 600; }
-        .btn-secondary { background: #64748b; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; }
         
         /* Grids y cards */
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 24px; }
@@ -52,7 +53,7 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: #1a4a76; }
         label { font-weight: 500; margin-bottom: 6px; display: block; color: #334155; }
         
-        /* Calificación - versión mejorada */
+        /* Calificación - formato mejorado */
         .calificacion-grid { background: #f8fafc; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
         .calificacion-header { display: grid; grid-template-columns: 200px repeat(7, 100px); gap: 10px; font-weight: 600; padding: 12px; background: #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
         .calificacion-row { display: grid; grid-template-columns: 200px repeat(7, 100px); gap: 10px; padding: 10px; background: white; border-radius: 12px; margin-bottom: 8px; align-items: center; }
@@ -64,7 +65,6 @@
         
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000; }
         .modal-content { background: white; max-width: 500px; width: 90%; border-radius: 28px; padding: 24px; }
-        
         .btn-outline { background: transparent; border: 1px solid #cbd5e1; padding: 8px 20px; border-radius: 40px; cursor: pointer; }
         hr { margin: 20px 0; border: none; border-top: 1px solid #e2e8f0; }
     </style>
@@ -76,9 +76,9 @@
             <div class="logo-icon">⚽</div>
             <h1>Nápoles F.C. · Administración</h1>
         </div>
-        <div>
-            <button class="btn-refresh" onclick="recargarPagina()">🔄 Actualizar</button>
-            <button class="logout-btn" onclick="logout()">🔐 Cerrar sesión</button>
+        <div class="header-buttons">
+            <button class="btn-refresh" id="btnActualizar">🔄 Actualizar</button>
+            <button class="logout-btn" id="btnSalir">🔐 Salir</button>
         </div>
     </div>
 
@@ -100,7 +100,7 @@
     <!-- JUGADORES -->
     <div id="panel-jugadores" class="panel">
         <h2>👥 Todos los jugadores</h2>
-        <div class="table-wrapper"><table id="tablaJugadores"><thead><tr><th>Nombre</th><th>Cédula</th><th>Estado</th><th>Deuda</th><th>Goles</th><th>TA</th><th>TR</th></tr></thead><tbody><tr><td colspan="7"><div class="spinner"></div></td></tr></tbody></table></div>
+        <div class="table-wrapper"><table id="tablaJugadores"><thead><tr><th>Nombre</th><th>Cédula</th><th>Estado</th><th>Deuda</th><th>Goles</th><th>TA</th><th>TR</th></tr></thead><tbody><tr><td colspan="7"><div class="spinner"></div></td></tr></tbody></td></div>
     </div>
 
     <!-- VOCALÍA -->
@@ -126,15 +126,14 @@
         <div id="listaNotificaciones" style="margin-top: 24px;"></div>
     </div>
 
-    <!-- CALIFICAR PARTIDOS - VERSIÓN MEJORADA -->
+    <!-- CALIFICAR PARTIDOS -->
     <div id="panel-partidos" class="panel">
         <h2>⭐ Calificar jugadores en partido</h2>
         
-        <!-- Selección de partido -->
         <div class="grid-2">
             <div>
                 <label>📅 Fecha del partido</label>
-                <select id="fechaPartido" class="fecha-select">
+                <select id="fechaPartido">
                     <option value="">Seleccionar fecha...</option>
                 </select>
             </div>
@@ -164,7 +163,6 @@
         
         <button class="btn-primary" onclick="cargarJugadoresParaCalificar()" style="margin-bottom: 20px;">📌 Cargar jugadores convocados</button>
         
-        <!-- Lista de jugadores para calificar (formato mejorado) -->
         <div id="listaCalificaciones" style="margin-top: 20px;"></div>
         
         <button class="btn-primary" onclick="guardarCalificaciones()" style="margin-top: 20px;">💾 Guardar partido completo</button>
@@ -176,7 +174,7 @@
         <div class="grid-2">
             <div>
                 <label>📅 Fecha</label>
-                <select id="proxFecha" class="fecha-select"></select>
+                <select id="proxFecha"></select>
             </div>
             <div>
                 <label>🕐 Hora</label>
@@ -215,39 +213,55 @@
     let currentCedulaRechazo = null;
     let jugadoresActivos = [];
 
-    // Función para recargar página
-    function recargarPagina() { location.reload(); }
+    // ================= BOTONES HEADER =================
+    document.getElementById('btnActualizar').addEventListener('click', function() {
+        location.reload();
+    });
+    
+    document.getElementById('btnSalir').addEventListener('click', function() {
+        localStorage.removeItem('admin_auth');
+        alert('Sesión cerrada');
+        location.reload();
+    });
 
-    // Generar opciones de fechas (próximos 60 días incluyendo sábados y domingos)
-    function generarOpcionesFechas() {
+    // ================= GENERAR FECHAS (SÁBADOS Y DOMINGOS) =================
+    function generarFechasProximas() {
         const fechas = [];
         const hoy = new Date();
         for (let i = 0; i < 60; i++) {
             const fecha = new Date();
             fecha.setDate(hoy.getDate() + i);
             const diaSemana = fecha.getDay();
-            // Solo sábados (6) y domingos (0)
+            // Sábado (6) o Domingo (0)
             if (diaSemana === 0 || diaSemana === 6) {
-                const año = fecha.getFullYear();
-                const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-                const dia = String(fecha.getDate()).padStart(2, '0');
+                const year = fecha.getFullYear();
+                const month = String(fecha.getMonth() + 1).padStart(2, '0');
+                const day = String(fecha.getDate()).padStart(2, '0');
                 const nombreDia = diaSemana === 0 ? 'Domingo' : 'Sábado';
-                fechas.push({ value: `${año}-${mes}-${dia}}, texto: `${nombreDia} ${dia}/${mes}/${año}` });
+                fechas.push({
+                    value: `${year}-${month}-${day}`,
+                    texto: `${nombreDia} ${day}/${month}/${year}`
+                });
             }
         }
         return fechas;
     }
 
-    // Llenar selects de fechas
     function llenarSelectsFechas() {
-        const fechas = generarOpcionesFechas();
-        const selects = document.querySelectorAll('.fecha-select');
+        const fechas = generarFechasProximas();
+        const selects = document.querySelectorAll('#fechaPartido, #proxFecha');
         selects.forEach(select => {
-            select.innerHTML = '<option value="">Seleccionar fecha...</option>' + 
-                fechas.map(f => `<option value="${f.value}">${f.texto}</option>`).join('');
+            select.innerHTML = '<option value="">Seleccionar fecha...</option>';
+            fechas.forEach(f => {
+                const option = document.createElement('option');
+                option.value = f.value;
+                option.textContent = f.texto;
+                select.appendChild(option);
+            });
         });
     }
 
+    // ================= FUNCIÓN FETCH =================
     async function fetchAPI(action, params = {}) {
         try {
             const urlParams = new URLSearchParams({ action, ...params });
@@ -261,7 +275,7 @@
         }
     }
 
-    // TABS
+    // ================= TABS =================
     document.querySelectorAll('.tab').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -270,18 +284,19 @@
             document.getElementById(`panel-${btn.dataset.tab}`).classList.add('active');
             if (btn.dataset.tab === 'pendientes') cargarPendientes();
             if (btn.dataset.tab === 'jugadores') cargarJugadores();
-            if (btn.dataset.tab === 'vocalia') { cargarDeudores(); document.getElementById('formPago').style.display = 'none'; }
+            if (btn.dataset.tab === 'vocalia') { cargarDeudores(); document.getElementById('formPago').style.display = 'none'; document.getElementById('infoDeudor').innerHTML = ''; }
             if (btn.dataset.tab === 'notificaciones') cargarNotificaciones();
             if (btn.dataset.tab === 'proximos') cargarProximos();
         });
     });
 
+    // ================= PENDIENTES =================
     async function cargarPendientes() {
         const data = await fetchAPI('getPendientes');
         const tbody = document.querySelector('#tablaPendientes tbody');
         const countSpan = document.getElementById('pendientesCount');
-        if (data.jugadores?.length) {
-            countSpan.textContent = data.total;
+        if (data.jugadores && data.jugadores.length > 0) {
+            countSpan.textContent = data.total || data.jugadores.length;
             tbody.innerHTML = data.jugadores.map(j => `
                 <tr>
                     <td>${j.nombre}侧
@@ -295,14 +310,15 @@
             `).join('');
         } else {
             countSpan.textContent = '0';
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">✅ No hay solicitudes pendientes</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">✅ No hay solicitudes pendientes</td><tr>';
         }
     }
 
+    // ================= JUGADORES =================
     async function cargarJugadores() {
         const data = await fetchAPI('getAllJugadores');
         const tbody = document.querySelector('#tablaJugadores tbody');
-        if (data.jugadores?.length) {
+        if (data.jugadores && data.jugadores.length > 0) {
             tbody.innerHTML = data.jugadores.map(j => `
                 <tr>
                     <td>${j.nombre}侧
@@ -314,13 +330,16 @@
                     <td>${j.rojas}侧
                 </tr>
             `).join('');
+        } else {
+            tbody.innerHTML = '<tr><td colspan="7">No hay jugadores registrados</td><tr>';
         }
     }
 
+    // ================= DEUDORES =================
     async function cargarDeudores() {
         const data = await fetchAPI('getDeudores');
         const tbody = document.querySelector('#tablaDeudores tbody');
-        if (data.jugadores?.length) {
+        if (data.jugadores && data.jugadores.length > 0) {
             tbody.innerHTML = data.jugadores.map(j => `
                 <tr>
                     <td>${j.nombre}侧
@@ -329,7 +348,9 @@
                     <td><button class="btn-primary" onclick="prepararCobro('${j.cedula}')">💰 Cobrar</button>侧
                 </tr>
             `).join('');
-        } else tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">🎉 No hay deudores</td></tr>';
+        } else {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">🎉 No hay deudores</td><tr>';
+        }
     }
 
     window.prepararCobro = (ced) => { document.getElementById('buscarCedula').value = ced; buscarDeudor(); };
@@ -342,7 +363,9 @@
             document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🧑 ${data.jugador.nombre1} ${data.jugador.apellidos}<br>💰 Deuda actual: <strong>$${data.jugador.deuda}</strong></div>`;
             document.getElementById('formPago').style.display = 'block';
             document.getElementById('montoPago').value = data.jugador.deuda;
-        } else document.getElementById('infoDeudor').innerHTML = '<div class="info-card" style="color:red;">❌ Jugador no encontrado</div>';
+        } else {
+            document.getElementById('infoDeudor').innerHTML = '<div class="info-card" style="color:red;">❌ Jugador no encontrado</div>';
+        }
     };
     
     window.registrarPago = async () => {
@@ -352,41 +375,68 @@
         const res = await fetchAPI('registrarPago', { cedula: ced, monto: monto });
         if (res.ok) { 
             alert(`✅ Pago registrado. Nueva deuda: $${res.nuevaDeuda}`);
-            cargarDeudores(); cargarJugadores(); 
+            cargarDeudores(); 
+            cargarJugadores(); 
             document.getElementById('formPago').style.display = 'none'; 
             document.getElementById('infoDeudor').innerHTML = ''; 
             document.getElementById('buscarCedula').value = '';
-        } else alert('Error: ' + (res.error || 'No se pudo registrar'));
+        } else {
+            alert('Error: ' + (res.error || 'No se pudo registrar'));
+        }
     };
 
+    // ================= APROBAR/RECHAZAR =================
     window.aprobar = async (ced) => { 
         if(confirm('¿Aprobar este jugador?')){ 
             const res = await fetchAPI('aprobarJugador', { cedula: ced }); 
-            if(res.ok) { alert('✅ Jugador aprobado'); cargarPendientes(); cargarJugadores(); }
-            else alert('Error al aprobar');
+            if(res.ok) { 
+                alert('✅ Jugador aprobado'); 
+                cargarPendientes(); 
+                cargarJugadores(); 
+            } else {
+                alert('Error al aprobar');
+            }
         } 
     };
     
-    window.mostrarModalRechazo = (ced) => { currentCedulaRechazo = ced; document.getElementById('modalRechazo').style.display = 'flex'; };
-    window.cerrarModalRechazo = () => { document.getElementById('modalRechazo').style.display = 'none'; document.getElementById('motivoRechazo').value = ''; };
+    window.mostrarModalRechazo = (ced) => { 
+        currentCedulaRechazo = ced; 
+        document.getElementById('modalRechazo').style.display = 'flex'; 
+    };
+    
+    window.cerrarModalRechazo = () => { 
+        document.getElementById('modalRechazo').style.display = 'none'; 
+        document.getElementById('motivoRechazo').value = ''; 
+    };
+    
     window.confirmarRechazo = async () => {
         const motivo = document.getElementById('motivoRechazo').value;
         if (!motivo) return alert('Ingrese un motivo');
         const res = await fetchAPI('rechazarJugador', { cedula: currentCedulaRechazo, motivo: motivo });
-        if(res.ok) { alert('❌ Jugador rechazado'); cargarPendientes(); cerrarModalRechazo(); }
-        else alert('Error al rechazar');
+        if(res.ok) { 
+            alert('❌ Jugador rechazado'); 
+            cargarPendientes(); 
+            cerrarModalRechazo(); 
+        } else {
+            alert('Error al rechazar');
+        }
     };
 
+    // ================= NOTIFICACIONES =================
     async function cargarNotificaciones() {
         const data = await fetchAPI('getNotificaciones');
         const container = document.getElementById('listaNotificaciones');
-        if (data.notificaciones?.length) {
+        if (data.notificaciones && data.notificaciones.length > 0) {
             container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>📅 ${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
-        } else container.innerHTML = '<p class="card">📭 Sin notificaciones recientes</p>';
+        } else {
+            container.innerHTML = '<p class="card">📭 Sin notificaciones recientes</p>';
+        }
     }
     
     window.publicarNotificacion = async () => {
-        const tit = document.getElementById('notiTitulo').value, msg = document.getElementById('notiMensaje').value, tipo = document.getElementById('notiTipo').value;
+        const tit = document.getElementById('notiTitulo').value;
+        const msg = document.getElementById('notiMensaje').value;
+        const tipo = document.getElementById('notiTipo').value;
         if (!tit || !msg) return alert('Complete título y mensaje');
         const res = await fetchAPI('publicarNotificacion', { titulo: tit, mensaje: msg, tipo: tipo });
         if (res.ok) { 
@@ -394,15 +444,20 @@
             document.getElementById('notiTitulo').value = ''; 
             document.getElementById('notiMensaje').value = ''; 
             cargarNotificaciones(); 
-        } else alert('Error al publicar');
+        } else {
+            alert('Error al publicar');
+        }
     };
 
+    // ================= PRÓXIMOS PARTIDOS =================
     async function cargarProximos() {
         const data = await fetchAPI('getProximosPartidos');
         const container = document.getElementById('listaProximos');
-        if (data.partidos?.length) {
+        if (data.partidos && data.partidos.length > 0) {
             container.innerHTML = data.partidos.map(p => `<div class="card"><strong>📅 ${new Date(p.fecha).toLocaleString()}</strong><br>⚽ vs <strong>${p.rival}</strong><br>📍 ${p.lugar || 'Por definir'}${p.observaciones ? `<br>📝 ${p.observaciones}` : ''}</div>`).join('');
-        } else container.innerHTML = '<p class="card">⚽ No hay partidos programados</p>';
+        } else {
+            container.innerHTML = '<p class="card">⚽ No hay partidos programados</p>';
+        }
     }
     
     window.guardarProximoPartido = async () => {
@@ -422,10 +477,12 @@
             document.getElementById('proxRival').value = ''; 
             document.getElementById('proxLugar').value = ''; 
             document.getElementById('proxObs').value = ''; 
-        } else alert('Error: ' + (res.error || 'No se pudo guardar'));
+        } else {
+            alert('Error: ' + (res.error || 'No se pudo guardar'));
+        }
     };
 
-    // CALIFICAR PARTIDOS - VERSIÓN MEJORADA
+    // ================= CALIFICAR PARTIDOS =================
     window.cargarJugadoresParaCalificar = async () => {
         const fecha = document.getElementById('fechaPartido').value;
         const hora = document.getElementById('horaPartido').value;
@@ -435,37 +492,39 @@
         if (!fecha || !hora || !rival) return alert('📅 Complete fecha, hora y rival');
         
         const data = await fetchAPI('getJugadoresAprobados');
-        if (!data.jugadores?.length) return alert('No hay jugadores aprobados');
+        if (!data.jugadores || data.jugadores.length === 0) return alert('No hay jugadores aprobados');
         
         jugadoresActivos = data.jugadores;
         
-        const html = `
-            <div style="background: #f1f5f9; padding: 15px; border-radius: 16px; margin-bottom: 15px;">
-                <strong>📋 Partido:</strong> ${fecha} ${hora} vs ${rival} ${lugar ? `- ${lugar}` : ''}
-            </div>
-            <div class="calificacion-header">
-                <span>Jugador</span>
-                <span>🟨 Amarillas</span>
-                <span>🟥 Rojas</span>
-                <span>⚽ Goles</span>
-                <span>⭐ Puntualidad</span>
-                <span>🤝 Compañerismo</span>
-                <span>🙏 Respeto</span>
-                <span>💪 Humildad</span>
-            </div>
-            ${jugadoresActivos.map(j => `
+        let html = `<div style="background: #f1f5f9; padding: 15px; border-radius: 16px; margin-bottom: 15px;">
+            <strong>📋 Partido:</strong> ${fecha} ${hora} vs ${rival} ${lugar ? `- ${lugar}` : ''}
+        </div>
+        <div class="calificacion-header">
+            <span>Jugador</span>
+            <span>🟨 Amarillas</span>
+            <span>🟥 Rojas</span>
+            <span>⚽ Goles</span>
+            <span>⭐ Puntualidad</span>
+            <span>🤝 Compañerismo</span>
+            <span>🙏 Respeto</span>
+            <span>💪 Humildad</span>
+        </div>`;
+        
+        jugadoresActivos.forEach(j => {
+            html += `
                 <div class="calificacion-row">
                     <span><strong>${j.nombre}</strong></span>
-                    <input type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2" step="1">
-                    <input type="number" id="rojas_${j.cedula}" value="0" min="0" max="1" step="1">
-                    <input type="number" id="goles_${j.cedula}" value="0" min="0" step="1">
-                    <select id="punt_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}⭐</option>`).join('')}</select>
-                    <select id="comp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}⭐</option>`).join('')}</select>
-                    <select id="resp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}⭐</option>`).join('')}</select>
-                    <select id="hum_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}⭐</option>`).join('')}</select>
+                    <input type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2" step="1" style="width:80px">
+                    <input type="number" id="rojas_${j.cedula}" value="0" min="0" max="1" step="1" style="width:80px">
+                    <input type="number" id="goles_${j.cedula}" value="0" min="0" step="1" style="width:80px">
+                    <select id="punt_${j.cedula}" style="width:80px">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+                    <select id="comp_${j.cedula}" style="width:80px">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+                    <select id="resp_${j.cedula}" style="width:80px">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+                    <select id="hum_${j.cedula}" style="width:80px">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
                 </div>
-            `).join('')}
-        `;
+            `;
+        });
+        
         document.getElementById('listaCalificaciones').innerHTML = html;
     };
     
@@ -508,13 +567,14 @@
             document.getElementById('horaPartido').value = '';
             document.getElementById('rivalPartido').value = ''; 
             document.getElementById('lugarPartido').value = '';
+            jugadoresActivos = [];
             cargarJugadores(); 
-        } else alert('Error: ' + (res.error || 'No se pudo guardar'));
+        } else {
+            alert('Error: ' + (res.error || 'No se pudo guardar'));
+        }
     };
 
-    function logout() { localStorage.removeItem('admin_auth'); alert('Sesión cerrada'); location.reload(); }
-
-    // Inicializar
+    // ================= INICIALIZACIÓN =================
     llenarSelectsFechas();
     cargarPendientes();
     cargarJugadores();
