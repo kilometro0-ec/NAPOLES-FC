@@ -1,80 +1,352 @@
-<!-- =========================
-ARCHIVO: perfil.html
-MISMO DISEÑO
-TODO FUNCIONAL
-========================= -->
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>Perfil Jugador</title>
+<title>Nápoles F.C. - Mi Perfil</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#060912">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 
-body{
+:root{
+    --primary-gold:#D4AF37;
+    --primary-gold-light:#f5e6a3;
+    --dark-bg:#060912;
+    --card-bg:rgba(255,255,255,0.05);
+    --text-main:#fff;
+    --text-muted:#a0a0a0;
+    --success:#2ecc71;
+    --danger:#e74c3c;
+    --warning:#f39c12;
+    --info:#3498db;
+}
+
+*{
     margin:0;
-    background:#020c1a;
-    font-family:'Plus Jakarta Sans',sans-serif;
-    color:white;
-    padding:20px;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-.card{
-    max-width:500px;
-    margin:auto;
-    background:rgba(12,25,45,.8);
-    border:1px solid rgba(0,210,255,.3);
-    border-radius:30px;
-    padding:30px;
+body{
+    background:radial-gradient(circle at top,#111a33 0%,#060912 100%);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    padding:15px;
+    color:var(--text-main);
+    display:flex;
+    justify-content:center;
 }
 
-h1{
+.profile-container{
+    width:100%;
+    max-width:450px;
+}
+
+.profile-header{
     text-align:center;
-    color:#00d2ff;
+    margin-bottom:20px;
 }
 
-.foto{
-    width:140px;
-    height:140px;
+.profile-header h1{
+    font-family:'Outfit',sans-serif;
+    font-size:1.4rem;
+    color:var(--primary-gold);
+    text-transform:uppercase;
+    letter-spacing:2px;
+}
+
+.cards-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.glass-card{
+    background:linear-gradient(145deg, rgba(10,20,40,.85), rgba(5,10,20,.95));
+    border-radius:20px;
+    border:1px solid rgba(212,175,55,.3);
+    overflow:hidden;
+    position:relative;
+}
+
+.id-card-identity{
+    padding:15px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.player-img{
+    width:80px;
+    height:80px;
     border-radius:50%;
     object-fit:cover;
-    display:block;
-    margin:auto;
-    border:4px solid #00d2ff;
+    border:3px solid var(--primary-gold);
+    margin-bottom:10px;
+    background:#000;
 }
 
-.item{
-    margin-top:18px;
+.id-card-jersey-wrap{
+    perspective:800px;
+    height:180px;
 }
 
-.label{
-    color:#00d2ff;
-    font-size:.8rem;
-    margin-bottom:4px;
-}
-
-.valor{
-    background:#111c30;
-    padding:15px;
-    border-radius:15px;
-    font-weight:600;
-}
-
-.btn{
+.jersey-card-inner{
     width:100%;
-    margin-top:30px;
-    padding:16px;
-    border:none;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    animation:rotateJersey 12s linear infinite;
+}
+
+@keyframes rotateJersey{
+    0%{transform:rotateY(0deg);}
+    100%{transform:rotateY(360deg);}
+}
+
+.face-jersey-front,
+.face-jersey-back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:20px;
+    backface-visibility:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(145deg,#0a1428,#000814);
+    border:2px solid rgba(212,175,55,.4);
+}
+
+.face-jersey-back{
+    transform:rotateY(180deg);
+}
+
+.jersey-top-name{
+    position:absolute;
+    top:14px;
+    font-size:.7rem;
+    font-weight:900;
+    letter-spacing:2px;
+    color:var(--primary-gold-light);
+    text-transform:uppercase;
+}
+
+.jersey-number{
+    font-size:4.5rem;
+    font-weight:900;
+    color:var(--primary-gold);
+    font-family:'Outfit';
+}
+
+.stats-section,
+.performance-section,
+.section-box{
+    background:var(--card-bg);
+    border-radius:20px;
+    padding:15px;
+    margin-bottom:15px;
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.section-title{
+    font-size:.8rem;
+    font-weight:800;
+    color:var(--primary-gold);
+    margin-bottom:15px;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.stats-grid,
+.admin-stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.stat-card-modern,
+.admin-stat-card{
+    background:rgba(0,0,0,.35);
     border-radius:18px;
-    background:linear-gradient(135deg,#008f9b,#00d2ff);
-    color:white;
-    font-weight:700;
+    padding:14px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.stat-value,
+.admin-stat-value{
+    font-size:1.8rem;
+    font-weight:900;
+    margin-top:5px;
+}
+
+.stat-label-modern,
+.admin-stat-label{
+    font-size:.65rem;
+    color:var(--text-muted);
+    margin-top:5px;
+}
+
+.performance-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.metric-card{
+    background:rgba(0,0,0,.35);
+    border-radius:18px;
+    padding:15px 10px;
+    text-align:center;
+}
+
+.progress-circle{
+    position:relative;
+    width:90px;
+    height:90px;
+    margin:0 auto 10px;
+}
+
+.progress-circle svg{
+    transform:rotate(-90deg);
+    width:100%;
+    height:100%;
+}
+
+.progress-circle-bg{
+    stroke:rgba(255,255,255,.1);
+    stroke-width:8;
+    fill:none;
+}
+
+.progress-circle-fill{
+    stroke-width:8;
+    fill:none;
+    stroke-linecap:round;
+}
+
+.progress-circle-fill.puntualidad{stroke:#3498db;}
+.progress-circle-fill.companerismo{stroke:#2ecc71;}
+.progress-circle-fill.respeto{stroke:#f39c12;}
+.progress-circle-fill.humildad{stroke:#9b59b6;}
+
+.progress-circle-text{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:1.4rem;
+    font-weight:900;
+}
+
+.average-container{
+    margin-top:15px;
+    padding:15px;
+    border-radius:16px;
+    background:rgba(212,175,55,.08);
+    text-align:center;
+}
+
+.average-score{
+    font-size:2rem;
+    font-weight:900;
+    color:var(--primary-gold);
+}
+
+.btn-sync,
+.btn-logout{
+    width:100%;
+    border:none;
+    border-radius:14px;
+    padding:14px;
+    font-weight:800;
     cursor:pointer;
+}
+
+.btn-sync{
+    background:rgba(212,175,55,.15);
+    border:1px solid var(--primary-gold);
+    color:var(--primary-gold);
+    margin-bottom:15px;
+}
+
+.btn-logout{
+    background:rgba(231,76,60,.15);
+    color:#e74c3c;
+}
+
+.spinner{
+    width:40px;
+    height:40px;
+    border:3px solid rgba(255,255,255,.1);
+    border-top-color:var(--primary-gold);
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:100px auto;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+.error-message{
+    text-align:center;
+    padding:50px;
+    color:var(--danger);
+}
+
+.debt-container{
+    background:rgba(0,0,0,.45);
+    border-radius:14px;
+    padding:14px;
+    margin-top:15px;
+}
+
+.debt-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.debt-label{
+    font-size:.75rem;
+    color:var(--text-muted);
+}
+
+.debt-amount{
+    font-size:1.3rem;
+    font-weight:900;
+}
+
+.danger{
+    color:var(--danger);
+}
+
+@media(max-width:400px){
+
+    .jersey-number{
+        font-size:3.5rem;
+    }
+
+    .player-img{
+        width:65px;
+        height:65px;
+    }
+
 }
 
 </style>
@@ -82,72 +354,617 @@ h1{
 
 <body>
 
-<div class="card">
-
-    <h1>MI PERFIL</h1>
-
-    <img id="fotoJugador"
-    class="foto"
-    src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
-
-    <div class="item">
-        <div class="label">NOMBRES</div>
-        <div class="valor" id="nombre"></div>
-    </div>
-
-    <div class="item">
-        <div class="label">CÉDULA</div>
-        <div class="valor" id="cedula"></div>
-    </div>
-
-    <div class="item">
-        <div class="label">POSICIÓN</div>
-        <div class="valor" id="posicion"></div>
-    </div>
-
-    <div class="item">
-        <div class="label">ESTADO</div>
-        <div class="valor" id="estado"></div>
-    </div>
-
-    <button class="btn" onclick="cerrarSesion()">
-        CERRAR SESIÓN
-    </button>
-
+<div class="profile-container" id="perfilContent">
+    <div class="spinner"></div>
 </div>
+
+<script src="config.js"></script>
 
 <script>
 
-const jugador = JSON.parse(
-    localStorage.getItem("jugador_actual")
-);
+function escapeHtml(str){
 
-if(!jugador){
-    window.location.href = "login.html";
+    if(!str) return '';
+
+    return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+
 }
 
-document.getElementById("nombre").innerText =
-jugador.nombre || "No disponible";
+function validateConfig(){
 
-document.getElementById("cedula").innerText =
-jugador.cedula || "No disponible";
+    if(typeof CONFIG === 'undefined'){
+        throw new Error('No se cargó config.js');
+    }
 
-document.getElementById("posicion").innerText =
-jugador.posicion || "No disponible";
+    if(!CONFIG.URL_GAS){
+        throw new Error('Falta URL_GAS en config.js');
+    }
 
-document.getElementById("estado").innerText =
-jugador.estado || "ACTIVO";
+    if(!CONFIG.DEFAULT_AVATAR){
+        CONFIG.DEFAULT_AVATAR = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+    }
 
-if(jugador.foto){
-    document.getElementById("fotoJugador").src =
-    jugador.foto;
 }
 
-function cerrarSesion(){
+function calcularEdad(fechaNacimiento){
 
-    localStorage.removeItem("jugador_actual");
+    if(!fechaNacimiento) return '--';
 
-    window.location.href = "login.html";
+    const fecha = new Date(fechaNacimiento);
+
+    if(isNaN(fecha.getTime())) return '--';
+
+    const hoy = new Date();
+
+    let edad = hoy.getFullYear() - fecha.getFullYear();
+
+    const mes = hoy.getMonth() - fecha.getMonth();
+
+    if(mes < 0 || (mes === 0 && hoy.getDate() < fecha.getDate())){
+        edad--;
+    }
+
+    return edad;
+
+}
+
+function renderProgressCircle(value,colorClass){
+
+    const valor = Number(value) || 0;
+
+    const radius = 40;
+    const circumference = 2 * Math.PI * radius;
+
+    const percent = valor / 10;
+
+    const offset = circumference - (percent * circumference);
+
+    return `
+    <div class="progress-circle">
+
+        <svg viewBox="0 0 100 100">
+
+            <circle
+                class="progress-circle-bg"
+                cx="50"
+                cy="50"
+                r="40"
+            />
+
+            <circle
+                class="progress-circle-fill ${colorClass}"
+                cx="50"
+                cy="50"
+                r="40"
+                stroke-dasharray="${circumference}"
+                stroke-dashoffset="${offset}"
+            />
+
+        </svg>
+
+        <div class="progress-circle-text">${valor}</div>
+
+    </div>
+    `;
+
+}
+
+function getGolesDescription(goles){
+
+    goles = Number(goles) || 0;
+
+    if(goles === 0) return 'Sin goles';
+    if(goles < 5) return 'En progreso';
+    if(goles < 10) return 'Buena racha';
+    if(goles < 20) return 'Goleador';
+
+    return 'Artillero';
+
+}
+
+async function cargarPerfil(cedula){
+
+    const container = document.getElementById('perfilContent');
+
+    try{
+
+        validateConfig();
+
+        const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
+
+        const resp = await fetch(url);
+
+        if(!resp.ok){
+            throw new Error('Error de conexión');
+        }
+
+        const data = await resp.json();
+
+        console.log('Perfil:', data);
+
+        if(data.success && data.jugador){
+
+            const j = data.jugador;
+
+            const sanitized = {
+
+                primerNombre: escapeHtml(j.primerNombre || ''),
+                segundoNombre: escapeHtml(j.segundoNombre || ''),
+                urlFotoRostro: escapeHtml(j.urlFotoRostro || CONFIG.DEFAULT_AVATAR),
+
+                fechaNacimiento: escapeHtml(j.fechaNacimiento || ''),
+
+                nombreCamiseta: escapeHtml(j.nombreCamiseta || 'NÁPOLES'),
+
+                dorsal: escapeHtml(j.dorsal || '00'),
+
+                partidosJugados: Number(j.partidosJugados) || 0,
+                goles: Number(j.goles) || 0,
+                amarillas: Number(j.amarillas) || 0,
+                rojas: Number(j.rojas) || 0,
+
+                puntualidad: Number(j.puntualidad) || 0,
+                companerismo: Number(j.companerismo) || 0,
+                respeto: Number(j.respeto) || 0,
+                humildad: Number(j.humildad) || 0,
+
+                deudaVocalia: Number(j.deudaVocalia) || 0,
+                multaEspecial: Number(j.multaEspecial) || 0,
+
+                inscripEstado: escapeHtml(j.inscripEstado || 'PENDIENTE'),
+                unifEstado: escapeHtml(j.unifEstado || 'PENDIENTE'),
+                mediasEstado: escapeHtml(j.mediasEstado || 'PENDIENTE')
+
+            };
+
+            const edadJugador = calcularEdad(sanitized.fechaNacimiento);
+
+            const deudaTarjetas =
+                (sanitized.amarillas * 1.5) +
+                (sanitized.rojas * 3) +
+                sanitized.multaEspecial;
+
+            const totalGeneral =
+                sanitized.deudaVocalia +
+                deudaTarjetas;
+
+            const promedio = Math.round(
+                (
+                    sanitized.puntualidad +
+                    sanitized.companerismo +
+                    sanitized.respeto +
+                    sanitized.humildad
+                ) / 4
+            );
+
+            const golesDesc = getGolesDescription(sanitized.goles);
+
+            container.innerHTML = `
+
+            <div class="profile-header">
+                <h1>⚜️ PANEL NÁPOLES ⚜️</h1>
+            </div>
+
+            <div class="cards-row">
+
+                <div class="id-card-identity glass-card">
+
+                    <img
+                        src="${sanitized.urlFotoRostro}"
+                        class="player-img"
+                        onerror="this.src='${CONFIG.DEFAULT_AVATAR}'"
+                    >
+
+                    <div style="
+                        font-weight:900;
+                        font-family:'Outfit';
+                        text-transform:uppercase;
+                        font-size:.9rem;
+                        text-align:center;
+                    ">
+                        ${sanitized.primerNombre}
+                        ${sanitized.segundoNombre}
+                    </div>
+
+                    <div style="
+                        font-size:.6rem;
+                        color:var(--text-muted);
+                        margin-top:2px;
+                    ">
+                        <i class="fas fa-id-card"></i>
+                        C.I. ${escapeHtml(cedula)}
+                    </div>
+
+                    <div style="
+                        margin-top:8px;
+                        background:rgba(212,175,55,.12);
+                        border:1px solid rgba(212,175,55,.3);
+                        padding:6px 12px;
+                        border-radius:12px;
+                        font-size:.75rem;
+                        color:var(--primary-gold);
+                        font-weight:700;
+                    ">
+                        <i class="fas fa-cake-candles"></i>
+                        ${edadJugador} AÑOS
+                    </div>
+
+                </div>
+
+                <div class="id-card-jersey-wrap">
+
+                    <div class="jersey-card-inner">
+
+                        <div class="face-jersey-front">
+
+                            <div class="jersey-top-name">
+                                ${sanitized.nombreCamiseta}
+                            </div>
+
+                            <div class="jersey-number">
+                                ${sanitized.dorsal}
+                            </div>
+
+                        </div>
+
+                        <div class="face-jersey-back">
+
+                            <div class="jersey-top-name">
+                                ${sanitized.nombreCamiseta}
+                            </div>
+
+                            <div class="jersey-number">
+                                ${sanitized.dorsal}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="btn-sync" onclick="window.recargarPerfil()">
+                <i class="fas fa-sync-alt"></i>
+                ACTUALIZAR INFORMACIÓN
+            </button>
+
+            <div class="stats-section">
+
+                <div class="stats-grid">
+
+                    <div class="stat-card-modern">
+                        <i class="fas fa-running"></i>
+                        <div class="stat-value">
+                            ${sanitized.partidosJugados}
+                        </div>
+                        <div class="stat-label-modern">
+                            PARTIDOS
+                        </div>
+                    </div>
+
+                    <div class="stat-card-modern">
+                        <i class="fas fa-futbol"></i>
+                        <div class="stat-value">
+                            ${sanitized.goles}
+                        </div>
+                        <div class="stat-label-modern">
+                            ${golesDesc}
+                        </div>
+                    </div>
+
+                    <div class="stat-card-modern">
+                        <i class="fas fa-square" style="color:#f39c12"></i>
+                        <div class="stat-value">
+                            ${sanitized.amarillas}
+                        </div>
+                        <div class="stat-label-modern">
+                            AMARILLAS
+                        </div>
+                    </div>
+
+                    <div class="stat-card-modern">
+                        <i class="fas fa-square" style="color:#e74c3c"></i>
+                        <div class="stat-value">
+                            ${sanitized.rojas}
+                        </div>
+                        <div class="stat-label-modern">
+                            ROJAS
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="performance-section">
+
+                <div class="section-title">
+                    <i class="fas fa-heartbeat"></i>
+                    Rendimiento Humano
+                </div>
+
+                <div class="performance-grid">
+
+                    <div class="metric-card">
+                        ${renderProgressCircle(sanitized.puntualidad,'puntualidad')}
+                        <div>Puntualidad</div>
+                    </div>
+
+                    <div class="metric-card">
+                        ${renderProgressCircle(sanitized.companerismo,'companerismo')}
+                        <div>Compañerismo</div>
+                    </div>
+
+                    <div class="metric-card">
+                        ${renderProgressCircle(sanitized.respeto,'respeto')}
+                        <div>Respeto</div>
+                    </div>
+
+                    <div class="metric-card">
+                        ${renderProgressCircle(sanitized.humildad,'humildad')}
+                        <div>Humildad</div>
+                    </div>
+
+                </div>
+
+                <div class="average-container">
+
+                    <div>PROMEDIO GENERAL</div>
+
+                    <div class="average-score">
+                        ${promedio}/10
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="section-box">
+
+                <div class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Estado Administrativo
+                </div>
+
+                <div class="admin-stats-grid">
+
+                    <div class="admin-stat-card">
+                        <i class="fas fa-file-signature"></i>
+                        <div class="admin-stat-value">
+                            ${sanitized.inscripEstado}
+                        </div>
+                        <div class="admin-stat-label">
+                            INSCRIPCIÓN
+                        </div>
+                    </div>
+
+                    <div class="admin-stat-card">
+                        <i class="fas fa-tshirt"></i>
+                        <div class="admin-stat-value">
+                            ${sanitized.unifEstado}
+                        </div>
+                        <div class="admin-stat-label">
+                            UNIFORME
+                        </div>
+                    </div>
+
+                    <div class="admin-stat-card">
+                        <i class="fas fa-socks"></i>
+                        <div class="admin-stat-value">
+                            ${sanitized.mediasEstado}
+                        </div>
+                        <div class="admin-stat-label">
+                            MEDIAS
+                        </div>
+                    </div>
+
+                    <div class="admin-stat-card">
+                        <i class="fas fa-dollar-sign"></i>
+                        <div class="admin-stat-value">
+                            $${sanitized.deudaVocalia.toFixed(2)}
+                        </div>
+                        <div class="admin-stat-label">
+                            VOCALÍA
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="debt-container">
+
+                    <div class="debt-header">
+
+                        <span class="debt-label">
+                            MULTAS Y TARJETAS
+                        </span>
+
+                        <span class="debt-amount danger">
+                            $${deudaTarjetas.toFixed(2)}
+                        </span>
+
+                    </div>
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        margin-bottom:8px;
+                    ">
+                        <span>
+                            Amarillas (${sanitized.amarillas})
+                        </span>
+
+                        <strong>
+                            $${(sanitized.amarillas * 1.5).toFixed(2)}
+                        </strong>
+                    </div>
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        margin-bottom:8px;
+                    ">
+                        <span>
+                            Rojas (${sanitized.rojas})
+                        </span>
+
+                        <strong>
+                            $${(sanitized.rojas * 3).toFixed(2)}
+                        </strong>
+                    </div>
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                    ">
+                        <span>
+                            Multa Especial
+                        </span>
+
+                        <strong>
+                            $${sanitized.multaEspecial.toFixed(2)}
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div style="
+                    margin-top:15px;
+                    padding:14px;
+                    border-radius:14px;
+                    background:rgba(231,76,60,.12);
+                    text-align:center;
+                ">
+
+                    <div style="
+                        font-size:.7rem;
+                        color:var(--text-muted);
+                    ">
+                        TOTAL GENERAL PENDIENTE
+                    </div>
+
+                    <div style="
+                        font-size:2rem;
+                        font-weight:900;
+                        color:#e74c3c;
+                    ">
+                        $${totalGeneral.toFixed(2)}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="btn-logout" onclick="window.cerrarSesion()">
+                <i class="fas fa-sign-out-alt"></i>
+                CERRAR SESIÓN
+            </button>
+
+            <div style="height:30px;"></div>
+
+            `;
+
+        }else{
+
+            container.innerHTML = `
+            <div class="error-message">
+                ❌ Jugador no encontrado
+            </div>
+            `;
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+        <div class="error-message">
+            ❌ ${escapeHtml(error.message)}
+        </div>
+        `;
+
+    }
+
+}
+
+window.recargarPerfil = async function(){
+
+    const session = JSON.parse(
+        localStorage.getItem('jugador_actual')
+    );
+
+    if(!session || !session.cedula){
+
+        window.location.href = 'login.html';
+        return;
+
+    }
+
+    document.getElementById('perfilContent').innerHTML =
+        '<div class="spinner"></div>';
+
+    await cargarPerfil(session.cedula);
+
+}
+
+window.cerrarSesion = function(){
+
+    localStorage.removeItem('jugador_actual');
+
+    window.location.href = 'login.html';
+
+}
+
+(function(){
+
+    try{
+
+        validateConfig();
+
+        const session = JSON.parse(
+            localStorage.getItem('jugador_actual')
+        );
+
+        if(
+            !session ||
+            !session.cedula ||
+            (
+                session.expira &&
+                Date.now() > session.expira
+            )
+        ){
+
+            localStorage.removeItem('jugador_actual');
+
+            window.location.href = 'login.html';
+
+            return;
+
+        }
+
+        cargarPerfil(session.cedula);
+
+    }catch(error){
+
+        document.getElementById('perfilContent').innerHTML =
+        '<div class="error-message">'+
+        escapeHtml(error.message)+
+        '</div>';
+
+    }
+
+})();
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+    .catch(err => console.log('SW Error', err));
 }
 
 </script>
