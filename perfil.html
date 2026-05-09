@@ -1,503 +1,565 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Nápoles F.C. - Mi Perfil</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<style>
-:root{
-    --primary-gold:#D4AF37;
-    --primary-gold-light:#f5e6a3;
-    --dark-bg:#060912;
-    --card-bg:rgba(255,255,255,0.05);
-    --text-main:#fff;
-    --text-muted:#a0a0a0;
-    --success:#2ecc71;
-    --danger:#e74c3c;
-    --warning:#f39c12;
-    --info:#3498db;
-}
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-body{
-    background:radial-gradient(circle at top,#111a33 0%,#060912 100%);
-    font-family:'Inter',sans-serif;
-    min-height:100vh;
-    padding:15px;
-    color:var(--text-main);
-    display:flex;
-    justify-content:center;
-}
-.profile-container{
-    width:100%;
-    max-width:450px;
-}
-.profile-header{
-    text-align:center;
-    margin-bottom:20px;
-}
-.profile-header h1{
-    font-family:'Outfit',sans-serif;
-    font-size:1.4rem;
-    color:var(--primary-gold);
-    text-transform:uppercase;
-    letter-spacing:2px;
-}
-.cards-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-bottom:20px;
-}
-.glass-card{
-    background:linear-gradient(145deg, rgba(10,20,40,.85), rgba(5,10,20,.95));
-    border-radius:20px;
-    border:1px solid rgba(212,175,55,.3);
-    overflow:hidden;
-}
-.id-card-identity{
-    padding:15px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-}
-.player-img{
-    width:80px;
-    height:80px;
-    border-radius:50%;
-    object-fit:cover;
-    border:3px solid var(--primary-gold);
-    margin-bottom:10px;
-    background:#000;
-}
-.id-card-jersey-wrap{
-    perspective:800px;
-    height:180px;
-}
-.jersey-card-inner{
-    width:100%;
-    height:100%;
-    position:relative;
-    transform-style:preserve-3d;
-    animation:rotateJersey 12s linear infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-    .jersey-card-inner { animation: none; }
-}
-@keyframes rotateJersey{
-    0%{transform:rotateY(0deg);}
-    100%{transform:rotateY(360deg);}
-}
-.face-jersey-front,
-.face-jersey-back{
-    position:absolute;
-    width:100%;
-    height:100%;
-    border-radius:20px;
-    backface-visibility:hidden;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(145deg,#0a1428,#000814);
-    border:2px solid rgba(212,175,55,.4);
-}
-.face-jersey-back{
-    transform:rotateY(180deg);
-}
-.jersey-top-name{
-    position:absolute;
-    top:14px;
-    font-size:.7rem;
-    font-weight:900;
-    letter-spacing:2px;
-    color:var(--primary-gold-light);
-    text-transform:uppercase;
-}
-.jersey-number{
-    font-size:4.5rem;
-    font-weight:900;
-    color:var(--primary-gold);
-    font-family:'Outfit';
-}
-.stats-section,
-.performance-section,
-.section-box{
-    background:var(--card-bg);
-    border-radius:20px;
-    padding:15px;
-    margin-bottom:15px;
-    border:1px solid rgba(255,255,255,.05);
-}
-.section-title{
-    font-size:.8rem;
-    font-weight:800;
-    color:var(--primary-gold);
-    margin-bottom:15px;
-    text-transform:uppercase;
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-.stats-grid,
-.admin-stats-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-}
-.stat-card-modern,
-.admin-stat-card{
-    background:rgba(0,0,0,.35);
-    border-radius:18px;
-    padding:14px;
-    text-align:center;
-    border:1px solid rgba(255,255,255,.06);
-}
-.stat-value{
-    font-size:1.8rem;
-    font-weight:900;
-    margin-top:5px;
-}
-.stat-label-modern,
-.admin-stat-label{
-    font-size:.65rem;
-    color:var(--text-muted);
-    margin-top:5px;
-}
-.performance-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-.metric-card{
-    background:rgba(0,0,0,.35);
-    border-radius:18px;
-    padding:15px 10px;
-    text-align:center;
-}
-.progress-circle{
-    position:relative;
-    width:90px;
-    height:90px;
-    margin:0 auto 10px;
-}
-.progress-circle svg{
-    transform:rotate(-90deg);
-    width:100%;
-    height:100%;
-}
-.progress-circle-bg{
-    stroke:rgba(255,255,255,.1);
-    stroke-width:8;
-    fill:none;
-}
-.progress-circle-fill{
-    stroke-width:8;
-    fill:none;
-    stroke-linecap:round;
-}
-.progress-circle-fill.puntualidad{stroke:#3498db;}
-.progress-circle-fill.companerismo{stroke:#2ecc71;}
-.progress-circle-fill.respeto{stroke:#f39c12;}
-.progress-circle-fill.humildad{stroke:#9b59b6;}
-.progress-circle-text{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-size:1.4rem;
-    font-weight:900;
-}
-.average-container{
-    margin-top:15px;
-    padding:15px;
-    border-radius:16px;
-    background:rgba(212,175,55,.08);
-    text-align:center;
-}
-.average-score{
-    font-size:2rem;
-    font-weight:900;
-    color:var(--primary-gold);
-}
-.btn-sync,
-.btn-logout{
-    width:100%;
-    border:none;
-    border-radius:14px;
-    padding:14px;
-    font-weight:800;
-    cursor:pointer;
-}
-.btn-sync{
-    background:rgba(212,175,55,.15);
-    border:1px solid var(--primary-gold);
-    color:var(--primary-gold);
-    margin-bottom:15px;
-}
-.btn-logout{
-    background:rgba(231,76,60,.15);
-    color:#e74c3c;
-}
-.spinner{
-    width:40px;
-    height:40px;
-    border:3px solid rgba(255,255,255,.1);
-    border-top-color:var(--primary-gold);
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin:100px auto;
-}
-@keyframes spin{
-    to{transform:rotate(360deg);}
-}
-.error-message{
-    text-align:center;
-    padding:50px;
-    color:var(--danger);
-}
-.debt-container{
-    background:rgba(0,0,0,.45);
-    border-radius:14px;
-    padding:14px;
-    margin-top:15px;
-}
-.debt-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-}
-.debt-label{
-    font-size:.75rem;
-    color:var(--text-muted);
-}
-.debt-amount{
-    font-size:1.3rem;
-    font-weight:900;
-}
-.danger{
-    color:var(--danger);
-}
-.success{
-    color:var(--success);
-}
-.empty-message{
-    text-align:center;
-    padding:20px;
-    color:var(--text-muted);
-    font-size:.8rem;
-}
-@media(max-width:400px){
-    .jersey-number{
-        font-size:3.5rem;
-    }
-    .player-img{
-        width:65px;
-        height:65px;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nápoles F.C. - Mi Perfil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-gold: #D4AF37;
+            --primary-gold-light: #f5e6a3;
+            --primary-gold-glow: rgba(212, 175, 55, 0.6);
+            --dark-bg: #060912;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background: radial-gradient(circle at top, #111a33 0%, #060912 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 15px;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-container { width: 100%; max-width: 450px; }
+
+        .profile-header { text-align: center; margin-bottom: 20px; }
+        .profile-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- FILA DE TARJETAS (IDENTIDAD Y CAMISETA) --- */
+        .cards-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* ESTILO BASE COMÚN PARA AMBAS TARJETAS */
+        .glass-card {
+            background: linear-gradient(145deg, rgba(10, 20, 40, 0.85), rgba(5, 10, 20, 0.95));
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* EFECTO DE LUZ BRILLANTE (SHIMMER) PARA AMBAS TARJETAS */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(212, 175, 55, 0.15),
+                rgba(212, 175, 55, 0.3),
+                rgba(212, 175, 55, 0.15),
+                transparent
+            );
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* EFECTO DE BRILLO EN LOS BORDES */
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(212, 175, 55, 0.4), 
+                rgba(212, 175, 55, 0.1),
+                rgba(212, 175, 55, 0.4),
+                transparent 70%);
+            border-radius: 22px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glass-card:hover::after {
+            opacity: 1;
+            animation: borderGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* TARJETA DE IDENTIDAD */
+        .id-card-identity {
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ANIMACIÓN DE PULSO SUAVE PARA LA TARJETA DE IDENTIDAD */
+        .id-card-identity {
+            animation: softPulse 3s infinite ease-in-out;
+        }
+
+        @keyframes softPulse {
+            0%, 100% { 
+                box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+                border-color: rgba(212, 175, 55, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+                border-color: rgba(212, 175, 55, 0.6);
+            }
+        }
+
+        .player-img {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-gold);
+            object-fit: cover;
+            margin-bottom: 10px;
+            background: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .player-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* --- TARJETA DE CAMISETA 3D CORREGIDA --- */
+        .id-card-jersey-wrap { 
+            perspective: 800px; 
+            height: 180px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .jersey-card-inner {
+            position: relative; 
+            width: 100%; 
+            height: 100%;
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            /* Animación de rotación continua y suave */
+            animation: rotateJerseySmooth 12s infinite linear;
+            will-change: transform;
+        }
+
+        /* Rotación completa en 3D sobre el eje Y */
+        @keyframes rotateJerseySmooth {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        /* Pausar animación al hacer hover sobre el contenedor */
+        .id-card-jersey-wrap:hover .jersey-card-inner {
+            animation-play-state: paused;
+        }
+
+        /* Caras de la tarjeta 3D */
+        .face-jersey {
+            position: absolute; 
+            width: 100%; 
+            height: 100%;
+            background: linear-gradient(145deg, #0a1428, #000814);
+            border-radius: 20px; 
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            backface-visibility: hidden;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+        }
+        
+        /* Cara frontal (por defecto) */
+        .face-jersey {
+            transform: rotateY(0deg);
+        }
+
+        /* Luz reflejante en la camiseta */
+        .face-jersey::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .id-card-jersey-wrap:hover .face-jersey::before {
+            opacity: 1;
+            animation: lensFlare 2s infinite;
+        }
+
+        @keyframes lensFlare {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translate(15%, 15%) rotate(45deg); opacity: 0.7; }
+            100% { transform: translate(-15%, -15%) rotate(90deg); opacity: 0.3; }
+        }
+
+        .jersey-number { 
+            font-size: 4.5rem; 
+            font-weight: 900; 
+            color: var(--primary-gold); 
+            font-family: 'Outfit'; 
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .jersey-name {
+            font-size: 0.7rem; 
+            font-weight: 800; 
+            opacity: 0.9; 
+            letter-spacing: 2px;
+            color: var(--primary-gold-light);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        /* --- ESTADÍSTICAS --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
+        .stat-card {
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            padding: 10px 5px;
+            text-align: center; 
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .stat-val { display: block; font-size: 1.1rem; font-weight: 800; }
+        .stat-lab { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
+
+        /* --- BLOQUES DE INFO --- */
+        .section-box {
+            background: var(--card-bg); 
+            border-radius: 18px; 
+            padding: 15px;
+            margin-bottom: 12px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .section-box:hover {
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+        .section-title {
+            font-size: 0.8rem; 
+            font-weight: 800; 
+            color: var(--primary-gold);
+            margin-bottom: 12px; 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 10px 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.85rem;
+        }
+        .info-row:last-child { border: none; }
+        .info-label { display: flex; align-items: center; gap: 10px; color: var(--text-muted); }
+        .info-label i { width: 16px; text-align: center; color: var(--primary-gold); }
+        .info-value { font-weight: 700; color: #fff; }
+
+        /* COLORES DINÁMICOS */
+        .status-red { color: var(--danger) !important; }
+        .status-green { color: var(--success) !important; }
+
+        .btn-sync {
+            width: 100%; 
+            background: linear-gradient(135deg, transparent, rgba(212, 175, 55, 0.1));
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold); 
+            padding: 12px; 
+            border-radius: 12px;
+            font-weight: 700; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            margin-bottom: 15px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .btn-sync:hover {
+            background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .btn-sync:active { transform: scale(0.98); }
+
+        .btn-logout {
+            width: 100%; 
+            padding: 15px; 
+            border-radius: 15px; 
+            border: none;
+            background: rgba(231, 76, 60, 0.1); 
+            color: #e74c3c;
+            font-weight: 800; 
+            cursor: pointer; 
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-logout:hover {
+            background: rgba(231, 76, 60, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .spinner { 
+            width: 40px; 
+            height: 40px; 
+            border: 3px solid rgba(212, 175, 55, 0.1); 
+            border-top-color: var(--primary-gold); 
+            border-radius: 50%; 
+            animation: spin 1s infinite linear; 
+            margin: 100px auto; 
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .error-message { text-align: center; padding: 50px; color: var(--danger); }
+        
+        /* Ajustes responsivos */
+        @media (max-width: 400px) {
+            .jersey-number { font-size: 3.5rem; }
+            .player-img { width: 65px; height: 65px; }
+            .id-card-jersey-wrap { height: 160px; }
+        }
+    </style>
 </head>
 <body>
+
 <div class="profile-container" id="perfilContent">
     <div class="spinner"></div>
 </div>
+
 <script src="config.js"></script>
 <script>
-// ------------------------------------------------------------
-// UTILIDADES SEGURAS
-// ------------------------------------------------------------
-function escapeHtml(str){
-    if(!str) return '';
-    return String(str)
-        .replace(/&/g,'&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;')
-        .replace(/"/g,'&quot;')
-        .replace(/'/g,'&#39;');
-}
-function sanitizeUrl(url){
-    if(!url) return CONFIG.DEFAULT_AVATAR || 'https://via.placeholder.com/80';
-    let clean = String(url).trim();
-    if(clean.startsWith('javascript:') || clean.startsWith('data:')) return CONFIG.DEFAULT_AVATAR;
-    return clean;
-}
-function validateConfig(){
-    if(typeof CONFIG === 'undefined') throw new Error('No se pudo cargar config.js');
-    if(!CONFIG.URL_GAS) throw new Error('URL_GAS no definida');
-    if(!CONFIG.DEFAULT_AVATAR) CONFIG.DEFAULT_AVATAR = 'https://via.placeholder.com/80';
-}
-function calcularEdad(fechaNacimiento){
-    if(!fechaNacimiento) return '--';
-    let fecha = new Date(fechaNacimiento);
-    if(isNaN(fecha.getTime())){
-        let partes = fechaNacimiento.split(/[\/\-]/);
-        if(partes.length===3){
-            let dia = parseInt(partes[0],10);
-            let mes = parseInt(partes[1],10)-1;
-            let anio = parseInt(partes[2],10);
-            fecha = new Date(anio, mes, dia);
+    (function() {
+        // Verificar que CONFIG existe
+        if (typeof CONFIG === 'undefined') {
+            document.getElementById('perfilContent').innerHTML = 
+                '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><br>Error de configuración: No se pudo cargar config.js</div>';
+            return;
         }
-    }
-    if(isNaN(fecha.getTime())) return '--';
-    let hoy = new Date();
-    let edad = hoy.getFullYear() - fecha.getFullYear();
-    let mes = hoy.getMonth() - fecha.getMonth();
-    if(mes < 0 || (mes===0 && hoy.getDate() < fecha.getDate())) edad--;
-    return edad;
-}
-function renderProgressCircle(valorRaw, colorClass){
-    let value = Math.min(10, Math.max(0, Number(valorRaw) || 0));
-    let radius = 40;
-    let circumference = 2 * Math.PI * radius;
-    let percent = value / 10;
-    let offset = circumference - (percent * circumference);
-    return `<div class="progress-circle"><svg viewBox="0 0 100 100"><circle class="progress-circle-bg" cx="50" cy="50" r="40"/><circle class="progress-circle-fill ${colorClass}" cx="50" cy="50" r="40" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/></svg><div class="progress-circle-text">${value}</div></div>`;
-}
-function getGolesDescription(goles){
-    let g = Number(goles) || 0;
-    if(g===0) return 'Sin goles';
-    if(g<5) return 'En progreso';
-    if(g<10) return 'Buena racha';
-    if(g<20) return 'Goleador';
-    return 'Artillero';
-}
-// ------------------------------------------------------------
-// CARGA DE PERFIL (CORREGIDA)
-// ------------------------------------------------------------
-async function cargarPerfil(cedula){
-    const container = document.getElementById('perfilContent');
-    try {
-        validateConfig();
-        const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
-        const resp = await fetch(url);
-        if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const data = await resp.json();
-        if(data.success && data.jugador){
-            const j = data.jugador;
-            const sanitized = {
-                primerNombre: escapeHtml(j.primerNombre || ''),
-                segundoNombre: escapeHtml(j.segundoNombre || ''),
-                urlFotoRostro: sanitizeUrl(j.urlFotoRostro),
-                fechaNacimiento: j.fechaNacimiento || '',
-                nombreCamiseta: escapeHtml(j.nombreCamiseta || 'NÁPOLES'),
-                dorsal: escapeHtml(String(j.dorsal || '00')),
-                partidosJugados: Number(j.partidosJugados) || 0,
-                goles: Number(j.goles) || 0,
-                amarillas: Number(j.amarillas) || 0,
-                rojas: Number(j.rojas) || 0,
-                puntualidad: Number(j.puntualidad) || 0,
-                companerismo: Number(j.companerismo) || 0,
-                respeto: Number(j.respeto) || 0,
-                humildad: Number(j.humildad) || 0,
-                deudaVocalia: Number(j.deudaVocalia) || 0,
-                multaEspecial: Number(j.multaEspecial) || 0,
-                inscripEstado: escapeHtml(j.inscripEstado || 'PENDIENTE'),
-                unifEstado: escapeHtml(j.unifEstado || 'PENDIENTE'),
-                mediasEstado: escapeHtml(j.mediasEstado || 'PENDIENTE')
-            };
-            let edadJugador = calcularEdad(sanitized.fechaNacimiento);
-            let deudaTarjetas = (sanitized.amarillas * 1.5) + (sanitized.rojas * 3) + sanitized.multaEspecial;
-            let totalGeneral = sanitized.deudaVocalia + deudaTarjetas;
-            let promedio = Math.round((sanitized.puntualidad + sanitized.companerismo + sanitized.respeto + sanitized.humildad) / 4);
-            let golesDesc = getGolesDescription(sanitized.goles);
-            // Estadísticas dinámicas
-            let statsHtml = '';
-            if(sanitized.partidosJugados>0) statsHtml += `<div class="stat-card-modern"><i class="fas fa-running"></i><div class="stat-value">${sanitized.partidosJugados}</div><div class="stat-label-modern">PARTIDOS</div></div>`;
-            if(sanitized.goles>0) statsHtml += `<div class="stat-card-modern"><i class="fas fa-futbol"></i><div class="stat-value">${sanitized.goles}</div><div class="stat-label-modern">${golesDesc}</div></div>`;
-            if(sanitized.amarillas>0) statsHtml += `<div class="stat-card-modern"><i class="fas fa-square" style="color:#f39c12"></i><div class="stat-value">${sanitized.amarillas}</div><div class="stat-label-modern">AMARILLAS</div></div>`;
-            if(sanitized.rojas>0) statsHtml += `<div class="stat-card-modern"><i class="fas fa-square" style="color:#e74c3c"></i><div class="stat-value">${sanitized.rojas}</div><div class="stat-label-modern">ROJAS</div></div>`;
-            if(statsHtml==='') statsHtml = `<div class="empty-message">📊 Sin estadísticas registradas</div>`;
-            // Grid administrativo
-            let adminGridHtml = '';
-            if(sanitized.inscripEstado.toUpperCase().includes('PENDIENTE')) adminGridHtml += `<div class="admin-stat-card"><i class="fas fa-file-signature"></i><div class="admin-stat-value">${sanitized.inscripEstado}</div><div class="admin-stat-label">INSCRIPCIÓN</div></div>`;
-            if(sanitized.unifEstado.toUpperCase().includes('PENDIENTE')) adminGridHtml += `<div class="admin-stat-card"><i class="fas fa-tshirt"></i><div class="admin-stat-value">${sanitized.unifEstado}</div><div class="admin-stat-label">UNIFORME</div></div>`;
-            if(sanitized.mediasEstado.toUpperCase().includes('PENDIENTE')) adminGridHtml += `<div class="admin-stat-card"><i class="fas fa-socks"></i><div class="admin-stat-value">${sanitized.mediasEstado}</div><div class="admin-stat-label">MEDIAS</div></div>`;
-            if(sanitized.deudaVocalia > 0) adminGridHtml += `<div class="admin-stat-card"><i class="fas fa-dollar-sign"></i><div class="admin-stat-value">$${sanitized.deudaVocalia.toFixed(2)}</div><div class="admin-stat-label">VOCALÍA</div></div>`;
-            if(adminGridHtml==='') adminGridHtml = `<div class="empty-message">✅ Todo al día - Sin pendientes</div>`;
-            container.innerHTML = `
-            <div class="profile-header"><h1>⚜️ PANEL NÁPOLES ⚜️</h1></div>
-            <div class="cards-row">
-                <div class="id-card-identity glass-card">
-                    <img src="${sanitized.urlFotoRostro}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'" alt="Foto">
-                    <div style="font-weight:900; font-family:'Outfit'; text-transform:uppercase; font-size:.9rem;">${sanitized.primerNombre} ${sanitized.segundoNombre}</div>
-                    <div style="font-size:.6rem; color:var(--text-muted); margin-top:2px;"><i class="fas fa-id-card"></i> C.I. ${escapeHtml(cedula)}</div>
-                    <div style="margin-top:8px; background:rgba(212,175,55,.12); border:1px solid rgba(212,175,55,.3); padding:6px 12px; border-radius:12px; font-size:.75rem; color:var(--primary-gold); font-weight:700;"><i class="fas fa-cake-candles"></i> ${edadJugador} AÑOS</div>
-                </div>
-                <div class="id-card-jersey-wrap"><div class="jersey-card-inner"><div class="face-jersey-front"><div class="jersey-top-name">${sanitized.nombreCamiseta}</div><div class="jersey-number">${sanitized.dorsal}</div></div><div class="face-jersey-back"><div class="jersey-top-name">${sanitized.nombreCamiseta}</div><div class="jersey-number">${sanitized.dorsal}</div></div></div></div>
-            </div>
-            <button class="btn-sync" onclick="window.recargarPerfil()"><i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN</button>
-            <div class="stats-section"><div class="stats-grid">${statsHtml}</div></div>
-            <div class="performance-section"><div class="section-title"><i class="fas fa-heartbeat"></i> Rendimiento Humano</div><div class="performance-grid"><div class="metric-card">${renderProgressCircle(sanitized.puntualidad,'puntualidad')}<div>Puntualidad</div></div><div class="metric-card">${renderProgressCircle(sanitized.companerismo,'companerismo')}<div>Compañerismo</div></div><div class="metric-card">${renderProgressCircle(sanitized.respeto,'respeto')}<div>Respeto</div></div><div class="metric-card">${renderProgressCircle(sanitized.humildad,'humildad')}<div>Humildad</div></div></div><div class="average-container"><div>PROMEDIO GENERAL</div><div class="average-score">${promedio}/10</div></div></div>
-            <div class="section-box"><div class="section-title"><i class="fas fa-chart-line"></i> Estado Administrativo</div><div class="admin-stats-grid">${adminGridHtml}</div>
-            ${deudaTarjetas > 0 ? `<div class="debt-container"><div class="debt-header"><span class="debt-label">MULTAS Y TARJETAS</span><span class="debt-amount danger">$${deudaTarjetas.toFixed(2)}</span></div>${sanitized.amarillas>0?`<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Amarillas (${sanitized.amarillas})</span><strong>$${(sanitized.amarillas*1.5).toFixed(2)}</strong></div>`:''}${sanitized.rojas>0?`<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Rojas (${sanitized.rojas})</span><strong>$${(sanitized.rojas*3).toFixed(2)}</strong></div>`:''}${sanitized.multaEspecial>0?`<div style="display:flex; justify-content:space-between;"><span>Multa Especial</span><strong>$${sanitized.multaEspecial.toFixed(2)}</strong></div>`:''}</div>`:''}
-            ${totalGeneral > 0 ? `<div style="margin-top:15px; padding:14px; border-radius:14px; background:rgba(231,76,60,.12); text-align:center;"><div style="font-size:.7rem; color:var(--text-muted);">TOTAL GENERAL PENDIENTE</div><div style="font-size:2rem; font-weight:900; color:#e74c3c;">$${totalGeneral.toFixed(2)}</div></div>`:''}
-            </div>
-            <button class="btn-logout" onclick="window.cerrarSesion()"><i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN</button>
-            <div style="height:30px;"></div>`;
-        } else {
-            container.innerHTML = `<div class="error-message">⚠️ Jugador no encontrado o datos incorrectos.</div>`;
-        }
-    } catch(e){
-        console.error(e);
-        container.innerHTML = `<div class="error-message">❌ Error al cargar perfil: ${escapeHtml(e.message)}</div>`;
-    }
-}
-// ------------------------------------------------------------
-// RECARGAR Y CERRAR SESIÓN
-// ------------------------------------------------------------
-window.recargarPerfil = async function(){
-    let session = null;
-    try {
-        session = JSON.parse(localStorage.getItem('jugador_actual'));
-    } catch(e){
-        console.error("Error parsing session", e);
-        window.location.href = 'login.html';
-        return;
-    }
-    if(!session || !session.cedula){
-        window.location.href = 'login.html';
-        return;
-    }
-    document.getElementById('perfilContent').innerHTML = '<div class="spinner"></div>';
-    await cargarPerfil(session.cedula);
-};
-window.cerrarSesion = function(){
-    localStorage.removeItem('jugador_actual');
-    window.location.href = 'login.html';
-};
-// ------------------------------------------------------------
-// INICIALIZACIÓN
-// ------------------------------------------------------------
-(async function(){
-    try {
-        validateConfig();
-        let session = null;
-        try {
-            session = JSON.parse(localStorage.getItem('jugador_actual'));
-            console.log("Sesión leída en perfil:", session);
-        } catch(e){
-            throw new Error("Sesión corrupta. Inicia sesión nuevamente.");
-        }
-        if(!session || !session.cedula){
-            console.warn("No hay sesión o cédula, redirigiendo a login");
+        
+        const session = JSON.parse(localStorage.getItem('jugador_actual'));
+        
+        if (!session || !session.cedula) {
             window.location.href = 'login.html';
             return;
         }
-        await cargarPerfil(session.cedula);
-    } catch(e){
-        console.error(e);
-        document.getElementById('perfilContent').innerHTML = `<div class="error-message">🔐 ${escapeHtml(e.message)}</div>`;
-        setTimeout(() => { window.location.href = 'login.html'; }, 3000);
+        
+        cargarPerfil(session.cedula);
+    })();
+
+    async function cargarPerfil(cedula) {
+        const container = document.getElementById('perfilContent');
+        try {
+            const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${cedula}&t=${Date.now()}`;
+            console.log('Consultando:', url);
+            
+            const resp = await fetch(url);
+            const data = await resp.json();
+            
+            if (data.success && data.jugador) {
+                const j = data.jugador;
+                
+                // Lógica de colores para estados de texto
+                const getStatusClass = (val) => {
+                    if (!val) return 'status-red';
+                    const v = String(val).toUpperCase();
+                    if (v.includes('PENDIENTE') || v.includes('DEBE') || v === 'NO') return 'status-red';
+                    if (v.includes('PAGADO') || v.includes('ENTREGADO') || v === 'SI' || v === 'OK') return 'status-green';
+                    return '';
+                };
+
+                container.innerHTML = `
+                    <div class="profile-header">
+                        <h1>⚜️ PANEL NÁPOLES ⚜️</h1>
+                    </div>
+
+                    <div class="cards-row">
+                        <!-- TARJETA DE IDENTIDAD CON LUZ -->
+                        <div class="id-card-identity glass-card">
+                            <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
+                            <div style="font-weight:900; font-family:'Outfit'; text-transform:uppercase; font-size:0.9rem;">${j.primerNombre || ''} ${j.segundoNombre || ''}</div>
+                            <div style="font-size:0.6rem; color:var(--text-muted); margin-top:2px;">
+                                <i class="fas fa-id-card"></i> C.I. ${cedula}
+                            </div>
+                        </div>
+
+                        <!-- TARJETA DE CAMISETA 3D CORREGIDA: ROTACIÓN CONTINUA Y SUAVE -->
+                        <div class="id-card-jersey-wrap">
+                            <div class="jersey-card-inner">
+                                <div class="face-jersey">
+                                    <div class="jersey-name">${j.nombreCamiseta || 'NÁPOLES'}</div>
+                                    <div class="jersey-number">${j.dorsal || '00'}</div>
+                                    <div style="font-size:0.55rem; opacity:0.6; margin-top:5px;">
+                                        <i class="fas fa-tshirt"></i> ${j.tallaUni || 'M'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-sync" onclick="recargarPerfil()">
+                        <i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN
+                    </button>
+
+                    <!-- ESTADÍSTICAS DE JUEGO -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-running" style="color:var(--primary-gold)"></i>
+                            <span class="stat-val">${j.partidosJugados || 0}</span>
+                            <span class="stat-lab">P. Jugados</span>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-futbol"></i>
+                            <span class="stat-val">${j.goles || 0}</span>
+                            <span class="stat-lab">Goles</span>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-clone" style="color:#f1c40f"></i>
+                            <span class="stat-val">${j.amarillas || 0}</span>
+                            <span class="stat-lab">Amas.</span>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-clone" style="color:#e74c3c"></i>
+                            <span class="stat-val">${j.rojas || 0}</span>
+                            <span class="stat-lab">Rojas</span>
+                        </div>
+                    </div>
+
+                    <!-- RENDIMIENTO HUMANO (PROMEDIOS) -->
+                    <div class="section-box">
+                        <div class="section-title"><i class="fas fa-star"></i> Rendimiento Humano</div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-clock"></i> Puntualidad</div>
+                            <div class="info-value">${j.puntualidad || 0}/10</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-handshake"></i> Compañerismo</div>
+                            <div class="info-value">${j.companerismo || 0}/10</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-balance-scale"></i> Respeto</div>
+                            <div class="info-value">${j.respeto || 0}/10</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-heart"></i> Humildad</div>
+                            <div class="info-value">${j.humildad || 0}/10</div>
+                        </div>
+                    </div>
+
+                    <!-- GESTIÓN ADMINISTRATIVA -->
+                    <div class="section-box">
+                        <div class="section-title"><i class="fas fa-wallet"></i> Estado Administrativo</div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-exclamation-circle"></i> Deuda Vocalía</div>
+                            <div class="info-value ${Number(j.deudaVocalia) > 0 ? 'status-red' : 'status-green'}">$${j.deudaVocalia || 0}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-file-invoice-dollar"></i> Inscripción</div>
+                            <div class="info-value ${getStatusClass(j.inscripEstado)}">${j.inscripEstado || 'PENDIENTE'}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-tshirt"></i> Uniforme</div>
+                            <div class="info-value ${getStatusClass(j.unifEstado)}">${j.unifEstado || 'PENDIENTE'}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-socks"></i> Medias</div>
+                            <div class="info-value ${getStatusClass(j.mediasEstado)}">${(j.mediasEstado === 'null' || !j.mediasEstado) ? 'N/A' : j.mediasEstado}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-ruler"></i> Talla</div>
+                            <div class="info-value" style="color:var(--primary-gold)">${j.tallaUni || 'POR DEFINIR'}</div>
+                        </div>
+                    </div>
+
+                    <button class="btn-logout" onclick="cerrarSesion()">
+                        <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
+                    </button>
+                    <div style="height: 30px;"></div>
+                `;
+            } else {
+                container.innerHTML = `<p class="error-message"><i class="fas fa-user-slash"></i><br>Jugador no encontrado.<br><small>${data.error || ''}</small></p>`;
+            }
+        } catch (e) {
+            console.error('Error:', e);
+            container.innerHTML = `<p class="error-message"><i class="fas fa-wifi"></i><br>Error de conexión.<br><small>${e.message}</small></p>`;
+        }
     }
-})();
+    
+    function recargarPerfil() {
+        const session = JSON.parse(localStorage.getItem('jugador_actual'));
+        if (session && session.cedula) {
+            document.getElementById('perfilContent').innerHTML = '<div class="spinner"></div>';
+            cargarPerfil(session.cedula);
+        }
+    }
+
+    function cerrarSesion() {
+        localStorage.removeItem('jugador_actual');
+        window.location.href = 'login.html';
+    }
 </script>
+
 </body>
 </html>
