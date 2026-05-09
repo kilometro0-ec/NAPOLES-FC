@@ -11,24 +11,20 @@
             box-sizing: border-box;
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-
         body {
             background: linear-gradient(135deg, #0a0f1a 0%, #0f172a 50%, #1e1b4b 100%);
             min-height: 100vh;
             padding: 12px;
-            position: relative;
         }
-
         .container {
             max-width: 100%;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
-
         /* Header */
         .header {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             border-radius: 32px;
             padding: 12px 16px;
@@ -38,15 +34,13 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-
         .logo-area {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
         .logo-icon {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             width: 44px;
@@ -57,21 +51,18 @@
             justify-content: center;
             font-size: 1.6rem;
         }
-
         .header h1 {
             font-size: 1.2rem;
             color: white;
         }
-
         .header-buttons {
             display: flex;
             gap: 10px;
         }
-
         .btn-icon, .btn-logout {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,0.2);
             padding: 8px 16px;
             border-radius: 40px;
             cursor: pointer;
@@ -79,91 +70,74 @@
             color: white;
             transition: 0.1s;
             font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
         }
-
         .btn-logout {
-            background: rgba(220, 38, 38, 0.2);
-            border-color: rgba(220, 38, 38, 0.4);
+            background: rgba(220,38,38,0.2);
+            border-color: rgba(220,38,38,0.4);
             color: #fecaca;
         }
-
         .btn-icon:active, .btn-logout:active {
             transform: scale(0.96);
         }
-
         /* Dashboard cards */
         .welcome-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             border-radius: 32px;
             padding: 20px;
             margin-bottom: 20px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-
         .welcome-card h2 {
             font-size: 1.3rem;
             color: white;
             margin-bottom: 6px;
         }
-
         .welcome-card p {
             color: #94a3b8;
             font-size: 0.85rem;
         }
-
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 12px;
             margin-top: 20px;
         }
-
-        /* En móviles muy pequeños, una columna */
         @media (max-width: 480px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
         }
-
         .dashboard-card {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255,255,255,0.08);
             border-radius: 24px;
             padding: 18px 8px;
             text-align: center;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.1);
             position: relative;
             transition: 0.1s;
         }
-
         .dashboard-card:active {
             transform: scale(0.97);
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.15);
         }
-
         .dashboard-card .emoji {
             font-size: 2.2rem;
             display: block;
             margin-bottom: 8px;
         }
-
         .dashboard-card .title {
             font-size: 1rem;
             font-weight: 600;
             color: white;
         }
-
         .dashboard-card .description {
             font-size: 0.7rem;
             color: #94a3b8;
             margin-top: 4px;
         }
-
         .badge-pending {
             position: absolute;
             top: 8px;
@@ -175,7 +149,6 @@
             font-size: 0.7rem;
             font-weight: bold;
         }
-
         /* Tabs */
         .tabs {
             display: flex;
@@ -184,10 +157,9 @@
             margin-bottom: 16px;
             display: none;
         }
-
         .tab {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             padding: 10px 18px;
             border-radius: 60px;
             cursor: pointer;
@@ -197,12 +169,10 @@
             transition: 0.1s;
             flex: 0 0 auto;
         }
-
         .tab.active {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white;
         }
-
         .badge-count {
             background: #ef4444;
             color: white;
@@ -211,21 +181,18 @@
             font-size: 0.7rem;
             margin-left: 6px;
         }
-
         /* Paneles */
         .panel {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             border-radius: 28px;
             padding: 18px;
             display: none;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-
         .panel.active {
             display: block;
         }
-
         .panel h2 {
             font-size: 1.25rem;
             margin-bottom: 16px;
@@ -235,35 +202,30 @@
             gap: 8px;
             flex-wrap: wrap;
         }
-
-        /* Tablas con scroll horizontal */
+        /* Tablas scroll */
         .table-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             margin-bottom: 8px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.75rem;
             min-width: 500px;
         }
-
         th {
             text-align: left;
             padding: 12px 8px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             color: #94a3b8;
             font-weight: 600;
         }
-
         td {
             padding: 12px 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             color: #cbd5e1;
         }
-
         /* Botones */
         .btn-success {
             background: #059669;
@@ -275,7 +237,6 @@
             font-size: 0.75rem;
             font-weight: 500;
         }
-
         .btn-danger {
             background: #dc2626;
             color: white;
@@ -286,7 +247,6 @@
             font-size: 0.75rem;
             font-weight: 500;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white;
@@ -299,11 +259,9 @@
             width: 100%;
             margin-top: 12px;
         }
-
         .btn-primary:active {
             transform: scale(0.98);
         }
-
         .btn-warning {
             background: #d97706;
             color: white;
@@ -313,34 +271,29 @@
             cursor: pointer;
             font-size: 0.75rem;
         }
-
         .btn-sm {
             padding: 5px 12px;
             font-size: 0.7rem;
-            background: rgba(239, 68, 68, 0.3);
+            background: rgba(239,68,68,0.3);
             color: #fecaca;
             border: none;
             border-radius: 30px;
             cursor: pointer;
         }
-
-        /* Formularios */
         input, select, textarea {
             width: 100%;
             padding: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
             margin-bottom: 12px;
             font-size: 0.9rem;
             color: white;
         }
-
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #3b82f6;
         }
-
         label {
             font-weight: 500;
             margin-bottom: 6px;
@@ -348,19 +301,16 @@
             color: #94a3b8;
             font-size: 0.8rem;
         }
-
-        /* Tarjetas y utilidades */
         .card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             border-radius: 24px;
             padding: 14px;
             border-left: 3px solid #3b82f6;
             margin-bottom: 14px;
             color: #cbd5e1;
         }
-
         .info-card {
-            background: rgba(245, 158, 11, 0.1);
+            background: rgba(245,158,11,0.1);
             border-radius: 20px;
             padding: 14px;
             border-left: 3px solid #f59e0b;
@@ -368,14 +318,12 @@
             color: #fde68a;
             font-size: 0.85rem;
         }
-
         .grid-2 {
             display: flex;
             flex-direction: column;
             gap: 12px;
             margin-bottom: 16px;
         }
-
         @media (min-width: 640px) {
             .grid-2 {
                 display: grid;
@@ -383,112 +331,94 @@
                 gap: 12px;
             }
         }
-
         .match-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             border-radius: 28px;
             padding: 18px;
             margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,0.2);
             cursor: pointer;
             transition: 0.1s;
         }
-
         .match-card:active {
             transform: scale(0.98);
-            background: rgba(59, 130, 246, 0.2);
+            background: rgba(59,130,246,0.2);
         }
-
         .match-card h3 {
             color: white;
             font-size: 1rem;
             margin-bottom: 8px;
         }
-
         .match-card p {
             font-size: 0.8rem;
             color: #94a3b8;
             margin: 4px 0;
         }
-
         .checkbox-group {
             display: flex;
             align-items: center;
             gap: 14px;
             margin: 12px 0;
             padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255,255,255,0.03);
             border-radius: 20px;
         }
-
         .checkbox-group input {
             width: 22px;
             height: 22px;
             margin: 0;
             accent-color: #3b82f6;
         }
-
         .checkbox-group label {
             margin: 0;
             font-size: 0.9rem;
             color: white;
         }
-
-        /* Calificaciones */
         .cal-grid {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             margin-top: 12px;
         }
-
         .cal-header, .cal-row {
             display: flex;
             gap: 8px;
             padding: 8px;
             min-width: 620px;
         }
-
         .cal-header {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.7rem;
             color: #94a3b8;
         }
-
         .cal-row {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255,255,255,0.03);
             border-radius: 20px;
             margin-bottom: 6px;
         }
-
         .col-jugador {
             width: 130px;
             flex-shrink: 0;
             color: white;
             font-size: 0.8rem;
         }
-
         .col-num {
             width: 65px;
             flex-shrink: 0;
         }
-
         .col-select {
             width: 75px;
             flex-shrink: 0;
         }
-
         .cal-row input, .cal-row select {
             width: 100%;
             margin-bottom: 0;
             padding: 6px;
             font-size: 0.75rem;
         }
-
-        /* Spinners */
         .spinner-mini {
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255,255,255,0.1);
             border-top: 2px solid #3b82f6;
             border-radius: 50%;
             width: 20px;
@@ -498,20 +428,16 @@
             margin-left: 8px;
             vertical-align: middle;
         }
-
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
-
         .loader-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
@@ -519,24 +445,21 @@
             z-index: 9999;
             transition: opacity 0.3s;
         }
-
         .loader-spinner {
             width: 50px;
             height: 50px;
-            border: 3px solid rgba(59, 130, 246, 0.2);
+            border: 3px solid rgba(59,130,246,0.2);
             border-top: 3px solid #3b82f6;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 15px;
         }
-
         .loader-text {
             color: white;
             text-align: center;
         }
-
         .btn-back {
-            background: rgba(100, 116, 139, 0.3);
+            background: rgba(100,116,139,0.3);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -546,9 +469,8 @@
             font-size: 0.9rem;
             display: inline-block;
         }
-
         .partido-item {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             border-radius: 24px;
             padding: 14px;
             margin-bottom: 12px;
@@ -558,73 +480,62 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .partido-info {
             flex: 1;
         }
-
         .partido-fecha {
             font-weight: bold;
             color: #fbbf24;
             font-size: 0.8rem;
         }
-
         .partido-rival {
             color: white;
             font-size: 0.9rem;
         }
-
         .partido-obs {
             font-size: 0.7rem;
             color: #94a3b8;
             margin-top: 4px;
         }
-
         .error-message {
             color: #f87171;
             text-align: center;
             padding: 20px;
         }
-
         .debt-detail {
             font-size: 0.7rem;
             color: #94a3b8;
             margin-top: 2px;
         }
-
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.8);
             backdrop-filter: blur(8px);
             align-items: center;
             justify-content: center;
             z-index: 10000;
             padding: 20px;
         }
-
         .modal-content {
             background: #1e293b;
             max-width: 90%;
             width: 320px;
             border-radius: 32px;
             padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-
         .modal-content h3 {
             color: white;
             font-size: 1.2rem;
             margin-bottom: 16px;
         }
-
         hr {
             margin: 16px 0;
             border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
-
         .text-center {
             text-align: center;
         }
@@ -673,110 +584,640 @@
 <div id="loaderOverlay" class="loader-overlay"><div><div class="loader-spinner"></div><div class="loader-text">Cargando panel...</div></div></div>
 <div id="modalRechazo" class="modal"><div class="modal-content"><h3>Motivo del rechazo</h3><textarea id="motivoRechazo" rows="2" placeholder="Motivo..."></textarea><button class="btn-primary" id="btnConfirmarRechazo">Confirmar</button><button id="btnCerrarModalRechazo" style="background:transparent;border:1px solid #ccc;padding:10px;border-radius:40px;margin-top:12px;color:white;">Cancelar</button></div></div>
 
-<script src="config.js"></script>
 <script>
-    (function() {
-        function initApp() {
-            if (typeof CONFIG === 'undefined') {
-                document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: No se encontró config.js<br>Asegúrate de que existe en la raíz</div></div>';
-                return;
+    // ========== CONFIGURACIÓN ==========
+    // Intenta cargar desde config.js externo, si no existe usa esta URL por defecto (CÁMBIALA)
+    let API_URL = 'https://script.google.com/macros/s/TU_ID/exec'; // <--- REEMPLAZAR CON TU URL REAL
+    // Cargar config.js si existe
+    const script = document.createElement('script');
+    script.src = 'config.js';
+    script.onload = () => {
+        if (typeof CONFIG !== 'undefined' && CONFIG.URL_GAS) {
+            API_URL = CONFIG.URL_GAS;
+            console.log('✅ config.js cargado, URL:', API_URL);
+            // Reiniciar la app con la nueva URL
+            if (window.appInitialized) location.reload();
+            else initApp();
+        }
+    };
+    script.onerror = () => {
+        console.warn('⚠️ No se encontró config.js, usando URL por defecto');
+        initApp();
+    };
+    document.head.appendChild(script);
+
+    const LINK_APP = "https://kilometro0-ec.github.io/NAPOLES-FC/login.html";
+
+    // Variables globales
+    let currentCedulaRechazo = null;
+    let jugadoresActivos = [];
+    let solicitudesPendientes = 0;
+    let guardando = false;
+    let equipos = ['Napoles F.C.'];
+    let partidosProximos = [];
+    let partidoSeleccionado = null;
+    let jugadoresAsistencia = [];
+    let jugadoresParaCalificar = [];
+
+    // Funciones auxiliares
+    async function fetchAPI(action, params = {}) {
+        try {
+            const urlParams = new URLSearchParams({ action, ...params });
+            const res = await fetch(`${API_URL}?${urlParams.toString()}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return await res.json();
+        } catch (error) {
+            console.error(`Error en fetchAPI (${action}):`, error);
+            return { ok: false, error: error.message };
+        }
+    }
+
+    function hideLoader() {
+        const loader = document.getElementById('loaderOverlay');
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 300);
+        }
+    }
+
+    function generarFechas() {
+        const fechas = [];
+        const hoy = new Date();
+        for (let i = 0; i < 60; i++) {
+            const fecha = new Date();
+            fecha.setDate(hoy.getDate() + i);
+            const dia = fecha.getDay();
+            if (dia === 0 || dia === 6) {
+                const year = fecha.getFullYear(), month = String(fecha.getMonth() + 1).padStart(2,'0'), day = String(fecha.getDate()).padStart(2,'0');
+                fechas.push({ value: `${year}-${month}-${day}`, texto: `${dia===0?'Domingo':'Sábado'} ${day}/${month}` });
             }
-            if (!CONFIG.URL_GAS) {
-                document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: CONFIG.URL_GAS no está definido</div></div>';
-                return;
-            }
+        }
+        return fechas;
+    }
 
-            const API_URL = CONFIG.URL_GAS;
-            const LINK_APP = "https://kilometro0-ec.github.io/NAPOLES-FC/login.html";
-
-            let currentCedulaRechazo = null;
-            let jugadoresActivos = [];
-            let solicitudesPendientes = 0;
-            let guardando = false;
-            let equipos = ['Napoles F.C.'];
-            let partidosProximos = [];
-            let partidoSeleccionado = null;
-            let jugadoresAsistencia = [];
-            let jugadoresParaCalificar = [];
-
-            async function fetchAPI(action, params = {}) {
-                try {
-                    const urlParams = new URLSearchParams({ action, ...params });
-                    const res = await fetch(`${API_URL}?${urlParams.toString()}`);
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                    return await res.json();
-                } catch (error) {
-                    console.error(`Error en fetchAPI (${action}):`, error);
-                    return { ok: false, error: error.message };
-                }
-            }
-
-            function hideLoader() {
-                const loader = document.getElementById('loaderOverlay');
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 300);
-                }
-            }
-
-            function generarFechas() {
-                const fechas = [];
-                const hoy = new Date();
-                for (let i = 0; i < 60; i++) {
-                    const fecha = new Date();
-                    fecha.setDate(hoy.getDate() + i);
-                    const dia = fecha.getDay();
-                    if (dia === 0 || dia === 6) {
-                        const year = fecha.getFullYear(), month = String(fecha.getMonth() + 1).padStart(2, '0'), day = String(fecha.getDate()).padStart(2, '0');
-                        fechas.push({ value: `${year}-${month}-${day}`, texto: `${dia === 0 ? 'Domingo' : 'Sábado'} ${day}/${month}` });
-                    }
-                }
-                return fechas;
-            }
-
-            function llenarSelectsFechas() {
-                const fechas = generarFechas();
-                ['fechaPartido', 'proxFecha'].forEach(id => {
-                    const select = document.getElementById(id);
-                    if (select) {
-                        select.innerHTML = '<option value="">Seleccionar...</option>';
-                        fechas.forEach(f => {
-                            const opt = document.createElement('option');
-                            opt.value = f.value;
-                            opt.textContent = f.texto;
-                            select.appendChild(opt);
-                        });
-                    }
+    function llenarSelectsFechas() {
+        const fechas = generarFechas();
+        ['fechaPartido', 'proxFecha'].forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+                select.innerHTML = '<option value="">Seleccionar...</option>';
+                fechas.forEach(f => {
+                    const opt = document.createElement('option');
+                    opt.value = f.value;
+                    opt.textContent = f.texto;
+                    select.appendChild(opt);
                 });
             }
+        });
+    }
 
-            const dashboardCards = [
-                { tab: "pendientes", emoji: "📋", title: "Solicitudes", description: "Aprobar nuevos", badge: true },
-                { tab: "jugadores", emoji: "👥", title: "Plantilla", description: "Jugadores activos", badge: false },
-                { tab: "vocalia", emoji: "💰", title: "Cobros", description: "Deudas totales", badge: false },
-                { tab: "equipos", emoji: "🏆", title: "Rivales", description: "Gestionar equipos", badge: false },
-                { tab: "notificaciones", emoji: "📢", title: "Anuncios", description: "Publicar avisos", badge: false },
-                { tab: "partidos", emoji: "⭐", title: "Calificar", description: "Rendimiento", badge: false },
-                { tab: "proximos", emoji: "📅", title: "Próximos", description: "Programar", badge: false }
-            ];
+    // ========== RENDER DASHBOARD ==========
+    const dashboardCards = [
+        { tab: "pendientes", emoji: "📋", title: "Solicitudes", description: "Aprobar nuevos", badge: true },
+        { tab: "jugadores", emoji: "👥", title: "Plantilla", description: "Jugadores activos", badge: false },
+        { tab: "vocalia", emoji: "💰", title: "Cobros", description: "Deudas totales", badge: false },
+        { tab: "equipos", emoji: "🏆", title: "Rivales", description: "Gestionar equipos", badge: false },
+        { tab: "notificaciones", emoji: "📢", title: "Anuncios", description: "Publicar avisos", badge: false },
+        { tab: "partidos", emoji: "⭐", title: "Calificar", description: "Rendimiento", badge: false },
+        { tab: "proximos", emoji: "📅", title: "Próximos", description: "Programar", badge: false }
+    ];
 
-            function renderDashboard() {
-                const grid = document.getElementById('dashboardGrid');
-                if (!grid) return;
-                grid.innerHTML = dashboardCards.map(card => `<div class="dashboard-card" data-tab="${card.tab}">${card.badge && solicitudesPendientes > 0 ? `<span class="badge-pending">${solicitudesPendientes}</span>` : ''}<span class="emoji">${card.emoji}</span><span class="title">${card.title}</span><span class="description">${card.description}</span></div>`).join('');
-                document.querySelectorAll('.dashboard-card').forEach(card => card.addEventListener('click', () => mostrarPanel(card.dataset.tab)));
+    function renderDashboard() {
+        const grid = document.getElementById('dashboardGrid');
+        if (!grid) return;
+        grid.innerHTML = dashboardCards.map(card => `<div class="dashboard-card" data-tab="${card.tab}">${card.badge && solicitudesPendientes > 0 ? `<span class="badge-pending">${solicitudesPendientes}</span>` : ''}<span class="emoji">${card.emoji}</span><span class="title">${card.title}</span><span class="description">${card.description}</span></div>`).join('');
+        document.querySelectorAll('.dashboard-card').forEach(card => card.addEventListener('click', () => mostrarPanel(card.dataset.tab)));
+    }
+
+    async function mostrarPanel(tabId) {
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('tabsContainer').style.display = 'flex';
+        document.getElementById('btnVolver').style.display = 'block';
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        const tabBtn = document.querySelector(`.tab[data-tab="${tabId}"]`);
+        if (tabBtn) tabBtn.classList.add('active');
+        document.getElementById(`panel-${tabId}`).classList.add('active');
+
+        if (tabId === 'pendientes') await cargarPendientes();
+        if (tabId === 'jugadores') await cargarJugadoresAprobados();
+        if (tabId === 'vocalia') {
+            await cargarDeudores();
+            document.getElementById('formPago').style.display = 'none';
+            document.getElementById('infoDeudor').innerHTML = '';
+        }
+        if (tabId === 'equipos') await cargarEquipos();
+        if (tabId === 'notificaciones') await cargarNotificaciones();
+        if (tabId === 'proximos') await cargarProximos();
+        if (tabId === 'partidos') await cargarListaPartidosParaCalificar();
+    }
+
+    function volverDashboard() {
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('tabsContainer').style.display = 'none';
+        document.getElementById('btnVolver').style.display = 'none';
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        cargarPendientesCount();
+    }
+
+    async function cargarPendientesCount() {
+        try {
+            const data = await fetchAPI('getPendientes');
+            solicitudesPendientes = (data.jugadores && data.jugadores.length) ? data.jugadores.length : 0;
+            renderDashboard();
+            const countSpan = document.getElementById('pendientesCount');
+            if (countSpan) countSpan.textContent = solicitudesPendientes;
+        } catch (e) {
+            console.error(e);
+            solicitudesPendientes = 0;
+            renderDashboard();
+        }
+    }
+
+    // ========== SOLICITUDES ==========
+    async function cargarPendientes() {
+        const tbody = document.getElementById('pendientesBody');
+        tbody.innerHTML = '<tr><td colspan="3"><div class="spinner-mini"></div> Cargando...<\/td><\/tr>';
+        try {
+            const data = await fetchAPI('getPendientes');
+            if (data.jugadores && data.jugadores.length) {
+                tbody.innerHTML = data.jugadores.map(j => `
+                    <tr>
+                        <td><strong>${j.nombreCamiseta || j.nombre}</strong>侧
+                        <td><span style="color:#fbbf24;">#${j.dorsal || '?'}</span>侧
+                        <td><button class="btn-success" onclick="aprobar('${j.cedula}','${(j.nombreCamiseta || j.nombre).replace(/'/g, "\\'")}','${j.dorsal || '?'}','${j.telefono || ''}')">✓ Aprobar</button>
+                        <button class="btn-danger" onclick="mostrarModalRechazo('${j.cedula}')">✗ Rechazar</button>侧
+                    </tr>`).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center">✨ Sin solicitudes ✨侧</tr>';
             }
+        } catch (e) {
+            tbody.innerHTML = '<td><td colspan="3" class="error-message">Error al cargar solicitudes侧</tr>';
+        }
+    }
 
-            async function mostrarPanel(tabId) {
-                document.getElementById('dashboard').style.display = 'none';
-                document.getElementById('tabsContainer').style.display = 'flex';
-                document.getElementById('btnVolver').style.display = 'block';
+    window.aprobar = async (ced, nombreCamiseta, dorsal, telefono) => {
+        if (confirm(`¿Aprobar a ${nombreCamiseta}?`)) {
+            const res = await fetchAPI('aprobarJugador', { cedula: ced });
+            if (res.ok) {
+                alert('✅ Jugador aprobado');
+                enviarWhatsApp(telefono, nombreCamiseta, dorsal);
+                await cargarPendientes();
+                await cargarJugadoresAprobados();
+                await cargarPendientesCount();
+            } else alert('Error al aprobar');
+        }
+    };
+
+    function enviarWhatsApp(telefono, nombreCamiseta, dorsal) {
+        let tel = telefono ? telefono.toString().replace(/\s/g, '') : '';
+        if (!tel) return;
+        let telFormateado = tel;
+        if (!tel.startsWith('+') && !tel.startsWith('593')) telFormateado = '+593' + tel;
+        else if (tel.startsWith('593') && !tel.startsWith('+')) telFormateado = '+' + tel;
+        if (telFormateado.length < 12) return;
+        const mensaje = `⚽💙 *¡FELICIDADES ${nombreCamiseta}!* 💙⚽%0a%0aEs un gusto contar contigo como parte de nuestro club.%0aTe deseamos muchos éxitos en esta nueva etapa deportiva.%0a%0a🎽 *Tu dorsal oficial es: #${dorsal}*%0a%0a📲 *Para ingresar:*%0a${LINK_APP}%0a%0a✅ Ingresa con tu *número de cédula*%0a%0aAtentamente,%0a🐾 *Alejandra Buendía* 🐾%0a*Presidenta — Nápoles Fútbol Club*`;
+        window.open(`https://wa.me/${telFormateado}?text=${mensaje}`, '_blank');
+    }
+
+    window.mostrarModalRechazo = (ced) => {
+        currentCedulaRechazo = ced;
+        document.getElementById('modalRechazo').style.display = 'flex';
+    };
+    window.cerrarModalRechazo = () => {
+        document.getElementById('modalRechazo').style.display = 'none';
+        document.getElementById('motivoRechazo').value = '';
+    };
+    window.confirmarRechazo = async () => {
+        const motivo = document.getElementById('motivoRechazo').value;
+        if (!motivo) return alert('Ingrese un motivo');
+        await fetchAPI('rechazarJugador', { cedula: currentCedulaRechazo, motivo });
+        alert('❌ Rechazado');
+        await cargarPendientes();
+        window.cerrarModalRechazo();
+        await cargarPendientesCount();
+    };
+
+    // ========== PLANTILLA ==========
+    async function cargarJugadoresAprobados() {
+        const tbody = document.getElementById('jugadoresBody');
+        tbody.innerHTML = '<tr><td colspan="6"><div class="spinner-mini"></div> Cargando...<\/td><\/tr>';
+        try {
+            const data = await fetchAPI('getJugadoresAprobados');
+            if (data.jugadores && data.jugadores.length) {
+                tbody.innerHTML = data.jugadores.map(j => `
+                    <tr>
+                        <td>${j.nombre}侧
+                        <td>${j.cedula}侧
+                        <td>$${j.deuda || 0}侧
+                        <td>${j.goles || 0}侧
+                        <td>${j.amarillas || 0}侧
+                        <td>${j.rojas || 0}侧
+                    </tr>`).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center">No hay jugadores aprobados侧</tr>';
+            }
+        } catch (e) {
+            tbody.innerHTML = '<tr><td colspan="6" class="error-message">Error al cargar jugadores侧</tr>';
+        }
+    }
+
+    // ========== COBROS OPTIMIZADOS ==========
+    async function cargarDeudores() {
+        const tbody = document.getElementById('deudoresBody');
+        tbody.innerHTML = '<tr><td colspan="5"><div class="spinner-mini"></div> Cargando deudores...<\/td><\/tr>';
+        try {
+            const data = await fetchAPI('getJugadoresAprobados');
+            if (!data.jugadores || !data.jugadores.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No hay jugadores aprobados侧</tr>';
+                return;
+            }
+            const jugadores = data.jugadores;
+            const deudasPromises = jugadores.map(j => Promise.all([
+                fetchAPI('obtenerDeudasJugador', { cedula: j.cedula }),
+                fetchAPI('getDeudasVocalia', { cedula: j.cedula })
+            ]));
+            const resultados = await Promise.all(deudasPromises);
+            const deudoresConDetalle = [];
+            for (let i = 0; i < jugadores.length; i++) {
+                const j = jugadores[i];
+                const [deudasIns, vocaliaDebt] = resultados[i];
+                let total = 0;
+                let detalles = [];
+                if (deudasIns.ok) {
+                    if (deudasIns.inscripEstado === 'PENDIENTE') { total += 5; detalles.push('Inscripción: $5'); }
+                    if (deudasIns.unifEstado === 'PENDIENTE') { total += 75; detalles.push('Uniforme: $75'); }
+                    if (deudasIns.mediasEstado === 'PENDIENTE') { total += 2; detalles.push('Medias: $2'); }
+                }
+                let vocaliaMonto = 0;
+                if (vocaliaDebt && typeof vocaliaDebt === 'number') vocaliaMonto = vocaliaDebt;
+                else if (vocaliaDebt && vocaliaDebt.total) vocaliaMonto = vocaliaDebt.total;
+                if (vocaliaMonto > 0) {
+                    total += vocaliaMonto;
+                    detalles.push(`Vocalías: $${vocaliaMonto}`);
+                }
+                if (total > 0) {
+                    deudoresConDetalle.push({
+                        nombre: j.nombre,
+                        cedula: j.cedula,
+                        totalDeuda: total,
+                        detalle: detalles.join(', ')
+                    });
+                }
+            }
+            deudoresConDetalle.sort((a,b) => b.totalDeuda - a.totalDeuda);
+            if (deudoresConDetalle.length) {
+                tbody.innerHTML = deudoresConDetalle.map(d => `
+                    <tr>
+                        <td>${d.nombre}侧
+                        <td>${d.cedula}侧
+                        <td>$${d.totalDeuda}侧
+                        <td><span class="debt-detail">${d.detalle}</span>侧
+                        <td><button class="btn-warning" onclick="prepararCobro('${d.cedula}')">💰 Cobrar</button>侧
+                    </tr>`).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">✨ Sin deudores ✨侧</tr>';
+            }
+        } catch (e) {
+            tbody.innerHTML='<tr><td colspan="5" class="error-message">Error al cargar deudores侧</tr>';
+        }
+    }
+
+    window.prepararCobro = (ced) => {
+        document.getElementById('buscarCedula').value = ced;
+        buscarDeudor();
+    };
+
+    async function buscarDeudor() {
+        const ced = document.getElementById('buscarCedula').value;
+        if (!ced) return;
+        const deudasIns = await fetchAPI('obtenerDeudasJugador', { cedula: ced });
+        let total = 0;
+        let detalleHtml = '';
+        if (deudasIns.ok) {
+            if (deudasIns.inscripEstado === 'PENDIENTE') total += 5;
+            if (deudasIns.unifEstado === 'PENDIENTE') total += 75;
+            if (deudasIns.mediasEstado === 'PENDIENTE') total += 2;
+            detalleHtml = `📝 Inscripción: ${deudasIns.inscripEstado} | Uniforme: ${deudasIns.unifEstado} | Medias: ${deudasIns.mediasEstado}<br>`;
+        }
+        const vocaliaDebt = await fetchAPI('getDeudasVocalia', { cedula: ced });
+        let vocaliaMonto = 0;
+        if (vocaliaDebt && typeof vocaliaDebt === 'number') vocaliaMonto = vocaliaDebt;
+        else if (vocaliaDebt && vocaliaDebt.total) vocaliaMonto = vocaliaDebt.total;
+        if (vocaliaMonto > 0) {
+            total += vocaliaMonto;
+            detalleHtml += `🎫 Vocalías pendientes: $${vocaliaMonto}<br>`;
+        }
+        if (total > 0) {
+            document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🐾 ${deudasIns.jugador?.nombre || 'Jugador'}<br>💰 Deuda total: <strong>$${total}</strong><br>${detalleHtml}</div>`;
+            document.getElementById('formPago').style.display = 'block';
+            document.getElementById('montoPago').value = total;
+        } else {
+            document.getElementById('infoDeudor').innerHTML = '<div class="info-card">✅ Sin deudas pendientes</div>';
+            document.getElementById('formPago').style.display = 'none';
+        }
+    }
+
+    async function registrarPago() {
+        if (guardando) return;
+        guardando = true;
+        const ced = document.getElementById('buscarCedula').value;
+        const monto = parseFloat(document.getElementById('montoPago').value);
+        if (isNaN(monto) || monto <= 0) {
+            guardando = false;
+            return alert('Monto inválido');
+        }
+        const res = await fetchAPI('registrarPagoInscripcion', { cedula: ced, monto });
+        if (res.ok) {
+            alert('✅ Pago registrado');
+            await cargarDeudores();
+            await cargarJugadoresAprobados();
+            document.getElementById('formPago').style.display = 'none';
+            document.getElementById('infoDeudor').innerHTML = '';
+            document.getElementById('buscarCedula').value = '';
+        } else {
+            alert('Error al registrar pago');
+        }
+        guardando = false;
+    }
+
+    // ========== EQUIPOS ==========
+    async function cargarEquipos() {
+        try {
+            const res = await fetchAPI('getEquipos');
+            if (res.ok && res.equipos && res.equipos.length) equipos = res.equipos;
+            actualizarListaEquipos();
+            actualizarSelectsRivales();
+        } catch (e) { console.error(e); }
+    }
+
+    function actualizarListaEquipos() {
+        const container = document.getElementById('listaEquipos');
+        if (container) container.innerHTML = equipos.map(e => `<div class="equipo-item">${e}<button class="btn-sm" onclick="eliminarEquipo('${e.replace(/'/g, "\\'")}')">X</button></div>`).join('');
+    }
+
+    function actualizarSelectsRivales() {
+        ['rivalPartido', 'proxRival'].forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+                select.innerHTML = '<option value="">Seleccionar...</option>';
+                equipos.forEach(e => {
+                    const opt = document.createElement('option');
+                    opt.value = e;
+                    opt.textContent = e;
+                    select.appendChild(opt);
+                });
+            }
+        });
+    }
+
+    window.agregarEquipo = async () => {
+        const nuevo = document.getElementById('nuevoEquipo').value.trim();
+        if (nuevo && !equipos.includes(nuevo)) {
+            const res = await fetchAPI('agregarEquipo', { nombre: nuevo });
+            if (res.ok) {
+                equipos.push(nuevo);
+                actualizarListaEquipos();
+                actualizarSelectsRivales();
+                document.getElementById('nuevoEquipo').value = '';
+                alert('✅ Rival agregado');
+            } else alert('❌ Error');
+        } else alert('Equipo ya existe o vacío');
+    };
+
+    window.eliminarEquipo = async (equipo) => {
+        if (!confirm(`¿Eliminar equipo "${equipo}"?`)) return;
+        const res = await fetchAPI('eliminarEquipo', { nombre: equipo });
+        if (res.ok) {
+            equipos = equipos.filter(e => e !== equipo);
+            actualizarListaEquipos();
+            actualizarSelectsRivales();
+            alert('✅ Rival eliminado');
+        } else alert('Error');
+    };
+
+    // ========== NOTIFICACIONES ==========
+    async function cargarNotificaciones() {
+        const container = document.getElementById('listaNotificaciones');
+        container.innerHTML = '<div class="spinner-mini"></div> Cargando...';
+        const data = await fetchAPI('getNotificaciones');
+        if (data.notificaciones && data.notificaciones.length) {
+            container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
+        } else {
+            container.innerHTML = '<p class="text-center">📭 Sin anuncios</p>';
+        }
+    }
+
+    async function publicarNotificacion(titulo, mensaje, tipo) {
+        const res = await fetchAPI('publicarNotificacion', { titulo, mensaje, tipo });
+        return res.ok;
+    }
+
+    // ========== PRÓXIMOS PARTIDOS ==========
+    async function cargarProximos() {
+        const container = document.getElementById('listaProximos');
+        container.innerHTML = '<div class="spinner-mini"></div> Cargando...';
+        const data = await fetchAPI('getProximosPartidos');
+        partidosProximos = data.partidos || [];
+        if (partidosProximos.length) {
+            container.innerHTML = partidosProximos.map((p, idx) => `<div class="partido-item"><div class="partido-info"><div class="partido-fecha">📅 ${new Date(p.fecha).toLocaleString()}</div><div class="partido-rival">⚽ vs ${p.rival} | 🏟️ ${p.cancha || 'Cancha 1'} | 💰 $${p.valorVocalia || 5}</div>${p.observaciones ? `<div class="partido-obs">📝 ${p.observaciones}</div>` : ''}</div><button class="btn-danger" style="padding:3px 10px" onclick="eliminarPartido(${idx})">🗑️</button></div>`).join('');
+        } else {
+            container.innerHTML = '<p class="text-center">⚽ No hay partidos</p>';
+        }
+    }
+
+    window.eliminarPartido = async (idx) => {
+        if (confirm('¿Eliminar este partido?')) {
+            const res = await fetchAPI('eliminarProximoPartido', { index: idx });
+            if (res.ok) {
+                alert('✅ Eliminado');
+                await cargarProximos();
+            } else alert('Error');
+        }
+    };
+
+    async function guardarProximoPartido() {
+        if (guardando) return;
+        guardando = true;
+        const fecha = document.getElementById('proxFecha').value, hora = document.getElementById('proxHora').value;
+        const fechaCompleta = (fecha && hora) ? `${fecha}T${hora}:00` : '';
+        const rival = document.getElementById('proxRival').value, cancha = document.getElementById('proxCancha').value, valorVocalia = document.getElementById('proxValorVocalia').value, obs = document.getElementById('proxObs').value;
+        if (!fechaCompleta || !rival) {
+            guardando = false;
+            return alert('Complete fecha y rival');
+        }
+        const res = await fetchAPI('guardarProximoPartido', { fecha: fechaCompleta, rival, cancha, observaciones: obs, valorVocalia });
+        if (res.ok) {
+            alert('✅ Partido guardado. Notificando a jugadores...');
+            const jugadores = await fetchAPI('getJugadoresAprobados');
+            if (jugadores.jugadores && jugadores.jugadores.length) {
+                const tituloNoti = `⚽ Nuevo partido: vs ${rival}`;
+                const mensajeNoti = `📅 Fecha: ${new Date(fechaCompleta).toLocaleString()}\n🏟️ Cancha: ${cancha}\n💰 Valor vocalía: $${valorVocalia}\n📝 Obs: ${obs || 'Ninguna'}`;
+                await publicarNotificacion(tituloNoti, mensajeNoti, 'info');
+            }
+            await cargarProximos();
+            document.getElementById('proxFecha').value = '';
+            document.getElementById('proxRival').value = '';
+            document.getElementById('proxObs').value = '';
+        } else {
+            alert('Error al guardar');
+        }
+        guardando = false;
+    }
+
+    // ========== CALIFICAR PARTIDO ==========
+    async function cargarListaPartidosParaCalificar() {
+        const container = document.getElementById('listaPartidosParaCalificar');
+        container.innerHTML = '<div class="spinner-mini"></div> Cargando partidos...';
+        const data = await fetchAPI('getProximosPartidos');
+        partidosProximos = data.partidos || [];
+        if (partidosProximos.length === 0) {
+            container.innerHTML = '<p class="text-center">⚽ No hay partidos próximos. Créalos en la pestaña "Próximos".</p>';
+            return;
+        }
+        container.innerHTML = '<h3>Selecciona un partido para calificar</h3>';
+        partidosProximos.forEach((p, idx) => {
+            const fechaObj = new Date(p.fecha);
+            const card = document.createElement('div');
+            card.className = 'match-card';
+            card.dataset.index = idx;
+            card.innerHTML = `<h3>⚽ Nápoles F.C. vs ${p.rival}</h3>
+                             <p>📅 ${fechaObj.toLocaleDateString()} - ${fechaObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                             <p>🏟️ ${p.cancha || 'Cancha 1'} | 💰 $${p.valorVocalia || 5}</p>
+                             <p>📝 ${p.observaciones || 'Sin observaciones'}</p>`;
+            card.onclick = () => seleccionarPartidoParaCalificar(idx);
+            container.appendChild(card);
+        });
+    }
+
+    async function seleccionarPartidoParaCalificar(idx) {
+        partidoSeleccionado = partidosProximos[idx];
+        document.getElementById('detallePartidoSeleccionado').style.display = 'block';
+        const infoDiv = document.getElementById('infoPartidoSeleccionado');
+        const fechaObj = new Date(partidoSeleccionado.fecha);
+        infoDiv.innerHTML = `<h3>⚽ Nápoles F.C. vs ${partidoSeleccionado.rival}</h3>
+                            <p>📅 ${fechaObj.toLocaleDateString()} - ${fechaObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                            <p>🏟️ ${partidoSeleccionado.cancha || 'Cancha 1'} | 💰 $${partidoSeleccionado.valorVocalia || 5}</p>
+                            <p>📝 ${partidoSeleccionado.observaciones || 'Sin observaciones'}</p>`;
+
+        const jugadoresData = await fetchAPI('getJugadoresAprobados');
+        if (!jugadoresData.jugadores || !jugadoresData.jugadores.length) {
+            document.getElementById('asistenciaJugadores').innerHTML = '<p>No hay jugadores aprobados.</p>';
+            return;
+        }
+        jugadoresAsistencia = jugadoresData.jugadores.map(j => ({ cedula: j.cedula, nombre: j.nombre, asistio: false }));
+        let html = '<h3>✅ Marcar asistencia</h3><div style="max-height:300px; overflow-y:auto;">';
+        jugadoresAsistencia.forEach(j => {
+            html += `<div class="checkbox-group"><input type="checkbox" id="asist_${j.cedula}" data-cedula="${j.cedula}" data-nombre="${j.nombre}"> <label for="asist_${j.cedula}">${j.nombre}</label></div>`;
+        });
+        html += '</div><button class="btn-primary" id="btnConfirmarAsistencia">Confirmar asistentes y calificar</button>';
+        document.getElementById('asistenciaJugadores').innerHTML = html;
+        document.getElementById('btnConfirmarAsistencia').onclick = confirmarAsistenciaYMostrarCalificaciones;
+        document.getElementById('calificacionesPorJugador').style.display = 'none';
+        document.getElementById('btnGuardarCalificacionesFinal').style.display = 'none';
+    }
+
+    function confirmarAsistenciaYMostrarCalificaciones() {
+        const asistentes = [];
+        jugadoresAsistencia.forEach(j => {
+            const chk = document.getElementById(`asist_${j.cedula}`);
+            if (chk && chk.checked) asistentes.push({ cedula: j.cedula, nombre: j.nombre });
+        });
+        if (asistentes.length === 0) {
+            alert('Selecciona al menos un asistente.');
+            return;
+        }
+        jugadoresParaCalificar = asistentes;
+        mostrarFormularioCalificaciones();
+    }
+
+    function mostrarFormularioCalificaciones() {
+        let html = `<h3>⭐ Calificar desempeño de asistentes</h3><div class="cal-grid"><div class="cal-header"><span class="col-jugador">Jugador</span><span class="col-num">🟨</span><span class="col-num">🟥</span><span class="col-num">⚽</span><span class="col-select">⭐P</span><span class="col-select">🤝C</span><span class="col-select">🙏R</span><span class="col-select">💪H</span></div>`;
+        jugadoresParaCalificar.forEach(j => {
+            html += `<div class="cal-row">
+                        <span class="col-jugador"><strong>${j.nombre}</strong></span>
+                        <input class="col-num" type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2">
+                        <input class="col-num" type="number" id="rojas_${j.cedula}" value="0" min="0" max="1">
+                        <input class="col-num" type="number" id="goles_${j.cedula}" value="0" min="0">
+                        <select class="col-select" id="punt_${j.cedula}">${[1,2,3,4,5].map(v => `<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select>
+                        <select class="col-select" id="comp_${j.cedula}">${[1,2,3,4,5].map(v => `<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select>
+                        <select class="col-select" id="resp_${j.cedula}">${[1,2,3,4,5].map(v => `<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select>
+                        <select class="col-select" id="hum_${j.cedula}">${[1,2,3,4,5].map(v => `<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select>
+                    </div>`;
+        });
+        html += `</div>`;
+        document.getElementById('calificacionesPorJugador').innerHTML = html;
+        document.getElementById('calificacionesPorJugador').style.display = 'block';
+        document.getElementById('btnGuardarCalificacionesFinal').style.display = 'block';
+        document.getElementById('btnGuardarCalificacionesFinal').onclick = guardarCalificacionesPartido;
+    }
+
+    async function guardarCalificacionesPartido() {
+        if (guardando) return;
+        guardando = true;
+        const fecha = partidoSeleccionado.fecha;
+        const rival = partidoSeleccionado.rival;
+        const cancha = partidoSeleccionado.cancha || 'Cancha 1';
+        const valorVocalia = partidoSeleccionado.valorVocalia || 5;
+        const cedulas = [], nombres = [], amarillas = [], rojas = [], goles = [], punt = [], comp = [], resp = [], hum = [];
+        for (const j of jugadoresParaCalificar) {
+            cedulas.push(j.cedula);
+            nombres.push(j.nombre);
+            amarillas.push(document.getElementById(`amarillas_${j.cedula}`)?.value || 0);
+            rojas.push(document.getElementById(`rojas_${j.cedula}`)?.value || 0);
+            goles.push(document.getElementById(`goles_${j.cedula}`)?.value || 0);
+            punt.push(document.getElementById(`punt_${j.cedula}`)?.value || 3);
+            comp.push(document.getElementById(`comp_${j.cedula}`)?.value || 3);
+            resp.push(document.getElementById(`resp_${j.cedula}`)?.value || 3);
+            hum.push(document.getElementById(`hum_${j.cedula}`)?.value || 3);
+        }
+        const res = await fetchAPI('guardarPartido', {
+            fecha, rival, cancha, valorVocalia,
+            cedulas: cedulas.join(','), nombres: nombres.join(','), amarillas: amarillas.join(','), rojas: rojas.join(','),
+            goles: goles.join(','), puntualidades: punt.join(','), companerismos: comp.join(','),
+            respetos: resp.join(','), humildades: hum.join(',')
+        });
+        if (res.ok) {
+            alert('✅ Partido calificado y guardado');
+            await cargarListaPartidosParaCalificar();
+            document.getElementById('detallePartidoSeleccionado').style.display = 'none';
+        } else {
+            alert('Error al guardar calificaciones');
+        }
+        guardando = false;
+    }
+
+    // ========== EVENTOS E INICIALIZACIÓN ==========
+    function inicializarEventos() {
+        document.getElementById('btnActualizar').onclick = () => location.reload();
+        document.getElementById('btnSalir').onclick = () => {
+            localStorage.removeItem('admin_auth');
+            alert('Sesión cerrada');
+            window.location.href = LINK_APP;
+        };
+        document.getElementById('btnVolver').onclick = volverDashboard;
+        document.getElementById('btnBuscarDeudor').onclick = () => buscarDeudor();
+        document.getElementById('btnRegistrarPago').onclick = () => registrarPago();
+        document.getElementById('btnAgregarEquipo').onclick = () => window.agregarEquipo();
+        document.getElementById('btnPublicarNoti').onclick = async () => {
+            const tit = document.getElementById('notiTitulo').value, msg = document.getElementById('notiMensaje').value, tipo = document.getElementById('notiTipo').value;
+            if (!tit || !msg) return alert('Complete campos');
+            if (await publicarNotificacion(tit, msg, tipo)) {
+                alert('✅ Publicado');
+                document.getElementById('notiTitulo').value = '';
+                document.getElementById('notiMensaje').value = '';
+                await cargarNotificaciones();
+            } else alert('Error');
+        };
+        document.getElementById('btnGuardarProximo').onclick = () => guardarProximoPartido();
+
+        document.querySelectorAll('.tab').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const tabId = btn.dataset.tab;
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-                const tabBtn = document.querySelector(`.tab[data-tab="${tabId}"]`);
-                if (tabBtn) tabBtn.classList.add('active');
+                btn.classList.add('active');
                 document.getElementById(`panel-${tabId}`).classList.add('active');
-
                 if (tabId === 'pendientes') await cargarPendientes();
                 if (tabId === 'jugadores') await cargarJugadoresAprobados();
                 if (tabId === 'vocalia') {
@@ -788,558 +1229,37 @@
                 if (tabId === 'notificaciones') await cargarNotificaciones();
                 if (tabId === 'proximos') await cargarProximos();
                 if (tabId === 'partidos') await cargarListaPartidosParaCalificar();
-            }
-
-            function volverDashboard() {
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('tabsContainer').style.display = 'none';
-                document.getElementById('btnVolver').style.display = 'none';
-                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-                cargarPendientesCount();
-            }
-
-            async function cargarPendientesCount() {
-                try {
-                    const data = await fetchAPI('getPendientes');
-                    solicitudesPendientes = (data.jugadores && data.jugadores.length) ? data.jugadores.length : 0;
-                    renderDashboard();
-                    const countSpan = document.getElementById('pendientesCount');
-                    if (countSpan) countSpan.textContent = solicitudesPendientes;
-                } catch (e) {
-                    console.error(e);
-                    solicitudesPendientes = 0;
-                    renderDashboard();
-                }
-            }
-
-            async function cargarPendientes() {
-                const tbody = document.getElementById('pendientesBody');
-                tbody.innerHTML = '<tr><td colspan="3"><div class="spinner-mini"></div> Cargando...<\/td><\/tr>';
-                try {
-                    const data = await fetchAPI('getPendientes');
-                    if (data.jugadores && data.jugadores.length) {
-                        tbody.innerHTML = data.jugadores.map(j => `
-                            <tr>
-                                <td><strong>${j.nombreCamiseta || j.nombre}</strong></td>
-                                <td><span style="color:#fbbf24;">#${j.dorsal || '?'}</span></td>
-                                <td><button class="btn-success" onclick="aprobar('${j.cedula}','${(j.nombreCamiseta || j.nombre).replace(/'/g, "\\'")}','${j.dorsal || '?'}','${j.telefono || ''}')">✓ Aprobar</button>
-                                <button class="btn-danger" onclick="mostrarModalRechazo('${j.cedula}')">✗ Rechazar</button></td>
-                            </tr>`).join('');
-                    } else {
-                        tbody.innerHTML = '<tr><td colspan="3" class="text-center">✨ Sin solicitudes ✨</td></tr>';
-                    }
-                } catch (e) {
-                    tbody.innerHTML = '<tr><td colspan="3" class="error-message">Error al cargar solicitudes</td></tr>';
-                }
-            }
-
-            window.aprobar = async (ced, nombreCamiseta, dorsal, telefono) => {
-                if (confirm(`¿Aprobar a ${nombreCamiseta}?`)) {
-                    const res = await fetchAPI('aprobarJugador', { cedula: ced });
-                    if (res.ok) {
-                        alert('✅ Jugador aprobado');
-                        enviarWhatsApp(telefono, nombreCamiseta, dorsal);
-                        await cargarPendientes();
-                        await cargarJugadoresAprobados();
-                        await cargarPendientesCount();
-                    } else alert('Error al aprobar');
-                }
-            };
-
-            function enviarWhatsApp(telefono, nombreCamiseta, dorsal) {
-                let tel = telefono ? telefono.toString().replace(/\s/g, '') : '';
-                if (!tel) return;
-                let telFormateado = tel;
-                if (!tel.startsWith('+') && !tel.startsWith('593')) telFormateado = '+593' + tel;
-                else if (tel.startsWith('593') && !tel.startsWith('+')) telFormateado = '+' + tel;
-                if (telFormateado.length < 12) return;
-                const mensaje = `⚽💙 *¡FELICIDADES ${nombreCamiseta}!* 💙⚽%0a%0aEs un gusto contar contigo como parte de nuestro club.%0aTe deseamos muchos éxitos en esta nueva etapa deportiva.%0a%0a🎽 *Tu dorsal oficial es: #${dorsal}*%0a%0a📲 *Para ingresar:*%0a${LINK_APP}%0a%0a✅ Ingresa con tu *número de cédula*%0a%0aAtentamente,%0a🐾 *Alejandra Buendía* 🐾%0a*Presidenta — Nápoles Fútbol Club*`;
-                window.open(`https://wa.me/${telFormateado}?text=${mensaje}`, '_blank');
-            }
-
-            window.mostrarModalRechazo = (ced) => {
-                currentCedulaRechazo = ced;
-                document.getElementById('modalRechazo').style.display = 'flex';
-            };
-            window.cerrarModalRechazo = () => {
-                document.getElementById('modalRechazo').style.display = 'none';
-                document.getElementById('motivoRechazo').value = '';
-            };
-            window.confirmarRechazo = async () => {
-                const motivo = document.getElementById('motivoRechazo').value;
-                if (!motivo) return alert('Ingrese un motivo');
-                await fetchAPI('rechazarJugador', { cedula: currentCedulaRechazo, motivo });
-                alert('❌ Rechazado');
-                await cargarPendientes();
-                cerrarModalRechazo();
-                await cargarPendientesCount();
-            };
-
-            async function cargarJugadoresAprobados() {
-                const tbody = document.getElementById('jugadoresBody');
-                tbody.innerHTML = '<tr><td colspan="6"><div class="spinner-mini"></div> Cargando...<\/td><\/tr>';
-                try {
-                    const data = await fetchAPI('getJugadoresAprobados');
-                    if (data.jugadores && data.jugadores.length) {
-                        tbody.innerHTML = data.jugadores.map(j => `
-                            <tr>
-                                <td>${j.nombre}</td>
-                                <td>${j.cedula}</td>
-                                <td>$${j.deuda || 0}</td>
-                                <td>${j.goles || 0}</td>
-                                <td>${j.amarillas || 0}</td>
-                                <td>${j.rojas || 0}</td>
-                            </tr>`).join('');
-                    } else {
-                        tbody.innerHTML = '<tr><td colspan="6" class="text-center">No hay jugadores aprobados</td></tr>';
-                    }
-                } catch (e) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="error-message">Error al cargar jugadores</td></tr>';
-                }
-            }
-
-            // COBROS OPTIMIZADO: llamadas en paralelo con Promise.all
-            async function cargarDeudores() {
-                const tbody = document.getElementById('deudoresBody');
-                tbody.innerHTML = '<tr><td colspan="5"><div class="spinner-mini"></div> Cargando deudores...<\/td><\/tr>';
-                try {
-                    const data = await fetchAPI('getJugadoresAprobados');
-                    if (!data.jugadores || !data.jugadores.length) {
-                        tbody.innerHTML = '<tr><td colspan="5" class="text-center">No hay jugadores aprobados</td></tr>';
-                        return;
-                    }
-                    const jugadores = data.jugadores;
-                    // Obtener todas las deudas y vocalías en paralelo
-                    const deudasPromises = jugadores.map(j => Promise.all([
-                        fetchAPI('obtenerDeudasJugador', { cedula: j.cedula }),
-                        fetchAPI('getDeudasVocalia', { cedula: j.cedula })
-                    ]));
-                    const resultados = await Promise.all(deudasPromises);
-                    const deudoresConDetalle = [];
-                    for (let i = 0; i < jugadores.length; i++) {
-                        const j = jugadores[i];
-                        const [deudasIns, vocaliaDebt] = resultados[i];
-                        let total = 0;
-                        let detalles = [];
-                        if (deudasIns.ok) {
-                            if (deudasIns.inscripEstado === 'PENDIENTE') { total += 5; detalles.push('Inscripción: $5'); }
-                            if (deudasIns.unifEstado === 'PENDIENTE') { total += 75; detalles.push('Uniforme: $75'); }
-                            if (deudasIns.mediasEstado === 'PENDIENTE') { total += 2; detalles.push('Medias: $2'); }
-                        }
-                        let vocaliaMonto = 0;
-                        if (vocaliaDebt && typeof vocaliaDebt === 'number') vocaliaMonto = vocaliaDebt;
-                        else if (vocaliaDebt && vocaliaDebt.total) vocaliaMonto = vocaliaDebt.total;
-                        if (vocaliaMonto > 0) {
-                            total += vocaliaMonto;
-                            detalles.push(`Vocalías: $${vocaliaMonto}`);
-                        }
-                        if (total > 0) {
-                            deudoresConDetalle.push({
-                                nombre: j.nombre,
-                                cedula: j.cedula,
-                                totalDeuda: total,
-                                detalle: detalles.join(', ')
-                            });
-                        }
-                    }
-                    deudoresConDetalle.sort((a, b) => b.totalDeuda - a.totalDeuda);
-                    if (deudoresConDetalle.length) {
-                        tbody.innerHTML = deudoresConDetalle.map(d => `
-                            <tr>
-                                <td>${d.nombre}</td>
-                                <td>${d.cedula}</td>
-                                <td>$${d.totalDeuda}</td>
-                                <td><span class="debt-detail">${d.detalle}</span></td>
-                                <td><button class="btn-warning" onclick="prepararCobro('${d.cedula}')">💰 Cobrar</button></td>
-                            </tr>`).join('');
-                    } else {
-                        tbody.innerHTML = '<tr><td colspan="5" class="text-center">✨ Sin deudores ✨</td></tr>';
-                    }
-                } catch (e) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="error-message">Error al cargar deudores</td></tr>';
-                }
-            }
-
-            window.prepararCobro = (ced) => {
-                document.getElementById('buscarCedula').value = ced;
-                buscarDeudor();
-            };
-
-            async function buscarDeudor() {
-                const ced = document.getElementById('buscarCedula').value;
-                if (!ced) return;
-                const deudasIns = await fetchAPI('obtenerDeudasJugador', { cedula: ced });
-                let total = 0;
-                let detalleHtml = '';
-                if (deudasIns.ok) {
-                    if (deudasIns.inscripEstado === 'PENDIENTE') total += 5;
-                    if (deudasIns.unifEstado === 'PENDIENTE') total += 75;
-                    if (deudasIns.mediasEstado === 'PENDIENTE') total += 2;
-                    detalleHtml = `📝 Inscripción: ${deudasIns.inscripEstado} | Uniforme: ${deudasIns.unifEstado} | Medias: ${deudasIns.mediasEstado}<br>`;
-                }
-                const vocaliaDebt = await fetchAPI('getDeudasVocalia', { cedula: ced });
-                let vocaliaMonto = 0;
-                if (vocaliaDebt && typeof vocaliaDebt === 'number') vocaliaMonto = vocaliaDebt;
-                else if (vocaliaDebt && vocaliaDebt.total) vocaliaMonto = vocaliaDebt.total;
-                if (vocaliaMonto > 0) {
-                    total += vocaliaMonto;
-                    detalleHtml += `🎫 Vocalías pendientes: $${vocaliaMonto}<br>`;
-                }
-                if (total > 0) {
-                    document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🐾 ${deudasIns.jugador?.nombre || 'Jugador'}<br>💰 Deuda total: <strong>$${total}</strong><br>${detalleHtml}</div>`;
-                    document.getElementById('formPago').style.display = 'block';
-                    document.getElementById('montoPago').value = total;
-                } else {
-                    document.getElementById('infoDeudor').innerHTML = '<div class="info-card">✅ Sin deudas pendientes</div>';
-                    document.getElementById('formPago').style.display = 'none';
-                }
-            }
-
-            async function registrarPago() {
-                if (guardando) return;
-                guardando = true;
-                const ced = document.getElementById('buscarCedula').value;
-                const monto = parseFloat(document.getElementById('montoPago').value);
-                if (isNaN(monto) || monto <= 0) {
-                    guardando = false;
-                    return alert('Monto inválido');
-                }
-                const res = await fetchAPI('registrarPagoInscripcion', { cedula: ced, monto });
-                if (res.ok) {
-                    alert('✅ Pago registrado');
-                    await cargarDeudores();
-                    await cargarJugadoresAprobados();
-                    document.getElementById('formPago').style.display = 'none';
-                    document.getElementById('infoDeudor').innerHTML = '';
-                    document.getElementById('buscarCedula').value = '';
-                } else {
-                    alert('Error al registrar pago');
-                }
-                guardando = false;
-            }
-
-            async function cargarEquipos() {
-                try {
-                    const res = await fetchAPI('getEquipos');
-                    if (res.ok && res.equipos && res.equipos.length) equipos = res.equipos;
-                    actualizarListaEquipos();
-                    actualizarSelectsRivales();
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-
-            function actualizarListaEquipos() {
-                const container = document.getElementById('listaEquipos');
-                if (container) container.innerHTML = equipos.map(e => `<div class="equipo-item">${e}<button class="btn-sm" onclick="eliminarEquipo('${e.replace(/'/g, "\\'")}')">X</button></div>`).join('');
-            }
-
-            function actualizarSelectsRivales() {
-                ['rivalPartido', 'proxRival'].forEach(id => {
-                    const select = document.getElementById(id);
-                    if (select) {
-                        select.innerHTML = '<option value="">Seleccionar...</option>';
-                        equipos.forEach(e => {
-                            const opt = document.createElement('option');
-                            opt.value = e;
-                            opt.textContent = e;
-                            select.appendChild(opt);
-                        });
-                    }
-                });
-            }
-
-            window.agregarEquipo = async () => {
-                const nuevo = document.getElementById('nuevoEquipo').value.trim();
-                if (nuevo && !equipos.includes(nuevo)) {
-                    const res = await fetchAPI('agregarEquipo', { nombre: nuevo });
-                    if (res.ok) {
-                        equipos.push(nuevo);
-                        actualizarListaEquipos();
-                        actualizarSelectsRivales();
-                        document.getElementById('nuevoEquipo').value = '';
-                        alert('✅ Rival agregado');
-                    } else alert('❌ Error');
-                } else alert('Equipo ya existe o vacío');
-            };
-
-            window.eliminarEquipo = async (equipo) => {
-                if (!confirm(`¿Eliminar equipo "${equipo}"?`)) return;
-                const res = await fetchAPI('eliminarEquipo', { nombre: equipo });
-                if (res.ok) {
-                    equipos = equipos.filter(e => e !== equipo);
-                    actualizarListaEquipos();
-                    actualizarSelectsRivales();
-                    alert('✅ Rival eliminado');
-                } else alert('Error');
-            };
-
-            async function cargarNotificaciones() {
-                const container = document.getElementById('listaNotificaciones');
-                container.innerHTML = '<div class="spinner-mini"></div> Cargando...';
-                const data = await fetchAPI('getNotificaciones');
-                if (data.notificaciones && data.notificaciones.length) {
-                    container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
-                } else {
-                    container.innerHTML = '<p class="text-center">📭 Sin anuncios</p>';
-                }
-            }
-
-            async function publicarNotificacion(titulo, mensaje, tipo) {
-                const res = await fetchAPI('publicarNotificacion', { titulo, mensaje, tipo });
-                return res.ok;
-            }
-
-            async function cargarProximos() {
-                const container = document.getElementById('listaProximos');
-                container.innerHTML = '<div class="spinner-mini"></div> Cargando...';
-                const data = await fetchAPI('getProximosPartidos');
-                partidosProximos = data.partidos || [];
-                if (partidosProximos.length) {
-                    container.innerHTML = partidosProximos.map((p, idx) => `<div class="partido-item"><div class="partido-info"><div class="partido-fecha">📅 ${new Date(p.fecha).toLocaleString()}</div><div class="partido-rival">⚽ vs ${p.rival} | 🏟️ ${p.cancha || 'Cancha 1'} | 💰 $${p.valorVocalia || 5}</div>${p.observaciones ? `<div class="partido-obs">📝 ${p.observaciones}</div>` : ''}</div><button class="btn-danger" style="padding:3px 10px" onclick="eliminarPartido(${idx})">🗑️</button></div>`).join('');
-                } else {
-                    container.innerHTML = '<p class="text-center">⚽ No hay partidos</p>';
-                }
-            }
-
-            window.eliminarPartido = async (idx) => {
-                if (confirm('¿Eliminar este partido?')) {
-                    const res = await fetchAPI('eliminarProximoPartido', { index: idx });
-                    if (res.ok) {
-                        alert('✅ Eliminado');
-                        await cargarProximos();
-                    } else alert('Error');
-                }
-            };
-
-            async function guardarProximoPartido() {
-                if (guardando) return;
-                guardando = true;
-                const fecha = document.getElementById('proxFecha').value, hora = document.getElementById('proxHora').value;
-                const fechaCompleta = (fecha && hora) ? `${fecha}T${hora}:00` : '';
-                const rival = document.getElementById('proxRival').value, cancha = document.getElementById('proxCancha').value, valorVocalia = document.getElementById('proxValorVocalia').value, obs = document.getElementById('proxObs').value;
-                if (!fechaCompleta || !rival) {
-                    guardando = false;
-                    return alert('Complete fecha y rival');
-                }
-                const res = await fetchAPI('guardarProximoPartido', { fecha: fechaCompleta, rival, cancha, observaciones: obs, valorVocalia });
-                if (res.ok) {
-                    alert('✅ Partido guardado. Notificando a jugadores...');
-                    const jugadores = await fetchAPI('getJugadoresAprobados');
-                    if (jugadores.jugadores && jugadores.jugadores.length) {
-                        const tituloNoti = `⚽ Nuevo partido: vs ${rival}`;
-                        const mensajeNoti = `📅 Fecha: ${new Date(fechaCompleta).toLocaleString()}\n🏟️ Cancha: ${cancha}\n💰 Valor vocalía: $${valorVocalia}\n📝 Obs: ${obs || 'Ninguna'}`;
-                        await publicarNotificacion(tituloNoti, mensajeNoti, 'info');
-                    }
-                    await cargarProximos();
-                    document.getElementById('proxFecha').value = '';
-                    document.getElementById('proxRival').value = '';
-                    document.getElementById('proxObs').value = '';
-                } else {
-                    alert('Error al guardar');
-                }
-                guardando = false;
-            }
-
-            // CALIFICAR PARTIDO
-            async function cargarListaPartidosParaCalificar() {
-                const container = document.getElementById('listaPartidosParaCalificar');
-                container.innerHTML = '<div class="spinner-mini"></div> Cargando partidos...';
-                const data = await fetchAPI('getProximosPartidos');
-                partidosProximos = data.partidos || [];
-                if (partidosProximos.length === 0) {
-                    container.innerHTML = '<p class="text-center">⚽ No hay partidos próximos. Créalos en la pestaña "Próximos".</p>';
-                    return;
-                }
-                container.innerHTML = '<h3>Selecciona un partido para calificar</h3>';
-                partidosProximos.forEach((p, idx) => {
-                    const fechaObj = new Date(p.fecha);
-                    const card = document.createElement('div');
-                    card.className = 'match-card';
-                    card.dataset.index = idx;
-                    card.innerHTML = `<h3>⚽ Nápoles F.C. vs ${p.rival}</h3>
-                                     <p>📅 ${fechaObj.toLocaleDateString()} - ${fechaObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                     <p>🏟️ ${p.cancha || 'Cancha 1'} | 💰 $${p.valorVocalia || 5}</p>
-                                     <p>📝 ${p.observaciones || 'Sin observaciones'}</p>`;
-                    card.onclick = () => seleccionarPartidoParaCalificar(idx);
-                    container.appendChild(card);
-                });
-            }
-
-            async function seleccionarPartidoParaCalificar(idx) {
-                partidoSeleccionado = partidosProximos[idx];
-                document.getElementById('detallePartidoSeleccionado').style.display = 'block';
-                const infoDiv = document.getElementById('infoPartidoSeleccionado');
-                const fechaObj = new Date(partidoSeleccionado.fecha);
-                infoDiv.innerHTML = `<h3>⚽ Nápoles F.C. vs ${partidoSeleccionado.rival}</h3>
-                                    <p>📅 ${fechaObj.toLocaleDateString()} - ${fechaObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                    <p>🏟️ ${partidoSeleccionado.cancha || 'Cancha 1'} | 💰 $${partidoSeleccionado.valorVocalia || 5}</p>
-                                    <p>📝 ${partidoSeleccionado.observaciones || 'Sin observaciones'}</p>`;
-
-                const jugadoresData = await fetchAPI('getJugadoresAprobados');
-                if (!jugadoresData.jugadores || !jugadoresData.jugadores.length) {
-                    document.getElementById('asistenciaJugadores').innerHTML = '<p>No hay jugadores aprobados.</p>';
-                    return;
-                }
-                jugadoresAsistencia = jugadoresData.jugadores.map(j => ({ cedula: j.cedula, nombre: j.nombre, asistio: false }));
-                let html = '<h3>✅ Marcar asistencia</h3><div style="max-height:300px; overflow-y:auto;">';
-                jugadoresAsistencia.forEach(j => {
-                    html += `<div class="checkbox-group"><input type="checkbox" id="asist_${j.cedula}" data-cedula="${j.cedula}" data-nombre="${j.nombre}"> <label for="asist_${j.cedula}">${j.nombre}</label></div>`;
-                });
-                html += '</div><button class="btn-primary" id="btnConfirmarAsistencia">Confirmar asistentes y calificar</button>';
-                document.getElementById('asistenciaJugadores').innerHTML = html;
-                document.getElementById('btnConfirmarAsistencia').onclick = confirmarAsistenciaYMostrarCalificaciones;
-                document.getElementById('calificacionesPorJugador').style.display = 'none';
-                document.getElementById('btnGuardarCalificacionesFinal').style.display = 'none';
-            }
-
-            function confirmarAsistenciaYMostrarCalificaciones() {
-                const asistentes = [];
-                jugadoresAsistencia.forEach(j => {
-                    const chk = document.getElementById(`asist_${j.cedula}`);
-                    if (chk && chk.checked) asistentes.push({ cedula: j.cedula, nombre: j.nombre });
-                });
-                if (asistentes.length === 0) {
-                    alert('Selecciona al menos un asistente.');
-                    return;
-                }
-                jugadoresParaCalificar = asistentes;
-                mostrarFormularioCalificaciones();
-            }
-
-            function mostrarFormularioCalificaciones() {
-                let html = `<h3>⭐ Calificar desempeño de asistentes</h3><div class="cal-grid"><div class="cal-header"><span class="col-jugador">Jugador</span><span class="col-num">🟨</span><span class="col-num">🟥</span><span class="col-num">⚽</span><span class="col-select">⭐P</span><span class="col-select">🤝C</span><span class="col-select">🙏R</span><span class="col-select">💪H</span></div>`;
-                jugadoresParaCalificar.forEach(j => {
-                    html += `<div class="cal-row">
-                        <span class="col-jugador"><strong>${j.nombre}</strong></span>
-                        <input class="col-num" type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2">
-                        <input class="col-num" type="number" id="rojas_${j.cedula}" value="0" min="0" max="1">
-                        <input class="col-num" type="number" id="goles_${j.cedula}" value="0" min="0">
-                        <select class="col-select" id="punt_${j.cedula}">${[1, 2, 3, 4, 5].map(v => `<option value="${v}" ${v === 3 ? 'selected' : ''}>${v}</option>`).join('')}</select>
-                        <select class="col-select" id="comp_${j.cedula}">${[1, 2, 3, 4, 5].map(v => `<option value="${v}" ${v === 3 ? 'selected' : ''}>${v}</option>`).join('')}</select>
-                        <select class="col-select" id="resp_${j.cedula}">${[1, 2, 3, 4, 5].map(v => `<option value="${v}" ${v === 3 ? 'selected' : ''}>${v}</option>`).join('')}</select>
-                        <select class="col-select" id="hum_${j.cedula}">${[1, 2, 3, 4, 5].map(v => `<option value="${v}" ${v === 3 ? 'selected' : ''}>${v}</option>`).join('')}</select>
-                    </div>`;
-                });
-                html += `</div>`;
-                document.getElementById('calificacionesPorJugador').innerHTML = html;
-                document.getElementById('calificacionesPorJugador').style.display = 'block';
-                document.getElementById('btnGuardarCalificacionesFinal').style.display = 'block';
-                document.getElementById('btnGuardarCalificacionesFinal').onclick = guardarCalificacionesPartido;
-            }
-
-            async function guardarCalificacionesPartido() {
-                if (guardando) return;
-                guardando = true;
-                const fecha = partidoSeleccionado.fecha;
-                const rival = partidoSeleccionado.rival;
-                const cancha = partidoSeleccionado.cancha || 'Cancha 1';
-                const valorVocalia = partidoSeleccionado.valorVocalia || 5;
-                const cedulas = [], nombres = [], amarillas = [], rojas = [], goles = [], punt = [], comp = [], resp = [], hum = [];
-                for (const j of jugadoresParaCalificar) {
-                    cedulas.push(j.cedula);
-                    nombres.push(j.nombre);
-                    amarillas.push(document.getElementById(`amarillas_${j.cedula}`)?.value || 0);
-                    rojas.push(document.getElementById(`rojas_${j.cedula}`)?.value || 0);
-                    goles.push(document.getElementById(`goles_${j.cedula}`)?.value || 0);
-                    punt.push(document.getElementById(`punt_${j.cedula}`)?.value || 3);
-                    comp.push(document.getElementById(`comp_${j.cedula}`)?.value || 3);
-                    resp.push(document.getElementById(`resp_${j.cedula}`)?.value || 3);
-                    hum.push(document.getElementById(`hum_${j.cedula}`)?.value || 3);
-                }
-                const res = await fetchAPI('guardarPartido', {
-                    fecha, rival, cancha, valorVocalia,
-                    cedulas: cedulas.join(','), nombres: nombres.join(','), amarillas: amarillas.join(','), rojas: rojas.join(','),
-                    goles: goles.join(','), puntualidades: punt.join(','), companerismos: comp.join(','),
-                    respetos: resp.join(','), humildades: hum.join(',')
-                });
-                if (res.ok) {
-                    alert('✅ Partido calificado y guardado');
-                    await cargarListaPartidosParaCalificar();
-                    document.getElementById('detallePartidoSeleccionado').style.display = 'none';
-                } else {
-                    alert('Error al guardar calificaciones');
-                }
-                guardando = false;
-            }
-
-            function inicializarEventos() {
-                document.getElementById('btnActualizar').onclick = () => location.reload();
-                document.getElementById('btnSalir').onclick = () => {
-                    localStorage.removeItem('admin_auth');
-                    alert('Sesión cerrada');
-                    window.location.href = LINK_APP;
-                };
-                document.getElementById('btnVolver').onclick = volverDashboard;
-                document.getElementById('btnBuscarDeudor').onclick = () => buscarDeudor();
-                document.getElementById('btnRegistrarPago').onclick = () => registrarPago();
-                document.getElementById('btnAgregarEquipo').onclick = () => window.agregarEquipo();
-                document.getElementById('btnPublicarNoti').onclick = async () => {
-                    const tit = document.getElementById('notiTitulo').value, msg = document.getElementById('notiMensaje').value, tipo = document.getElementById('notiTipo').value;
-                    if (!tit || !msg) return alert('Complete campos');
-                    if (await publicarNotificacion(tit, msg, tipo)) {
-                        alert('✅ Publicado');
-                        document.getElementById('notiTitulo').value = '';
-                        document.getElementById('notiMensaje').value = '';
-                        await cargarNotificaciones();
-                    } else alert('Error');
-                };
-                document.getElementById('btnGuardarProximo').onclick = () => guardarProximoPartido();
-
-                document.querySelectorAll('.tab').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const tabId = btn.dataset.tab;
-                        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-                        btn.classList.add('active');
-                        document.getElementById(`panel-${tabId}`).classList.add('active');
-                        if (tabId === 'pendientes') await cargarPendientes();
-                        if (tabId === 'jugadores') await cargarJugadoresAprobados();
-                        if (tabId === 'vocalia') {
-                            await cargarDeudores();
-                            document.getElementById('formPago').style.display = 'none';
-                            document.getElementById('infoDeudor').innerHTML = '';
-                        }
-                        if (tabId === 'equipos') await cargarEquipos();
-                        if (tabId === 'notificaciones') await cargarNotificaciones();
-                        if (tabId === 'proximos') await cargarProximos();
-                        if (tabId === 'partidos') await cargarListaPartidosParaCalificar();
-                    });
-                });
-            }
-
-            async function cargarDatosIniciales() {
-                llenarSelectsFechas();
-                // Carga esencial en paralelo
-                await Promise.all([
-                    cargarEquipos(),
-                    cargarPendientesCount(),
-                    cargarJugadoresAprobados()
-                ]);
-                renderDashboard();
-                hideLoader();
-            }
-
-            inicializarEventos();
-            cargarDatosIniciales();
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                if (typeof CONFIG !== 'undefined') initApp();
-                else setTimeout(() => {
-                    if (typeof CONFIG !== 'undefined') initApp();
-                    else document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: No se pudo cargar config.js</div></div>';
-                }, 1000);
             });
-        } else {
-            if (typeof CONFIG !== 'undefined') initApp();
-            else setTimeout(() => {
-                if (typeof CONFIG !== 'undefined') initApp();
-                else document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: No se pudo cargar config.js</div></div>';
-            }, 1000);
-        }
-    })();
+        });
+    }
+
+    async function cargarDatosIniciales() {
+        llenarSelectsFechas();
+        await Promise.all([
+            cargarEquipos(),
+            cargarPendientesCount(),
+            cargarJugadoresAprobados()
+        ]);
+        renderDashboard();
+        hideLoader();
+    }
+
+    function initApp() {
+        inicializarEventos();
+        cargarDatosIniciales();
+        window.appInitialized = true;
+    }
+
+    // Si config.js ya se cargó antes de que este script termine, llamar initApp
+    if (typeof CONFIG !== 'undefined' && CONFIG.URL_GAS) {
+        API_URL = CONFIG.URL_GAS;
+        initApp();
+    }
+    // Si no, esperar a que el script de config.js cargue (el evento onload ya está arriba)
+    // pero si ya pasó, ejecutar igual
+    setTimeout(() => {
+        if (!window.appInitialized) initApp();
+    }, 2000);
 </script>
 </body>
 </html>
