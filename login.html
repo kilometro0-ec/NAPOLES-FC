@@ -1,6 +1,6 @@
 <!-- =========================================
-LOGIN.HTML - VERSIÓN CON DIAGNÓSTICO VISUAL
-MISMO DISEÑO, LÓGICA ROBUSTA
+LOGIN.HTML - VERSIÓN CON DEPURACIÓN COMPLETA
+Mantiene el diseño original, añade logs y herramientas de diagnóstico
 ========================================= -->
 
 <!DOCTYPE html>
@@ -194,23 +194,64 @@ MISMO DISEÑO, LÓGICA ROBUSTA
             display: inline-block;
         }
 
-        .error-toast {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            color: #fecaca;
-            padding: 1rem;
-            border-radius: 1rem;
-            margin-top: 1.5rem;
-            display: none;
-            text-align: center;
-            font-size: 0.85rem;
+        .toast-message {
+            background: rgba(0, 0, 0, 0.8);
+            border-left: 4px solid var(--primary);
+            padding: 0.8rem 1rem;
+            border-radius: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            text-align: left;
             word-break: break-word;
+            display: none;
         }
 
-        @media (display-mode: standalone) {
-            #containerDownload {
-                display: none !important;
-            }
+        .toast-message.error {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.2);
+            color: #fecaca;
+        }
+
+        .toast-message.success {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.2);
+            color: #a7f3d0;
+        }
+
+        .toast-message.info {
+            border-left-color: var(--primary);
+            background: rgba(0, 210, 255, 0.1);
+            color: #bae6fd;
+        }
+
+        .debug-panel {
+            margin-top: 1.5rem;
+            padding: 0.8rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 1rem;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        .debug-panel button {
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            margin: 0.2rem;
+        }
+
+        .debug-panel pre {
+            background: #000;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            display: none;
+            text-align: left;
         }
     </style>
 </head>
@@ -225,38 +266,28 @@ MISMO DISEÑO, LÓGICA ROBUSTA
 
     <div class="input-group">
         <label>Número de Cédula</label>
-
-        <input
-            type="text"
-            id="loginCedula"
-            maxlength="20"
-            placeholder="0000000000"
-            inputmode="text"
-            autocomplete="off"
-        >
+        <input type="text" id="loginCedula" maxlength="20" placeholder="0000000000" inputmode="text" autocomplete="off">
     </div>
 
-    <button id="btnLogin" class="btn-submit" disabled>
-        Iniciar Sesión
-    </button>
+    <button id="btnLogin" class="btn-submit" disabled>Iniciar Sesión</button>
 
-    <div id="mensajeError" class="error-toast"></div>
+    <div id="toast" class="toast-message"></div>
 
     <div class="footer-links">
-
-        ¿Eres nuevo en el club?
-        <br><br>
-
-        <a href="registro.html">
-            CREAR CUENTA NUEVA ✨
-        </a>
-
+        ¿Eres nuevo en el club?<br><br>
+        <a href="registro.html">CREAR CUENTA NUEVA ✨</a>
         <div id="containerDownload">
-            <span id="manualDownloadBtn" class="btn-download">
-                📲 DESCARGAR APK OFICIAL
-            </span>
+            <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
         </div>
+    </div>
 
+    <!-- Panel de depuración (solo para diagnosticar) -->
+    <div class="debug-panel">
+        <button id="btnVerLocalStorage">🔍 Ver localStorage</button>
+        <button id="btnLimpiarSession">🗑️ Limpiar sesión</button>
+        <pre id="localStorageContent"></pre>
+        <div style="margin-top: 6px; color:#aaa;">⚠️ Si después del login no redirige, usa el botón "Ir a perfil manualmente" (abajo).</div>
+        <button id="btnIrPerfil" style="background:#00d2ff20; border-color:#00d2ff;">➡️ Ir a perfil manualmente</button>
     </div>
 
 </div>
@@ -264,44 +295,40 @@ MISMO DISEÑO, LÓGICA ROBUSTA
 <script src="config.js"></script>
 
 <script>
-
 // ============================
-// VERIFICAR CONFIG
+// DEPURACIÓN Y LOGS
 // ============================
-if (typeof CONFIG === 'undefined') {
-    alert('❌ Error crítico: archivo config.js no cargado.');
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast-message ${type}`;
+    toast.style.display = 'block';
+    console.log(`[${type.toUpperCase()}] ${message}`);
+    // Ocultar después de 5 segundos a menos que sea error
+    if (type !== 'error') {
+        setTimeout(() => { if (toast.textContent === message) toast.style.display = 'none'; }, 5000);
+    }
 }
 
-// ============================
-// ELEMENTOS DOM
-// ============================
+// Verificar config.js
+if (typeof CONFIG === 'undefined') {
+    showToast('❌ ERROR CRÍTICO: config.js no cargado. Verifica que el archivo exista.', 'error');
+} else if (!CONFIG.URL_GAS) {
+    showToast('❌ ERROR: CONFIG.URL_GAS no está definida.', 'error');
+} else {
+    console.log('✅ config.js cargado correctamente. URL_GAS:', CONFIG.URL_GAS);
+}
+
+// Elementos
 const cedulaInput = document.getElementById('loginCedula');
 const btnLogin = document.getElementById('btnLogin');
-const errorDiv = document.getElementById('mensajeError');
-const manualBtn = document.getElementById('manualDownloadBtn');
-const containerDownload = document.getElementById('containerDownload');
+const toastDiv = document.getElementById('toast');
 const bodyElem = document.body;
 
 const ADMIN_SECRET = "GataFiera54321";
 const ADMIN_COLOR_TRIGGER = "Gata";
 
-// ============================
-// MOSTRAR ERROR (siempre visible)
-// ============================
-function mostrarError(msj) {
-    errorDiv.innerText = msj;
-    errorDiv.style.display = 'block';
-    console.error('[ERROR]', msj);
-    // El error se mantiene hasta que el usuario vuelva a escribir o intente otro login
-}
-
-function ocultarError() {
-    errorDiv.style.display = 'none';
-}
-
-// ============================
-// MODO VISUAL ADMIN (solo estético)
-// ============================
+// Funciones UI
 function actualizarModoVisual() {
     const valor = cedulaInput.value.trim();
     btnLogin.disabled = valor === "";
@@ -316,164 +343,199 @@ function actualizarModoVisual() {
 
 cedulaInput.addEventListener('input', () => {
     actualizarModoVisual();
-    ocultarError();
+    const toast = document.getElementById('toast');
+    toast.style.display = 'none';
+});
+
+// Botones de depuración
+document.getElementById('btnVerLocalStorage').addEventListener('click', () => {
+    const pre = document.getElementById('localStorageContent');
+    const session = localStorage.getItem('jugador_actual');
+    if (session) {
+        try {
+            const parsed = JSON.parse(session);
+            pre.textContent = JSON.stringify(parsed, null, 2);
+        } catch(e) {
+            pre.textContent = `Error al parsear: ${e.message}\nRaw: ${session}`;
+        }
+    } else {
+        pre.textContent = 'No hay sesión guardada (jugador_actual)';
+    }
+    pre.style.display = 'block';
+    setTimeout(() => { pre.style.display = 'none'; }, 8000);
+});
+
+document.getElementById('btnLimpiarSession').addEventListener('click', () => {
+    localStorage.removeItem('jugador_actual');
+    showToast('🗑️ Sesión eliminada del localStorage', 'info');
+    document.getElementById('localStorageContent').style.display = 'none';
+});
+
+document.getElementById('btnIrPerfil').addEventListener('click', () => {
+    const session = localStorage.getItem('jugador_actual');
+    if (session) {
+        showToast('Redirigiendo a perfil.html...', 'info');
+        window.location.href = 'perfil.html';
+    } else {
+        showToast('❌ No hay sesión activa. Inicia sesión primero.', 'error');
+    }
 });
 
 // ============================
-// NORMALIZACIÓN EXTREMA DEL ESTADO
-// ============================
-function normalizarEstado(estadoRaw) {
-    if (estadoRaw === undefined || estadoRaw === null) return '';
-    // Convertir a string, eliminar espacios, saltos de línea, tabuladores, NBSP y cualquier carácter no ASCII que sea espacio
-    let limpio = String(estadoRaw)
-        .replace(/[\s\u00A0\u2000-\u200F\u2028\u2029\uFEFF]+/g, '') // elimina todo tipo de espacios invisibles
-        .toUpperCase();
-    return limpio;
-}
-
-// ============================
-// LOGIN (VERSIÓN CON DIAGNÓSTICO)
+// LOGIN CON DEPURACIÓN
 // ============================
 btnLogin.addEventListener('click', async () => {
     const valorIngresado = cedulaInput.value.trim();
+    console.log('🔹 Iniciando login para cédula:', valorIngresado);
 
-    // --- ADMIN ---
+    // ADMIN
     if (valorIngresado === ADMIN_SECRET) {
         localStorage.setItem('admin_session', 'true');
-        window.location.href = 'admin.html';
+        showToast('✅ Acceso ADMIN, redirigiendo...', 'success');
+        setTimeout(() => { window.location.href = 'admin.html'; }, 500);
         return;
     }
 
-    // Validar formato cédula (10 dígitos)
+    // Validar formato
     if (!/^\d{10}$/.test(valorIngresado)) {
-        mostrarError('❌ Cédula inválida – deben ser 10 dígitos numéricos');
+        showToast('❌ Cédula inválida – debe tener 10 dígitos numéricos', 'error');
         return;
     }
 
     btnLogin.disabled = true;
-    const textoOriginal = btnLogin.innerText;
+    const originalText = btnLogin.innerText;
     btnLogin.innerText = 'VERIFICANDO...';
-    ocultarError();
+    showToast('⏳ Enviando solicitud al servidor...', 'info');
 
     try {
         const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(valorIngresado)}&t=${Date.now()}`;
-        console.log('📡 Consultando:', url);
+        console.log('📡 URL de consulta:', url);
+        
         const respuesta = await fetch(url);
-
+        console.log('📡 Respuesta HTTP status:', respuesta.status);
+        
         if (!respuesta.ok) {
             throw new Error(`HTTP ${respuesta.status} - ${respuesta.statusText}`);
         }
-
+        
         const data = await respuesta.json();
         console.log('📦 Respuesta completa del servidor:', data);
-
-        // Verificar si la respuesta tiene la estructura esperada
+        showToast(`📦 Respuesta recibida: success=${data.success}, cedulaExiste=${data.cedulaExiste}, estado=${data.estado}`, 'info');
+        
+        // Verificar si la respuesta tiene estructura válida
         if (data.success === false) {
-            mostrarError(`⚠️ Error del servidor: ${data.error || 'desconocido'}`);
+            showToast(`⚠️ Error del servidor: ${data.error || 'desconocido'}`, 'error');
             return;
         }
-
+        
         // Caso: cédula existe
         if (data.cedulaExiste === true) {
-            const estadoOriginal = data.estado || '';
-            const estadoNormalizado = normalizarEstado(estadoOriginal);
-            console.log(`🔍 Estado original: "${estadoOriginal}" → Normalizado: "${estadoNormalizado}"`);
-
+            const estadoRaw = data.estado || '';
+            const estadoNormalizado = estadoRaw.toString().trim().toUpperCase();
+            console.log(`🔍 Estado original: "${estadoRaw}" → Normalizado: "${estadoNormalizado}"`);
+            
             if (estadoNormalizado === 'APROBADO') {
-                // Validar que existan datos del jugador
+                // Verificar datos del jugador
                 if (!data.datosJugador) {
-                    mostrarError('⚠️ Datos del jugador no recibidos. Contacta al administrador.');
+                    showToast('⚠️ El servidor no envió datos del jugador.', 'error');
                     return;
                 }
-
-                // Guardar sesión
+                console.log('👤 Datos del jugador:', data.datosJugador);
+                
+                // Construir objeto de sesión
                 const sesion = {
                     ...data.datosJugador,
                     cedula: valorIngresado,
                     loginTime: Date.now()
                 };
-                localStorage.setItem('jugador_actual', JSON.stringify(sesion));
-                console.log('✅ Sesión guardada:', sesion);
-
-                // Verificar que se guardó correctamente
-                const comprobacion = localStorage.getItem('jugador_actual');
-                if (!comprobacion) {
-                    mostrarError('❌ No se pudo guardar la sesión. Intenta de nuevo.');
+                console.log('💾 Guardando en localStorage:', sesion);
+                
+                try {
+                    localStorage.setItem('jugador_actual', JSON.stringify(sesion));
+                    // Verificar que se guardó
+                    const comprobacion = localStorage.getItem('jugador_actual');
+                    if (!comprobacion) {
+                        throw new Error('No se pudo guardar la sesión (localStorage retornó null)');
+                    }
+                    console.log('✅ Sesión guardada exitosamente. Contenido:', comprobacion);
+                    showToast('✅ Sesión guardada correctamente. Redirigiendo al perfil...', 'success');
+                    
+                    // Redirigir después de un breve retraso para que el usuario vea el mensaje
+                    setTimeout(() => {
+                        window.location.href = 'perfil.html';
+                    }, 1000);
+                    return;
+                } catch (e) {
+                    console.error('🔥 Error al guardar en localStorage:', e);
+                    showToast(`❌ Error al guardar sesión: ${e.message}`, 'error');
                     return;
                 }
-
-                // Redirigir al perfil
-                window.location.href = 'perfil.html';
-                return;
             } else {
-                // Estado no es APROBADO (PENDIENTE, RECHAZADO, etc.)
-                mostrarError(`⏳ Cuenta en estado: "${estadoOriginal}". Se requiere APROBADO para acceder.`);
+                showToast(`⏳ Estado actual: "${estadoRaw}". Se requiere APROBADO para acceder.`, 'error');
                 return;
             }
         }
-
+        
         // Caso: cédula NO existe
         if (data.cedulaExiste === false) {
-            mostrarError('❌ Cédula no registrada. Regístrate primero.');
+            showToast('❌ Cédula no registrada. Regístrate primero.', 'error');
             return;
         }
-
-        // Cualquier otro caso inesperado
-        mostrarError('⚠️ Respuesta inesperada del servidor. Revisa la consola (F12).');
-
+        
+        // Cualquier otro caso
+        showToast('⚠️ Respuesta inesperada del servidor. Revisa la consola (F12).', 'error');
+        
     } catch (error) {
-        console.error('🔥 Error en login:', error);
-        mostrarError(`🔌 Error de conexión: ${error.message}. Verifica tu internet y que la URL_GAS sea correcta.`);
+        console.error('🔥 Error en el login:', error);
+        showToast(`🔌 Error de conexión: ${error.message}. Verifica internet y URL_GAS.`, 'error');
     } finally {
         btnLogin.disabled = false;
-        btnLogin.innerText = textoOriginal;
+        btnLogin.innerText = originalText;
         actualizarModoVisual();
     }
 });
 
-// ============================
-// ENTER PARA LOGIN
-// ============================
+// Enter
 cedulaInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !btnLogin.disabled) {
         btnLogin.click();
     }
 });
 
-// ============================
-// INICIALIZAR
-// ============================
+// Inicializar
 actualizarModoVisual();
 
 // ============================
-// PWA - INSTALACIÓN
+// PWA - INSTALACIÓN (opcional)
 // ============================
 let deferredPrompt;
-
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    manualBtn.innerHTML = "👕 INSTALAR APP";
-    manualBtn.style.background = "linear-gradient(135deg,#FFD700,#B8860B)";
-    manualBtn.style.color = "#000";
-});
-
-manualBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            containerDownload.style.display = 'none';
-        }
-        deferredPrompt = null;
-    } else {
-        alert("⚽ Abre el menú del navegador y selecciona INSTALAR APP");
+    const manualBtn = document.getElementById('manualDownloadBtn');
+    if (manualBtn) {
+        manualBtn.innerHTML = "👕 INSTALAR APP";
+        manualBtn.style.background = "linear-gradient(135deg,#FFD700,#B8860B)";
+        manualBtn.style.color = "#000";
     }
 });
+const manualBtn = document.getElementById('manualDownloadBtn');
+if (manualBtn) {
+    manualBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                document.getElementById('containerDownload').style.display = 'none';
+            }
+            deferredPrompt = null;
+        } else {
+            alert("⚽ Abre el menú del navegador y selecciona INSTALAR APP");
+        }
+    });
+}
 
-// ============================
-// SERVICE WORKER
-// ============================
+// Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
@@ -481,7 +543,6 @@ if ('serviceWorker' in navigator) {
             .catch(err => console.log('SW error:', err));
     });
 }
-
 </script>
 
 </body>
