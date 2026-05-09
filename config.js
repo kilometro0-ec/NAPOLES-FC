@@ -1,7 +1,7 @@
 const CONFIG = {
 
     // PEGA TU URL NUEVA DEL APPS SCRIPT
-    URL_GAS: 'https://script.google.com/macros/s/AKfycbz35nL7SGbrDVAdkFLeIg1L_5Wdx71Pn3OQcGOw1WtkF8e09P3oGOjbTpq4soCZCpB1/exec',
+    URL_GAS: 'https://script.google.com/macros/s/AKfycbyapEghyiWzLEc6Wu6RKskRVyDKVJs1wMjSt3cQlcQShv65zo54tfKCsFv7IKNvDmRY/exec',
 
     DEFAULT_AVATAR:
     'https://cdn-icons-png.flaticon.com/512/149/149071.png',
