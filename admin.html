@@ -3,157 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Nápoles F.C. | Panel Administrativo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Nápoles F.C. | Admin Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1e40af;
-            --primary-dark: #1e3a8a;
-            --accent: #3b82f6;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --radius-lg: 1.25rem;
-            --radius-md: 0.75rem;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --primary: #1e40af; --primary-dark: #1e3a8a; --accent: #3b82f6;
+            --bg: #f8fafc; --card-bg: #ffffff; --text-main: #1e293b;
+            --text-muted: #64748b; --success: #10b981; --danger: #ef4444;
+            --radius-md: 12px; --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); padding-bottom: 40px; }
+        
+        .top-bar { background: var(--card-bg); padding: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 1100px; margin: 1.5rem auto; padding: 0 1rem; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.5; padding-bottom: 40px; }
-
-        /* HEADER */
-        .top-bar {
-            background: var(--card-bg); padding: 1rem 1.5rem; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100;
-        }
-        .brand { display: flex; align-items: center; gap: 0.75rem; }
-        .brand-logo { width: 35px; height: 35px; background: var(--primary); border-radius: 50%; display: grid; place-items: center; color: white; font-size: 1rem; }
-
-        .container { max-width: 1000px; margin: 1.5rem auto; padding: 0 1rem; }
-
-        /* DASHBOARD CARDS */
-        .hero { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem; }
-        .nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
-        .menu-card {
-            background: var(--card-bg); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid #e2e8f0;
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 1rem; position: relative;
-        }
+        .nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .menu-card { background: var(--card-bg); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
         .menu-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow); }
-        .icon-box { width: 45px; height: 45px; background: #eff6ff; border-radius: 10px; display: grid; place-items: center; font-size: 1.3rem; }
-        .badge-count { background: var(--danger); color: white; border-radius: 50%; padding: 2px 8px; font-size: 0.75rem; position: absolute; top: 10px; right: 10px; font-weight: bold; }
+        .menu-card i { font-size: 1.5rem; }
 
-        /* VIEWS & TABLES */
         .view-panel { display: none; animation: fadeIn 0.3s ease; }
         .view-panel.active { display: block; }
-        .data-card { background: var(--card-bg); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1rem; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        th { text-align: left; padding: 0.75rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid var(--bg); }
-        td { padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--bg); font-size: 0.9rem; }
+        .data-card { background: var(--card-bg); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
 
-        /* FORMS & BUTTONS */
-        .input-group { margin-bottom: 1rem; }
-        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
-        input, select, textarea { width: 100%; padding: 0.65rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; }
+        .table-wrapper { overflow-x: auto; margin-top: 1rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { background: #f1f5f9; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
+
+        .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+        input, select, textarea { width: 100%; padding: 0.7rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.9rem; }
+        label { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--text-muted); }
         
-        .btn { padding: 0.65rem 1.25rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
-        .btn-primary { background: var(--primary); color: white; }
+        .btn { padding: 0.7rem 1.2rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-block; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; }
         .btn-success { background: var(--success); color: white; }
-        .btn-ghost { background: #f1f5f9; color: var(--text-main); }
-        .back-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; margin-bottom: 1rem; font-weight: 500; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-danger { background: var(--danger); color: white; padding: 0.4rem 0.8rem; font-size: 0.7rem; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <header class="top-bar">
-    <div class="brand">
-        <div class="brand-logo">N</div>
-        <h2 style="font-size: 1rem;">Admin Nápoles F.C.</h2>
-    </div>
-    <button class="btn btn-ghost" id="btnSalir">Cerrar Sesión</button>
+    <strong>NÁPOLES F.C. | ADMIN PANEL</strong>
+    <button class="btn" style="background:#f1f5f9" onclick="location.reload()">🔄</button>
 </header>
 
 <div class="container">
     <div id="view-home" class="view-panel active">
-        <div class="hero">
-            <h1>Gestión del Club</h1>
-            <p>Panel central administrativo v1.0</p>
-        </div>
         <div class="nav-grid">
-            <div class="menu-card" onclick="showView('pendientes')">
-                <div class="icon-box">👤</div>
-                <div><strong>Solicitudes</strong><p style="font-size:0.75rem; color:var(--text-muted)">Nuevos jugadores</p></div>
-                <span id="badge-pendientes" class="badge-count" style="display:none">0</span>
-            </div>
-            <div class="menu-card" onclick="showView('pagos')">
-                <div class="icon-box">💰</div>
-                <div><strong>Pagos</strong><p style="font-size:0.75rem; color:var(--text-muted)">Cobros y deudas</p></div>
-            </div>
-            <div class="menu-card" onclick="showView('partido')">
-                <div class="icon-box">⚽</div>
-                <div><strong>Calificar</strong><p style="font-size:0.75rem; color:var(--text-muted)">Goles y tarjetas</p></div>
-            </div>
+            <div class="menu-card" onclick="showView('pendientes')"><i>👤</i><strong>Solicitudes</strong></div>
+            <div class="menu-card" onclick="showView('cobros')"><i>💰</i><strong>Pagos</strong></div>
+            <div class="menu-card" onclick="showView('nuevo-partido')"><i>📅</i><strong>Programar</strong></div>
+            <div class="menu-card" onclick="showView('calificar')"><i>⚽</i><strong>Calificar</strong></div>
+            <div class="menu-card" onclick="showView('equipos')"><i>🛡️</i><strong>Equipos</strong></div>
         </div>
     </div>
 
     <div id="view-pendientes" class="view-panel">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
+        <button onclick="showView('home')" class="btn" style="margin-bottom:10px">← Volver</button>
         <div class="data-card">
-            <h3>Jugadores por Aprobar</h3>
-            <div style="overflow-x: auto;">
-                <table id="table-pendientes">
-                    <thead><tr><th>Jugador</th><th>Dorsal</th><th>Acción</th></tr></thead>
-                    <tbody></tbody>
-                </table>
+            <h3>Aprobación de Jugadores</h3>
+            <div class="table-wrapper"><table id="t-req"><thead><tr><th>Nombre</th><th>Dorsal</th><th>Acción</th></tr></thead><tbody></tbody></table></div>
+        </div>
+    </div>
+
+    <div id="view-cobros" class="view-panel">
+        <button onclick="showView('home')" class="btn" style="margin-bottom:10px">← Volver</button>
+        <div class="data-card">
+            <h3>Control de Pagos</h3>
+            <input type="text" id="pay-ced" placeholder="Cédula" style="margin-bottom:10px">
+            <button class="btn btn-primary" onclick="buscarJugador()">Consultar Deuda</button>
+            <div id="pay-box" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:10px">
+                <p id="pay-name" style="font-weight:bold"></p>
+                <p>Saldo pendiente: <span id="pay-val" style="color:red; font-weight:bold"></span></p>
+                <input type="number" id="pay-monto" placeholder="Monto a pagar" style="margin-top:10px">
+                <button class="btn btn-success" style="width:100%; margin-top:10px" onclick="pagar()">Registrar Pago</button>
             </div>
         </div>
     </div>
 
-    <div id="view-pagos" class="view-panel">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div id="view-nuevo-partido" class="view-panel">
+        <button onclick="showView('home')" class="btn" style="margin-bottom:10px">← Volver</button>
         <div class="data-card">
-            <h3>Registrar Cobro</h3>
-            <div class="input-group">
-                <label>Cédula del Jugador</label>
-                <input type="text" id="pago-cedula" placeholder="Ej: 1712345678">
+            <h3>Programar Nuevo Encuentro</h3>
+            <div class="grid-form">
+                <div><label>Fecha</label><input type="date" id="p-fecha"></div>
+                <div><label>Rival</label><select id="p-rival"></select></div>
+                <div><label>Cancha</label><input type="text" id="p-cancha" value="Cancha 1"></div>
+                <div><label>Vocalía ($)</label><input type="number" id="p-vocalia" value="5"></div>
             </div>
-            <button class="btn btn-primary" onclick="buscarJugadorPago()">Verificar Deuda</button>
-            
-            <div id="pago-resultado" style="display:none; margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem;">
-                <p id="pago-nombre" style="font-weight:bold"></p>
-                <p>Deuda actual: <span id="pago-deuda" style="color:var(--danger); font-weight:bold"></span></p>
-                <div class="input-group" style="margin-top:1rem">
-                    <label>Monto a pagar</label>
-                    <input type="number" id="pago-monto" placeholder="0.00">
-                </div>
-                <button class="btn btn-success" onclick="confirmarPago()">Confirmar Pago</button>
-            </div>
+            <textarea id="p-obs" placeholder="Observaciones o indicaciones adicionales..." style="margin-bottom:10px"></textarea>
+            <button class="btn btn-primary" onclick="guardarProgramacion()">Publicar Programación</button>
         </div>
     </div>
 
-    <div id="view-partido" class="view-panel">
-        <button class="back-btn" onclick="showView('home')">← Volver</button>
+    <div id="view-calificar" class="view-panel">
+        <button onclick="showView('home')" class="btn" style="margin-bottom:10px">← Volver</button>
         <div class="data-card">
-            <h3>Datos del Partido</h3>
-            <div class="nav-grid">
-                <div class="input-group"><label>Fecha</label><input type="date" id="match-fecha"></div>
-                <div class="input-group"><label>Rival</label><input type="text" id="match-rival" placeholder="Nombre equipo"></div>
+            <h3>Calificar Partido Jugado</h3>
+            <div class="grid-form">
+                <div><label>Fecha</label><input type="date" id="c-fecha"></div>
+                <div><label>Rival</label><select id="c-rival"></select></div>
             </div>
-            <button class="btn btn-primary" onclick="cargarListaCalificar()">Cargar Jugadores Aprobados</button>
-            
-            <div style="overflow-x: auto; margin-top: 1.5rem;">
+            <button class="btn btn-primary" onclick="cargarJugadoresCalificar()">Cargar Jugadores</button>
+            <div class="table-wrapper">
                 <table id="table-calificar" style="display:none">
-                    <thead><tr><th>Jugador</th><th>Goles</th><th>TA</th><th>TR</th></tr></thead>
+                    <thead><tr><th>Jugador</th><th>Gol</th><th>TA</th><th>TR</th><th>Pun.</th><th>Res.</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
-            <button id="btn-guardar-match" class="btn btn-success" style="display:none; width:100%; margin-top:1rem" onclick="enviarCalificaciones()">Guardar Partido</button>
+            <button id="btn-save-cal" class="btn btn-success" style="display:none; width:100%; margin-top:10px" onclick="enviarCalificaciones()">Guardar Calificaciones</button>
+        </div>
+    </div>
+
+    <div id="view-equipos" class="view-panel">
+        <button onclick="showView('home')" class="btn" style="margin-bottom:10px">← Volver</button>
+        <div class="data-card">
+            <h3>Lista de Rivales</h3>
+            <div style="display:flex; gap:10px; margin-bottom:20px">
+                <input type="text" id="new-equipo" placeholder="Nombre del nuevo equipo">
+                <button class="btn btn-success" onclick="addEquipo()">Agregar</button>
+            </div>
+            <div class="table-wrapper"><table id="t-equipos"><thead><tr><th>Equipo</th><th>Acción</th></tr></thead><tbody></tbody></table></div>
         </div>
     </div>
 </div>
@@ -162,130 +136,135 @@
 <script>
     const API = CONFIG.URL_GAS;
 
-    // --- NAVEGACIÓN ---
-    function showView(viewId) {
+    function showView(id) {
         document.querySelectorAll('.view-panel').forEach(v => v.classList.remove('active'));
-        document.getElementById('view-' + viewId).classList.add('active');
-        if(viewId === 'pendientes') fetchPendientes();
+        document.getElementById('view-' + id).classList.add('active');
+        if(id === 'equipos' || id === 'nuevo-partido' || id === 'calificar') fetchEquipos();
+        if(id === 'pendientes') fetchPendientes();
     }
 
-    // --- LÓGICA DE SOLICITUDES ---
-    async function fetchPendientes() {
-        const tbody = document.querySelector('#table-pendientes tbody');
-        tbody.innerHTML = '<tr><td colspan="3">Cargando...</td></tr>';
+    // --- EQUIPOS ---
+    async function fetchEquipos() {
+        const res = await fetch(`${API}?action=getEquipos`);
+        const data = await res.json();
+        const selects = [document.getElementById('p-rival'), document.getElementById('c-rival')];
+        selects.forEach(s => {
+            if(s) s.innerHTML = data.equipos.map(e => `<option value="${e}">${e}</option>`).join('');
+        });
         
-        const res = await fetch(`${API}?action=getPendientes`);
-        const data = await res.json();
-        
-        if(!data.jugadores || data.jugadores.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3">No hay solicitudes</td></tr>';
-            document.getElementById('badge-pendientes').style.display = 'none';
-            return;
-        }
-
-        document.getElementById('badge-pendientes').innerText = data.jugadores.length;
-        document.getElementById('badge-pendientes').style.display = 'block';
-
-        tbody.innerHTML = data.jugadores.map(j => `
-            <tr>
-                <td><strong>${j.nombreCamiseta}</strong><br><small>${j.cedula}</small></td>
-                <td>#${j.dorsal}</td>
-                <td>
-                    <button class="btn btn-ghost" onclick="gestionarJugador('${j.cedula}', 'aprobar')">✅</button>
-                    <button class="btn btn-ghost" style="color:var(--danger)" onclick="gestionarJugador('${j.cedula}', 'rechazar')">❌</button>
-                </td>
-            </tr>
-        `).join('');
-    }
-
-    async function gestionarJugador(cedula, accion) {
-        const action = accion === 'aprobar' ? 'aprobarJugador' : 'rechazarJugador';
-        const res = await fetch(`${API}?action=${action}&cedula=${cedula}`);
-        const data = await res.json();
-        if(data.ok) {
-            alert('Operación exitosa');
-            fetchPendientes();
+        const tbody = document.querySelector('#t-equipos tbody');
+        if(tbody) {
+            tbody.innerHTML = data.equipos.map(e => `
+                <tr><td>${e}</td><td><button class="btn btn-danger" onclick="delEquipo('${e}')">Eliminar</button></td></tr>
+            `).join('');
         }
     }
 
-    // --- LÓGICA DE PAGOS ---
-    async function buscarJugadorPago() {
-        const cedula = document.getElementById('pago-cedula').value;
-        const res = await fetch(`${API}?action=obtenerJugador&cedula=${cedula}`);
-        const data = await res.json();
-        
-        if(data.ok) {
-            document.getElementById('pago-resultado').style.display = 'block';
-            document.getElementById('pago-nombre').innerText = data.jugador.nombre1 + " " + data.jugador.apellidos;
-            document.getElementById('pago-deuda').innerText = "$" + data.jugador.deuda;
-        } else {
-            alert('Jugador no encontrado');
+    async function addEquipo() {
+        const n = document.getElementById('new-equipo').value;
+        await fetch(`${API}?action=agregarEquipo&nombre=${n}`);
+        document.getElementById('new-equipo').value = '';
+        fetchEquipos();
+    }
+
+    async function delEquipo(n) {
+        if(confirm('¿Eliminar equipo?')) {
+            await fetch(`${API}?action=eliminarEquipo&nombre=${n}`);
+            fetchEquipos();
         }
     }
 
-    async function confirmarPago() {
-        const cedula = document.getElementById('pago-cedula').value;
-        const monto = document.getElementById('pago-monto').value;
-        if(!monto) return alert('Ingrese un monto');
-
-        const res = await fetch(`${API}?action=registrarPago&cedula=${cedula}&monto=${monto}`);
-        const data = await res.json();
-        if(data.ok) {
-            alert('Pago registrado. Nueva deuda: $' + data.nuevaDeuda);
-            buscarJugadorPago();
-        }
+    // --- PROGRAMAR PARTIDO ---
+    async function guardarProgramacion() {
+        const p = {
+            fecha: document.getElementById('p-fecha').value,
+            rival: document.getElementById('p-rival').value,
+            cancha: document.getElementById('p-cancha').value,
+            valorVocalia: document.getElementById('p-vocalia').value,
+            observaciones: document.getElementById('p-obs').value
+        };
+        const query = new URLSearchParams({ action: 'guardarProximoPartido', ...p });
+        await fetch(`${API}?${query}`);
+        alert('Partido programado con éxito');
+        showView('home');
     }
 
-    // --- LÓGICA DE PARTIDO ---
-    async function cargarListaCalificar() {
+    // --- CALIFICAR ---
+    async function cargarJugadoresCalificar() {
         const res = await fetch(`${API}?action=getJugadoresAprobados`);
         const data = await res.json();
         const tbody = document.querySelector('#table-calificar tbody');
-        
         tbody.innerHTML = data.jugadores.map(j => `
-            <tr class="row-jugador" data-cedula="${j.cedula}" data-nombre="${j.nombre}">
+            <tr class="j-row" data-ced="${j.cedula}" data-nom="${j.nombre}">
                 <td>${j.nombre}</td>
-                <td><input type="number" class="g-gol" value="0" style="width:50px"></td>
-                <td><input type="number" class="g-ta" value="0" style="width:50px"></td>
-                <td><input type="number" class="g-tr" value="0" style="width:50px"></td>
+                <td><input type="number" class="v-gol" value="0" style="width:40px"></td>
+                <td><input type="number" class="v-ta" value="0" style="width:40px"></td>
+                <td><input type="number" class="v-tr" value="0" style="width:40px"></td>
+                <td><input type="number" class="v-pun" value="3" min="1" max="5" style="width:40px"></td>
+                <td><input type="number" class="v-res" value="3" min="1" max="5" style="width:40px"></td>
             </tr>
         `).join('');
-        
         document.getElementById('table-calificar').style.display = 'table';
-        document.getElementById('btn-guardar-match').style.display = 'block';
+        document.getElementById('btn-save-cal').style.display = 'block';
     }
 
     async function enviarCalificaciones() {
-        const fecha = document.getElementById('match-fecha').value;
-        const rival = document.getElementById('match-rival').value;
-        if(!fecha || !rival) return alert('Faltan datos del partido');
-
-        let cedulas = [], nombres = [], goles = [], ta = [], tr = [];
-
-        document.querySelectorAll('.row-jugador').forEach(row => {
-            cedulas.push(row.dataset.cedula);
-            nombres.push(row.dataset.nombre);
-            goles.push(row.querySelector('.g-gol').value);
-            ta.push(row.querySelector('.g-ta').value);
-            tr.push(row.querySelector('.g-tr').value);
-        });
-
-        const params = new URLSearchParams({
+        const d = {
             action: 'guardarPartido',
-            fecha, rival,
-            cedulas: cedulas.join(','),
-            nombres: nombres.join(','),
-            goles: goles.join(','),
-            amarillas: ta.join(','),
-            rojas: tr.join(',')
+            fecha: document.getElementById('c-fecha').value,
+            rival: document.getElementById('c-rival').value,
+            cedulas: [], nombres: [], goles: [], amarillas: [], rojas: [], puntualidades: [], respetos: []
+        };
+        document.querySelectorAll('.j-row').forEach(r => {
+            d.cedulas.push(r.dataset.ced); d.nombres.push(r.dataset.nom);
+            d.goles.push(r.querySelector('.v-gol').value);
+            d.amarillas.push(r.querySelector('.v-ta').value);
+            d.rojas.push(r.querySelector('.v-tr').value);
+            d.puntualidades.push(r.querySelector('.v-pun').value);
+            d.respetos.push(r.querySelector('.v-res').value);
         });
-
-        const res = await fetch(`${API}?${params}`);
-        const data = await res.json();
-        if(data.ok) alert('Partido guardado con éxito');
+        const q = new URLSearchParams({
+            ...d,
+            cedulas: d.cedulas.join(','), nombres: d.nombres.join(','),
+            goles: d.goles.join(','), amarillas: d.amarillas.join(','), 
+            rojas: d.rojas.join(','), puntualidades: d.puntualidades.join(','), respetos: d.respetos.join(',')
+        });
+        await fetch(`${API}?${q}`);
+        alert('Calificaciones guardadas');
     }
 
-    document.getElementById('btnSalir').onclick = () => location.reload();
+    // --- SOLICITUDES Y PAGOS (BÁSICO) ---
+    async function fetchPendientes() {
+        const res = await fetch(`${API}?action=getPendientes`);
+        const data = await res.json();
+        document.querySelector('#t-req tbody').innerHTML = data.jugadores.map(j => `
+            <tr><td>${j.nombreCamiseta}</td><td>${j.dorsal}</td><td><button onclick="aprobar('${j.cedula}')">✅</button></td></tr>
+        `).join('');
+    }
+
+    async function aprobar(c) {
+        await fetch(`${API}?action=aprobarJugador&cedula=${c}`);
+        fetchPendientes();
+    }
+
+    async function buscarJugador() {
+        const c = document.getElementById('pay-ced').value;
+        const res = await fetch(`${API}?action=obtenerJugador&cedula=${c}`);
+        const d = await res.json();
+        if(d.ok) {
+            document.getElementById('pay-box').style.display='block';
+            document.getElementById('pay-name').innerText = d.jugador.nombre1 + " " + d.jugador.apellidos;
+            document.getElementById('pay-val').innerText = "$" + d.jugador.deuda;
+        }
+    }
+
+    async function pagar() {
+        const c = document.getElementById('pay-ced').value;
+        const m = document.getElementById('pay-monto').value;
+        await fetch(`${API}?action=registrarPago&cedula=${c}&monto=${m}`);
+        alert('Pago registrado');
+        buscarJugador();
+    }
 </script>
 </body>
 </html>
