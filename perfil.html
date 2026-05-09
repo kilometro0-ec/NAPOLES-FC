@@ -6,9 +6,6 @@
 
 <title>Nápoles F.C. - Mi Perfil</title>
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#060912">
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -186,8 +183,7 @@ body{
     border:1px solid rgba(255,255,255,.06);
 }
 
-.stat-value,
-.admin-stat-value{
+.stat-value{
     font-size:1.8rem;
     font-weight:900;
     margin-top:5px;
@@ -336,6 +332,44 @@ body{
     color:var(--danger);
 }
 
+.success{
+    color:var(--success);
+}
+
+.progress-bar-bg{
+    height:8px;
+    background:rgba(255,255,255,.1);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress-bar-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--warning),var(--danger));
+}
+
+.admin-details{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+.detail-item{
+    text-align:center;
+}
+
+.detail-label{
+    font-size:.6rem;
+    color:var(--text-muted);
+}
+
+.detail-value{
+    font-size:.8rem;
+    font-weight:700;
+    color:var(--primary-gold);
+}
+
 @media(max-width:400px){
 
     .jersey-number{
@@ -363,30 +397,27 @@ body{
 <script>
 
 function escapeHtml(str){
-
     if(!str) return '';
-
     return String(str)
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;')
     .replace(/'/g,'&#39;');
-
 }
 
 function validateConfig(){
 
     if(typeof CONFIG === 'undefined'){
-        throw new Error('No se cargó config.js');
+        throw new Error('No se pudo cargar config.js');
     }
 
     if(!CONFIG.URL_GAS){
-        throw new Error('Falta URL_GAS en config.js');
+        throw new Error('URL_GAS no definida');
     }
 
     if(!CONFIG.DEFAULT_AVATAR){
-        CONFIG.DEFAULT_AVATAR = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+        CONFIG.DEFAULT_AVATAR='https://via.placeholder.com/80';
     }
 
 }
@@ -395,34 +426,29 @@ function calcularEdad(fechaNacimiento){
 
     if(!fechaNacimiento) return '--';
 
-    const fecha = new Date(fechaNacimiento);
+    const fecha=new Date(fechaNacimiento);
 
     if(isNaN(fecha.getTime())) return '--';
 
-    const hoy = new Date();
+    const hoy=new Date();
 
-    let edad = hoy.getFullYear() - fecha.getFullYear();
+    let edad=hoy.getFullYear()-fecha.getFullYear();
 
-    const mes = hoy.getMonth() - fecha.getMonth();
+    const mes=hoy.getMonth()-fecha.getMonth();
 
-    if(mes < 0 || (mes === 0 && hoy.getDate() < fecha.getDate())){
+    if(mes<0 || (mes===0 && hoy.getDate()<fecha.getDate())){
         edad--;
     }
 
     return edad;
-
 }
 
 function renderProgressCircle(value,colorClass){
 
-    const valor = Number(value) || 0;
-
-    const radius = 40;
-    const circumference = 2 * Math.PI * radius;
-
-    const percent = valor / 10;
-
-    const offset = circumference - (percent * circumference);
+    const radius=40;
+    const circumference=2*Math.PI*radius;
+    const percent=value/10;
+    const offset=circumference-(percent*circumference);
 
     return `
     <div class="progress-circle">
@@ -447,93 +473,93 @@ function renderProgressCircle(value,colorClass){
 
         </svg>
 
-        <div class="progress-circle-text">${valor}</div>
+        <div class="progress-circle-text">${value}</div>
 
     </div>
     `;
-
 }
 
 function getGolesDescription(goles){
 
-    goles = Number(goles) || 0;
-
-    if(goles === 0) return 'Sin goles';
-    if(goles < 5) return 'En progreso';
-    if(goles < 10) return 'Buena racha';
-    if(goles < 20) return 'Goleador';
+    if(goles===0) return 'Sin goles';
+    if(goles<5) return 'En progreso';
+    if(goles<10) return 'Buena racha';
+    if(goles<20) return 'Goleador';
 
     return 'Artillero';
-
 }
 
 async function cargarPerfil(cedula){
 
-    const container = document.getElementById('perfilContent');
+    const container=document.getElementById('perfilContent');
 
     try{
 
         validateConfig();
 
-        const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
+        const url=`${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
 
-        const resp = await fetch(url);
+        const resp=await fetch(url);
 
-        if(!resp.ok){
-            throw new Error('Error de conexión');
-        }
-
-        const data = await resp.json();
-
-        console.log('Perfil:', data);
+        const data=await resp.json();
 
         if(data.success && data.jugador){
 
-            const j = data.jugador;
+            const j=data.jugador;
 
-            const sanitized = {
+            const sanitized={
 
-                primerNombre: escapeHtml(j.primerNombre || ''),
-                segundoNombre: escapeHtml(j.segundoNombre || ''),
-                urlFotoRostro: escapeHtml(j.urlFotoRostro || CONFIG.DEFAULT_AVATAR),
+                primerNombre:escapeHtml(j.primerNombre || ''),
+                segundoNombre:escapeHtml(j.segundoNombre || ''),
+                urlFotoRostro:escapeHtml(j.urlFotoRostro || CONFIG.DEFAULT_AVATAR),
 
-                fechaNacimiento: escapeHtml(j.fechaNacimiento || ''),
+                fechaNacimiento:escapeHtml(j.fechaNacimiento || ''),
 
-                nombreCamiseta: escapeHtml(j.nombreCamiseta || 'NÁPOLES'),
+                nombreCamiseta:escapeHtml(j.nombreCamiseta || 'NÁPOLES'),
 
-                dorsal: escapeHtml(j.dorsal || '00'),
+                dorsal:escapeHtml(j.dorsal || '00'),
 
-                partidosJugados: Number(j.partidosJugados) || 0,
-                goles: Number(j.goles) || 0,
-                amarillas: Number(j.amarillas) || 0,
-                rojas: Number(j.rojas) || 0,
+                tallaUni:escapeHtml(j.tallaUni || 'M'),
 
-                puntualidad: Number(j.puntualidad) || 0,
-                companerismo: Number(j.companerismo) || 0,
-                respeto: Number(j.respeto) || 0,
-                humildad: Number(j.humildad) || 0,
+                partidosJugados:Number(j.partidosJugados) || 0,
 
-                deudaVocalia: Number(j.deudaVocalia) || 0,
-                multaEspecial: Number(j.multaEspecial) || 0,
+                goles:Number(j.goles) || 0,
 
-                inscripEstado: escapeHtml(j.inscripEstado || 'PENDIENTE'),
-                unifEstado: escapeHtml(j.unifEstado || 'PENDIENTE'),
-                mediasEstado: escapeHtml(j.mediasEstado || 'PENDIENTE')
+                amarillas:Number(j.amarillas) || 0,
+
+                rojas:Number(j.rojas) || 0,
+
+                puntualidad:Number(j.puntualidad) || 0,
+
+                companerismo:Number(j.companerismo) || 0,
+
+                respeto:Number(j.respeto) || 0,
+
+                humildad:Number(j.humildad) || 0,
+
+                deudaVocalia:Number(j.deudaVocalia) || 0,
+
+                multaEspecial:Number(j.multaEspecial) || 0,
+
+                inscripEstado:escapeHtml(j.inscripEstado || 'PENDIENTE'),
+
+                unifEstado:escapeHtml(j.unifEstado || 'PENDIENTE'),
+
+                mediasEstado:escapeHtml(j.mediasEstado || 'PENDIENTE')
 
             };
 
-            const edadJugador = calcularEdad(sanitized.fechaNacimiento);
+            const edadJugador=calcularEdad(sanitized.fechaNacimiento);
 
-            const deudaTarjetas =
+            const deudaTarjetas=
                 (sanitized.amarillas * 1.5) +
                 (sanitized.rojas * 3) +
                 sanitized.multaEspecial;
 
-            const totalGeneral =
-                sanitized.deudaVocalia +
-                deudaTarjetas;
+            const totalGeneral=
+                sanitized.deudaVocalia + deudaTarjetas;
 
-            const promedio = Math.round(
+            const promedio=Math.round(
                 (
                     sanitized.puntualidad +
                     sanitized.companerismo +
@@ -542,9 +568,9 @@ async function cargarPerfil(cedula){
                 ) / 4
             );
 
-            const golesDesc = getGolesDescription(sanitized.goles);
+            const golesDesc=getGolesDescription(sanitized.goles);
 
-            container.innerHTML = `
+            container.innerHTML=`
 
             <div class="profile-header">
                 <h1>⚜️ PANEL NÁPOLES ⚜️</h1>
@@ -565,7 +591,6 @@ async function cargarPerfil(cedula){
                         font-family:'Outfit';
                         text-transform:uppercase;
                         font-size:.9rem;
-                        text-align:center;
                     ">
                         ${sanitized.primerNombre}
                         ${sanitized.segundoNombre}
@@ -639,6 +664,7 @@ async function cargarPerfil(cedula){
 
                 <div class="stats-grid">
 
+                    ${sanitized.partidosJugados > 0 ? `
                     <div class="stat-card-modern">
                         <i class="fas fa-running"></i>
                         <div class="stat-value">
@@ -648,7 +674,9 @@ async function cargarPerfil(cedula){
                             PARTIDOS
                         </div>
                     </div>
+                    ` : ''}
 
+                    ${sanitized.goles > 0 ? `
                     <div class="stat-card-modern">
                         <i class="fas fa-futbol"></i>
                         <div class="stat-value">
@@ -658,7 +686,9 @@ async function cargarPerfil(cedula){
                             ${golesDesc}
                         </div>
                     </div>
+                    ` : ''}
 
+                    ${sanitized.amarillas > 0 ? `
                     <div class="stat-card-modern">
                         <i class="fas fa-square" style="color:#f39c12"></i>
                         <div class="stat-value">
@@ -668,7 +698,9 @@ async function cargarPerfil(cedula){
                             AMARILLAS
                         </div>
                     </div>
+                    ` : ''}
 
+                    ${sanitized.rojas > 0 ? `
                     <div class="stat-card-modern">
                         <i class="fas fa-square" style="color:#e74c3c"></i>
                         <div class="stat-value">
@@ -678,6 +710,7 @@ async function cargarPerfil(cedula){
                             ROJAS
                         </div>
                     </div>
+                    ` : ''}
 
                 </div>
 
@@ -735,47 +768,73 @@ async function cargarPerfil(cedula){
 
                 <div class="admin-stats-grid">
 
+                    ${sanitized.inscripEstado.toUpperCase().includes('PENDIENTE') ? `
                     <div class="admin-stat-card">
+
                         <i class="fas fa-file-signature"></i>
+
                         <div class="admin-stat-value">
                             ${sanitized.inscripEstado}
                         </div>
+
                         <div class="admin-stat-label">
                             INSCRIPCIÓN
                         </div>
-                    </div>
 
+                    </div>
+                    ` : ''}
+
+                    ${sanitized.unifEstado.toUpperCase().includes('PENDIENTE') ? `
                     <div class="admin-stat-card">
+
                         <i class="fas fa-tshirt"></i>
+
                         <div class="admin-stat-value">
                             ${sanitized.unifEstado}
                         </div>
+
                         <div class="admin-stat-label">
                             UNIFORME
                         </div>
-                    </div>
 
+                    </div>
+                    ` : ''}
+
+                    ${sanitized.mediasEstado.toUpperCase().includes('PENDIENTE') ? `
                     <div class="admin-stat-card">
+
                         <i class="fas fa-socks"></i>
+
                         <div class="admin-stat-value">
                             ${sanitized.mediasEstado}
                         </div>
+
                         <div class="admin-stat-label">
                             MEDIAS
                         </div>
-                    </div>
 
+                    </div>
+                    ` : ''}
+
+                    ${sanitized.deudaVocalia > 0 ? `
                     <div class="admin-stat-card">
+
                         <i class="fas fa-dollar-sign"></i>
+
                         <div class="admin-stat-value">
                             $${sanitized.deudaVocalia.toFixed(2)}
                         </div>
+
                         <div class="admin-stat-label">
                             VOCALÍA
                         </div>
+
                     </div>
+                    ` : ''}
 
                 </div>
+
+                ${deudaTarjetas > 0 ? `
 
                 <div class="debt-container">
 
@@ -791,6 +850,7 @@ async function cargarPerfil(cedula){
 
                     </div>
 
+                    ${sanitized.amarillas > 0 ? `
                     <div style="
                         display:flex;
                         justify-content:space-between;
@@ -804,7 +864,9 @@ async function cargarPerfil(cedula){
                             $${(sanitized.amarillas * 1.5).toFixed(2)}
                         </strong>
                     </div>
+                    ` : ''}
 
+                    ${sanitized.rojas > 0 ? `
                     <div style="
                         display:flex;
                         justify-content:space-between;
@@ -818,7 +880,9 @@ async function cargarPerfil(cedula){
                             $${(sanitized.rojas * 3).toFixed(2)}
                         </strong>
                     </div>
+                    ` : ''}
 
+                    ${sanitized.multaEspecial > 0 ? `
                     <div style="
                         display:flex;
                         justify-content:space-between;
@@ -831,8 +895,13 @@ async function cargarPerfil(cedula){
                             $${sanitized.multaEspecial.toFixed(2)}
                         </strong>
                     </div>
+                    ` : ''}
 
                 </div>
+
+                ` : ''}
+
+                ${totalGeneral > 0 ? `
 
                 <div style="
                     margin-top:15px;
@@ -859,6 +928,8 @@ async function cargarPerfil(cedula){
 
                 </div>
 
+                ` : ''}
+
             </div>
 
             <button class="btn-logout" onclick="window.cerrarSesion()">
@@ -872,21 +943,20 @@ async function cargarPerfil(cedula){
 
         }else{
 
-            container.innerHTML = `
+            container.innerHTML=`
             <div class="error-message">
-                ❌ Jugador no encontrado
+                Jugador no encontrado
             </div>
             `;
 
         }
 
-    }catch(error){
+    }catch(e){
 
-        console.error(error);
-
-        container.innerHTML = `
+        container.innerHTML=`
         <div class="error-message">
-            ❌ ${escapeHtml(error.message)}
+            Error:
+            ${escapeHtml(e.message)}
         </div>
         `;
 
@@ -894,31 +964,31 @@ async function cargarPerfil(cedula){
 
 }
 
-window.recargarPerfil = async function(){
+window.recargarPerfil=async function(){
 
-    const session = JSON.parse(
+    const session=JSON.parse(
         localStorage.getItem('jugador_actual')
     );
 
     if(!session || !session.cedula){
 
-        window.location.href = 'login.html';
+        window.location.href='login.html';
         return;
 
     }
 
-    document.getElementById('perfilContent').innerHTML =
+    document.getElementById('perfilContent').innerHTML=
         '<div class="spinner"></div>';
 
     await cargarPerfil(session.cedula);
 
 }
 
-window.cerrarSesion = function(){
+window.cerrarSesion=function(){
 
     localStorage.removeItem('jugador_actual');
 
-    window.location.href = 'login.html';
+    window.location.href='login.html';
 
 }
 
@@ -928,44 +998,29 @@ window.cerrarSesion = function(){
 
         validateConfig();
 
-        const session = JSON.parse(
+        const session=JSON.parse(
             localStorage.getItem('jugador_actual')
         );
 
-        if(
-            !session ||
-            !session.cedula ||
-            (
-                session.expira &&
-                Date.now() > session.expira
-            )
-        ){
+        if(!session || !session.cedula){
 
-            localStorage.removeItem('jugador_actual');
-
-            window.location.href = 'login.html';
-
+            window.location.href='login.html';
             return;
 
         }
 
         cargarPerfil(session.cedula);
 
-    }catch(error){
+    }catch(e){
 
-        document.getElementById('perfilContent').innerHTML =
+        document.getElementById('perfilContent').innerHTML=
         '<div class="error-message">'+
-        escapeHtml(error.message)+
+        escapeHtml(e.message)+
         '</div>';
 
     }
 
 })();
-
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-    .catch(err => console.log('SW Error', err));
-}
 
 </script>
 
