@@ -439,4 +439,159 @@
     window.prepararCobro = (ced) => { document.getElementById('buscarCedula').value = ced; buscarDeudor(); };
     window.buscarDeudor = async () => {
         const ced = document.getElementById('buscarCedula').value;
-        if (!
+        if (!ced) return;
+        const data = await fetchAPI('obtenerJugador', { cedula: ced });
+        if (data.ok) {
+            document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🧑 ${data.jugador.nombre1} ${data.jugador.apellidos}<br>💰 Deuda: <strong>$${data.jugador.deuda}</strong></div>`;
+            document.getElementById('formPago').style.display = 'block';
+            document.getElementById('montoPago').value = data.jugador.deuda;
+        } else {
+            document.getElementById('infoDeudor').innerHTML = '<div class="info-card">❌ No encontrado</div>';
+        }
+    };
+    window.registrarPago = async () => {
+        const ced = document.getElementById('buscarCedula').value;
+        const monto = parseFloat(document.getElementById('montoPago').value);
+        if (isNaN(monto) || monto <= 0) return alert('Monto inválido');
+        const res = await fetchAPI('registrarPago', { cedula: ced, monto });
+        if (res.ok) {
+            alert('✅ Pago registrado');
+            cargarDeudores();
+            cargarJugadores();
+            document.getElementById('formPago').style.display = 'none';
+            document.getElementById('infoDeudor').innerHTML = '';
+            document.getElementById('buscarCedula').value = '';
+        } else {
+            alert('Error al registrar pago');
+        }
+    };
+
+    async function cargarNotificaciones() {
+        const data = await fetchAPI('getNotificaciones');
+        const container = document.getElementById('listaNotificaciones');
+        if (data.notificaciones && data.notificaciones.length) {
+            container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
+        } else {
+            container.innerHTML = '<p class="text-center">📭 Sin anuncios</p>';
+        }
+    }
+    window.publicarNotificacion = async () => {
+        const tit = document.getElementById('notiTitulo').value;
+        const msg = document.getElementById('notiMensaje').value;
+        const tipo = document.getElementById('notiTipo').value;
+        if (!tit || !msg) return alert('Complete campos');
+        const res = await fetchAPI('publicarNotificacion', { titulo: tit, mensaje: msg, tipo });
+        if (res.ok) {
+            alert('✅ Publicado');
+            document.getElementById('notiTitulo').value = '';
+            document.getElementById('notiMensaje').value = '';
+            cargarNotificaciones();
+        } else {
+            alert('Error al publicar');
+        }
+    };
+
+    async function cargarProximos() {
+        const data = await fetchAPI('getProximosPartidos');
+        const container = document.getElementById('listaProximos');
+        if (data.partidos && data.partidos.length) {
+            container.innerHTML = data.partidos.map(p => `<div class="card"><strong>📅 ${new Date(p.fecha).toLocaleString()}</strong><br>⚽ vs ${p.rival}<br>🏟️ ${p.cancha || 'Cancha 1'}<br>💰 $${p.valorVocalia || 5}</div>`).join('');
+        } else {
+            container.innerHTML = '<p class="text-center">⚽ No hay partidos</p>';
+        }
+    }
+    window.guardarProximoPartido = async () => {
+        const fecha = document.getElementById('proxFecha').value;
+        const hora = document.getElementById('proxHora').value;
+        const fechaCompleta = (fecha && hora) ? `${fecha}T${hora}:00` : '';
+        const rival = document.getElementById('proxRival').value;
+        const cancha = document.getElementById('proxCancha').value;
+        const valorVocalia = document.getElementById('proxValorVocalia').value;
+        const obs = document.getElementById('proxObs').value;
+        if (!fechaCompleta || !rival) return alert('Complete fecha y rival');
+        const res = await fetchAPI('guardarProximoPartido', { fecha: fechaCompleta, rival, cancha, observaciones: obs, valorVocalia });
+        if (res.ok) {
+            alert('✅ Guardado');
+            cargarProximos();
+            document.getElementById('proxFecha').value = '';
+            document.getElementById('proxRival').value = '';
+            document.getElementById('proxObs').value = '';
+        } else {
+            alert('Error al guardar');
+        }
+    };
+
+    window.cargarJugadoresParaCalificar = async () => {
+        const fecha = document.getElementById('fechaPartido').value;
+        const hora = document.getElementById('horaPartido').value;
+        const rival = document.getElementById('rivalPartido').value;
+        if (!fecha || !hora || !rival) return alert('Complete fecha, hora y rival');
+        const data = await fetchAPI('getJugadoresAprobados');
+        if (!data.jugadores || !data.jugadores.length) return alert('No hay jugadores');
+        jugadoresActivos = data.jugadores;
+        let html = `<div class="cal-grid"><div class="cal-header"><span class="col-jugador">Jugador</span><span class="col-num">🟨</span><span class="col-num">🟥</span><span class="col-num">⚽</span><span class="col-select">⭐P</span><span class="col-select">🤝C</span><span class="col-select">🙏R</span><span class="col-select">💪H</span></div>`;
+        jugadoresActivos.forEach(j => {
+            html += `<div class="cal-row"><span class="col-jugador"><strong>${escapeHtml(j.nombre)}</strong></span>
+                <input class="col-num" type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2">
+                <input class="col-num" type="number" id="rojas_${j.cedula}" value="0" min="0" max="1">
+                <input class="col-num" type="number" id="goles_${j.cedula}" value="0" min="0">
+                <select class="col-select" id="punt_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+                <select class="col-select" id="comp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+                <select class="col-select" id="resp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select>
+                <select class="col-select" id="hum_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></div>`;
+        });
+        html += `</div>`;
+        document.getElementById('listaCalificaciones').innerHTML = html;
+    };
+    window.guardarCalificaciones = async () => {
+        const fecha = document.getElementById('fechaPartido').value;
+        const hora = document.getElementById('horaPartido').value;
+        const fechaCompleta = `${fecha}T${hora}:00`;
+        const rival = document.getElementById('rivalPartido').value;
+        const cancha = document.getElementById('canchaPartido').value;
+        const valorVocalia = document.getElementById('valorVocaliaPartido').value;
+        if (!fechaCompleta || !rival || jugadoresActivos.length === 0) return alert('Cargue jugadores');
+        const cedulas = [], nombres = [], amarillas = [], rojas = [], goles = [], punt = [], comp = [], resp = [], hum = [];
+        for (const j of jugadoresActivos) {
+            cedulas.push(j.cedula);
+            nombres.push(j.nombre);
+            amarillas.push(document.getElementById(`amarillas_${j.cedula}`)?.value || 0);
+            rojas.push(document.getElementById(`rojas_${j.cedula}`)?.value || 0);
+            goles.push(document.getElementById(`goles_${j.cedula}`)?.value || 0);
+            punt.push(document.getElementById(`punt_${j.cedula}`)?.value || 3);
+            comp.push(document.getElementById(`comp_${j.cedula}`)?.value || 3);
+            resp.push(document.getElementById(`resp_${j.cedula}`)?.value || 3);
+            hum.push(document.getElementById(`hum_${j.cedula}`)?.value || 3);
+        }
+        const res = await fetchAPI('guardarPartido', { fecha: fechaCompleta, rival, cancha, valorVocalia,
+            cedulas: cedulas.join(','), nombres: nombres.join(','), amarillas: amarillas.join(','), rojas: rojas.join(','),
+            goles: goles.join(','), puntualidades: punt.join(','), companerismos: comp.join(','),
+            respetos: resp.join(','), humildades: hum.join(',') });
+        if (res.ok) alert('✅ Partido guardado');
+        else alert('Error al guardar partido');
+    };
+
+    async function fetchAPI(action, params = {}) {
+        try {
+            const urlParams = new URLSearchParams({ action, ...params });
+            const res = await fetch(`${API_URL}?${urlParams.toString()}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return await res.json();
+        } catch (error) {
+            console.error('Fetch error:', error);
+            return { ok: false, error: error.message };
+        }
+    }
+
+    // INICIALIZAR
+    llenarSelectsFechas();
+    cargarEquipos();
+    cargarPendientes();
+    cargarJugadores();
+    cargarDeudores();
+    cargarNotificaciones();
+    cargarProximos();
+    cargarPendientesCount();
+</script>
+</body>
+</html>
