@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Nápoles F.C. - Acceso Jugadores</title>
+    <title>Nápoles F.C. - Acceso Jugadores & Administración</title>
     
     <!-- Configuración PWA e iOS -->
     <link rel="manifest" href="manifest.json">
@@ -22,6 +22,7 @@
             --accent: #FFD700;
             --bg-dark: #020c1a;
             --glass: rgba(12, 25, 45, 0.7);
+            --admin-glow: #ffb347;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,7 +44,7 @@
         }
 
         .login-card {
-            max-width: 420px;
+            max-width: 450px;
             width: 100%;
             background: var(--glass);
             backdrop-filter: blur(20px) saturate(180%);
@@ -51,7 +52,7 @@
             border-radius: 2.5rem;
             border: 1px solid rgba(0, 210, 255, 0.4);
             box-shadow: 0 0 15px rgba(0, 210, 255, 0.3), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            padding: 3rem 2.5rem;
+            padding: 2.5rem 2rem;
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -60,7 +61,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .logo-area { text-align: center; margin-bottom: 2.5rem; }
+        .logo-area { text-align: center; margin-bottom: 2rem; }
         .logo-area h1 {
             font-size: 2.2rem;
             font-weight: 800;
@@ -70,12 +71,16 @@
             color: transparent;
             margin-bottom: 0.5rem;
         }
+        .logo-area p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
 
         .input-group { margin-bottom: 2rem; }
 
         .input-group label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--primary);
             margin-bottom: 0.8rem;
@@ -85,15 +90,15 @@
 
         input {
             width: 100%;
-            padding: 1.2rem;
+            padding: 1rem;
             background: rgba(15, 23, 42, 0.6);
             border: 2px solid rgba(255, 255, 255, 0.05);
             border-radius: 1.2rem;
             color: white;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
             text-align: center;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
             outline: none;
             transition: 0.3s;
         }
@@ -106,12 +111,12 @@
 
         .btn-submit {
             width: 100%;
-            padding: 1.2rem;
+            padding: 1rem;
             border-radius: 1.2rem;
             border: none;
             background: linear-gradient(135deg, var(--primary-dark) 0%, #00d2ff 100%);
             color: white;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -122,36 +127,130 @@
 
         .btn-submit:disabled { background: #1e293b; color: #475569; cursor: not-allowed; opacity: 0.7; }
 
-        .footer-links { margin-top: 2rem; text-align: center; font-size: 0.9rem; }
-        .footer-links a { color: var(--accent); text-decoration: none; font-weight: 700; }
+        .footer-links { margin-top: 2rem; text-align: center; font-size: 0.85rem; }
+        .footer-links a { color: var(--accent); text-decoration: none; font-weight: 700; transition: 0.2s; }
+        .footer-links a:hover { text-shadow: 0 0 5px #FFD700; }
 
         .btn-download {
             background: rgba(0, 210, 255, 0.15);
             border: 1px solid var(--primary);
             color: var(--primary);
-            padding: 0.7rem 1.2rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 2rem;
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 1.2rem;
+            margin-top: 1rem;
             display: inline-block;
+            transition: 0.2s;
+        }
+        .btn-download:hover {
+            background: rgba(0, 210, 255, 0.3);
+            transform: scale(1.02);
         }
 
         .error-toast {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
             color: #fca5a5;
-            padding: 1rem;
+            padding: 0.8rem;
             border-radius: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 1.2rem;
             display: none;
             text-align: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* ADMIN ACCESS STYLES */
+        .admin-divider {
+            margin: 1.8rem 0 1.2rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 180, 70, 0.5), rgba(0, 210, 255, 0.3), transparent);
+        }
+        .admin-access-panel {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 1.5rem;
+            padding: 1rem 1rem 1.2rem;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(255, 180, 70, 0.3);
+            backdrop-filter: blur(4px);
+        }
+        .admin-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ffb347, #ff8c00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.8rem;
+        }
+        .admin-label i {
+            font-style: normal;
+            font-size: 1.1rem;
+        }
+        .admin-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .admin-input-group input {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 140, 0, 0.5);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            padding: 0.85rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .admin-input-group input:focus {
+            border-color: #ffb347;
+            box-shadow: 0 0 12px rgba(255, 180, 70, 0.3);
+        }
+        .btn-admin {
+            background: linear-gradient(135deg, #ff8c00, #ffb347);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 1.2rem;
+            font-weight: 800;
             font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0a0f1f;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .btn-admin:hover {
+            transform: scale(0.98);
+            background: linear-gradient(135deg, #ffa129, #ffc467);
+            box-shadow: 0 0 12px rgba(255, 140, 0, 0.5);
+        }
+        .admin-feedback {
+            font-size: 0.7rem;
+            margin-top: 8px;
+            text-align: center;
+            color: #ffb347;
+            min-height: 26px;
+            font-weight: 500;
+        }
+        .admin-feedback.error {
+            color: #ff8888;
         }
 
         @media (display-mode: standalone) {
             #containerDownload { display: none !important; }
+        }
+
+        @media (max-width: 480px) {
+            .login-card { padding: 1.8rem 1.5rem; }
+            input { font-size: 1rem; }
         }
     </style>
 </head>
@@ -159,12 +258,12 @@
 
 <div class="login-card">
     <div class="logo-area">
-        <h1>NÁPOLES F.C.</h1>
+        <h1>⚽ NÁPOLES F.C.</h1>
         <p>Panel de Control de Jugadores</p>
     </div>
 
     <div class="input-group">
-        <label>Número de Cédula</label>
+        <label>📄 Número de Cédula</label>
         <input type="text" id="loginCedula" maxlength="10" placeholder="0000000000" inputmode="numeric">
     </div>
 
@@ -174,10 +273,23 @@
 
     <div class="footer-links">
         ¿Eres nuevo en el club? <br><br>
-        <a href="registro.html">CREAR CUENTA NUEVA ✨</a>
+        <a href="registro.html">✨ CREAR CUENTA NUEVA ✨</a>
         
         <div id="containerDownload">
             <span id="manualDownloadBtn" class="btn-download">📲 DESCARGAR APK OFICIAL</span>
+        </div>
+
+        <!-- 🛡️ SECCIÓN ADMINISTRATIVA protegida -->
+        <div class="admin-divider"></div>
+        <div class="admin-access-panel">
+            <div class="admin-label">
+                <i>🔐</i> <span>ACCESO DELEGADO / ADMIN</span> <i>⚡</i>
+            </div>
+            <div class="admin-input-group">
+                <input type="password" id="adminClave" placeholder="Clave de administrador" autocomplete="off">
+                <button id="btnAdminLogin" class="btn-admin">🗝️ INGRESAR AL PANEL ADMIN</button>
+                <div id="adminFeedback" class="admin-feedback"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -186,24 +298,37 @@
 <script src="config.js"></script>
 
 <script>
-    // Verificar que config.js se cargó correctamente
+    // ======================== CONFIGURACIÓN Y VERIFICACIÓN ========================
     if (typeof CONFIG === 'undefined') {
         console.error('❌ config.js no cargado correctamente');
-        alert('Error de configuración. Recarga la página o contacta al administrador.');
+        alert('⚠️ Error de configuración. Recarga la página o contacta al administrador.');
     } else {
-        console.log('✅ Configuración cargada:', CONFIG.URL_GAS);
+        console.log('✅ Configuración activa:', CONFIG.URL_GAS);
     }
 
+    // Elementos jugadores
     const cedulaInput = document.getElementById('loginCedula');
     const btnLogin = document.getElementById('btnLogin');
     const errorDiv = document.getElementById('mensajeError');
     const manualBtn = document.getElementById('manualDownloadBtn');
     const containerDownload = document.getElementById('containerDownload');
 
+    // Elementos admin
+    const adminPasswordInput = document.getElementById('adminClave');
+    const btnAdmin = document.getElementById('btnAdminLogin');
+    const adminFeedback = document.getElementById('adminFeedback');
+
+    // CLAVE MAESTRA PARA ADMIN (exacta como solicitado)
+    const ADMIN_SECRET_KEY = "GataFiera54321";
+    // Ruta del panel de administración (mismo directorio raíz)
+    const ADMIN_PANEL_URL = "admin.html";
+
+    // Ocultar botón de instalación si ya está en modo standalone
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-        containerDownload.style.display = 'none';
+        if (containerDownload) containerDownload.style.display = 'none';
     }
 
+    // ======================== LÓGICA PARA JUGADORES (cédula) ========================
     cedulaInput.addEventListener('input', (e) => {
         let value = e.target.value.replace(/\D/g, '');
         e.target.value = value.slice(0, 10);
@@ -213,19 +338,23 @@
 
     btnLogin.addEventListener('click', async () => {
         const cedula = cedulaInput.value;
+        if (cedula.length !== 10) {
+            mostrarError("📛 Ingresa una cédula válida de 10 dígitos.");
+            btnLogin.disabled = false;
+            return;
+        }
+
         btnLogin.disabled = true;
         btnLogin.innerText = 'VERIFICANDO...';
         errorDiv.style.display = 'none';
 
         try {
-            // Usar CONFIG.URL_GAS en lugar de la variable local
             const resp = await fetch(`${CONFIG.URL_GAS}?action=validarRegistro&cedula=${cedula}`);
             const data = await resp.json();
 
-            console.log('Respuesta del servidor:', data); // Para depuración
+            console.log('Respuesta servidor:', data);
 
             if (data.cedulaExiste && data.estado === "APROBADO" && data.datosJugador) {
-                // Guardar TODOS los datos del jugador en localStorage
                 localStorage.setItem('jugador_actual', JSON.stringify({
                     ...data.datosJugador,
                     cedula: cedula,
@@ -235,7 +364,7 @@
             } else if (!data.cedulaExiste) {
                 mostrarError("❌ La cédula no está registrada. Por favor, regístrate primero.");
             } else if (data.estado !== "APROBADO") {
-                mostrarError("⏳ Tu cuenta está en revisión por el delegado. Estado actual: " + (data.estado || "PENDIENTE"));
+                mostrarError(`⏳ Tu cuenta está en revisión por el delegado. Estado: ${data.estado || "PENDIENTE"}`);
             } else {
                 mostrarError("⚠️ No se pudieron cargar tus datos. Contacta al administrador.");
             }
@@ -243,7 +372,7 @@
             console.error('Error de conexión:', err);
             mostrarError("🔌 Error de conexión con el servidor. Verifica tu internet.");
         } finally {
-            btnLogin.disabled = false;
+            btnLogin.disabled = cedulaInput.value.length === 10 ? false : true;
             btnLogin.innerText = 'INICIAR SESIÓN';
         }
     });
@@ -251,36 +380,126 @@
     function mostrarError(msj) {
         errorDiv.innerText = msj;
         errorDiv.style.display = 'block';
-        // Ocultar después de 5 segundos
         setTimeout(() => {
-            if (errorDiv.style.display === 'block') {
-                errorDiv.style.display = 'none';
-            }
+            if (errorDiv.style.display === 'block') errorDiv.style.display = 'none';
         }, 5000);
     }
 
+    // ======================== ACCESO ADMINISTRADOR (clave fija) ========================
+    function clearAdminFeedback() {
+        setTimeout(() => {
+            if (adminFeedback.innerText !== '✅ Redirigiendo al panel...') {
+                adminFeedback.innerText = '';
+                adminFeedback.className = 'admin-feedback';
+            }
+        }, 2800);
+    }
+
+    function ejecutarAccesoAdmin() {
+        const claveIngresada = adminPasswordInput.value.trim();
+        
+        // Reset estilos y feedback
+        adminFeedback.innerText = '';
+        adminFeedback.className = 'admin-feedback';
+        
+        if (!claveIngresada) {
+            adminFeedback.innerText = '⛔ Ingresa la clave de administración.';
+            adminFeedback.classList.add('error');
+            clearAdminFeedback();
+            return;
+        }
+        
+        if (claveIngresada === ADMIN_SECRET_KEY) {
+            adminFeedback.innerText = '✅ Acceso concedido. Redirigiendo al panel...';
+            adminFeedback.style.color = "#b3ffcf";
+            adminFeedback.classList.remove('error');
+            // Deshabilitar botón momentáneamente para evitar múltiples redirecciones
+            btnAdmin.disabled = true;
+            btnAdmin.innerText = '⏳ ACCEDIENDO...';
+            
+            // Pequeña demora visual antes de redirigir (mejor experiencia)
+            setTimeout(() => {
+                window.location.href = ADMIN_PANEL_URL;
+            }, 600);
+        } else {
+            adminFeedback.innerText = '🔒 Clave incorrecta. Acceso denegado.';
+            adminFeedback.classList.add('error');
+            adminPasswordInput.value = '';  // limpiar campo por seguridad
+            adminPasswordInput.focus();
+            clearAdminFeedback();
+            
+            // Efecto de sacudida sutil en el panel (opcional)
+            const panel = document.querySelector('.admin-access-panel');
+            if (panel) {
+                panel.style.transform = 'translateX(4px)';
+                setTimeout(() => { if(panel) panel.style.transform = ''; }, 150);
+            }
+        }
+    }
+
+    // Evento click para botón admin
+    btnAdmin.addEventListener('click', ejecutarAccesoAdmin);
+    
+    // Permitir presionar "Enter" en el campo de clave admin
+    adminPasswordInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            ejecutarAccesoAdmin();
+        }
+    });
+    
+    // Limpiar feedback si el usuario empieza a escribir de nuevo
+    adminPasswordInput.addEventListener('input', () => {
+        if (adminFeedback.innerText && (adminFeedback.innerText.includes('incorrecta') || adminFeedback.innerText.includes('Ingresa'))) {
+            adminFeedback.innerText = '';
+            adminFeedback.className = 'admin-feedback';
+        }
+    });
+
+    // ======================== PWA / INSTALACIÓN ========================
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        manualBtn.innerHTML = "👕 INSTALAR APP (CAMISETA)";
-        manualBtn.style.background = "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)";
-        manualBtn.style.color = "#000";
-    });
-
-    manualBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') containerDownload.style.display = 'none';
-            deferredPrompt = null;
-        } else {
-            alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar' o 'Añadir a pantalla de inicio'.");
+        if (manualBtn) {
+            manualBtn.innerHTML = "👕 INSTALAR APP (CAMISETA)";
+            manualBtn.style.background = "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)";
+            manualBtn.style.color = "#000";
         }
     });
 
+    if (manualBtn) {
+        manualBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted' && containerDownload) containerDownload.style.display = 'none';
+                deferredPrompt = null;
+            } else {
+                alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar aplicación' o 'Añadir a pantalla de inicio'.");
+            }
+        });
+    }
+
+    // Service Worker (si existe)
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').catch(err => console.log('Service Worker error:', err));
+    }
+
+    // Bonus: Para administradores: si ya existe una sesión activa de jugador NO interfiere
+    // Se mantiene independiente el acceso a admin.
+    // Opcional: si el usuario ya ha ingresado como player y quiere admin, también funciona sin conflictos.
+    
+    // Efecto visual para resaltar el área admin cuando se enfoca
+    const adminPanelDiv = document.querySelector('.admin-access-panel');
+    if (adminPanelDiv) {
+        adminPasswordInput.addEventListener('focus', () => {
+            adminPanelDiv.style.borderColor = '#ffb347';
+            adminPanelDiv.style.transition = '0.2s';
+        });
+        adminPasswordInput.addEventListener('blur', () => {
+            adminPanelDiv.style.borderColor = 'rgba(255, 180, 70, 0.3)';
+        });
     }
 </script>
 </body>
