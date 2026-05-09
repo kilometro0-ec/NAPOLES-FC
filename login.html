@@ -1,6 +1,6 @@
 <!-- =========================================
-LOGIN.HTML
-MISMO DISEÑO - LÓGICA CORREGIDA
+LOGIN.HTML - VERSIÓN CON DIAGNÓSTICO VISUAL
+MISMO DISEÑO, LÓGICA ROBUSTA
 ========================================= -->
 
 <!DOCTYPE html>
@@ -195,15 +195,16 @@ MISMO DISEÑO - LÓGICA CORREGIDA
         }
 
         .error-toast {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fecaca;
             padding: 1rem;
             border-radius: 1rem;
             margin-top: 1.5rem;
             display: none;
             text-align: center;
             font-size: 0.85rem;
+            word-break: break-word;
         }
 
         @media (display-mode: standalone) {
@@ -268,7 +269,7 @@ MISMO DISEÑO - LÓGICA CORREGIDA
 // VERIFICAR CONFIG
 // ============================
 if (typeof CONFIG === 'undefined') {
-    alert('Error: archivo config.js no cargado. Verifica que exista.');
+    alert('❌ Error crítico: archivo config.js no cargado.');
 }
 
 // ============================
@@ -285,25 +286,24 @@ const ADMIN_SECRET = "GataFiera54321";
 const ADMIN_COLOR_TRIGGER = "Gata";
 
 // ============================
-// FUNCIÓN PARA MOSTRAR ERROR
+// MOSTRAR ERROR (siempre visible)
 // ============================
 function mostrarError(msj) {
     errorDiv.innerText = msj;
     errorDiv.style.display = 'block';
-    // El error permanece visible hasta el próximo intento o se oculta automáticamente a los 5 segundos
-    setTimeout(() => {
-        if (errorDiv.innerText === msj) {
-            errorDiv.style.display = 'none';
-        }
-    }, 5000);
+    console.error('[ERROR]', msj);
+    // El error se mantiene hasta que el usuario vuelva a escribir o intente otro login
+}
+
+function ocultarError() {
+    errorDiv.style.display = 'none';
 }
 
 // ============================
-// MODO VISUAL ADMIN (SOLO ESTÉTICO)
+// MODO VISUAL ADMIN (solo estético)
 // ============================
 function actualizarModoVisual() {
     const valor = cedulaInput.value.trim();
-    // Habilitar botón solo si hay texto ingresado
     btnLogin.disabled = valor === "";
     if (valor.includes(ADMIN_COLOR_TRIGGER)) {
         bodyElem.classList.add('admin-mode-body');
@@ -316,64 +316,88 @@ function actualizarModoVisual() {
 
 cedulaInput.addEventListener('input', () => {
     actualizarModoVisual();
-    errorDiv.style.display = 'none';
+    ocultarError();
 });
 
 // ============================
-// LOGIN (LÓGICA CORREGIDA)
+// NORMALIZACIÓN EXTREMA DEL ESTADO
+// ============================
+function normalizarEstado(estadoRaw) {
+    if (estadoRaw === undefined || estadoRaw === null) return '';
+    // Convertir a string, eliminar espacios, saltos de línea, tabuladores, NBSP y cualquier carácter no ASCII que sea espacio
+    let limpio = String(estadoRaw)
+        .replace(/[\s\u00A0\u2000-\u200F\u2028\u2029\uFEFF]+/g, '') // elimina todo tipo de espacios invisibles
+        .toUpperCase();
+    return limpio;
+}
+
+// ============================
+// LOGIN (VERSIÓN CON DIAGNÓSTICO)
 // ============================
 btnLogin.addEventListener('click', async () => {
     const valorIngresado = cedulaInput.value.trim();
 
-    // --- ACCESO ADMIN (SECRETO) ---
+    // --- ADMIN ---
     if (valorIngresado === ADMIN_SECRET) {
         localStorage.setItem('admin_session', 'true');
         window.location.href = 'admin.html';
         return;
     }
 
-    // --- VALIDAR FORMATO CÉDULA (10 dígitos, solo números) ---
+    // Validar formato cédula (10 dígitos)
     if (!/^\d{10}$/.test(valorIngresado)) {
-        mostrarError('❌ Cédula inválida – debe tener 10 dígitos numéricos');
+        mostrarError('❌ Cédula inválida – deben ser 10 dígitos numéricos');
         return;
     }
 
     btnLogin.disabled = true;
-    const textoOriginalBoton = btnLogin.innerText;
+    const textoOriginal = btnLogin.innerText;
     btnLogin.innerText = 'VERIFICANDO...';
+    ocultarError();
 
     try {
         const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(valorIngresado)}&t=${Date.now()}`;
+        console.log('📡 Consultando:', url);
         const respuesta = await fetch(url);
 
         if (!respuesta.ok) {
-            throw new Error(`HTTP ${respuesta.status}`);
+            throw new Error(`HTTP ${respuesta.status} - ${respuesta.statusText}`);
         }
 
         const data = await respuesta.json();
-        console.log('Respuesta del servidor:', data);
+        console.log('📦 Respuesta completa del servidor:', data);
 
-        // Caso 1: La cédula existe y el estado es APROBADO (normalizado)
+        // Verificar si la respuesta tiene la estructura esperada
+        if (data.success === false) {
+            mostrarError(`⚠️ Error del servidor: ${data.error || 'desconocido'}`);
+            return;
+        }
+
+        // Caso: cédula existe
         if (data.cedulaExiste === true) {
-            const estadoNormalizado = (data.estado || '').toString().trim().toUpperCase();
+            const estadoOriginal = data.estado || '';
+            const estadoNormalizado = normalizarEstado(estadoOriginal);
+            console.log(`🔍 Estado original: "${estadoOriginal}" → Normalizado: "${estadoNormalizado}"`);
+
             if (estadoNormalizado === 'APROBADO') {
-                // Asegurar que existan datos del jugador
+                // Validar que existan datos del jugador
                 if (!data.datosJugador) {
-                    mostrarError('⚠️ Error: datos del jugador no encontrados');
+                    mostrarError('⚠️ Datos del jugador no recibidos. Contacta al administrador.');
                     return;
                 }
 
-                // Guardar sesión en localStorage
+                // Guardar sesión
                 const sesion = {
                     ...data.datosJugador,
                     cedula: valorIngresado,
                     loginTime: Date.now()
                 };
                 localStorage.setItem('jugador_actual', JSON.stringify(sesion));
+                console.log('✅ Sesión guardada:', sesion);
 
-                // Verificar que se guardó correctamente (opcional, para depuración)
-                const guardado = localStorage.getItem('jugador_actual');
-                if (!guardado) {
+                // Verificar que se guardó correctamente
+                const comprobacion = localStorage.getItem('jugador_actual');
+                if (!comprobacion) {
                     mostrarError('❌ No se pudo guardar la sesión. Intenta de nuevo.');
                     return;
                 }
@@ -382,27 +406,27 @@ btnLogin.addEventListener('click', async () => {
                 window.location.href = 'perfil.html';
                 return;
             } else {
-                // Estado distinto de APROBADO: PENDIENTE, RECHAZADO, etc.
-                mostrarError(`⏳ Cuenta en estado: "${data.estado}". Se requiere APROBADO para acceder.`);
+                // Estado no es APROBADO (PENDIENTE, RECHAZADO, etc.)
+                mostrarError(`⏳ Cuenta en estado: "${estadoOriginal}". Se requiere APROBADO para acceder.`);
                 return;
             }
         }
 
-        // Caso 2: La cédula NO existe en el registro
+        // Caso: cédula NO existe
         if (data.cedulaExiste === false) {
             mostrarError('❌ Cédula no registrada. Regístrate primero.');
             return;
         }
 
-        // Caso 3: Respuesta inesperada (success false, etc.)
-        mostrarError('⚠️ Error inesperado del servidor. Contacta al administrador.');
+        // Cualquier otro caso inesperado
+        mostrarError('⚠️ Respuesta inesperada del servidor. Revisa la consola (F12).');
 
     } catch (error) {
-        console.error('Error en login:', error);
-        mostrarError('🔌 Error de conexión o servidor no disponible. Revisa tu internet.');
+        console.error('🔥 Error en login:', error);
+        mostrarError(`🔌 Error de conexión: ${error.message}. Verifica tu internet y que la URL_GAS sea correcta.`);
     } finally {
         btnLogin.disabled = false;
-        btnLogin.innerText = textoOriginalBoton;
+        btnLogin.innerText = textoOriginal;
         actualizarModoVisual();
     }
 });
@@ -417,7 +441,7 @@ cedulaInput.addEventListener('keypress', (e) => {
 });
 
 // ============================
-// INICIALIZAR MODO VISUAL
+// INICIALIZAR
 // ============================
 actualizarModoVisual();
 
