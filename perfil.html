@@ -215,8 +215,8 @@
         .stat-val { display: block; font-size: 1.1rem; font-weight: 800; }
         .stat-lab { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
 
-        /* --- BLOQUES DE INFO MEJORADOS --- */
-        .section-box {
+        /* --- RENDIMIENTO HUMANO MEJORADO --- */
+        .performance-section {
             background: var(--card-bg); 
             border-radius: 18px; 
             padding: 15px;
@@ -225,7 +225,7 @@
             backdrop-filter: blur(5px);
             transition: all 0.3s ease;
         }
-        .section-box:hover {
+        .performance-section:hover {
             border-color: rgba(212, 175, 55, 0.2);
             transform: translateY(-2px);
         }
@@ -233,14 +233,161 @@
             font-size: 0.8rem; 
             font-weight: 800; 
             color: var(--primary-gold);
-            margin-bottom: 12px; 
+            margin-bottom: 15px; 
             text-transform: uppercase; 
             display: flex; 
             align-items: center; 
             gap: 8px;
         }
 
-        /* --- ESTILOS MEJORADOS PARA ESTADO ADMINISTRATIVO --- */
+        /* Grid de métricas de rendimiento */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Tarjeta de métrica circular */
+        .metric-card {
+            background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+            border-radius: 20px;
+            padding: 15px 10px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .metric-card:hover::before {
+            left: 100%;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Contenedor del círculo de progreso */
+        .progress-circle {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 10px;
+        }
+
+        .progress-circle svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .progress-circle-bg {
+            stroke: rgba(255,255,255,0.1);
+            stroke-width: 8;
+            fill: none;
+        }
+
+        .progress-circle-fill {
+            stroke-width: 8;
+            fill: none;
+            stroke-linecap: round;
+            transition: stroke-dasharray 1s ease;
+        }
+
+        .progress-circle-fill.puntualidad { stroke: #3498db; }
+        .progress-circle-fill.companerismo { stroke: #2ecc71; }
+        .progress-circle-fill.respeto { stroke: #f39c12; }
+        .progress-circle-fill.humildad { stroke: #9b59b6; }
+
+        .progress-circle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .metric-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px 0 5px;
+        }
+
+        .metric-icon {
+            font-size: 1.2rem;
+            margin-right: 5px;
+        }
+
+        .metric-value-text {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Promedio general */
+        .average-container {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            margin-top: 5px;
+        }
+
+        .average-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .average-score {
+            font-size: 2.2rem;
+            font-weight: 900;
+            font-family: 'Outfit', sans-serif;
+            color: var(--primary-gold);
+            line-height: 1;
+        }
+
+        .average-stars {
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .average-stars i {
+            font-size: 0.9rem;
+            color: var(--warning);
+        }
+
+        .performance-message {
+            margin-top: 12px;
+            font-size: 0.7rem;
+            padding: 8px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        /* --- ESTILOS PARA ESTADO ADMINISTRATIVO --- */
         .admin-stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -469,6 +616,35 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         
         .error-message { text-align: center; padding: 50px; color: var(--danger); }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 180px;
+            background: rgba(0,0,0,0.9);
+            color: var(--primary-gold);
+            text-align: center;
+            border-radius: 8px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -90px;
+            font-size: 0.7rem;
+            border: 1px solid var(--primary-gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
         
         @media (max-width: 400px) {
             .jersey-number { font-size: 3.5rem; }
@@ -476,6 +652,9 @@
             .id-card-jersey-wrap { height: 160px; }
             .admin-stat-value { font-size: 1rem; }
             .admin-stat-icon { font-size: 1.4rem; }
+            .progress-circle { width: 80px; height: 80px; }
+            .progress-circle-text { font-size: 1.2rem; }
+            .metric-title { font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -535,6 +714,34 @@
         return { text: '🔴 ¡ATENCIÓN! Deuda crítica. Riesgo de suspensión', type: 'danger' };
     }
 
+    // Función para generar el círculo de progreso SVG
+    function renderProgressCircle(value, colorClass, size = 90) {
+        const radius = 40;
+        const circumference = 2 * Math.PI * radius;
+        const percent = value / 10;
+        const strokeDashoffset = circumference - (percent * circumference);
+        
+        return `
+            <div class="progress-circle" style="width: ${size}px; height: ${size}px;">
+                <svg viewBox="0 0 100 100">
+                    <circle class="progress-circle-bg" cx="50" cy="50" r="40" stroke-width="8" fill="none"/>
+                    <circle class="progress-circle-fill ${colorClass}" cx="50" cy="50" r="40" 
+                            stroke-width="8" fill="none" stroke-dasharray="${circumference}" 
+                            stroke-dashoffset="${strokeDashoffset}" style="stroke-dashoffset: ${strokeDashoffset};"/>
+                </svg>
+                <div class="progress-circle-text">${value}</div>
+            </div>
+        `;
+    }
+
+    // Función para obtener mensaje según el promedio
+    function getPerformanceMessage(average) {
+        if (average >= 9) return { text: '🏆 ¡Excelente! Eres un ejemplo para el equipo', emoji: '🏆', color: 'var(--success)' };
+        if (average >= 7) return { text: '👍 Muy bien. Sigue mejorando cada día', emoji: '👍', color: 'var(--info)' };
+        if (average >= 5) return { text: '⚠️ Puedes mejorar. Trabaja en equipo', emoji: '⚠️', color: 'var(--warning)' };
+        return { text: '🔴 Necesitas mejorar tu actitud y compromiso', emoji: '🔴', color: 'var(--danger)' };
+    }
+
     function handleSessionError(error) {
         if (error && (error.includes('sesión') || error.includes('token') || error.includes('auth'))) {
             localStorage.removeItem('jugador_actual');
@@ -586,6 +793,18 @@
 
                 const debtProgress = getDebtProgress(sanitized.deudaVocalia);
                 const debtMessage = getDebtMessage(sanitized.deudaVocalia);
+                
+                // Calcular promedio de rendimiento humano
+                const performanceAverage = Math.round(
+                    (sanitized.puntualidad + sanitized.companerismo + sanitized.respeto + sanitized.humildad) / 4
+                );
+                const performanceMsg = getPerformanceMessage(performanceAverage);
+                
+                // Generar estrellas
+                const stars = Math.floor(performanceAverage / 2);
+                const starHtml = Array(5).fill(0).map((_, i) => 
+                    `<i class="fas fa-star${i < stars ? '' : '-half-alt'}" style="color: var(--warning); opacity: ${i < stars ? 1 : 0.3}"></i>`
+                ).join('');
                 
                 container.innerHTML = `
                     <div class="profile-header">
@@ -650,34 +869,83 @@
                         </div>
                     </div>
 
-                    <div class="section-box">
-                        <div class="section-title"><i class="fas fa-star"></i> Rendimiento Humano</div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-clock"></i> Puntualidad</div>
-                            <div class="info-value">${sanitized.puntualidad}/10</div>
+                    <!-- RENDIMIENTO HUMANO MEJORADO -->
+                    <div class="performance-section">
+                        <div class="section-title">
+                            <i class="fas fa-heartbeat"></i> Rendimiento Humano
+                            <div class="tooltip" style="margin-left:auto;">
+                                <i class="fas fa-info-circle" style="color:var(--primary-gold); font-size:0.7rem;"></i>
+                                <span class="tooltip-text">Evaluación del comportamiento y valores del jugador</span>
+                            </div>
                         </div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-handshake"></i> Compañerismo</div>
-                            <div class="info-value">${sanitized.companerismo}/10</div>
+
+                        <div class="performance-grid">
+                            <!-- Puntualidad -->
+                            <div class="metric-card">
+                                ${renderProgressCircle(sanitized.puntualidad, 'puntualidad', 85)}
+                                <div class="metric-title">
+                                    <i class="fas fa-clock metric-icon" style="color:#3498db"></i>
+                                    Puntualidad
+                                </div>
+                                <div class="metric-value-text">Asistencia a tiempo</div>
+                            </div>
+
+                            <!-- Compañerismo -->
+                            <div class="metric-card">
+                                ${renderProgressCircle(sanitized.companerismo, 'companerismo', 85)}
+                                <div class="metric-title">
+                                    <i class="fas fa-handshake metric-icon" style="color:#2ecc71"></i>
+                                    Compañerismo
+                                </div>
+                                <div class="metric-value-text">Trabajo en equipo</div>
+                            </div>
+
+                            <!-- Respeto -->
+                            <div class="metric-card">
+                                ${renderProgressCircle(sanitized.respeto, 'respeto', 85)}
+                                <div class="metric-title">
+                                    <i class="fas fa-balance-scale metric-icon" style="color:#f39c12"></i>
+                                    Respeto
+                                </div>
+                                <div class="metric-value-text">Con compañeros y árbitros</div>
+                            </div>
+
+                            <!-- Humildad -->
+                            <div class="metric-card">
+                                ${renderProgressCircle(sanitized.humildad, 'humildad', 85)}
+                                <div class="metric-title">
+                                    <i class="fas fa-heart metric-icon" style="color:#9b59b6"></i>
+                                    Humildad
+                                </div>
+                                <div class="metric-value-text">Actitud en cancha</div>
+                            </div>
                         </div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-balance-scale"></i> Respeto</div>
-                            <div class="info-value">${sanitized.respeto}/10</div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label"><i class="fas fa-heart"></i> Humildad</div>
-                            <div class="info-value">${sanitized.humildad}/10</div>
+
+                        <!-- Promedio General -->
+                        <div class="average-container">
+                            <div class="average-label">
+                                <i class="fas fa-chart-line"></i> PROMEDIO GENERAL
+                            </div>
+                            <div class="average-score">
+                                ${performanceAverage}<span style="font-size:1rem;">/10</span>
+                            </div>
+                            <div class="average-stars">
+                                ${starHtml}
+                            </div>
+                            <div class="performance-message" style="border-left: 3px solid ${performanceMsg.color}">
+                                <i class="fas ${performanceMsg.emoji === '🏆' ? 'fa-trophy' : performanceMsg.emoji === '👍' ? 'fa-thumbs-up' : performanceMsg.emoji === '⚠️' ? 'fa-exclamation-triangle' : 'fa-skull-crosswalk'}"></i>
+                                ${performanceMsg.text}
+                            </div>
                         </div>
                     </div>
 
-                    <!-- ESTADO ADMINISTRATIVO MEJORADO -->
+                    <!-- ESTADO ADMINISTRATIVO -->
                     <div class="section-box">
                         <div class="section-title">
                             <i class="fas fa-chart-line"></i> Estado Administrativo
                             <i class="fas fa-shield-alt" style="margin-left:auto; font-size:0.7rem; opacity:0.7;"></i>
                         </div>
 
-                        <!-- Tarjetas de estado rápido -->
                         <div class="admin-stats-grid">
                             <div class="admin-stat-card">
                                 <div class="admin-stat-icon">
@@ -703,7 +971,6 @@
                             </div>
                         </div>
 
-                        <!-- Sección de Deuda con barra de progreso -->
                         <div class="debt-container">
                             <div class="debt-header">
                                 <span class="debt-label"><i class="fas fa-dollar-sign"></i> DEUDA CON VOCALÍA</span>
@@ -720,7 +987,6 @@
                             </div>
                         </div>
 
-                        <!-- Detalles adicionales -->
                         <div class="admin-details">
                             <div class="detail-item">
                                 <div class="detail-label"><i class="fas fa-socks"></i> Medias</div>
@@ -736,7 +1002,6 @@
                             </div>
                         </div>
 
-                        <!-- Leyenda de estados -->
                         <div style="display: flex; justify-content: center; gap: 15px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.6rem;">
                             <span><i class="fas fa-circle" style="color: var(--success); font-size: 0.5rem;"></i> Pagado/Entregado</span>
                             <span><i class="fas fa-circle" style="color: var(--danger); font-size: 0.5rem;"></i> Pendiente</span>
