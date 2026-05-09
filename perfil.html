@@ -200,22 +200,113 @@
         .jersey-number { font-size: 4.5rem; font-weight: 900; color: var(--primary-gold); font-family: 'Outfit'; line-height: 1; text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); letter-spacing: 2px; }
         .jersey-name { font-size: 0.7rem; font-weight: 800; opacity: 0.9; letter-spacing: 2px; color: var(--primary-gold-light); text-transform: uppercase; margin-bottom: 5px; }
 
-        /* --- ESTADÍSTICAS --- */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
-        .stat-card {
-            background: var(--card-bg); border-radius: 12px; padding: 10px 5px;
-            text-align: center; border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s ease;
+        /* --- ESTADÍSTICAS MEJORADAS --- */
+        .stats-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 5px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
         }
-        .stat-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(212, 175, 55, 0.3);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .stat-val { display: block; font-size: 1.1rem; font-weight: 800; }
-        .stat-lab { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
 
-        /* --- RENDIMIENTO HUMANO MEJORADO --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .stat-card-modern {
+            background: linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.5));
+            border-radius: 18px;
+            padding: 12px 8px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-card-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-card-modern:hover::before {
+            left: 100%;
+        }
+
+        .stat-card-modern:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Colores específicos para cada estadística */
+        .stat-card-modern.jugados { border-top: 3px solid #3498db; }
+        .stat-card-modern.goles { border-top: 3px solid #2ecc71; }
+        .stat-card-modern.amarillas { border-top: 3px solid #f39c12; }
+        .stat-card-modern.rojas { border-top: 3px solid #e74c3c; }
+
+        .stat-icon-wrapper {
+            width: 45px;
+            height: 45px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .stat-card-modern.jugados .stat-icon-wrapper { background: rgba(52, 152, 219, 0.2); }
+        .stat-card-modern.goles .stat-icon-wrapper { background: rgba(46, 204, 113, 0.2); }
+        .stat-card-modern.amarillas .stat-icon-wrapper { background: rgba(243, 156, 18, 0.2); }
+        .stat-card-modern.rojas .stat-icon-wrapper { background: rgba(231, 76, 60, 0.2); }
+
+        .stat-icon {
+            font-size: 1.6rem;
+        }
+
+        .stat-card-modern.jugados .stat-icon { color: #3498db; }
+        .stat-card-modern.goles .stat-icon { color: #2ecc71; }
+        .stat-card-modern.amarillas .stat-icon { color: #f39c12; }
+        .stat-card-modern.rojas .stat-icon { color: #e74c3c; }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stat-card-modern.jugados .stat-value { color: #3498db; }
+        .stat-card-modern.goles .stat-value { color: #2ecc71; }
+        .stat-card-modern.amarillas .stat-value { color: #f39c12; }
+        .stat-card-modern.rojas .stat-value { color: #e74c3c; }
+
+        .stat-label-modern {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-sub {
+            font-size: 0.55rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 5px;
+        }
+
+        /* --- RENDIMIENTO HUMANO --- */
         .performance-section {
             background: var(--card-bg); 
             border-radius: 18px; 
@@ -469,7 +560,6 @@
         .status-badge-warning { background: rgba(243, 156, 18, 0.2); color: var(--warning); border: 1px solid rgba(243, 156, 18, 0.3); }
         .status-badge-info { background: rgba(52, 152, 219, 0.2); color: var(--info); border: 1px solid rgba(52, 152, 219, 0.3); }
 
-        /* Barra de progreso para deuda (máximo $7) */
         .debt-container {
             background: rgba(0,0,0,0.5);
             border-radius: 10px;
@@ -529,7 +619,6 @@
             border-radius: 8px;
         }
 
-        /* Detalles adicionales */
         .admin-details {
             display: flex;
             justify-content: space-between;
@@ -648,6 +737,9 @@
             .progress-circle { width: 80px; height: 80px; }
             .progress-circle-text { font-size: 1.2rem; }
             .metric-title { font-size: 0.65rem; }
+            .stat-value { font-size: 1.4rem; }
+            .stat-icon-wrapper { width: 35px; height: 35px; }
+            .stat-icon { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -691,7 +783,6 @@
         return 'status-badge-info';
     }
 
-    // Deuda máxima ahora es $7
     function getDebtProgress(debtAmount) {
         const maxDebt = 7;
         let percentage = Math.min((debtAmount / maxDebt) * 100, 100);
@@ -741,6 +832,15 @@
             return true;
         }
         return false;
+    }
+
+    // Función para obtener texto descriptivo según los goles
+    function getGolesDescription(goles) {
+        if (goles === 0) return 'Sin goles';
+        if (goles < 5) return 'En progreso';
+        if (goles < 10) return 'Buena racha';
+        if (goles < 20) return 'Goleador';
+        return 'Artillero';
     }
 
     async function cargarPerfil(cedula) {
@@ -796,9 +896,9 @@
                     `<i class="fas fa-star${i < stars ? '' : '-half-alt'}" style="color: var(--warning); opacity: ${i < stars ? 1 : 0.3}"></i>`
                 ).join('');
                 
-                // Icono para uniforme: reloj si está pendiente, check si está entregado
                 const uniformIcon = sanitized.unifEstado === 'ENTREGADO' ? 'fa-check-circle' : 'fa-clock';
                 const uniformStatusText = sanitized.unifEstado === 'ENTREGADO' ? 'Entregado' : 'Pendiente';
+                const golesDesc = getGolesDescription(sanitized.goles);
                 
                 container.innerHTML = `
                     <div class="profile-header">
@@ -840,30 +940,45 @@
                         <i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN
                     </button>
 
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <i class="fas fa-running" style="color:var(--primary-gold)"></i>
-                            <span class="stat-val">${sanitized.partidosJugados}</span>
-                            <span class="stat-lab">P. Jugados</span>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-futbol"></i>
-                            <span class="stat-val">${sanitized.goles}</span>
-                            <span class="stat-lab">Goles</span>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-clone" style="color:#f1c40f"></i>
-                            <span class="stat-val">${sanitized.amarillas}</span>
-                            <span class="stat-lab">Amas.</span>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-clone" style="color:#e74c3c"></i>
-                            <span class="stat-val">${sanitized.rojas}</span>
-                            <span class="stat-lab">Rojas</span>
+                    <!-- ESTADÍSTICAS MEJORADAS -->
+                    <div class="stats-section">
+                        <div class="stats-grid">
+                            <div class="stat-card-modern jugados">
+                                <div class="stat-icon-wrapper">
+                                    <i class="fas fa-running stat-icon"></i>
+                                </div>
+                                <div class="stat-value">${sanitized.partidosJugados}</div>
+                                <div class="stat-label-modern">PARTIDOS</div>
+                                <div class="stat-sub">Jugados</div>
+                            </div>
+                            <div class="stat-card-modern goles">
+                                <div class="stat-icon-wrapper">
+                                    <i class="fas fa-futbol stat-icon"></i>
+                                </div>
+                                <div class="stat-value">${sanitized.goles}</div>
+                                <div class="stat-label-modern">GOLES</div>
+                                <div class="stat-sub">${golesDesc}</div>
+                            </div>
+                            <div class="stat-card-modern amarillas">
+                                <div class="stat-icon-wrapper">
+                                    <i class="fas fa-square stat-icon"></i>
+                                </div>
+                                <div class="stat-value">${sanitized.amarillas}</div>
+                                <div class="stat-label-modern">AMARILLAS</div>
+                                <div class="stat-sub">Tarjetas</div>
+                            </div>
+                            <div class="stat-card-modern rojas">
+                                <div class="stat-icon-wrapper">
+                                    <i class="fas fa-square stat-icon"></i>
+                                </div>
+                                <div class="stat-value">${sanitized.rojas}</div>
+                                <div class="stat-label-modern">ROJAS</div>
+                                <div class="stat-sub">Tarjetas</div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- RENDIMIENTO HUMANO MEJORADO -->
+                    <!-- RENDIMIENTO HUMANO -->
                     <div class="performance-section">
                         <div class="section-title">
                             <i class="fas fa-heartbeat"></i> Rendimiento Humano
