@@ -197,7 +197,7 @@
         }
 
         /* Caras de la tarjeta 3D */
-        .face-jersey {
+        .face-jersey-front, .face-jersey-back {
             position: absolute; 
             width: 100%; 
             height: 100%;
@@ -214,12 +214,18 @@
         }
         
         /* Cara frontal (por defecto) */
-        .face-jersey {
+        .face-jersey-front {
             transform: rotateY(0deg);
         }
 
+        /* Cara trasera */
+        .face-jersey-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(145deg, #1a0f2a, #0a0418);
+        }
+
         /* Luz reflejante en la camiseta */
-        .face-jersey::before {
+        .face-jersey-front::before, .face-jersey-back::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -232,7 +238,8 @@
             pointer-events: none;
         }
 
-        .id-card-jersey-wrap:hover .face-jersey::before {
+        .id-card-jersey-wrap:hover .face-jersey-front::before,
+        .id-card-jersey-wrap:hover .face-jersey-back::before {
             opacity: 1;
             animation: lensFlare 2s infinite;
         }
@@ -339,11 +346,15 @@
             gap: 8px;
             transition: 0.3s;
         }
-        .btn-sync:hover {
+        .btn-sync:hover:not(:disabled) {
             background: rgba(212, 175, 55, 0.2);
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
-        .btn-sync:active { transform: scale(0.98); }
+        .btn-sync:active:not(:disabled) { transform: scale(0.98); }
+        .btn-sync:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
 
         .btn-logout {
             width: 100%; 
@@ -391,75 +402,136 @@
 
 <script src="config.js"></script>
 <script>
-    (function() {
-        // Verificar que CONFIG existe
-        if (typeof CONFIG === 'undefined') {
-            document.getElementById('perfilContent').innerHTML = 
-                '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><br>Error de configuración: No se pudo cargar config.js</div>';
-            return;
-        }
-        
-        const session = JSON.parse(localStorage.getItem('jugador_actual'));
-        
-        if (!session || !session.cedula) {
-            window.location.href = 'login.html';
-            return;
-        }
-        
-        cargarPerfil(session.cedula);
-    })();
+    // Función de escape HTML para prevenir XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 
+    // Validar configuración
+    function validateConfig() {
+        if (typeof CONFIG === 'undefined') {
+            throw new Error('No se pudo cargar config.js');
+        }
+        if (!CONFIG.URL_GAS) {
+            throw new Error('URL_GAS no está definida en la configuración');
+        }
+        if (!CONFIG.DEFAULT_AVATAR) {
+            CONFIG.DEFAULT_AVATAR = 'https://via.placeholder.com/80/111a33/D4AF37?text=PLAYER';
+        }
+    }
+
+    // Función para obtener estado de clase CSS
+    function getStatusClass(val) {
+        if (!val) return 'status-red';
+        const v = String(val).toUpperCase();
+        if (v.includes('PENDIENTE') || v.includes('DEBE') || v === 'NO') return 'status-red';
+        if (v.includes('PAGADO') || v.includes('ENTREGADO') || v === 'SI' || v === 'OK') return 'status-green';
+        return '';
+    }
+
+    // Función para manejar errores de sesión
+    function handleSessionError(error) {
+        if (error && (error.includes('sesión') || error.includes('token') || error.includes('auth'))) {
+            localStorage.removeItem('jugador_actual');
+            window.location.href = 'login.html';
+            return true;
+        }
+        return false;
+    }
+
+    // Función principal para cargar el perfil
     async function cargarPerfil(cedula) {
         const container = document.getElementById('perfilContent');
+        
         try {
-            const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${cedula}&t=${Date.now()}`;
+            validateConfig();
+            
+            const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
             console.log('Consultando:', url);
             
             const resp = await fetch(url);
+            
+            if (!resp.ok) {
+                throw new Error(`Error HTTP: ${resp.status}`);
+            }
+            
             const data = await resp.json();
+            
+            // Verificar si hay error de sesión
+            if (!data.success && data.error && handleSessionError(data.error)) {
+                return;
+            }
             
             if (data.success && data.jugador) {
                 const j = data.jugador;
                 
-                // Lógica de colores para estados de texto
-                const getStatusClass = (val) => {
-                    if (!val) return 'status-red';
-                    const v = String(val).toUpperCase();
-                    if (v.includes('PENDIENTE') || v.includes('DEBE') || v === 'NO') return 'status-red';
-                    if (v.includes('PAGADO') || v.includes('ENTREGADO') || v === 'SI' || v === 'OK') return 'status-green';
-                    return '';
+                // Sanitizar todos los datos
+                const sanitized = {
+                    primerNombre: escapeHtml(j.primerNombre || ''),
+                    segundoNombre: escapeHtml(j.segundoNombre || ''),
+                    urlFotoRostro: escapeHtml(j.urlFotoRostro || CONFIG.DEFAULT_AVATAR),
+                    nombreCamiseta: escapeHtml(j.nombreCamiseta || 'NÁPOLES'),
+                    dorsal: escapeHtml(j.dorsal || '00'),
+                    tallaUni: escapeHtml(j.tallaUni || 'M'),
+                    partidosJugados: Number(j.partidosJugados) || 0,
+                    goles: Number(j.goles) || 0,
+                    amarillas: Number(j.amarillas) || 0,
+                    rojas: Number(j.rojas) || 0,
+                    puntualidad: Number(j.puntualidad) || 0,
+                    companerismo: Number(j.companerismo) || 0,
+                    respeto: Number(j.respeto) || 0,
+                    humildad: Number(j.humildad) || 0,
+                    deudaVocalia: Number(j.deudaVocalia) || 0,
+                    inscripEstado: escapeHtml(j.inscripEstado || 'PENDIENTE'),
+                    unifEstado: escapeHtml(j.unifEstado || 'PENDIENTE'),
+                    mediasEstado: (j.mediasEstado === 'null' || !j.mediasEstado || j.mediasEstado === 'undefined') ? 'N/A' : escapeHtml(j.mediasEstado)
                 };
-
+                
                 container.innerHTML = `
                     <div class="profile-header">
                         <h1>⚜️ PANEL NÁPOLES ⚜️</h1>
                     </div>
 
                     <div class="cards-row">
-                        <!-- TARJETA DE IDENTIDAD CON LUZ -->
+                        <!-- TARJETA DE IDENTIDAD -->
                         <div class="id-card-identity glass-card">
-                            <img src="${j.urlFotoRostro || CONFIG.DEFAULT_AVATAR}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
-                            <div style="font-weight:900; font-family:'Outfit'; text-transform:uppercase; font-size:0.9rem;">${j.primerNombre || ''} ${j.segundoNombre || ''}</div>
+                            <img src="${sanitized.urlFotoRostro}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
+                            <div style="font-weight:900; font-family:'Outfit'; text-transform:uppercase; font-size:0.9rem;">
+                                ${sanitized.primerNombre} ${sanitized.segundoNombre}
+                            </div>
                             <div style="font-size:0.6rem; color:var(--text-muted); margin-top:2px;">
-                                <i class="fas fa-id-card"></i> C.I. ${cedula}
+                                <i class="fas fa-id-card"></i> C.I. ${escapeHtml(cedula)}
                             </div>
                         </div>
 
-                        <!-- TARJETA DE CAMISETA 3D CORREGIDA: ROTACIÓN CONTINUA Y SUAVE -->
+                        <!-- TARJETA DE CAMISETA 3D CORREGIDA -->
                         <div class="id-card-jersey-wrap">
                             <div class="jersey-card-inner">
-                                <div class="face-jersey">
-                                    <div class="jersey-name">${j.nombreCamiseta || 'NÁPOLES'}</div>
-                                    <div class="jersey-number">${j.dorsal || '00'}</div>
+                                <div class="face-jersey-front">
+                                    <div class="jersey-name">${sanitized.nombreCamiseta}</div>
+                                    <div class="jersey-number">${sanitized.dorsal}</div>
                                     <div style="font-size:0.55rem; opacity:0.6; margin-top:5px;">
-                                        <i class="fas fa-tshirt"></i> ${j.tallaUni || 'M'}
+                                        <i class="fas fa-tshirt"></i> ${sanitized.tallaUni}
+                                    </div>
+                                </div>
+                                <div class="face-jersey-back">
+                                    <div class="jersey-name">${sanitized.nombreCamiseta}</div>
+                                    <div class="jersey-number">${sanitized.dorsal}</div>
+                                    <div style="font-size:0.55rem; opacity:0.6; margin-top:5px;">
+                                        <i class="fas fa-heart"></i> Nápoles FC
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <button class="btn-sync" onclick="recargarPerfil()">
+                    <button class="btn-sync" onclick="window.recargarPerfil()">
                         <i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN
                     </button>
 
@@ -467,44 +539,44 @@
                     <div class="stats-grid">
                         <div class="stat-card">
                             <i class="fas fa-running" style="color:var(--primary-gold)"></i>
-                            <span class="stat-val">${j.partidosJugados || 0}</span>
+                            <span class="stat-val">${sanitized.partidosJugados}</span>
                             <span class="stat-lab">P. Jugados</span>
                         </div>
                         <div class="stat-card">
                             <i class="fas fa-futbol"></i>
-                            <span class="stat-val">${j.goles || 0}</span>
+                            <span class="stat-val">${sanitized.goles}</span>
                             <span class="stat-lab">Goles</span>
                         </div>
                         <div class="stat-card">
                             <i class="fas fa-clone" style="color:#f1c40f"></i>
-                            <span class="stat-val">${j.amarillas || 0}</span>
+                            <span class="stat-val">${sanitized.amarillas}</span>
                             <span class="stat-lab">Amas.</span>
                         </div>
                         <div class="stat-card">
                             <i class="fas fa-clone" style="color:#e74c3c"></i>
-                            <span class="stat-val">${j.rojas || 0}</span>
+                            <span class="stat-val">${sanitized.rojas}</span>
                             <span class="stat-lab">Rojas</span>
                         </div>
                     </div>
 
-                    <!-- RENDIMIENTO HUMANO (PROMEDIOS) -->
+                    <!-- RENDIMIENTO HUMANO -->
                     <div class="section-box">
                         <div class="section-title"><i class="fas fa-star"></i> Rendimiento Humano</div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-clock"></i> Puntualidad</div>
-                            <div class="info-value">${j.puntualidad || 0}/10</div>
+                            <div class="info-value">${sanitized.puntualidad}/10</div>
                         </div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-handshake"></i> Compañerismo</div>
-                            <div class="info-value">${j.companerismo || 0}/10</div>
+                            <div class="info-value">${sanitized.companerismo}/10</div>
                         </div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-balance-scale"></i> Respeto</div>
-                            <div class="info-value">${j.respeto || 0}/10</div>
+                            <div class="info-value">${sanitized.respeto}/10</div>
                         </div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-heart"></i> Humildad</div>
-                            <div class="info-value">${j.humildad || 0}/10</div>
+                            <div class="info-value">${sanitized.humildad}/10</div>
                         </div>
                     </div>
 
@@ -513,52 +585,128 @@
                         <div class="section-title"><i class="fas fa-wallet"></i> Estado Administrativo</div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-exclamation-circle"></i> Deuda Vocalía</div>
-                            <div class="info-value ${Number(j.deudaVocalia) > 0 ? 'status-red' : 'status-green'}">$${j.deudaVocalia || 0}</div>
+                            <div class="info-value ${sanitized.deudaVocalia > 0 ? 'status-red' : 'status-green'}">
+                                $${sanitized.deudaVocalia}
+                            </div>
                         </div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-file-invoice-dollar"></i> Inscripción</div>
-                            <div class="info-value ${getStatusClass(j.inscripEstado)}">${j.inscripEstado || 'PENDIENTE'}</div>
+                            <div class="info-value ${getStatusClass(sanitized.inscripEstado)}">
+                                ${sanitized.inscripEstado}
+                            </div>
                         </div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-tshirt"></i> Uniforme</div>
-                            <div class="info-value ${getStatusClass(j.unifEstado)}">${j.unifEstado || 'PENDIENTE'}</div>
+                            <div class="info-value ${getStatusClass(sanitized.unifEstado)}">
+                                ${sanitized.unifEstado}
+                            </div>
                         </div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-socks"></i> Medias</div>
-                            <div class="info-value ${getStatusClass(j.mediasEstado)}">${(j.mediasEstado === 'null' || !j.mediasEstado) ? 'N/A' : j.mediasEstado}</div>
+                            <div class="info-value ${getStatusClass(sanitized.mediasEstado)}">
+                                ${sanitized.mediasEstado}
+                            </div>
                         </div>
                         <div class="info-row">
                             <div class="info-label"><i class="fas fa-ruler"></i> Talla</div>
-                            <div class="info-value" style="color:var(--primary-gold)">${j.tallaUni || 'POR DEFINIR'}</div>
+                            <div class="info-value" style="color:var(--primary-gold)">
+                                ${sanitized.tallaUni}
+                            </div>
                         </div>
                     </div>
 
-                    <button class="btn-logout" onclick="cerrarSesion()">
+                    <button class="btn-logout" onclick="window.cerrarSesion()">
                         <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
                     </button>
                     <div style="height: 30px;"></div>
                 `;
             } else {
-                container.innerHTML = `<p class="error-message"><i class="fas fa-user-slash"></i><br>Jugador no encontrado.<br><small>${data.error || ''}</small></p>`;
+                container.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-user-slash"></i><br>
+                        Jugador no encontrado.<br>
+                        <small>${escapeHtml(data.error || 'Error desconocido')}</small>
+                        <br><br>
+                        <button onclick="window.cerrarSesion()" style="margin-top:15px; padding:10px 20px; background:rgba(212,175,55,0.2); border:1px solid var(--primary-gold); color:var(--primary-gold); border-radius:8px; cursor:pointer;">
+                            Volver al login
+                        </button>
+                    </div>
+                `;
             }
         } catch (e) {
             console.error('Error:', e);
-            container.innerHTML = `<p class="error-message"><i class="fas fa-wifi"></i><br>Error de conexión.<br><small>${e.message}</small></p>`;
+            container.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-wifi"></i><br>
+                    Error de conexión.<br>
+                    <small>${escapeHtml(e.message)}</small>
+                    <br><br>
+                    <button onclick="window.recargarPerfil()" style="margin:5px; padding:10px 20px; background:rgba(212,175,55,0.2); border:1px solid var(--primary-gold); color:var(--primary-gold); border-radius:8px; cursor:pointer;">
+                        Reintentar
+                    </button>
+                    <button onclick="window.cerrarSesion()" style="margin:5px; padding:10px 20px; background:rgba(231,76,60,0.2); border:1px solid #e74c3c; color:#e74c3c; border-radius:8px; cursor:pointer;">
+                        Cerrar sesión
+                    </button>
+                </div>
+            `;
         }
     }
     
-    function recargarPerfil() {
+    // Función global para recargar el perfil
+    window.recargarPerfil = async function() {
         const session = JSON.parse(localStorage.getItem('jugador_actual'));
-        if (session && session.cedula) {
-            document.getElementById('perfilContent').innerHTML = '<div class="spinner"></div>';
-            cargarPerfil(session.cedula);
+        
+        if (!session || !session.cedula) {
+            window.location.href = 'login.html';
+            return;
         }
-    }
+        
+        const btn = document.querySelector('.btn-sync');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ACTUALIZANDO...';
+        }
+        
+        const container = document.getElementById('perfilContent');
+        container.innerHTML = '<div class="spinner"></div>';
+        
+        try {
+            await cargarPerfil(session.cedula);
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN';
+            }
+        }
+    };
 
-    function cerrarSesion() {
-        localStorage.removeItem('jugador_actual');
-        window.location.href = 'login.html';
-    }
+    // Función global para cerrar sesión
+    window.cerrarSesion = function() {
+        if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+            localStorage.removeItem('jugador_actual');
+            window.location.href = 'login.html';
+        }
+    };
+
+    // Inicialización
+    (function() {
+        try {
+            validateConfig();
+            
+            const session = JSON.parse(localStorage.getItem('jugador_actual'));
+            
+            if (!session || !session.cedula) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            cargarPerfil(session.cedula);
+        } catch (e) {
+            console.error('Error de inicialización:', e);
+            document.getElementById('perfilContent').innerHTML = 
+                '<div class="error-message"><i class="fas fa-exclamation-triangle"></i><br>Error de configuración: ' + escapeHtml(e.message) + '</div>';
+        }
+    })();
 </script>
 
 </body>
