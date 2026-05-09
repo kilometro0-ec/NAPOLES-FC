@@ -1,8 +1,12 @@
 const CONFIG = {
-    URL_GAS: 'https://script.google.com/macros/s/AKfycbzlZ7qAPySyeCBDJNHafpab4iKxz2nI9-igDs795hgAE9NiqVb52bJF3d1a7JfUD-j7/exec',  // ✅ Cambia por tu URL real
-    APP_NAME: 'Nápoles F.C.',
-    VERSION: '1.0.0',
-    TIEMPO_SESION: 86400000,
-    DEFAULT_AVATAR: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-    APP_ICON: 'https://cdn-icons-png.flaticon.com/512/1165/1165187.png'
+
+    // ⚠️ PEGA AQUÍ TU URL REAL DE APPS SCRIPT
+    URL_GAS: 'TU_URL_WEBAPP_APPS_SCRIPT',
+
+    // Avatar por defecto
+    DEFAULT_AVATAR: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+
+    // 24 horas
+    TIEMPO_SESION: 86400000
+
 };
