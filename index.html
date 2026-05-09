@@ -3,7 +3,2440 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NáGemini
+Extender Plazo de Registro de Fútbol
+Nueva conversación
+Mis cosas
+Cuadernos
+Nuevo cuaderno
+Gems
+Conversaciones
+Extender Plazo de Registro de Fútbol
+
+Configuración y ayuda
+Conversación con Gemini
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
 <title>Nápoles F.C. - Registro Oficial</title>
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+
+<style>
+
+
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+    -webkit-tap-highlight-color:transparent;
+
+}
+
+
+
+:root{
+
+    --azul:#1A2B48;
+
+    --turquesa:#008B94;
+
+    --dorado:#D4AF37;
+
+    --blanco:#ffffff;
+
+    --rojo:#e74c3c;
+
+    --verde:#2ecc71;
+
+}
+
+
+
+body{
+
+    min-height:100vh;
+
+    background:radial-gradient(circle at top,#12233f,#050c16);
+
+    font-family:'Inter',sans-serif;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+    color:white;
+
+}
+
+
+
+.contenedor{
+
+    width:100%;
+
+    max-width:520px;
+
+    background:rgba(26,43,72,.8);
+
+    border:1px solid rgba(212,175,55,.25);
+
+    border-radius:30px;
+
+    padding:30px;
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+
+}
+
+
+
+header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+}
+
+
+
+h1{
+
+    font-size:2rem;
+
+    font-weight:800;
+
+    background:linear-gradient(135deg,var(--dorado),#ffe27a);
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+}
+
+
+
+.sub{
+
+    color:#b7c8dc;
+
+    margin-top:5px;
+
+    font-size:.9rem;
+
+}
+
+
+
+.badge{
+
+    margin-top:12px;
+
+    display:inline-block;
+
+    background:rgba(0,139,148,.2);
+
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    color:var(--dorado);
+
+    font-size:.75rem;
+
+}
+
+
+
+.countdown-box{
+
+    margin-top:20px;
+
+    background:rgba(0,0,0,.35);
+
+    border:1px solid rgba(212,175,55,.2);
+
+    border-radius:20px;
+
+    padding:15px;
+
+}
+
+
+
+.count-title{
+
+    text-align:center;
+
+    font-size:.7rem;
+
+    letter-spacing:2px;
+
+    color:var(--dorado);
+
+    margin-bottom:10px;
+
+}
+
+
+
+.countdown{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+}
+
+
+
+.item{
+
+    text-align:center;
+
+}
+
+
+
+.num{
+
+    font-size:1.5rem;
+
+    font-weight:800;
+
+    color:var(--dorado);
+
+}
+
+
+
+.lab{
+
+    font-size:.65rem;
+
+    color:#b0c4de;
+
+}
+
+
+
+#countdownMessage{
+
+    text-align:center;
+
+    margin-top:10px;
+
+    font-size:.8rem;
+
+}
+
+
+
+.paso{
+
+    display:none;
+
+}
+
+
+
+.paso.activo{
+
+    display:block;
+
+}
+
+
+
+.campo{
+
+    margin-bottom:18px;
+
+}
+
+
+
+label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:.75rem;
+
+    color:#9ab3cf;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+}
+
+
+
+input,select{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:18px;
+
+    border:1px solid rgba(212,175,55,.3);
+
+    background:rgba(0,0,0,.35);
+
+    color:white;
+
+    font-size:1rem;
+
+    outline:none;
+
+}
+
+
+
+input:focus,
+
+select:focus{
+
+    border-color:var(--turquesa);
+
+    box-shadow:0 0 0 3px rgba(0,139,148,.2);
+
+}
+
+
+
+.btn{
+
+    width:100%;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:50px;
+
+    cursor:pointer;
+
+    background:linear-gradient(135deg,var(--turquesa),#006b74);
+
+    color:white;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-top:10px;
+
+}
+
+
+
+.btn:disabled{
+
+    opacity:.4;
+
+    cursor:not-allowed;
+
+}
+
+
+
+.file-ok{
+
+    display:none;
+
+    margin-top:8px;
+
+    color:var(--verde);
+
+    font-size:.8rem;
+
+}
+
+
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+}
+
+
+
+#loader{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.9);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    z-index:9999;
+
+}
+
+
+
+.spinner{
+
+    width:60px;
+
+    height:60px;
+
+    border:4px solid rgba(255,255,255,.2);
+
+    border-top:4px solid var(--dorado);
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+}
+
+
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+
+.toast{
+
+    position:fixed;
+
+    bottom:30px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    background:rgba(0,0,0,.92);
+
+    padding:14px 22px;
+
+    border-radius:50px;
+
+    z-index:99999;
+
+    font-size:.85rem;
+
+}
+
+
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.85);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:10000;
+
+}
+
+
+
+.modal-card{
+
+    width:90%;
+
+    max-width:320px;
+
+    background:#12233f;
+
+    border-radius:25px;
+
+    border:2px solid var(--dorado);
+
+    padding:30px;
+
+    text-align:center;
+
+}
+
+
+
+.modal-card h2{
+
+    color:var(--dorado);
+
+    margin-bottom:10px;
+
+}
+
+
+
+@media(max-width:550px){
+
+
+
+.grid{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+.contenedor{
+
+    padding:22px;
+
+}
+
+
+
+}
+
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="contenedor">
+
+
+
+<header>
+
+
+
+<h1>⚽ NÁPOLES F.C.</h1>
+
+
+
+<p class="sub">
+
+Formulario de registro oficial
+
+</p>
+
+
+
+<div class="badge">
+
+🏆 Temporada 2026 - 2027
+
+</div>
+
+
+
+<div class="countdown-box">
+
+
+
+<div class="count-title">
+
+⏰ CIERRE DE INSCRIPCIONES
+
+</div>
+
+
+
+<div class="countdown">
+
+
+
+<div class="item">
+
+<div class="num" id="days">00</div>
+
+<div class="lab">Días</div>
+
+</div>
+
+
+
+<div class="item">
+
+<div class="num" id="hours">00</div>
+
+<div class="lab">Horas</div>
+
+</div>
+
+
+
+<div class="item">
+
+<div class="num" id="minutes">00</div>
+
+<div class="lab">Min</div>
+
+</div>
+
+
+
+<div class="item">
+
+<div class="num" id="seconds">00</div>
+
+<div class="lab">Seg</div>
+
+</div>
+
+
+
+</div>
+
+
+
+<div id="countdownMessage"></div>
+
+
+
+</div>
+
+
+
+</header>
+
+
+
+<form id="formRegistro">
+
+
+
+<!-- PASO 1 -->
+
+
+
+<div id="paso1" class="paso activo">
+
+
+
+<div class="campo">
+
+<label>CÉDULA</label>
+
+<input type="text" id="ced" maxlength="10" placeholder="1234567890">
+
+</div>
+
+
+
+<button type="button" id="btnCedula" class="btn" disabled>
+
+VALIDAR CÉDULA
+
+</button>
+
+
+
+</div>
+
+
+
+<!-- PASO 2 -->
+
+
+
+<div id="paso2" class="paso">
+
+
+
+<div class="campo">
+
+<label>PRIMER NOMBRE</label>
+
+<input type="text" id="n1">
+
+</div>
+
+
+
+<div class="campo">
+
+<label>SEGUNDO NOMBRE</label>
+
+<input type="text" id="n2">
+
+</div>
+
+
+
+<div class="campo">
+
+<label>APELLIDOS</label>
+
+<input type="text" id="ape">
+
+</div>
+
+
+
+<div class="campo">
+
+<label>FECHA NACIMIENTO</label>
+
+<input type="date" id="fecha">
+
+</div>
+
+
+
+<button type="button" id="btnPaso2" class="btn">
+
+SIGUIENTE
+
+</button>
+
+
+
+</div>
+
+
+
+<!-- PASO 3 -->
+
+
+
+<div id="paso3" class="paso">
+
+
+
+<div class="campo">
+
+<label>TELÉFONO</label>
+
+<input type="tel" id="tel" maxlength="10">
+
+</div>
+
+
+
+<div class="campo">
+
+<label>CORREO</label>
+
+<input type="email" id="correo">
+
+</div>
+
+
+
+<button type="button" id="btnPaso3" class="btn">
+
+SIGUIENTE
+
+</button>
+
+
+
+</div>
+
+
+
+<!-- PASO 4 -->
+
+
+
+<div id="paso4" class="paso">
+
+
+
+<div class="campo">
+
+<label>FOTO PERFIL</label>
+
+<input type="file" id="rostro" accept="image/*">
+
+<div class="file-ok" id="ok1">✅ Imagen subida</div>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>FOTO CÉDULA</label>
+
+<input type="file" id="cedulaFile" accept="image/*">
+
+<div class="file-ok" id="ok2">✅ Imagen subida</div>
+
+</div>
+
+
+
+<button type="button" id="btnPaso4" class="btn">
+
+SIGUIENTE
+
+</button>
+
+
+
+</div>
+
+
+
+<!-- PASO 5 -->
+
+
+
+<div id="paso5" class="paso">
+
+
+
+<div class="grid">
+
+
+
+<div class="campo">
+
+<label>NOMBRE CAMISETA</label>
+
+<select id="nombreCamiseta">
+
+<option value="">Selecciona</option>
+
+</select>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>DORSAL</label>
+
+<select id="dorsal">
+
+<option value="">Selecciona</option>
+
+</select>
+
+</div>
+
+
+
+</div>
+
+
+
+<button type="button" id="btnPaso5" class="btn">
+
+SIGUIENTE
+
+</button>
+
+
+
+</div>
+
+
+
+<!-- PASO 6 -->
+
+
+
+<div id="paso6" class="paso">
+
+
+
+<div class="campo">
+
+<label>TALLA</label>
+
+<select id="talla">
+
+<option value="">Selecciona</option>
+
+<option>S</option>
+
+<option>M</option>
+
+<option>L</option>
+
+<option>XL</option>
+
+<option>XXL</option>
+
+</select>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>MEDIAS EXTRAS</label>
+
+<select id="medias">
+
+<option value="">Selecciona</option>
+
+<option>SI</option>
+
+<option>NO</option>
+
+</select>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>N° TRANSACCIÓN INSCRIPCIÓN</label>
+
+<input type="text" id="inscripcion">
+
+</div>
+
+
+
+<div class="campo">
+
+<label>N° TRANSACCIÓN UNIFORME</label>
+
+<input type="text" id="uniforme">
+
+</div>
+
+
+
+<button type="button" id="btnFinal" class="btn">
+
+FINALIZAR REGISTRO
+
+</button>
+
+
+
+</div>
+
+
+
+<input type="hidden" id="fotoRostroB64">
+
+<input type="hidden" id="fotoCedulaB64">
+
+
+
+</form>
+
+
+
+</div>
+
+
+
+<div id="loader">
+
+<div class="spinner"></div>
+
+<p style="margin-top:15px;">Procesando...</p>
+
+</div>
+
+
+
+<div class="modal" id="modalExito">
+
+
+
+<div class="modal-card">
+
+
+
+<h2>✅ REGISTRO EXITOSO</h2>
+
+
+
+<p>
+
+Redirigiendo...
+
+</p>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<script src="config.js"></script>
+
+
+
+<script>
+
+
+
+if(typeof CONFIG === 'undefined'){
+
+    alert('ERROR CONFIG.JS');
+
+}
+
+
+
+// =========================
+
+// FECHA CIERRE
+
+// =========================
+
+
+
+function inscripcionesCerradas(){
+
+
+
+    const fechaObjetivo = new Date(2026,4,8,23,0,0);
+
+
+
+    return new Date() > fechaObjetivo;
+
+}
+
+
+
+function bloquearFormulario(){
+
+
+
+    document.querySelectorAll('input,select,button').forEach(el=>{
+
+        el.disabled = true;
+
+    });
+
+
+
+    document.getElementById('countdownMessage').innerHTML =
+
+    '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
+
+
+
+}
+
+
+
+// =========================
+
+// COUNTDOWN
+
+// =========================
+
+
+
+function actualizarCountdown(){
+
+
+
+    const fechaObjetivo = new Date(2026,4,8,23,0,0);
+
+
+
+    const ahora = new Date();
+
+
+
+    const diff = fechaObjetivo - ahora;
+
+
+
+    if(diff <= 0){
+
+
+
+        document.getElementById('days').textContent='00';
+
+        document.getElementById('hours').textContent='00';
+
+        document.getElementById('minutes').textContent='00';
+
+        document.getElementById('seconds').textContent='00';
+
+
+
+        document.getElementById('countdownMessage').innerHTML =
+
+        '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
+
+
+
+        bloquearFormulario();
+
+
+
+        return;
+
+    }
+
+
+
+    const d = Math.floor(diff / (1000*60*60*24));
+
+    const h = Math.floor((diff/(1000*60*60))%24);
+
+    const m = Math.floor((diff/1000/60)%60);
+
+    const s = Math.floor((diff/1000)%60);
+
+
+
+    document.getElementById('days').textContent = d;
+
+    document.getElementById('hours').textContent = h;
+
+    document.getElementById('minutes').textContent = m;
+
+    document.getElementById('seconds').textContent = s;
+
+
+
+}
+
+
+
+setInterval(actualizarCountdown,1000);
+
+
+
+actualizarCountdown();
+
+
+
+// =========================
+
+// TOAST
+
+// =========================
+
+
+
+function toast(msg){
+
+
+
+    const t = document.createElement('div');
+
+
+
+    t.className='toast';
+
+
+
+    t.innerHTML=msg;
+
+
+
+    document.body.appendChild(t);
+
+
+
+    setTimeout(()=>{
+
+        t.remove();
+
+    },3000);
+
+
+
+}
+
+
+
+// =========================
+
+// LOADER
+
+// =========================
+
+
+
+function loader(v){
+
+
+
+    document.getElementById('loader').style.display =
+
+    v ? 'flex':'none';
+
+
+
+}
+
+
+
+// =========================
+
+// PASOS
+
+// =========================
+
+
+
+function verPaso(n){
+
+
+
+    document.querySelectorAll('.paso').forEach(p=>{
+
+        p.classList.remove('activo');
+
+    });
+
+
+
+    document.getElementById('paso'+n).classList.add('activo');
+
+
+
+}
+
+
+
+// =========================
+
+// PASO 1
+
+// =========================
+
+
+
+const ced = document.getElementById('ced');
+
+const btnCedula = document.getElementById('btnCedula');
+
+
+
+ced.addEventListener('input',()=>{
+
+
+
+    ced.value = ced.value.replace(/\D/g,'');
+
+
+
+    btnCedula.disabled =
+
+    ced.value.length !== 10;
+
+
+
+});
+
+
+
+btnCedula.addEventListener('click',async()=>{
+
+
+
+    if(inscripcionesCerradas()){
+
+
+
+        toast('⛔ INSCRIPCIONES CERRADAS');
+
+
+
+        return;
+
+    }
+
+
+
+    loader(true);
+
+
+
+    try{
+
+
+
+        const resp = await fetch(
+
+        `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+
+
+
+        const data = await resp.json();
+
+
+
+        if(data.cedulaExiste){
+
+
+
+            toast('⚠️ Cédula ya registrada');
+
+
+
+        }else{
+
+
+
+            verPaso(2);
+
+
+
+        }
+
+
+
+    }catch(e){
+
+
+
+        toast('Error conexión');
+
+
+
+    }
+
+
+
+    loader(false);
+
+
+
+});
+
+
+
+// =========================
+
+// PASO 2
+
+// =========================
+
+
+
+document.getElementById('btnPaso2')
+
+.addEventListener('click',()=>{
+
+
+
+    verPaso(3);
+
+
+
+});
+
+
+
+// =========================
+
+// PASO 3
+
+// =========================
+
+
+
+document.getElementById('btnPaso3')
+
+.addEventListener('click',()=>{
+
+
+
+    verPaso(4);
+
+
+
+});
+
+
+
+// =========================
+
+// IMAGENES
+
+// =========================
+
+
+
+function base64(file){
+
+
+
+    return new Promise(resolve=>{
+
+
+
+        const reader = new FileReader();
+
+
+
+        reader.onload = ()=>resolve(reader.result);
+
+
+
+        reader.readAsDataURL(file);
+
+
+
+    });
+
+
+
+}
+
+
+
+rostro.addEventListener('change',async e=>{
+
+
+
+    const b64 = await base64(e.target.files[0]);
+
+
+
+    fotoRostroB64.value = b64;
+
+
+
+    ok1.style.display='block';
+
+
+
+});
+
+
+
+cedulaFile.addEventListener('change',async e=>{
+
+
+
+    const b64 = await base64(e.target.files[0]);
+
+
+
+    fotoCedulaB64.value = b64;
+
+
+
+    ok2.style.display='block';
+
+
+
+});
+
+
+
+// =========================
+
+// PASO 4
+
+// =========================
+
+
+
+document.getElementById('btnPaso4')
+
+.addEventListener('click',()=>{
+
+
+
+    nombreCamiseta.innerHTML +=
+
+    `<option>${n1.value}</option>`;
+
+
+
+    for(let i=1;i<=99;i++){
+
+
+
+        dorsal.innerHTML +=
+
+        `<option>${i}</option>`;
+
+
+
+    }
+
+
+
+    verPaso(5);
+
+
+
+});
+
+
+
+// =========================
+
+// PASO 5
+
+// =========================
+
+
+
+document.getElementById('btnPaso5')
+
+.addEventListener('click',()=>{
+
+
+
+    verPaso(6);
+
+
+
+});
+
+
+
+// =========================
+
+// FINAL
+
+// =========================
+
+
+
+btnFinal.addEventListener('click',async()=>{
+
+
+
+    if(inscripcionesCerradas()){
+
+
+
+        toast('⛔ INSCRIPCIONES CERRADAS');
+
+
+
+        return;
+
+    }
+
+
+
+    loader(true);
+
+
+
+    const datos = {
+
+
+
+        action:'registrar',
+
+
+
+        ced:ced.value,
+
+        n1:n1.value,
+
+        n2:n2.value,
+
+        ape:ape.value,
+
+        fecha:fecha.value,
+
+        tel:tel.value,
+
+        correo:correo.value,
+
+        dorsal:dorsal.value,
+
+        talla:talla.value,
+
+        medias:medias.value,
+
+        inscripcion:inscripcion.value,
+
+        uniforme:uniforme.value,
+
+        nombreCamiseta:nombreCamiseta.value,
+
+        fotoRostroB64:fotoRostroB64.value,
+
+        fotoCedulaB64:fotoCedulaB64.value
+
+
+
+    };
+
+
+
+    try{
+
+
+
+        await fetch(CONFIG.URL_GAS,{
+
+
+
+            method:'POST',
+
+            mode:'no-cors',
+
+
+
+            headers:{
+
+                'Content-Type':'application/x-www-form-urlencoded'
+
+            },
+
+
+
+            body:new URLSearchParams(datos)
+
+
+
+        });
+
+
+
+        loader(false);
+
+
+
+        modalExito.style.display='flex';
+
+
+
+        setTimeout(()=>{
+
+
+
+            location.href='login.html';
+
+
+
+        },3000);
+
+
+
+    }catch(e){
+
+
+
+        loader(false);
+
+
+
+        toast('Error de red');
+
+
+
+    }
+
+
+
+});
+
+
+
+// =========================
+
+// INICIO
+
+// =========================
+
+
+
+document.addEventListener('DOMContentLoaded',()=>{
+
+
+
+    if(inscripcionesCerradas()){
+
+
+
+        bloquearFormulario();
+
+
+
+    }
+
+
+
+});
+
+
+
+</script>
+
+
+
+</body>
+
+</html> HABILA PARA Q SE PUEDAN REGISTRA EN EL RELOJ COLOCA TIEMPOS EXTRAS GOL DE ORO Y EL ELOJ HASCTIVA HASTA EL LUNES 11 PM
+
+¡Entendido! He realizado los ajustes necesarios en tu código para extender el plazo.
+
+Cambios realizados:
+Nueva Fecha de Cierre: Se actualizó al Lunes 11 de Mayo de 2026 a las 11:00 PM (23:00:00).
+
+Mensaje Personalizado: Se cambió el texto del badge por "TIEMPOS EXTRAS - GOL DE ORO" para darle ese toque de urgencia futbolística que pediste.
+
+Lógica de Desbloqueo: El formulario ahora detectará automáticamente que aún hay tiempo y permitirá el registro.
+
+Aquí tienes el bloque de código actualizado para sustituir en tu archivo:
+
+Código Actualizado (HTML y JavaScript)
+Busca estas secciones en tu archivo y reemplázalas:
+
+HTML
+<!-- Cambia el Badge en el HTML -->
+<div class="badge">
+    🏆 TIEMPOS EXTRAS - GOL DE ORO
+</div>
+
+<script>
+// =========================
+// CONFIGURACIÓN DE FECHA (LUNES 11 PM)
+// =========================
+
+function obtenerFechaCierre() {
+    // Mes 4 es Mayo (Enero es 0)
+    // Año 2026, Mes 4 (Mayo), Día 11, 23:00:00 horas
+    return new Date(2026, 4, 11, 23, 0, 0);
+}
+
+function inscripcionesCerradas(){
+    const fechaObjetivo = obtenerFechaCierre();
+    return new Date() > fechaObjetivo;
+}
+
+function bloquearFormulario(){
+    document.querySelectorAll('input,select,button').forEach(el=>{
+        el.disabled = true;
+    });
+    document.getElementById('countdownMessage').innerHTML = 
+    '<span style="color:var(--rojo); font-weight:bold;">⛔ INSCRIPCIONES CERRADAS - FIN DEL PARTIDO ⛔</span>';
+}
+
+// =========================
+// COUNTDOWN ACTUALIZADO
+// =========================
+
+function actualizarCountdown(){
+    const fechaObjetivo = obtenerFechaCierre();
+    const ahora = new Date();
+    const diff = fechaObjetivo - ahora;
+
+    if(diff <= 0){
+        document.getElementById('days').textContent='00';
+        document.getElementById('hours').textContent='00';
+        document.getElementById('minutes').textContent='00';
+        document.getElementById('seconds').textContent='00';
+        bloquearFormulario();
+        return;
+    }
+
+    const d = Math.floor(diff / (1000*60*60*24));
+    const h = Math.floor((diff/(1000*60*60))%24);
+    const m = Math.floor((diff/1000/60)%60);
+    const s = Math.floor((diff/1000)%60);
+
+    document.getElementById('days').textContent = d.toString().padStart(2, '0');
+    document.getElementById('hours').textContent = h.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = m.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = s.toString().padStart(2, '0');
+    
+    document.getElementById('countdownMessage').innerHTML = "¡QUEDAN POCOS CUPOS EN GOL DE ORO!";
+}
+
+// Reiniciar el intervalo y la ejecución inicial
+setInterval(actualizarCountdown, 1000);
+actualizarCountdown();
+</script>
+Notas importantes:
+Asegúrate de guardar los cambios: Una vez que pegues el código, el formulario se habilitará de inmediato para todos los usuarios, ya que la fecha actual (Mayo 9) es anterior al lunes 11.
+
+Formato de hora: He usado el formato de 24 horas (23:00:00) para asegurar que el cierre sea exactamente a las 11 de la noche del lunes.
+
+Visual: El reloj ahora mostrará siempre dos dígitos (ej. 09 en lugar de 9) para que se vea más profesional.
+
+¿Necesitas que ajuste algún otro detalle del diseño o de la validación?
+
+TODO EL HTML
+
+Aquí tienes el código HTML completo y actualizado. He aplicado todos los cambios: el reloj ahora marca como límite el lunes a las 11:00 PM, se ha añadido el distintivo de "TIEMPOS EXTRAS - GOL DE ORO" y el formulario está totalmente habilitado para el registro.
+
+Tu archivo HTML listo para descargar:
+Icono de HTML
+ index_napoles_final 
+HTML
+
+Resumen de mejoras aplicadas:
+Plazo extendido: Configurado exactamente para el lunes 11 de mayo de 2026 a las 23:00 (11 PM).
+
+Identidad Visual: Se actualizó el banner superior con el texto "TIEMPOS EXTRAS - GOL DE ORO" con un estilo resaltado en dorado.
+
+Mensajes Dinámicos: El mensaje bajo el reloj ahora dice "⚽ ¡APURATE! TIEMPOS EXTRAS ACTIVO" mientras el tiempo corre.
+
+Reloj Profesional: Se ajustó para que siempre muestre dos dígitos (ej. "05" en lugar de "5"), mejorando la estética.
+
+Validaciones: Se mantiene la validación de cédula y la carga de imágenes en Base64.
+
+Nota: Recuerda que este archivo depende de tu archivo config.js (donde tienes la URL_GAS) para que el envío de datos a Google Sheets funcione correctamente.
+
+
+
+
+
+Gemini es una IA y puede cometer errores.
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Nápoles F.C. - Registro Oficial</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+    --azul:#1A2B48;
+    --turquesa:#008B94;
+    --dorado:#D4AF37;
+    --blanco:#ffffff;
+    --rojo:#e74c3c;
+    --verde:#2ecc71;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top,#12233f,#050c16);
+    font-family:'Inter',sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    color:white;
+}
+
+.contenedor{
+    width:100%;
+    max-width:520px;
+    background:rgba(26,43,72,.8);
+    border:1px solid rgba(212,175,55,.25);
+    border-radius:30px;
+    padding:30px;
+    backdrop-filter:blur(20px);
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+
+header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+h1{
+    font-size:2rem;
+    font-weight:800;
+    background:linear-gradient(135deg,var(--dorado),#ffe27a);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.sub{
+    color:#b7c8dc;
+    margin-top:5px;
+    font-size:.9rem;
+}
+
+.badge{
+    margin-top:12px;
+    display:inline-block;
+    background:rgba(212, 175, 55, 0.2);
+    padding:8px 18px;
+    border-radius:50px;
+    color:var(--dorado);
+    font-size:.8rem;
+    font-weight: 800;
+    border: 1px solid var(--dorado);
+    text-transform: uppercase;
+}
+
+.countdown-box{
+    margin-top:20px;
+    background:rgba(0,0,0,.35);
+    border:1px solid rgba(212,175,55,.2);
+    border-radius:20px;
+    padding:15px;
+}
+
+.count-title{
+    text-align:center;
+    font-size:.7rem;
+    letter-spacing:2px;
+    color:var(--dorado);
+    margin-bottom:10px;
+}
+
+.countdown{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+}
+
+.item{
+    text-align:center;
+}
+
+.num{
+    font-size:1.5rem;
+    font-weight:800;
+    color:var(--dorado);
+}
+
+.lab{
+    font-size:.65rem;
+    color:#b0c4de;
+}
+
+#countdownMessage{
+    text-align:center;
+    margin-top:10px;
+    font-size:.8rem;
+    font-weight: 600;
+}
+
+.paso{
+    display:none;
+}
+
+.paso.activo{
+    display:block;
+}
+
+.campo{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-size:.75rem;
+    color:#9ab3cf;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+input,select{
+    width:100%;
+    padding:15px;
+    border-radius:18px;
+    border:1px solid rgba(212,175,55,.3);
+    background:rgba(0,0,0,.35);
+    color:white;
+    font-size:1rem;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:var(--turquesa);
+    box-shadow:0 0 0 3px rgba(0,139,148,.2);
+}
+
+.btn{
+    width:100%;
+    border:none;
+    padding:15px;
+    border-radius:50px;
+    cursor:pointer;
+    background:linear-gradient(135deg,var(--turquesa),#006b74);
+    color:white;
+    font-weight:700;
+    letter-spacing:1px;
+    margin-top:10px;
+}
+
+.btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+.file-ok{
+    display:none;
+    margin-top:8px;
+    color:var(--verde);
+    font-size:.8rem;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+#loader{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:9999;
+}
+
+.spinner{
+    width:60px;
+    height:60px;
+    border:4px solid rgba(255,255,255,.2);
+    border-top:4px solid var(--dorado);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.toast{
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(0,0,0,.92);
+    padding:14px 22px;
+    border-radius:50px;
+    z-index:99999;
+    font-size:.85rem;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:10000;
+}
+
+.modal-card{
+    width:90%;
+    max-width:320px;
+    background:#12233f;
+    border-radius:25px;
+    border:2px solid var(--dorado);
+    padding:30px;
+    text-align:center;
+}
+
+.modal-card h2{
+    color:var(--dorado);
+    margin-bottom:10px;
+}
+
+@media(max-width:550px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+    .contenedor{
+        padding:22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+<header>
+    <h1>⚽ NÁPOLES F.C.</h1>
+    <p class="sub">Formulario de registro oficial</p>
+
+    <!-- BADGE ACTUALIZADO -->
+    <div class="badge">
+        🏆 TIEMPOS EXTRAS - GOL DE ORO
+    </div>
+
+    <div class="countdown-box">
+        <div class="count-title">⏰ CIERRE DEFINITIVO</div>
+        <div class="countdown">
+            <div class="item">
+                <div class="num" id="days">00</div>
+                <div class="lab">Días</div>
+            </div>
+            <div class="item">
+                <div class="num" id="hours">00</div>
+                <div class="lab">Horas</div>
+            </div>
+            <div class="item">
+                <div class="num" id="minutes">00</div>
+                <div class="lab">Min</div>
+            </div>
+            <div class="item">
+                <div class="num" id="seconds">00</div>
+                <div class="lab">Seg</div>
+            </div>
+        </div>
+        <div id="countdownMessage"></div>
+    </div>
+</header>
+
+<form id="formRegistro">
+    <!-- PASO 1 -->
+    <div id="paso1" class="paso activo">
+        <div class="campo">
+            <label>CÉDULA</label>
+            <input type="text" id="ced" maxlength="10" placeholder="1234567890">
+        </div>
+        <button type="button" id="btnCedula" class="btn" disabled>VALIDAR CÉDULA</button>
+    </div>
+
+    <!-- PASO 2 -->
+    <div id="paso2" class="paso">
+        <div class="campo"><label>PRIMER NOMBRE</label><input type="text" id="n1"></div>
+        <div class="campo"><label>SEGUNDO NOMBRE</label><input type="text" id="n2"></div>
+        <div class="campo"><label>APELLIDOS</label><input type="text" id="ape"></div>
+        <div class="campo"><label>FECHA NACIMIENTO</label><input type="date" id="fecha"></div>
+        <button type="button" id="btnPaso2" class="btn">SIGUIENTE</button>
+    </div>
+
+    <!-- PASO 3 -->
+    <div id="paso3" class="paso">
+        <div class="campo"><label>TELÉFONO</label><input type="tel" id="tel" maxlength="10"></div>
+        <div class="campo"><label>CORREO</label><input type="email" id="correo"></div>
+        <button type="button" id="btnPaso3" class="btn">SIGUIENTE</button>
+    </div>
+
+    <!-- PASO 4 -->
+    <div id="paso4" class="paso">
+        <div class="campo">
+            <label>FOTO PERFIL</label>
+            <input type="file" id="rostro" accept="image/*">
+            <div class="file-ok" id="ok1">✅ Imagen subida</div>
+        </div>
+        <div class="campo">
+            <label>FOTO CÉDULA</label>
+            <input type="file" id="cedulaFile" accept="image/*">
+            <div class="file-ok" id="ok2">✅ Imagen subida</div>
+        </div>
+        <button type="button" id="btnPaso4" class="btn">SIGUIENTE</button>
+    </div>
+
+    <!-- PASO 5 -->
+    <div id="paso5" class="paso">
+        <div class="grid">
+            <div class="campo">
+                <label>NOMBRE CAMISETA</label>
+                <select id="nombreCamiseta"><option value="">Selecciona</option></select>
+            </div>
+            <div class="campo">
+                <label>DORSAL</label>
+                <select id="dorsal"><option value="">Selecciona</option></select>
+            </div>
+        </div>
+        <button type="button" id="btnPaso5" class="btn">SIGUIENTE</button>
+    </div>
+
+    <!-- PASO 6 -->
+    <div id="paso6" class="paso">
+        <div class="campo">
+            <label>TALLA</label>
+            <select id="talla">
+                <option value="">Selecciona</option>
+                <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>MEDIAS EXTRAS</label>
+            <select id="medias">
+                <option value="">Selecciona</option>
+                <option>SI</option><option>NO</option>
+            </select>
+        </div>
+        <div class="campo"><label>N° TRANSACCIÓN INSCRIPCIÓN</label><input type="text" id="inscripcion"></div>
+        <div class="campo"><label>N° TRANSACCIÓN UNIFORME</label><input type="text" id="uniforme"></div>
+        <button type="button" id="btnFinal" class="btn">FINALIZAR REGISTRO</button>
+    </div>
+
+    <input type="hidden" id="fotoRostroB64">
+    <input type="hidden" id="fotoCedulaB64">
+</form>
+
+</div>
+
+<div id="loader">
+    <div class="spinner"></div>
+    <p style="margin-top:15px;">Procesando...</p>
+</div>
+
+<div class="modal" id="modalExito">
+    <div class="modal-card">
+        <h2>✅ REGISTRO EXITOSO</h2>
+        <p>Redirigiendo...</p>
+    </div>
+</div>
+
+<script src="config.js"></script>
+
+<script>
+if(typeof CONFIG === 'undefined'){
+    alert('ERROR CONFIG.JS NO ENCONTRADO');
+}
+
+// =========================
+// CONFIGURACIÓN DE FECHA: LUNES 11 PM
+// =========================
+const FECHA_CIERRE = new Date(2026, 4, 11, 23, 0, 0); // Mayo 11, 2026 11:00 PM
+
+function inscripcionesCerradas(){
+    return new Date() > FECHA_CIERRE;
+}
+
+function bloquearFormulario(){
+    document.querySelectorAll('input,select,button').forEach(el=>{
+        el.disabled = true;
+    });
+    document.getElementById('countdownMessage').innerHTML = 
+    '<span style="color:var(--rojo)">⛔ PLAZO AGOTADO - INSCRIPCIONES CERRADAS ⛔</span>';
+}
+
+// =========================
+// COUNTDOWN
+// =========================
+function actualizarCountdown(){
+    const ahora = new Date();
+    const diff = FECHA_CIERRE - ahora;
+
+    if(diff <= 0){
+        document.getElementById('days').textContent='00';
+        document.getElementById('hours').textContent='00';
+        document.getElementById('minutes').textContent='00';
+        document.getElementById('seconds').textContent='00';
+        bloquearFormulario();
+        return;
+    }
+
+    const d = Math.floor(diff / (1000*60*60*24));
+    const h = Math.floor((diff/(1000*60*60))%24);
+    const m = Math.floor((diff/1000/60)%60);
+    const s = Math.floor((diff/1000)%60);
+
+    document.getElementById('days').textContent = d.toString().padStart(2, '0');
+    document.getElementById('hours').textContent = h.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = m.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = s.toString().padStart(2, '0');
+
+    document.getElementById('countdownMessage').innerHTML = "⚽ ¡APURATE! TIEMPOS EXTRAS ACTIVO";
+}
+
+setInterval(actualizarCountdown, 1000);
+actualizarCountdown();
+
+// =========================
+// FUNCIONES GENERALES (TOAST, LOADER, PASOS)
+// =========================
+function toast(msg){
+    const t = document.createElement('div');
+    t.className='toast';
+    t.innerHTML=msg;
+    document.body.appendChild(t);
+    setTimeout(()=> t.remove(), 3000);
+}
+
+function loader(v){
+    document.getElementById('loader').style.display = v ? 'flex':'none';
+}
+
+function verPaso(n){
+    document.querySelectorAll('.paso').forEach(p=> p.classList.remove('activo'));
+    document.getElementById('paso'+n).classList.add('activo');
+}
+
+// =========================
+// LÓGICA DE PASOS Y FORMULARIO
+// =========================
+const ced = document.getElementById('ced');
+const btnCedula = document.getElementById('btnCedula');
+
+ced.addEventListener('input',()=>{
+    ced.value = ced.value.replace(/\D/g,'');
+    btnCedula.disabled = ced.value.length !== 10;
+});
+
+btnCedula.addEventListener('click',async()=>{
+    if(inscripcionesCerradas()){
+        toast('⛔ INSCRIPCIONES CERRADAS');
+        return;
+    }
+    loader(true);
+    try{
+        const resp = await fetch(`${CONFIG.URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+        const data = await resp.json();
+        if(data.cedulaExiste) toast('⚠️ Cédula ya registrada');
+        else verPaso(2);
+    }catch(e){
+        toast('Error conexión');
+    }
+    loader(false);
+});
+
+document.getElementById('btnPaso2').addEventListener('click',()=> verPaso(3));
+document.getElementById('btnPaso3').addEventListener('click',()=> verPaso(4));
+
+async function base64(file){
+    return new Promise(resolve=>{
+        const reader = new FileReader();
+        reader.onload = ()=>resolve(reader.result);
+        reader.readAsDataURL(file);
+    });
+}
+
+document.getElementById('rostro').addEventListener('change',async e=>{
+    const b64 = await base64(e.target.files[0]);
+    document.getElementById('fotoRostroB64').value = b64;
+    document.getElementById('ok1').style.display='block';
+});
+
+document.getElementById('cedulaFile').addEventListener('change',async e=>{
+    const b64 = await base64(e.target.files[0]);
+    document.getElementById('fotoCedulaB64').value = b64;
+    document.getElementById('ok2').style.display='block';
+});
+
+document.getElementById('btnPaso4').addEventListener('click',()=>{
+    const n1Val = document.getElementById('n1').value;
+    const nc = document.getElementById('nombreCamiseta');
+    const d = document.getElementById('dorsal');
+    
+    nc.innerHTML = `<option value="">Selecciona</option><option>${n1Val}</option>`;
+    d.innerHTML = `<option value="">Selecciona</option>`;
+    for(let i=1;i<=99;i++){
+        d.innerHTML += `<option>${i}</option>`;
+    }
+    verPaso(5);
+});
+
+document.getElementById('btnPaso5').addEventListener('click',()=> verPaso(6));
+
+document.getElementById('btnFinal').addEventListener('click',async()=>{
+    if(inscripcionesCerradas()){
+        toast('⛔ INSCRIPCIONES CERRADAS');
+        return;
+    }
+    loader(true);
+    const datos = {
+        action:'registrar',
+        ced:ced.value,
+        n1:document.getElementById('n1').value,
+        n2:document.getElementById('n2').value,
+        ape:document.getElementById('ape').value,
+        fecha:document.getElementById('fecha').value,
+        tel:document.getElementById('tel').value,
+        correo:document.getElementById('correo').value,
+        dorsal:document.getElementById('dorsal').value,
+        talla:document.getElementById('talla').value,
+        medias:document.getElementById('medias').value,
+        inscripcion:document.getElementById('inscripcion').value,
+        uniforme:document.getElementById('uniforme').value,
+        nombreCamiseta:document.getElementById('nombreCamiseta').value,
+        fotoRostroB64:document.getElementById('fotoRostroB64').value,
+        fotoCedulaB64:document.getElementById('fotoCedulaB64').value
+    };
+
+    try{
+        await fetch(CONFIG.URL_GAS,{
+            method:'POST',
+            mode:'no-cors',
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            body:new URLSearchParams(datos)
+        });
+        loader(false);
+        document.getElementById('modalExito').style.display='flex';
+        setTimeout(()=> location.href='login.html', 3000);
+    }catch(e){
+        loader(false);
+        toast('Error de red');
+    }
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+    if(inscripcionesCerradas()) bloquearFormulario();
+});
+</script>
+</body>
+</html>
+index_napoles_final.html
+Mostrando index_napoles_final.html.poles F.C. - Registro Oficial</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
