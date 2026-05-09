@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -68,14 +69,11 @@ h1{
 .badge{
     margin-top:12px;
     display:inline-block;
-    background:rgba(212, 175, 55, 0.2);
+    background:rgba(0,139,148,.2);
     padding:8px 18px;
     border-radius:50px;
     color:var(--dorado);
-    font-size:.8rem;
-    font-weight: 800;
-    border: 1px solid var(--dorado);
-    text-transform: uppercase;
+    font-size:.75rem;
 }
 
 .countdown-box{
@@ -119,7 +117,6 @@ h1{
     text-align:center;
     margin-top:10px;
     font-size:.8rem;
-    font-weight: 600;
 }
 
 .paso{
@@ -255,13 +252,17 @@ select:focus{
 }
 
 @media(max-width:550px){
-    .grid{
-        grid-template-columns:1fr;
-    }
-    .contenedor{
-        padding:22px;
-    }
+
+.grid{
+    grid-template-columns:1fr;
 }
+
+.contenedor{
+    padding:22px;
+}
+
+}
+
 </style>
 </head>
 
@@ -270,170 +271,291 @@ select:focus{
 <div class="contenedor">
 
 <header>
-    <h1>⚽ NÁPOLES F.C.</h1>
-    <p class="sub">Formulario de registro oficial</p>
 
-    <!-- BADGE ACTUALIZADO -->
-    <div class="badge">
-        🏆 TIEMPOS EXTRAS - GOL DE ORO
-    </div>
+<h1>⚽ NÁPOLES F.C.</h1>
 
-    <div class="countdown-box">
-        <div class="count-title">⏰ CIERRE DEFINITIVO</div>
-        <div class="countdown">
-            <div class="item">
-                <div class="num" id="days">00</div>
-                <div class="lab">Días</div>
-            </div>
-            <div class="item">
-                <div class="num" id="hours">00</div>
-                <div class="lab">Horas</div>
-            </div>
-            <div class="item">
-                <div class="num" id="minutes">00</div>
-                <div class="lab">Min</div>
-            </div>
-            <div class="item">
-                <div class="num" id="seconds">00</div>
-                <div class="lab">Seg</div>
-            </div>
-        </div>
-        <div id="countdownMessage"></div>
-    </div>
+<p class="sub">
+Formulario de registro oficial
+</p>
+
+<div class="badge">
+🏆 Temporada 2026 - 2027
+</div>
+
+<div class="countdown-box">
+
+<div class="count-title">
+⏰ CIERRE DE INSCRIPCIONES
+</div>
+
+<div class="countdown">
+
+<div class="item">
+<div class="num" id="days">00</div>
+<div class="lab">Días</div>
+</div>
+
+<div class="item">
+<div class="num" id="hours">00</div>
+<div class="lab">Horas</div>
+</div>
+
+<div class="item">
+<div class="num" id="minutes">00</div>
+<div class="lab">Min</div>
+</div>
+
+<div class="item">
+<div class="num" id="seconds">00</div>
+<div class="lab">Seg</div>
+</div>
+
+</div>
+
+<div id="countdownMessage"></div>
+
+</div>
+
 </header>
 
 <form id="formRegistro">
-    <!-- PASO 1 -->
-    <div id="paso1" class="paso activo">
-        <div class="campo">
-            <label>CÉDULA</label>
-            <input type="text" id="ced" maxlength="10" placeholder="1234567890">
-        </div>
-        <button type="button" id="btnCedula" class="btn" disabled>VALIDAR CÉDULA</button>
-    </div>
 
-    <!-- PASO 2 -->
-    <div id="paso2" class="paso">
-        <div class="campo"><label>PRIMER NOMBRE</label><input type="text" id="n1"></div>
-        <div class="campo"><label>SEGUNDO NOMBRE</label><input type="text" id="n2"></div>
-        <div class="campo"><label>APELLIDOS</label><input type="text" id="ape"></div>
-        <div class="campo"><label>FECHA NACIMIENTO</label><input type="date" id="fecha"></div>
-        <button type="button" id="btnPaso2" class="btn">SIGUIENTE</button>
-    </div>
+<!-- PASO 1 -->
 
-    <!-- PASO 3 -->
-    <div id="paso3" class="paso">
-        <div class="campo"><label>TELÉFONO</label><input type="tel" id="tel" maxlength="10"></div>
-        <div class="campo"><label>CORREO</label><input type="email" id="correo"></div>
-        <button type="button" id="btnPaso3" class="btn">SIGUIENTE</button>
-    </div>
+<div id="paso1" class="paso activo">
 
-    <!-- PASO 4 -->
-    <div id="paso4" class="paso">
-        <div class="campo">
-            <label>FOTO PERFIL</label>
-            <input type="file" id="rostro" accept="image/*">
-            <div class="file-ok" id="ok1">✅ Imagen subida</div>
-        </div>
-        <div class="campo">
-            <label>FOTO CÉDULA</label>
-            <input type="file" id="cedulaFile" accept="image/*">
-            <div class="file-ok" id="ok2">✅ Imagen subida</div>
-        </div>
-        <button type="button" id="btnPaso4" class="btn">SIGUIENTE</button>
-    </div>
+<div class="campo">
+<label>CÉDULA</label>
+<input type="text" id="ced" maxlength="10" placeholder="1234567890">
+</div>
 
-    <!-- PASO 5 -->
-    <div id="paso5" class="paso">
-        <div class="grid">
-            <div class="campo">
-                <label>NOMBRE CAMISETA</label>
-                <select id="nombreCamiseta"><option value="">Selecciona</option></select>
-            </div>
-            <div class="campo">
-                <label>DORSAL</label>
-                <select id="dorsal"><option value="">Selecciona</option></select>
-            </div>
-        </div>
-        <button type="button" id="btnPaso5" class="btn">SIGUIENTE</button>
-    </div>
+<button type="button" id="btnCedula" class="btn" disabled>
+VALIDAR CÉDULA
+</button>
 
-    <!-- PASO 6 -->
-    <div id="paso6" class="paso">
-        <div class="campo">
-            <label>TALLA</label>
-            <select id="talla">
-                <option value="">Selecciona</option>
-                <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>MEDIAS EXTRAS</label>
-            <select id="medias">
-                <option value="">Selecciona</option>
-                <option>SI</option><option>NO</option>
-            </select>
-        </div>
-        <div class="campo"><label>N° TRANSACCIÓN INSCRIPCIÓN</label><input type="text" id="inscripcion"></div>
-        <div class="campo"><label>N° TRANSACCIÓN UNIFORME</label><input type="text" id="uniforme"></div>
-        <button type="button" id="btnFinal" class="btn">FINALIZAR REGISTRO</button>
-    </div>
+</div>
 
-    <input type="hidden" id="fotoRostroB64">
-    <input type="hidden" id="fotoCedulaB64">
+<!-- PASO 2 -->
+
+<div id="paso2" class="paso">
+
+<div class="campo">
+<label>PRIMER NOMBRE</label>
+<input type="text" id="n1">
+</div>
+
+<div class="campo">
+<label>SEGUNDO NOMBRE</label>
+<input type="text" id="n2">
+</div>
+
+<div class="campo">
+<label>APELLIDOS</label>
+<input type="text" id="ape">
+</div>
+
+<div class="campo">
+<label>FECHA NACIMIENTO</label>
+<input type="date" id="fecha">
+</div>
+
+<button type="button" id="btnPaso2" class="btn">
+SIGUIENTE
+</button>
+
+</div>
+
+<!-- PASO 3 -->
+
+<div id="paso3" class="paso">
+
+<div class="campo">
+<label>TELÉFONO</label>
+<input type="tel" id="tel" maxlength="10">
+</div>
+
+<div class="campo">
+<label>CORREO</label>
+<input type="email" id="correo">
+</div>
+
+<button type="button" id="btnPaso3" class="btn">
+SIGUIENTE
+</button>
+
+</div>
+
+<!-- PASO 4 -->
+
+<div id="paso4" class="paso">
+
+<div class="campo">
+<label>FOTO PERFIL</label>
+<input type="file" id="rostro" accept="image/*">
+<div class="file-ok" id="ok1">✅ Imagen subida</div>
+</div>
+
+<div class="campo">
+<label>FOTO CÉDULA</label>
+<input type="file" id="cedulaFile" accept="image/*">
+<div class="file-ok" id="ok2">✅ Imagen subida</div>
+</div>
+
+<button type="button" id="btnPaso4" class="btn">
+SIGUIENTE
+</button>
+
+</div>
+
+<!-- PASO 5 -->
+
+<div id="paso5" class="paso">
+
+<div class="grid">
+
+<div class="campo">
+<label>NOMBRE CAMISETA</label>
+<select id="nombreCamiseta">
+<option value="">Selecciona</option>
+</select>
+</div>
+
+<div class="campo">
+<label>DORSAL</label>
+<select id="dorsal">
+<option value="">Selecciona</option>
+</select>
+</div>
+
+</div>
+
+<button type="button" id="btnPaso5" class="btn">
+SIGUIENTE
+</button>
+
+</div>
+
+<!-- PASO 6 -->
+
+<div id="paso6" class="paso">
+
+<div class="campo">
+<label>TALLA</label>
+<select id="talla">
+<option value="">Selecciona</option>
+<option>S</option>
+<option>M</option>
+<option>L</option>
+<option>XL</option>
+<option>XXL</option>
+</select>
+</div>
+
+<div class="campo">
+<label>MEDIAS EXTRAS</label>
+<select id="medias">
+<option value="">Selecciona</option>
+<option>SI</option>
+<option>NO</option>
+</select>
+</div>
+
+<div class="campo">
+<label>N° TRANSACCIÓN INSCRIPCIÓN</label>
+<input type="text" id="inscripcion">
+</div>
+
+<div class="campo">
+<label>N° TRANSACCIÓN UNIFORME</label>
+<input type="text" id="uniforme">
+</div>
+
+<button type="button" id="btnFinal" class="btn">
+FINALIZAR REGISTRO
+</button>
+
+</div>
+
+<input type="hidden" id="fotoRostroB64">
+<input type="hidden" id="fotoCedulaB64">
+
 </form>
 
 </div>
 
 <div id="loader">
-    <div class="spinner"></div>
-    <p style="margin-top:15px;">Procesando...</p>
+<div class="spinner"></div>
+<p style="margin-top:15px;">Procesando...</p>
 </div>
 
 <div class="modal" id="modalExito">
-    <div class="modal-card">
-        <h2>✅ REGISTRO EXITOSO</h2>
-        <p>Redirigiendo...</p>
-    </div>
+
+<div class="modal-card">
+
+<h2>✅ REGISTRO EXITOSO</h2>
+
+<p>
+Redirigiendo...
+</p>
+
+</div>
+
 </div>
 
 <script src="config.js"></script>
 
 <script>
+
 if(typeof CONFIG === 'undefined'){
-    alert('ERROR CONFIG.JS NO ENCONTRADO');
+    alert('ERROR CONFIG.JS');
 }
 
 // =========================
-// CONFIGURACIÓN DE FECHA: LUNES 11 PM
+// FECHA CIERRE
 // =========================
-const FECHA_CIERRE = new Date(2026, 4, 11, 23, 0, 0); // Mayo 11, 2026 11:00 PM
 
 function inscripcionesCerradas(){
-    return new Date() > FECHA_CIERRE;
+
+    const fechaObjetivo = new Date(2026,4,8,23,0,0);
+
+    return new Date() > fechaObjetivo;
 }
 
 function bloquearFormulario(){
+
     document.querySelectorAll('input,select,button').forEach(el=>{
         el.disabled = true;
     });
-    document.getElementById('countdownMessage').innerHTML = 
-    '<span style="color:var(--rojo)">⛔ PLAZO AGOTADO - INSCRIPCIONES CERRADAS ⛔</span>';
+
+    document.getElementById('countdownMessage').innerHTML =
+    '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
+
 }
 
 // =========================
 // COUNTDOWN
 // =========================
+
 function actualizarCountdown(){
+
+    const fechaObjetivo = new Date(2026,4,8,23,0,0);
+
     const ahora = new Date();
-    const diff = FECHA_CIERRE - ahora;
+
+    const diff = fechaObjetivo - ahora;
 
     if(diff <= 0){
+
         document.getElementById('days').textContent='00';
         document.getElementById('hours').textContent='00';
         document.getElementById('minutes').textContent='00';
         document.getElementById('seconds').textContent='00';
+
+        document.getElementById('countdownMessage').innerHTML =
+        '⛔ LAS INSCRIPCIONES HAN CERRADO ⛔';
+
         bloquearFormulario();
+
         return;
     }
 
@@ -442,147 +564,295 @@ function actualizarCountdown(){
     const m = Math.floor((diff/1000/60)%60);
     const s = Math.floor((diff/1000)%60);
 
-    document.getElementById('days').textContent = d.toString().padStart(2, '0');
-    document.getElementById('hours').textContent = h.toString().padStart(2, '0');
-    document.getElementById('minutes').textContent = m.toString().padStart(2, '0');
-    document.getElementById('seconds').textContent = s.toString().padStart(2, '0');
+    document.getElementById('days').textContent = d;
+    document.getElementById('hours').textContent = h;
+    document.getElementById('minutes').textContent = m;
+    document.getElementById('seconds').textContent = s;
 
-    document.getElementById('countdownMessage').innerHTML = "⚽ ¡APURATE! TIEMPOS EXTRAS ACTIVO";
 }
 
-setInterval(actualizarCountdown, 1000);
+setInterval(actualizarCountdown,1000);
+
 actualizarCountdown();
 
 // =========================
-// FUNCIONES GENERALES (TOAST, LOADER, PASOS)
+// TOAST
 // =========================
+
 function toast(msg){
+
     const t = document.createElement('div');
+
     t.className='toast';
+
     t.innerHTML=msg;
+
     document.body.appendChild(t);
-    setTimeout(()=> t.remove(), 3000);
+
+    setTimeout(()=>{
+        t.remove();
+    },3000);
+
 }
+
+// =========================
+// LOADER
+// =========================
 
 function loader(v){
-    document.getElementById('loader').style.display = v ? 'flex':'none';
+
+    document.getElementById('loader').style.display =
+    v ? 'flex':'none';
+
 }
+
+// =========================
+// PASOS
+// =========================
 
 function verPaso(n){
-    document.querySelectorAll('.paso').forEach(p=> p.classList.remove('activo'));
+
+    document.querySelectorAll('.paso').forEach(p=>{
+        p.classList.remove('activo');
+    });
+
     document.getElementById('paso'+n).classList.add('activo');
+
 }
 
 // =========================
-// LÓGICA DE PASOS Y FORMULARIO
+// PASO 1
 // =========================
+
 const ced = document.getElementById('ced');
 const btnCedula = document.getElementById('btnCedula');
 
 ced.addEventListener('input',()=>{
+
     ced.value = ced.value.replace(/\D/g,'');
-    btnCedula.disabled = ced.value.length !== 10;
+
+    btnCedula.disabled =
+    ced.value.length !== 10;
+
 });
 
 btnCedula.addEventListener('click',async()=>{
+
     if(inscripcionesCerradas()){
+
         toast('⛔ INSCRIPCIONES CERRADAS');
+
         return;
     }
+
     loader(true);
+
     try{
-        const resp = await fetch(`${CONFIG.URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+
+        const resp = await fetch(
+        `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
+
         const data = await resp.json();
-        if(data.cedulaExiste) toast('⚠️ Cédula ya registrada');
-        else verPaso(2);
+
+        if(data.cedulaExiste){
+
+            toast('⚠️ Cédula ya registrada');
+
+        }else{
+
+            verPaso(2);
+
+        }
+
     }catch(e){
+
         toast('Error conexión');
+
     }
+
     loader(false);
+
 });
 
-document.getElementById('btnPaso2').addEventListener('click',()=> verPaso(3));
-document.getElementById('btnPaso3').addEventListener('click',()=> verPaso(4));
+// =========================
+// PASO 2
+// =========================
 
-async function base64(file){
+document.getElementById('btnPaso2')
+.addEventListener('click',()=>{
+
+    verPaso(3);
+
+});
+
+// =========================
+// PASO 3
+// =========================
+
+document.getElementById('btnPaso3')
+.addEventListener('click',()=>{
+
+    verPaso(4);
+
+});
+
+// =========================
+// IMAGENES
+// =========================
+
+function base64(file){
+
     return new Promise(resolve=>{
+
         const reader = new FileReader();
+
         reader.onload = ()=>resolve(reader.result);
+
         reader.readAsDataURL(file);
+
     });
+
 }
 
-document.getElementById('rostro').addEventListener('change',async e=>{
+rostro.addEventListener('change',async e=>{
+
     const b64 = await base64(e.target.files[0]);
-    document.getElementById('fotoRostroB64').value = b64;
-    document.getElementById('ok1').style.display='block';
+
+    fotoRostroB64.value = b64;
+
+    ok1.style.display='block';
+
 });
 
-document.getElementById('cedulaFile').addEventListener('change',async e=>{
+cedulaFile.addEventListener('change',async e=>{
+
     const b64 = await base64(e.target.files[0]);
-    document.getElementById('fotoCedulaB64').value = b64;
-    document.getElementById('ok2').style.display='block';
+
+    fotoCedulaB64.value = b64;
+
+    ok2.style.display='block';
+
 });
 
-document.getElementById('btnPaso4').addEventListener('click',()=>{
-    const n1Val = document.getElementById('n1').value;
-    const nc = document.getElementById('nombreCamiseta');
-    const d = document.getElementById('dorsal');
-    
-    nc.innerHTML = `<option value="">Selecciona</option><option>${n1Val}</option>`;
-    d.innerHTML = `<option value="">Selecciona</option>`;
+// =========================
+// PASO 4
+// =========================
+
+document.getElementById('btnPaso4')
+.addEventListener('click',()=>{
+
+    nombreCamiseta.innerHTML +=
+    `<option>${n1.value}</option>`;
+
     for(let i=1;i<=99;i++){
-        d.innerHTML += `<option>${i}</option>`;
+
+        dorsal.innerHTML +=
+        `<option>${i}</option>`;
+
     }
+
     verPaso(5);
+
 });
 
-document.getElementById('btnPaso5').addEventListener('click',()=> verPaso(6));
+// =========================
+// PASO 5
+// =========================
 
-document.getElementById('btnFinal').addEventListener('click',async()=>{
+document.getElementById('btnPaso5')
+.addEventListener('click',()=>{
+
+    verPaso(6);
+
+});
+
+// =========================
+// FINAL
+// =========================
+
+btnFinal.addEventListener('click',async()=>{
+
     if(inscripcionesCerradas()){
+
         toast('⛔ INSCRIPCIONES CERRADAS');
+
         return;
     }
+
     loader(true);
+
     const datos = {
+
         action:'registrar',
+
         ced:ced.value,
-        n1:document.getElementById('n1').value,
-        n2:document.getElementById('n2').value,
-        ape:document.getElementById('ape').value,
-        fecha:document.getElementById('fecha').value,
-        tel:document.getElementById('tel').value,
-        correo:document.getElementById('correo').value,
-        dorsal:document.getElementById('dorsal').value,
-        talla:document.getElementById('talla').value,
-        medias:document.getElementById('medias').value,
-        inscripcion:document.getElementById('inscripcion').value,
-        uniforme:document.getElementById('uniforme').value,
-        nombreCamiseta:document.getElementById('nombreCamiseta').value,
-        fotoRostroB64:document.getElementById('fotoRostroB64').value,
-        fotoCedulaB64:document.getElementById('fotoCedulaB64').value
+        n1:n1.value,
+        n2:n2.value,
+        ape:ape.value,
+        fecha:fecha.value,
+        tel:tel.value,
+        correo:correo.value,
+        dorsal:dorsal.value,
+        talla:talla.value,
+        medias:medias.value,
+        inscripcion:inscripcion.value,
+        uniforme:uniforme.value,
+        nombreCamiseta:nombreCamiseta.value,
+        fotoRostroB64:fotoRostroB64.value,
+        fotoCedulaB64:fotoCedulaB64.value
+
     };
 
     try{
+
         await fetch(CONFIG.URL_GAS,{
+
             method:'POST',
             mode:'no-cors',
-            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+
+            headers:{
+                'Content-Type':'application/x-www-form-urlencoded'
+            },
+
             body:new URLSearchParams(datos)
+
         });
+
         loader(false);
-        document.getElementById('modalExito').style.display='flex';
-        setTimeout(()=> location.href='login.html', 3000);
+
+        modalExito.style.display='flex';
+
+        setTimeout(()=>{
+
+            location.href='login.html';
+
+        },3000);
+
     }catch(e){
+
         loader(false);
+
         toast('Error de red');
+
     }
+
 });
 
+// =========================
+// INICIO
+// =========================
+
 document.addEventListener('DOMContentLoaded',()=>{
-    if(inscripcionesCerradas()) bloquearFormulario();
+
+    if(inscripcionesCerradas()){
+
+        bloquearFormulario();
+
+    }
+
 });
+
 </script>
+
 </body>
 </html>
