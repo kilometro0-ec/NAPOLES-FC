@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Nápoles F.C. · Admin</title>
+    <title>Nápoles F.C. · Admin · Resumen de Jugadores</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         body { 
@@ -153,6 +153,18 @@
         th { text-align: left; padding: 8px; background: rgba(255,255,255,0.05); color: #94a3b8; }
         td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; }
         
+        .estado-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.4);
+        }
+        .estado-pagado { background: #05966920; color: #6ee7b7; border-left: 2px solid #059669; }
+        .estado-pendiente { background: #dc262620; color: #fecaca; border-left: 2px solid #dc2626; }
+        .estado-parcial { background: #f59e0b20; color: #fde68a; border-left: 2px solid #f59e0b; }
+        
         .btn-success { background: #059669; color: white; border: none; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
         .btn-danger { background: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
         .btn-primary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; padding: 10px; border-radius: 30px; cursor: pointer; font-weight: 500; font-size: 0.8rem; width: 100%; margin-top: 8px; }
@@ -203,6 +215,10 @@
         .partido-rival { color: white; font-size: 0.8rem; }
         .partido-obs { font-size: 0.7rem; color: #94a3b8; margin-top: 4px; }
         .error-message { color: #f87171; text-align: center; padding: 20px; }
+        
+        /* estilo para la tabla resumen */
+        .resumen-tabla th, .resumen-tabla td { vertical-align: middle; }
+        .status-cell { font-weight: 500; letter-spacing: 0.3px; }
     </style>
 </head>
 <body>
@@ -234,15 +250,37 @@
         <button class="tab" data-tab="notificaciones">📢 Anuncios</button>
         <button class="tab" data-tab="partidos">⭐ Calificar</button>
         <button class="tab" data-tab="proximos">📅 Próximos</button>
+        <!-- NUEVO TAB: RESUMEN DE JUGADORES INSCRITOS -->
+        <button class="tab" data-tab="resumen">📊 Resumen</button>
     </div>
 
-    <div id="panel-pendientes" class="panel"><h2>📋 Solicitudes</h2><div class="table-wrapper"><table id="tablaPendientes"><thead><tr><th>Nombre Camiseta</th><th># Dorsal</th><th>Acciones</th></tr></thead><tbody id="pendientesBody"><tr><td colspan="3"><div class="spinner"></div></td></tr></tbody>}</table></div></div>
+    <!-- Paneles existentes -->
+    <div id="panel-pendientes" class="panel"><h2>📋 Solicitudes</h2><div class="table-wrapper"><table id="tablaPendientes"><thead><tr><th>Nombre Camiseta</th><th># Dorsal</th><th>Acciones</th></tr></thead><tbody id="pendientesBody"><tr><td colspan="3"><div class="spinner"></div>侧</tbody>}</table></div></div>
     <div id="panel-jugadores" class="panel"><h2>👥 Plantilla (Solo Aprobados)</h2><div class="table-wrapper"><table id="tablaJugadores"><thead><tr><th>Nombre</th><th>Cédula</th><th>Deuda</th><th>Goles</th><th>TA</th><th>TR</th></tr></thead><tbody id="jugadoresBody"><tr><td colspan="6"><div class="spinner"></div>侧</tbody>}</table></div></div>
     <div id="panel-vocalia" class="panel"><h2>💰 Cobros</h2><div><label>Cédula</label><input type="text" id="buscarCedula" placeholder="Buscar por cédula"><button class="btn-primary" id="btnBuscarDeudor">Buscar</button></div><div id="infoDeudor"></div><div id="formPago" style="display:none;"><label>Monto a pagar</label><input type="number" id="montoPago" step="0.01"><button class="btn-success" id="btnRegistrarPago">Registrar pago</button></div><hr><h3>Deudores (Inscripción/Uniforme/Medias)</h3><div class="table-wrapper"><table id="tablaDeudores"><thead><tr><th>Jugador</th><th>Cédula</th><th>Deuda</th><th>Acción</th></tr></thead><tbody id="deudoresBody"><tr><td colspan="4"><div class="spinner"></div>侧</tbody>}</table></div></div>
     <div id="panel-equipos" class="panel"><h2>🏆 Rivales</h2><div class="card"><h3>➕ Agregar rival</h3><input type="text" id="nuevoEquipo" placeholder="Nombre del equipo"><button class="btn-primary" id="btnAgregarEquipo">Agregar</button></div><div class="card"><h3>📋 Lista de rivales</h3><div id="listaEquipos"></div></div></div>
     <div id="panel-notificaciones" class="panel"><h2>📢 Anuncios</h2><input type="text" id="notiTitulo" placeholder="Título"><textarea id="notiMensaje" rows="2" placeholder="Mensaje"></textarea><select id="notiTipo"><option value="info">📘 Informativo</option><option value="warning">⚠️ Advertencia</option><option value="success">✅ Éxito</option></select><button class="btn-primary" id="btnPublicarNoti">Publicar</button><div id="listaNotificaciones" style="margin-top: 12px;"></div></div>
     <div id="panel-partidos" class="panel"><h2>⭐ Calificar Partido</h2><div class="grid-2"><div><label>Fecha</label><select id="fechaPartido"></select></div><div><label>Hora</label><select id="horaPartido"><option value="08:00">8:00 AM</option><option value="10:00">10:00 AM</option><option value="12:00">12:00 PM</option><option value="14:00">2:00 PM</option><option value="16:00">4:00 PM</option></select></div></div><div class="grid-2"><div><label>Rival</label><select id="rivalPartido"></select></div><div><label>Cancha</label><select id="canchaPartido"><option value="Cancha 1">Cancha 1</option><option value="Cancha 2">Cancha 2</option></select></div></div><div><label>💰 Valor Vocalía</label><input type="number" id="valorVocaliaPartido" value="5" step="0.5"></div><button class="btn-primary" id="btnCargarJugadores">📌 Cargar jugadores</button><div id="listaCalificaciones" style="margin-top: 12px;"></div><button class="btn-primary" id="btnGuardarCalificaciones">💾 Guardar partido</button></div>
     <div id="panel-proximos" class="panel"><h2>📅 Próximos Partidos</h2><div class="grid-2"><div><label>Fecha</label><select id="proxFecha"></select></div><div><label>Hora</label><select id="proxHora"><option value="08:00">8:00 AM</option><option value="10:00">10:00 AM</option><option value="12:00">12:00 PM</option><option value="14:00">2:00 PM</option><option value="16:00">4:00 PM</option></select></div></div><div class="grid-2"><div><label>Rival</label><select id="proxRival"></select></div><div><label>Cancha</label><select id="proxCancha"><option value="Cancha 1">Cancha 1</option><option value="Cancha 2">Cancha 2</option></select></div></div><div><label>💰 Valor Vocalía</label><input type="number" id="proxValorVocalia" value="5" step="0.5"></div><div><label>Observaciones</label><textarea id="proxObs" rows="2"></textarea></div><button class="btn-primary" id="btnGuardarProximo">Guardar partido</button><div id="listaProximos" style="margin-top: 16px;"></div></div>
+
+    <!-- NUEVO PANEL: RESUMEN DE JUGADORES (Columnas: Primer Nombre, Segundo Nombre, Apellidos, Inscrip_Estado, Unif_Estado, Medias_Estado) -->
+    <div id="panel-resumen" class="panel">
+        <h2>📋 Resumen de Jugadores Inscritos</h2>
+        <div class="info-card" style="margin-bottom:12px;">
+            ℹ️ Muestra todos los jugadores registrados con sus estados de pago: <strong>Inscripción / Uniforme / Medias</strong> (según hoja "Jugadores" columnas X, Y, Z)
+        </div>
+        <div class="table-wrapper">
+            <table class="resumen-tabla" id="tablaResumenJugadores" style="width:100%">
+                <thead>
+                    <tr><th>Primer Nombre</th><th>Segundo Nombre</th><th>Apellidos</th><th>📝 Inscripción</th><th>👕 Uniforme</th><th>🧦 Medias</th></tr>
+                </thead>
+                <tbody id="resumenBody">
+                    <tr><td colspan="6" class="text-center"><div class="spinner"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <div id="loaderOverlay" class="loader-overlay"><div><div class="loader-spinner"></div><div class="loader-text">Cargando panel...</div></div></div>
@@ -250,23 +288,19 @@
 
 <script src="config.js"></script>
 <script>
-    // Esperar a que config.js cargue antes de ejecutar el código principal
     (function() {
-        // Función para inicializar la app después de que config.js esté disponible
         function initApp() {
             if (typeof CONFIG === 'undefined') {
-                console.error('config.js no se ha cargado correctamente. Verifica que el archivo existe y contiene CONFIG.URL_GAS');
-                document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: No se pudo cargar config.js<br>Verifica que el archivo existe en la raíz</div></div>';
+                console.error('config.js no cargado');
+                document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: config.js no encontrado</div></div>';
                 return;
             }
-            
             if (!CONFIG.URL_GAS) {
-                console.error('CONFIG.URL_GAS no está definido en config.js');
-                document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: CONFIG.URL_GAS no está definido en config.js</div></div>';
+                console.error('URL_GAS no definido');
+                document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: CONFIG.URL_GAS faltante</div></div>';
                 return;
             }
 
-            // Configuración usando CONFIG del archivo externo
             const API_URL = CONFIG.URL_GAS;
             const LINK_APP = "https://kilometro0-ec.github.io/NAPOLES-FC/login.html";
             
@@ -276,7 +310,6 @@
             let guardando = false;
             let equipos = ['Napoles F.C.'];
 
-            // Ocultar loader después de cargar
             setTimeout(function() {
                 const loader = document.getElementById('loaderOverlay');
                 if (loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 500); }
@@ -309,10 +342,12 @@
                         if (tabId === 'equipos') cargarEquipos();
                         if (tabId === 'notificaciones') cargarNotificaciones();
                         if (tabId === 'proximos') cargarProximos();
+                        if (tabId === 'resumen') cargarResumenJugadores();   // NUEVO: cargar resumen
                     });
                 });
             }
 
+            // Dashboard cards incluyendo Resumen
             const dashboardCards = [
                 { tab: "pendientes", emoji: "📋", title: "Solicitudes", description: "Aprobar nuevos jugadores", badge: true },
                 { tab: "jugadores", emoji: "👥", title: "Plantilla", description: "Jugadores activos", badge: false },
@@ -320,7 +355,8 @@
                 { tab: "equipos", emoji: "🏆", title: "Rivales", description: "Equipos competidores", badge: false },
                 { tab: "notificaciones", emoji: "📢", title: "Anuncios", description: "Publicar avisos", badge: false },
                 { tab: "partidos", emoji: "⭐", title: "Calificar", description: "Rendimiento jugadores", badge: false },
-                { tab: "proximos", emoji: "📅", title: "Próximos", description: "Programar partidos", badge: false }
+                { tab: "proximos", emoji: "📅", title: "Próximos", description: "Programar partidos", badge: false },
+                { tab: "resumen", emoji: "📊", title: "Resumen", description: "Estados inscripción", badge: false }
             ];
 
             function renderDashboard() {
@@ -345,6 +381,7 @@
                 if (tabId === 'equipos') cargarEquipos();
                 if (tabId === 'notificaciones') cargarNotificaciones();
                 if (tabId === 'proximos') cargarProximos();
+                if (tabId === 'resumen') cargarResumenJugadores();
             }
 
             function volverDashboard() {
@@ -355,6 +392,96 @@
                 cargarPendientesCount();
             }
 
+            // ================= NUEVA FUNCIÓN: RESUMEN JUGADORES (Primer Nombre, Segundo Nombre, Apellidos, Estados X,Y,Z) =================
+            async function cargarResumenJugadores() {
+                const tbody = document.getElementById('resumenBody');
+                if (!tbody) return;
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center"><div class="spinner"></div></td></tr>';
+                try {
+                    // Se invoca la acción 'getResumenJugadores' que debe devolver un arreglo con:
+                    // {
+                    //   jugadores: [
+                    //     { primerNombre: "...", segundoNombre: "...", apellidos: "...", inscripEstado: "PAGADO/PENDIENTE", unifEstado: "...", mediasEstado: "..." },
+                    //     ...
+                    //   ]
+                    // }
+                    const data = await fetchAPI('getResumenJugadores');
+                    if (data && data.ok !== false && data.jugadores && Array.isArray(data.jugadores)) {
+                        if (data.jugadores.length === 0) {
+                            tbody.innerHTML = '<tr><td colspan="6" class="text-center">✨ No hay jugadores registrados ✨</td></tr>';
+                        } else {
+                            tbody.innerHTML = data.jugadores.map(j => `
+                                <tr>
+                                    <td>${escapeHtml(j.primerNombre || '-')}</td>
+                                    <td>${escapeHtml(j.segundoNombre || '-')}</td>
+                                    <td>${escapeHtml(j.apellidos || '-')}</td>
+                                    <td class="status-cell">${renderEstadoBadge(j.inscripEstado)}</td>
+                                    <td class="status-cell">${renderEstadoBadge(j.unifEstado)}</td>
+                                    <td class="status-cell">${renderEstadoBadge(j.mediasEstado)}</td>
+                                </tr>
+                            `).join('');
+                        }
+                    } else {
+                        // Fallback: Si el backend aún no implementa 'getResumenJugadores', mostramos mensaje constructivo y damos opción de usar endpoint existente? 
+                        // Mostramos error con instrucciones para implementar en Google Apps Script.
+                        console.warn("No se encontró endpoint 'getResumenJugadores' o respuesta inválida.", data);
+                        tbody.innerHTML = `<tr><td colspan="6" class="error-message">
+                            ⚠️ El endpoint 'getResumenJugadores' no está disponible en tu backend de Google Apps Script.<br><br>
+                            <strong>📌 Para activar esta función, agrega este bloque en tu archivo .gs:</strong><br><br>
+                            <code style="background:#00000066; padding:8px; display:inline-block; border-radius:8px; font-size:11px;">
+                            function doGet(e) {<br>
+                            &nbsp; if(e.parameter.action === 'getResumenJugadores') {<br>
+                            &nbsp; &nbsp; const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName('Jugadores');<br>
+                            &nbsp; &nbsp; const data = sheet.getDataRange().getValues();<br>
+                            &nbsp; &nbsp; const jugadores = [];<br>
+                            &nbsp; &nbsp; for(let i=1; i< data.length; i++) {<br>
+                            &nbsp; &nbsp; &nbsp; jugadores.push({<br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; primerNombre: data[i][1] || '',<br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; segundoNombre: data[i][2] || '',<br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; apellidos: data[i][3] || '',<br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; inscripEstado: data[i][23] || 'PENDIENTE',<br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; unifEstado: data[i][24] || 'PENDIENTE',<br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; mediasEstado: data[i][25] || 'PENDIENTE'<br>
+                            &nbsp; &nbsp; &nbsp; }); }<br>
+                            &nbsp; &nbsp; return ContentService.createTextOutput(JSON.stringify({ok:true, jugadores}));<br>
+                            &nbsp; }<br>
+                            &nbsp; // resto del código ...<br>
+                            }<br>
+                            </code><br><br>
+                            Una vez implementado, actualiza la página.
+                        </td></tr>`;
+                    }
+                } catch (err) {
+                    console.error("Error cargando resumen:", err);
+                    tbody.innerHTML = `<tr><td colspan="6" class="error-message">❌ Error al cargar datos: ${err.message}</td></tr>`;
+                }
+            }
+
+            // Función auxiliar para mostrar badge con colores según estado
+            function renderEstadoBadge(estado) {
+                const upper = (estado || '').toUpperCase();
+                if (upper === 'PAGADO' || upper === 'CANCELADO' || upper === 'SI' || upper === 'PAGADA') 
+                    return `<span class="estado-badge estado-pagado">✅ ${upper}</span>`;
+                if (upper === 'PENDIENTE' || upper === 'NO' || upper === 'DEBE') 
+                    return `<span class="estado-badge estado-pendiente">⏳ ${upper}</span>`;
+                if (upper.includes('MEDIO') || upper === 'PARCIAL') 
+                    return `<span class="estado-badge estado-parcial">⚠️ ${upper}</span>`;
+                return `<span class="estado-badge">📌 ${estado || 'PENDIENTE'}</span>`;
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, function(m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                    return c;
+                });
+            }
+
+            // Funciones existentes (se mantienen igual)
             async function cargarPendientesCount() {
                 try {
                     const data = await fetchAPI('getPendientes');
@@ -362,346 +489,42 @@
                     renderDashboard();
                     const countSpan = document.getElementById('pendientesCount');
                     if (countSpan) countSpan.textContent = solicitudesPendientes;
-                } catch (e) {
-                    console.error('Error cargando contador:', e);
-                    solicitudesPendientes = 0;
-                    renderDashboard();
-                }
+                } catch (e) { console.error(e); solicitudesPendientes = 0; renderDashboard(); }
             }
 
-            function generarFechas() {
-                const fechas = [];
-                const hoy = new Date();
-                for (let i = 0; i < 60; i++) {
-                    const fecha = new Date(); 
-                    fecha.setDate(hoy.getDate() + i);
-                    const dia = fecha.getDay();
-                    if (dia === 0 || dia === 6) {
-                        const year = fecha.getFullYear(), month = String(fecha.getMonth() + 1).padStart(2,'0'), day = String(fecha.getDate()).padStart(2,'0');
-                        fechas.push({ value: `${year}-${month}-${day}`, texto: `${dia===0?'Domingo':'Sábado'} ${day}/${month}` });
-                    }
-                }
-                return fechas;
-            }
-
-            function llenarSelectsFechas() {
-                const fechas = generarFechas();
-                ['fechaPartido', 'proxFecha'].forEach(id => {
-                    const select = document.getElementById(id);
-                    if (select) { 
-                        select.innerHTML = '<option value="">Seleccionar...</option>';
-                        fechas.forEach(f => { const opt = document.createElement('option'); opt.value = f.value; opt.textContent = f.texto; select.appendChild(opt); });
-                    }
-                });
-            }
-
-            async function cargarEquipos() {
-                try {
-                    const res = await fetchAPI('getEquipos');
-                    if (res.ok && res.equipos && res.equipos.length) equipos = res.equipos;
-                    actualizarListaEquipos();
-                    actualizarSelectsRivales();
-                } catch (e) {
-                    console.error('Error cargando equipos:', e);
-                }
-            }
-
-            function actualizarListaEquipos() {
-                const container = document.getElementById('listaEquipos');
-                if (container) container.innerHTML = equipos.map(e => `<div class="equipo-item">${e}<button class="btn-sm" onclick="eliminarEquipo('${e.replace(/'/g,"\\'")}')">X</button></div>`).join('');
-            }
-
-            function actualizarSelectsRivales() {
-                ['rivalPartido', 'proxRival'].forEach(id => {
-                    const select = document.getElementById(id);
-                    if (select) { 
-                        select.innerHTML = '<option value="">Seleccionar...</option>';
-                        equipos.forEach(e => { const opt = document.createElement('option'); opt.value = e; opt.textContent = e; select.appendChild(opt); });
-                    }
-                });
-            }
-
-            window.agregarEquipo = async () => {
-                const nuevo = document.getElementById('nuevoEquipo').value.trim();
-                if (nuevo && !equipos.includes(nuevo)) {
-                    const res = await fetchAPI('agregarEquipo', { nombre: nuevo });
-                    if (res.ok) { equipos.push(nuevo); actualizarListaEquipos(); actualizarSelectsRivales(); document.getElementById('nuevoEquipo').value = ''; alert('✅ Rival agregado'); }
-                    else alert('❌ Error');
-                } else alert('Equipo ya existe o está vacío');
-            };
-
-            window.eliminarEquipo = async (equipo) => {
-                const res = await fetchAPI('eliminarEquipo', { nombre: equipo });
-                if (res.ok) { equipos = equipos.filter(e => e !== equipo); actualizarListaEquipos(); actualizarSelectsRivales(); alert('✅ Rival eliminado'); }
-                else alert('Error');
-            };
-
-            async function cargarPendientes() {
-                try {
-                    const data = await fetchAPI('getPendientes');
-                    const tbody = document.getElementById('pendientesBody');
-                    if (data.jugadores && data.jugadores.length) {
-                        tbody.innerHTML = data.jugadores.map(j => `<tr>
-                            <td><strong>${j.nombreCamiseta || j.nombre}</strong>侧
-                            <td><span style="color:#fbbf24;">#${j.dorsal || '?'}</span>侧
-                            <td><button class="btn-success" onclick="aprobar('${j.cedula}','${(j.nombreCamiseta||j.nombre).replace(/'/g,"\\'")}','${j.dorsal||'?'}','${j.telefono||''}')">✓ Aprobar</button>
-                            <button class="btn-danger" onclick="mostrarModalRechazo('${j.cedula}')">✗ Rechazar</button>侧
-                        </tr>`).join('');
-                    } else { 
-                        tbody.innerHTML='</table><td colspan="3" class="text-center">✨ Sin solicitudes✨</td></tr>';
-                    }
-                } catch (e) {
-                    console.error('Error cargando pendientes:', e);
-                    document.getElementById('pendientesBody').innerHTML='<tr><td colspan="3" class="error-message">Error al cargar solicitudes</td></tr>';
-                }
-            }
-
-            window.aprobar = async (ced, nombreCamiseta, dorsal, telefono) => {
-                if (confirm(`¿Aprobar a ${nombreCamiseta}?`)) {
-                    const res = await fetchAPI('aprobarJugador', { cedula: ced });
-                    if (res.ok) { 
-                        alert('✅ Jugador aprobado'); 
-                        enviarWhatsApp(telefono, nombreCamiseta, dorsal); 
-                        cargarPendientes(); 
-                        cargarJugadoresAprobados();
-                        cargarPendientesCount();
-                    } else alert('Error');
-                }
-            };
-
-            function enviarWhatsApp(telefono, nombreCamiseta, dorsal) {
-                let tel = telefono ? telefono.toString().replace(/\s/g, '') : '';
-                if (!tel) return;
-                let telFormateado = tel;
-                if (!tel.startsWith('+') && !tel.startsWith('593')) telFormateado = '+593' + tel;
-                else if (tel.startsWith('593') && !tel.startsWith('+')) telFormateado = '+' + tel;
-                if (telFormateado.length < 12) { console.log('Teléfono no válido'); return; }
-                const mensaje = `⚽💙 *¡FELICIDADES ${nombreCamiseta} !* 💙⚽%0a%0aEs un gusto contar contigo como parte de nuestro club.%0aTe deseamos muchos éxitos en esta nueva etapa deportiva.%0a%0a🎽 *Tu dorsal oficial es: #${dorsal}*%0a%0a📲 *Para ingresar:*%0a${LINK_APP}%0a%0a✅ Ingresa con tu *número de cédula*%0a%0aAtentamente,%0a🐾 *Alejandra Buendía* 🐾%0a*Presidenta — Nápoles Fútbol Club*`;
-                window.open(`https://wa.me/${telFormateado}?text=${mensaje}`, '_blank');
-            }
-
-            window.mostrarModalRechazo = (ced) => { currentCedulaRechazo = ced; document.getElementById('modalRechazo').style.display = 'flex'; };
-            window.cerrarModalRechazo = () => { document.getElementById('modalRechazo').style.display = 'none'; document.getElementById('motivoRechazo').value = ''; };
-            window.confirmarRechazo = async () => {
-                const motivo = document.getElementById('motivoRechazo').value;
-                if (!motivo) return alert('Ingrese un motivo');
-                await fetchAPI('rechazarJugador', { cedula: currentCedulaRechazo, motivo });
-                alert('❌ Rechazado'); cargarPendientes(); cerrarModalRechazo();
-                cargarPendientesCount();
-            };
-
-            async function cargarJugadoresAprobados() {
-                try {
-                    const data = await fetchAPI('getJugadoresAprobados');
-                    const tbody = document.getElementById('jugadoresBody');
-                    if (data.jugadores && data.jugadores.length) {
-                        tbody.innerHTML = data.jugadores.map(j => `<tr>
-                            <td>${j.nombre}侧
-                            <td>${j.cedula}侧
-                            <td>$${j.deuda || 0}侧
-                            <td>${j.goles || 0}侧
-                            <td>${j.amarillas || 0}侧
-                            <td>${j.rojas || 0}侧
-                        </tr>`).join('');
-                    } else tbody.innerHTML = '<tr><td colspan="6" class="text-center">No hay jugadores aprobados</tr>';
-                } catch (e) {
-                    console.error('Error cargando jugadores:', e);
-                    document.getElementById('jugadoresBody').innerHTML='<tr><td colspan="6" class="error-message">Error al cargar jugadores</td></tr>';
-                }
-            }
-
-            async function cargarDeudores() {
-                try {
-                    const data = await fetchAPI('getDeudoresInscripcion');
-                    const tbody = document.getElementById('deudoresBody');
-                    if (data.jugadores && data.jugadores.length) {
-                        tbody.innerHTML = data.jugadores.map(j => `<tr>
-                            <td>${j.nombre}侧
-                            <td>${j.cedula}侧
-                            <td>$${j.totalDeuda} (${j.inscripEstado}/${j.unifEstado}/${j.mediasEstado})侧
-                            <td><button class="btn-warning" onclick="prepararCobro('${j.cedula}')">💰 Cobrar</button>侧
-                        </tr>`).join('');
-                    } else tbody.innerHTML = '<tr><td colspan="4" class="text-center">✨ Sin deudores ✨</tr>';
-                } catch (e) {
-                    console.error('Error cargando deudores:', e);
-                    document.getElementById('deudoresBody').innerHTML='<tr><td colspan="4" class="error-message">Error al cargar deudores</td></tr>';
-                }
-            }
-
-            window.prepararCobro = (ced) => { document.getElementById('buscarCedula').value = ced; buscarDeudor(); };
-
-            async function buscarDeudor() {
-                const ced = document.getElementById('buscarCedula').value;
-                if (!ced) return;
-                const data = await fetchAPI('obtenerDeudasJugador', { cedula: ced });
-                if (data.ok) {
-                    document.getElementById('infoDeudor').innerHTML = `<div class="info-card">🐾 ${data.jugador.nombre}<br>💰 Deuda: <strong>$${data.deudaTotal}</strong><br>📝 Inscripción: ${data.inscripEstado} | Uniforme: ${data.unifEstado} | Medias: ${data.mediasEstado}</div>`;
-                    document.getElementById('formPago').style.display = 'block';
-                    document.getElementById('montoPago').value = data.deudaTotal;
-                } else document.getElementById('infoDeudor').innerHTML = '<div class="info-card">❌ No encontrado</div>';
-            }
-
-            async function registrarPago() {
-                if (guardando) return;
-                guardando = true;
-                const ced = document.getElementById('buscarCedula').value;
-                const monto = parseFloat(document.getElementById('montoPago').value);
-                if (isNaN(monto) || monto <= 0) { guardando = false; return alert('Monto inválido'); }
-                const res = await fetchAPI('registrarPagoInscripcion', { cedula: ced, monto });
-                if (res.ok) { alert('✅ Pago registrado'); cargarDeudores(); cargarJugadoresAprobados(); document.getElementById('formPago').style.display = 'none'; document.getElementById('infoDeudor').innerHTML = ''; document.getElementById('buscarCedula').value = ''; }
-                else alert('Error');
-                guardando = false;
-            }
-
-            async function cargarNotificaciones() {
-                const data = await fetchAPI('getNotificaciones');
-                const container = document.getElementById('listaNotificaciones');
-                if (data.notificaciones && data.notificaciones.length) container.innerHTML = data.notificaciones.map(n => `<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>${new Date(n.fecha).toLocaleString()}</small></div>`).join('');
-                else container.innerHTML = '<p class="text-center">📭 Sin anuncios</p>';
-            }
-
-            async function publicarNotificacion() {
-                const tit = document.getElementById('notiTitulo').value, msg = document.getElementById('notiMensaje').value, tipo = document.getElementById('notiTipo').value;
-                if (!tit || !msg) return alert('Complete campos');
-                const res = await fetchAPI('publicarNotificacion', { titulo: tit, mensaje: msg, tipo });
-                if (res.ok) { alert('✅ Publicado'); document.getElementById('notiTitulo').value = ''; document.getElementById('notiMensaje').value = ''; cargarNotificaciones(); }
-                else alert('Error');
-            }
-
-            async function cargarProximos() {
-                const data = await fetchAPI('getProximosPartidos');
-                const container = document.getElementById('listaProximos');
-                if (data.partidos && data.partidos.length) {
-                    container.innerHTML = data.partidos.map((p, idx) => `<div class="partido-item"><div class="partido-info"><div class="partido-fecha">📅 ${new Date(p.fecha).toLocaleString()}</div><div class="partido-rival">⚽ vs ${p.rival} | 🏟️ ${p.cancha || 'Cancha 1'} | 💰 $${p.valorVocalia || 5}</div>${p.observaciones ? `<div class="partido-obs">📝 ${p.observaciones}</div>` : ''}</div><button class="btn-danger" style="padding:3px 10px" onclick="eliminarPartido(${idx})">🗑️</button></div>`).join('');
-                } else container.innerHTML = '<p class="text-center">⚽ No hay partidos</p>';
-            }
-
-            window.eliminarPartido = async (idx) => {
-                if (confirm('¿Eliminar este partido?')) {
-                    const res = await fetchAPI('eliminarProximoPartido', { index: idx });
-                    if (res.ok) { alert('✅ Eliminado'); cargarProximos(); }
-                    else alert('Error');
-                }
-            };
-
-            async function guardarProximoPartido() {
-                if (guardando) return;
-                guardando = true;
-                const fecha = document.getElementById('proxFecha').value, hora = document.getElementById('proxHora').value;
-                const fechaCompleta = (fecha && hora) ? `${fecha}T${hora}:00` : '';
-                const rival = document.getElementById('proxRival').value, cancha = document.getElementById('proxCancha').value, valorVocalia = document.getElementById('proxValorVocalia').value, obs = document.getElementById('proxObs').value;
-                if (!fechaCompleta || !rival) { guardando = false; return alert('Complete fecha y rival'); }
-                const res = await fetchAPI('guardarProximoPartido', { fecha: fechaCompleta, rival, cancha, observaciones: obs, valorVocalia });
-                if (res.ok) { alert('✅ Guardado'); cargarProximos(); document.getElementById('proxFecha').value = ''; document.getElementById('proxRival').value = ''; document.getElementById('proxObs').value = ''; }
-                else alert('Error');
-                guardando = false;
-            }
-
-            async function cargarJugadoresParaCalificar() {
-                const fecha = document.getElementById('fechaPartido').value, hora = document.getElementById('horaPartido').value, rival = document.getElementById('rivalPartido').value;
-                if (!fecha || !hora || !rival) return alert('Complete fecha, hora y rival');
-                const data = await fetchAPI('getJugadoresAprobados');
-                if (!data.jugadores || !data.jugadores.length) return alert('No hay jugadores');
-                jugadoresActivos = data.jugadores;
-                let html = `<div class="cal-grid"><div class="cal-header"><span class="col-jugador">Jugador</span><span class="col-num">🟨</span><span class="col-num">🟥</span><span class="col-num">⚽</span><span class="col-select">⭐P</span><span class="col-select">🤝C</span><span class="col-select">🙏R</span><span class="col-select">💪H</span></div>`;
-                jugadoresActivos.forEach(j => { 
-                    html += `<div class="cal-row"><span class="col-jugador"><strong>${j.nombre}</strong></span>
-                        <input class="col-num" type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2">
-                        <input class="col-num" type="number" id="rojas_${j.cedula}" value="0" min="0" max="1">
-                        <input class="col-num" type="number" id="goles_${j.cedula}" value="0" min="0">
-                        <select class="col-select" id="punt_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select>
-                        <select class="col-select" id="comp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select>
-                        <select class="col-select" id="resp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select>
-                        <select class="col-select" id="hum_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select></div>`; 
-                });
-                html += `</div>`;
-                document.getElementById('listaCalificaciones').innerHTML = html;
-            }
-
-            async function guardarCalificaciones() {
-                if (guardando) return;
-                guardando = true;
-                const fecha = document.getElementById('fechaPartido').value, hora = document.getElementById('horaPartido').value, fechaCompleta = `${fecha}T${hora}:00`;
-                const rival = document.getElementById('rivalPartido').value, cancha = document.getElementById('canchaPartido').value, valorVocalia = document.getElementById('valorVocaliaPartido').value;
-                if (!fechaCompleta || !rival || jugadoresActivos.length === 0) { guardando = false; return alert('Cargue jugadores primero'); }
-                const cedulas = [], nombres = [], amarillas = [], rojas = [], goles = [], punt = [], comp = [], resp = [], hum = [];
-                for (const j of jugadoresActivos) {
-                    cedulas.push(j.cedula); nombres.push(j.nombre);
-                    amarillas.push(document.getElementById(`amarillas_${j.cedula}`)?.value || 0);
-                    rojas.push(document.getElementById(`rojas_${j.cedula}`)?.value || 0);
-                    goles.push(document.getElementById(`goles_${j.cedula}`)?.value || 0);
-                    punt.push(document.getElementById(`punt_${j.cedula}`)?.value || 3);
-                    comp.push(document.getElementById(`comp_${j.cedula}`)?.value || 3);
-                    resp.push(document.getElementById(`resp_${j.cedula}`)?.value || 3);
-                    hum.push(document.getElementById(`hum_${j.cedula}`)?.value || 3);
-                }
-                const res = await fetchAPI('guardarPartido', { fecha: fechaCompleta, rival, cancha, valorVocalia,
-                    cedulas: cedulas.join(','), nombres: nombres.join(','), amarillas: amarillas.join(','), rojas: rojas.join(','),
-                    goles: goles.join(','), puntualidades: punt.join(','), companerismos: comp.join(','),
-                    respetos: resp.join(','), humildades: hum.join(',') });
-                if (res.ok) alert('✅ Partido guardado');
-                else alert('Error');
-                guardando = false;
-            }
-
-            async function fetchAPI(action, params = {}) {
-                try { 
-                    const urlParams = new URLSearchParams({ action, ...params }); 
-                    const res = await fetch(`${API_URL}?${urlParams.toString()}`); 
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                    return await res.json(); 
-                } catch (error) { 
-                    console.error(`Error en fetchAPI (${action}):`, error);
-                    return { ok: false, error: error.message }; 
-                }
-            }
-
-            async function cargarDatosIniciales() {
-                llenarSelectsFechas();
-                await cargarEquipos();
-                await cargarPendientesCount();
-                await cargarJugadoresAprobados();
-                await cargarDeudores();
-                await cargarNotificaciones();
-                await cargarProximos();
-                renderDashboard();
-            }
-
-            // Inicializar todo
+            function generarFechas() { const fechas=[]; const hoy=new Date(); for(let i=0;i<60;i++){const fecha=new Date(); fecha.setDate(hoy.getDate()+i); const dia=fecha.getDay(); if(dia===0||dia===6){const year=fecha.getFullYear(),month=String(fecha.getMonth()+1).padStart(2,'0'),day=String(fecha.getDate()).padStart(2,'0'); fechas.push({value:`${year}-${month}-${day}`, texto:`${dia===0?'Domingo':'Sábado'} ${day}/${month}`});}} return fechas; }
+            function llenarSelectsFechas() { const fechas=generarFechas(); ['fechaPartido','proxFecha'].forEach(id=>{const select=document.getElementById(id); if(select){select.innerHTML='<option value="">Seleccionar...</option>'; fechas.forEach(f=>{const opt=document.createElement('option'); opt.value=f.value; opt.textContent=f.texto; select.appendChild(opt);});}}); }
+            async function cargarEquipos() { try { const res=await fetchAPI('getEquipos'); if(res.ok&&res.equipos&&res.equipos.length) equipos=res.equipos; actualizarListaEquipos(); actualizarSelectsRivales(); } catch(e){console.error(e);} }
+            function actualizarListaEquipos() { const container=document.getElementById('listaEquipos'); if(container) container.innerHTML=equipos.map(e=>`<div class="equipo-item">${e}<button class="btn-sm" onclick="eliminarEquipo('${e.replace(/'/g,"\\'")}')">X</button></div>`).join(''); }
+            function actualizarSelectsRivales() { ['rivalPartido','proxRival'].forEach(id=>{const select=document.getElementById(id); if(select){select.innerHTML='<option value="">Seleccionar...</option>'; equipos.forEach(e=>{const opt=document.createElement('option'); opt.value=e; opt.textContent=e; select.appendChild(opt);});}}); }
+            window.agregarEquipo=async()=>{ const nuevo=document.getElementById('nuevoEquipo').value.trim(); if(nuevo&&!equipos.includes(nuevo)){const res=await fetchAPI('agregarEquipo',{nombre:nuevo}); if(res.ok){equipos.push(nuevo); actualizarListaEquipos(); actualizarSelectsRivales(); document.getElementById('nuevoEquipo').value=''; alert('✅ Rival agregado');} else alert('❌ Error');} else alert('Equipo ya existe o vacío');};
+            window.eliminarEquipo=async(equipo)=>{ const res=await fetchAPI('eliminarEquipo',{nombre:equipo}); if(res.ok){equipos=equipos.filter(e=>e!==equipo); actualizarListaEquipos(); actualizarSelectsRivales(); alert('✅ Rival eliminado');} else alert('Error');};
+            async function cargarPendientes(){ try{const data=await fetchAPI('getPendientes'); const tbody=document.getElementById('pendientesBody'); if(data.jugadores&&data.jugadores.length){tbody.innerHTML=data.jugadores.map(j=>`<tr><td><strong>${j.nombreCamiseta||j.nombre}</strong></td><td><span style="color:#fbbf24;">#${j.dorsal||'?'}</span></td><td><button class="btn-success" onclick="aprobar('${j.cedula}','${(j.nombreCamiseta||j.nombre).replace(/'/g,"\\'")}','${j.dorsal||'?'}','${j.telefono||''}')">✓ Aprobar</button> <button class="btn-danger" onclick="mostrarModalRechazo('${j.cedula}')">✗ Rechazar</button></td></tr>`).join('');}else{tbody.innerHTML='<tr><td colspan="3" class="text-center">✨ Sin solicitudes✨</td></tr>';}}catch(e){document.getElementById('pendientesBody').innerHTML='<tr><td colspan="3" class="error-message">Error</td></tr>';}}
+            window.aprobar=async(ced,nombreCamiseta,dorsal,telefono)=>{ if(confirm(`¿Aprobar a ${nombreCamiseta}?`)){ const res=await fetchAPI('aprobarJugador',{cedula:ced}); if(res.ok){ alert('✅ Jugador aprobado'); enviarWhatsApp(telefono,nombreCamiseta,dorsal); cargarPendientes(); cargarJugadoresAprobados(); cargarPendientesCount(); } else alert('Error');}};
+            function enviarWhatsApp(telefono,nombreCamiseta,dorsal){ let tel=telefono?telefono.toString().replace(/\s/g,''):''; if(!tel) return; let telFormateado=tel; if(!tel.startsWith('+')&&!tel.startsWith('593')) telFormateado='+593'+tel; else if(tel.startsWith('593')&&!tel.startsWith('+')) telFormateado='+'+tel; if(telFormateado.length<12) return; const mensaje=`⚽💙 *¡FELICIDADES ${nombreCamiseta} !* 💙⚽%0a%0aEs un gusto contar contigo como parte de nuestro club.%0aTe deseamos muchos éxitos en esta nueva etapa deportiva.%0a%0a🎽 *Tu dorsal oficial es: #${dorsal}*%0a%0a📲 *Para ingresar:*%0a${LINK_APP}%0a%0a✅ Ingresa con tu *número de cédula*%0a%0aAtentamente,%0a🐾 *Alejandra Buendía* 🐾%0a*Presidenta — Nápoles Fútbol Club*`; window.open(`https://wa.me/${telFormateado}?text=${mensaje}`,'_blank');}
+            window.mostrarModalRechazo=(ced)=>{ currentCedulaRechazo=ced; document.getElementById('modalRechazo').style.display='flex';};
+            window.cerrarModalRechazo=()=>{ document.getElementById('modalRechazo').style.display='none'; document.getElementById('motivoRechazo').value='';};
+            window.confirmarRechazo=async()=>{ const motivo=document.getElementById('motivoRechazo').value; if(!motivo) return alert('Ingrese motivo'); await fetchAPI('rechazarJugador',{cedula:currentCedulaRechazo, motivo}); alert('❌ Rechazado'); cargarPendientes(); cerrarModalRechazo(); cargarPendientesCount();};
+            async function cargarJugadoresAprobados(){ try{const data=await fetchAPI('getJugadoresAprobados'); const tbody=document.getElementById('jugadoresBody'); if(data.jugadores&&data.jugadores.length){tbody.innerHTML=data.jugadores.map(j=>`<tr><td>${j.nombre}</td><td>${j.cedula}</td><td>$${j.deuda||0}</td><td>${j.goles||0}</td><td>${j.amarillas||0}</td><td>${j.rojas||0}</td></tr>`).join('');}else tbody.innerHTML='<tr><td colspan="6">No hay jugadores aprobados</td></tr>';}catch(e){document.getElementById('jugadoresBody').innerHTML='<tr><td colspan="6" class="error-message">Error</td></tr>';}}
+            async function cargarDeudores(){ try{const data=await fetchAPI('getDeudoresInscripcion'); const tbody=document.getElementById('deudoresBody'); if(data.jugadores&&data.jugadores.length){tbody.innerHTML=data.jugadores.map(j=>`<tr><td>${j.nombre}</td><td>${j.cedula}</td><td>$${j.totalDeuda} (${j.inscripEstado}/${j.unifEstado}/${j.mediasEstado})</td><td><button class="btn-warning" onclick="prepararCobro('${j.cedula}')">💰 Cobrar</button></td></tr>`).join('');}else tbody.innerHTML='<tr><td colspan="4">✨ Sin deudores ✨</td></tr>';}catch(e){console.error(e);}}
+            window.prepararCobro=(ced)=>{ document.getElementById('buscarCedula').value=ced; buscarDeudor();};
+            async function buscarDeudor(){ const ced=document.getElementById('buscarCedula').value; if(!ced)return; const data=await fetchAPI('obtenerDeudasJugador',{cedula:ced}); if(data.ok){document.getElementById('infoDeudor').innerHTML=`<div class="info-card">🐾 ${data.jugador.nombre}<br>💰 Deuda: <strong>$${data.deudaTotal}</strong><br>📝 ${data.inscripEstado} | Uniforme: ${data.unifEstado} | Medias: ${data.mediasEstado}</div>`; document.getElementById('formPago').style.display='block'; document.getElementById('montoPago').value=data.deudaTotal;} else document.getElementById('infoDeudor').innerHTML='<div class="info-card">❌ No encontrado</div>';}
+            async function registrarPago(){ if(guardando)return; guardando=true; const ced=document.getElementById('buscarCedula').value; const monto=parseFloat(document.getElementById('montoPago').value); if(isNaN(monto)||monto<=0){guardando=false; return alert('Monto inválido');} const res=await fetchAPI('registrarPagoInscripcion',{cedula:ced,monto}); if(res.ok){alert('✅ Pago registrado'); cargarDeudores(); cargarJugadoresAprobados(); document.getElementById('formPago').style.display='none'; document.getElementById('infoDeudor').innerHTML=''; document.getElementById('buscarCedula').value='';} else alert('Error'); guardando=false;}
+            async function cargarNotificaciones(){ const data=await fetchAPI('getNotificaciones'); const container=document.getElementById('listaNotificaciones'); if(data.notificaciones&&data.notificaciones.length) container.innerHTML=data.notificaciones.map(n=>`<div class="card"><strong>${n.titulo}</strong><br>${n.mensaje}<br><small>${new Date(n.fecha).toLocaleString()}</small></div>`).join(''); else container.innerHTML='<p class="text-center">📭 Sin anuncios</p>';}
+            async function publicarNotificacion(){ const tit=document.getElementById('notiTitulo').value, msg=document.getElementById('notiMensaje').value, tipo=document.getElementById('notiTipo').value; if(!tit||!msg) return alert('Complete campos'); const res=await fetchAPI('publicarNotificacion',{titulo:tit,mensaje:msg,tipo}); if(res.ok){alert('✅ Publicado'); document.getElementById('notiTitulo').value=''; document.getElementById('notiMensaje').value=''; cargarNotificaciones();} else alert('Error');}
+            async function cargarProximos(){ const data=await fetchAPI('getProximosPartidos'); const container=document.getElementById('listaProximos'); if(data.partidos&&data.partidos.length){container.innerHTML=data.partidos.map((p,idx)=>`<div class="partido-item"><div class="partido-info"><div class="partido-fecha">📅 ${new Date(p.fecha).toLocaleString()}</div><div class="partido-rival">⚽ vs ${p.rival} | 🏟️ ${p.cancha||'Cancha 1'} | 💰 $${p.valorVocalia||5}</div>${p.observaciones?`<div class="partido-obs">📝 ${p.observaciones}</div>`:''}</div><button class="btn-danger" onclick="eliminarPartido(${idx})">🗑️</button></div>`).join('');} else container.innerHTML='<p class="text-center">⚽ No hay partidos</p>';}
+            window.eliminarPartido=async(idx)=>{ if(confirm('¿Eliminar?')){const res=await fetchAPI('eliminarProximoPartido',{index:idx}); if(res.ok){alert('✅ Eliminado'); cargarProximos();}else alert('Error');}};
+            async function guardarProximoPartido(){ if(guardando)return; guardando=true; const fecha=document.getElementById('proxFecha').value, hora=document.getElementById('proxHora').value, fechaCompleta=(fecha&&hora)?`${fecha}T${hora}:00`:''; const rival=document.getElementById('proxRival').value, cancha=document.getElementById('proxCancha').value, valorVocalia=document.getElementById('proxValorVocalia').value, obs=document.getElementById('proxObs').value; if(!fechaCompleta||!rival){guardando=false; return alert('Complete fecha y rival');} const res=await fetchAPI('guardarProximoPartido',{fecha:fechaCompleta,rival,cancha,observaciones:obs,valorVocalia}); if(res.ok){alert('✅ Guardado'); cargarProximos();} else alert('Error'); guardando=false;}
+            async function cargarJugadoresParaCalificar(){ const fecha=document.getElementById('fechaPartido').value, hora=document.getElementById('horaPartido').value, rival=document.getElementById('rivalPartido').value; if(!fecha||!hora||!rival) return alert('Complete fecha, hora y rival'); const data=await fetchAPI('getJugadoresAprobados'); if(!data.jugadores||!data.jugadores.length) return alert('No hay jugadores'); jugadoresActivos=data.jugadores; let html=`<div class="cal-grid"><div class="cal-header"><span class="col-jugador">Jugador</span><span class="col-num">🟨</span><span class="col-num">🟥</span><span class="col-num">⚽</span><span class="col-select">⭐P</span><span class="col-select">🤝C</span><span class="col-select">🙏R</span><span class="col-select">💪H</span></div>`; jugadoresActivos.forEach(j=>{html+=`<div class="cal-row"><span class="col-jugador"><strong>${j.nombre}</strong></span><input class="col-num" type="number" id="amarillas_${j.cedula}" value="0" min="0" max="2"><input class="col-num" type="number" id="rojas_${j.cedula}" value="0" min="0" max="1"><input class="col-num" type="number" id="goles_${j.cedula}" value="0" min="0"><select class="col-select" id="punt_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select><select class="col-select" id="comp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select><select class="col-select" id="resp_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select><select class="col-select" id="hum_${j.cedula}">${[1,2,3,4,5].map(v=>`<option value="${v}" ${v===3?'selected':''}>${v}</option>`).join('')}</select></div>`;}); html+=`</div>`; document.getElementById('listaCalificaciones').innerHTML=html;}
+            async function guardarCalificaciones(){ if(guardando)return; guardando=true; const fecha=document.getElementById('fechaPartido').value, hora=document.getElementById('horaPartido').value, fechaCompleta=`${fecha}T${hora}:00`; const rival=document.getElementById('rivalPartido').value, cancha=document.getElementById('canchaPartido').value, valorVocalia=document.getElementById('valorVocaliaPartido').value; if(!fechaCompleta||!rival||jugadoresActivos.length===0){guardando=false; return alert('Cargue jugadores primero');} const cedulas=[],nombres=[],amarillas=[],rojas=[],goles=[],punt=[],comp=[],resp=[],hum=[]; for(const j of jugadoresActivos){cedulas.push(j.cedula); nombres.push(j.nombre); amarillas.push(document.getElementById(`amarillas_${j.cedula}`)?.value||0); rojas.push(document.getElementById(`rojas_${j.cedula}`)?.value||0); goles.push(document.getElementById(`goles_${j.cedula}`)?.value||0); punt.push(document.getElementById(`punt_${j.cedula}`)?.value||3); comp.push(document.getElementById(`comp_${j.cedula}`)?.value||3); resp.push(document.getElementById(`resp_${j.cedula}`)?.value||3); hum.push(document.getElementById(`hum_${j.cedula}`)?.value||3);} const res=await fetchAPI('guardarPartido',{fecha:fechaCompleta,rival,cancha,valorVocalia,cedulas:cedulas.join(','),nombres:nombres.join(','),amarillas:amarillas.join(','),rojas:rojas.join(','),goles:goles.join(','),puntualidades:punt.join(','),companerismos:comp.join(','),respetos:resp.join(','),humildades:hum.join(',')}); if(res.ok) alert('✅ Partido guardado'); else alert('Error'); guardando=false;}
+            async function fetchAPI(action, params = {}) { try { const urlParams = new URLSearchParams({ action, ...params }); const res = await fetch(`${API_URL}?${urlParams.toString()}`); if (!res.ok) throw new Error(`HTTP ${res.status}`); return await res.json(); } catch (error) { console.error(`Error ${action}:`, error); return { ok: false, error: error.message }; } }
+            async function cargarDatosIniciales() { llenarSelectsFechas(); await cargarEquipos(); await cargarPendientesCount(); await cargarJugadoresAprobados(); await cargarDeudores(); await cargarNotificaciones(); await cargarProximos(); renderDashboard(); }
             inicializarEventos();
             cargarDatosIniciales();
         }
 
-        // Esperar a que el DOM esté listo y luego verificar config.js
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function checkConfig() {
-                if (typeof CONFIG !== 'undefined') {
-                    initApp();
-                } else {
-                    // Si config.js no ha cargado, esperar un poco más
-                    setTimeout(function() {
-                        if (typeof CONFIG !== 'undefined') {
-                            initApp();
-                        } else {
-                            console.error('config.js no se cargó correctamente');
-                            document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: No se pudo cargar config.js<br>Verifica que el archivo existe en la raíz</div></div>';
-                        }
-                    }, 1000);
-                }
-            });
-        } else {
-            if (typeof CONFIG !== 'undefined') {
-                initApp();
-            } else {
-                setTimeout(function() {
-                    if (typeof CONFIG !== 'undefined') {
-                        initApp();
-                    } else {
-                        document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: No se pudo cargar config.js</div></div>';
-                    }
-                }, 500);
-            }
-        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { if (typeof CONFIG !== 'undefined') initApp(); else setTimeout(() => { if (typeof CONFIG !== 'undefined') initApp(); else document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: config.js no cargado</div></div>'; }, 1000); });
+        else { if (typeof CONFIG !== 'undefined') initApp(); else setTimeout(() => { if (typeof CONFIG !== 'undefined') initApp(); else document.getElementById('loaderOverlay').innerHTML = '<div><div class="loader-text" style="color:#f87171;">Error: config.js ausente</div></div>'; }, 500); }
     })();
 </script>
 </body>
