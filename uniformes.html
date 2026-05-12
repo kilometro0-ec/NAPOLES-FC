@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Uniformes - Nápoles F.C.</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:#f3f6fb;
+
+    color:#111827;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:1px solid #e5e7eb;
+
+    padding:16px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.top-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.admin-info h1{
+
+    font-size:1.1rem;
+
+    font-weight:800;
+}
+
+.admin-info p{
+
+    font-size:.85rem;
+
+    color:#6b7280;
+
+    margin-top:2px;
+}
+
+.avatar{
+
+    width:46px;
+    height:46px;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+    135deg,
+    #7c3aed,
+    #c084fc
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-weight:800;
+
+    font-size:1rem;
+}
+
+/* =========================================
+STATS
+========================================= */
+
+.stats{
+
+    padding:20px 18px 10px;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:14px;
+}
+
+.stat-card{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:20px;
+
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.stat-card h3{
+
+    font-size:1.6rem;
+
+    font-weight:900;
+
+    margin-bottom:6px;
+
+    color:#7c3aed;
+}
+
+.stat-card p{
+
+    color:#6b7280;
+
+    font-size:.9rem;
+}
+
+/* =========================================
+UNIFORMS
+========================================= */
+
+.uniforms{
+
+    padding:14px 18px 40px;
+}
+
+.uniform-card{
+
+    background:#fff;
+
+    border-radius:26px;
+
+    padding:18px;
+
+    margin-bottom:16px;
+
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.uniform-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+}
+
+.uniform-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.uniform-icon{
+
+    width:64px;
+    height:64px;
+
+    border-radius:20px;
+
+    background:linear-gradient(
+    135deg,
+    #7c3aed,
+    #c084fc
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+}
+
+.uniform-icon .material-symbols-outlined{
+    font-size:34px;
+}
+
+.uniform-info h3{
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    margin-bottom:4px;
+}
+
+.uniform-info p{
+
+    color:#6b7280;
+
+    font-size:.86rem;
+}
+
+.stock{
+
+    background:#ede9fe;
+
+    color:#7c3aed;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:.82rem;
+
+    font-weight:800;
+}
+
+.sizes{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    padding-top:14px;
+
+    border-top:1px solid #e5e7eb;
+}
+
+.size{
+
+    background:#f3f4f6;
+
+    padding:8px 14px;
+
+    border-radius:12px;
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    color:#374151;
+}
+
+/* =========================================
+FAB
+========================================= */
+
+.fab{
+
+    position:fixed;
+
+    right:20px;
+    bottom:20px;
+
+    width:64px;
+    height:64px;
+
+    border:none;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+    135deg,
+    #7c3aed,
+    #c084fc
+    );
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 15px 35px rgba(124,58,237,.35);
+}
+
+.fab .material-symbols-outlined{
+    font-size:34px;
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(min-width:700px){
+
+    .stats,
+    .uniforms{
+        max-width:700px;
+        margin:auto;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ======================================
+TOPBAR
+====================================== -->
+
+<header class="topbar">
+
+    <div class="top-left">
+
+        <div class="admin-info">
+
+            <h1>Uniformes</h1>
+
+            <p>Nápoles F.C.</p>
+
+        </div>
+
+    </div>
+
+    <div class="avatar">
+        U
+    </div>
+
+</header>
+
+<!-- ======================================
+STATS
+====================================== -->
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <h3>94</h3>
+
+        <p>Uniformes Totales</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h3>18</h3>
+
+        <p>Entregas Pendientes</p>
+
+    </div>
+
+</section>
+
+<!-- ======================================
+UNIFORMS
+====================================== -->
+
+<section class="uniforms">
+
+    <!-- UNIFORM -->
+
+    <div class="uniform-card">
+
+        <div class="uniform-top">
+
+            <div class="uniform-left">
+
+                <div class="uniform-icon">
+
+                    <span class="material-symbols-outlined">
+                        checkroom
+                    </span>
+
+                </div>
+
+                <div class="uniform-info">
+
+                    <h3>Uniforme Local</h3>
+
+                    <p>Temporada 2026</p>
+
+                </div>
+
+            </div>
+
+            <div class="stock">
+                Stock: 32
+            </div>
+
+        </div>
+
+        <div class="sizes">
+
+            <div class="size">S • 6</div>
+
+            <div class="size">M • 10</div>
+
+            <div class="size">L • 9</div>
+
+            <div class="size">XL • 7</div>
+
+        </div>
+
+    </div>
+
+    <!-- UNIFORM -->
+
+    <div class="uniform-card">
+
+        <div class="uniform-top">
+
+            <div class="uniform-left">
+
+                <div class="uniform-icon">
+
+                    <span class="material-symbols-outlined">
+                        sports
+                    </span>
+
+                </div>
+
+                <div class="uniform-info">
+
+                    <h3>Uniforme Visitante</h3>
+
+                    <p>Temporada 2026</p>
+
+                </div>
+
+            </div>
+
+            <div class="stock">
+                Stock: 24
+            </div>
+
+        </div>
+
+        <div class="sizes">
+
+            <div class="size">S • 5</div>
+
+            <div class="size">M • 8</div>
+
+            <div class="size">L • 6</div>
+
+            <div class="size">XL • 5</div>
+
+        </div>
+
+    </div>
+
+    <!-- UNIFORM -->
+
+    <div class="uniform-card">
+
+        <div class="uniform-top">
+
+            <div class="uniform-left">
+
+                <div class="uniform-icon">
+
+                    <span class="material-symbols-outlined">
+                        shield
+                    </span>
+
+                </div>
+
+                <div class="uniform-info">
+
+                    <h3>Uniforme Entrenamiento</h3>
+
+                    <p>Temporada 2026</p>
+
+                </div>
+
+            </div>
+
+            <div class="stock">
+                Stock: 38
+            </div>
+
+        </div>
+
+        <div class="sizes">
+
+            <div class="size">S • 8</div>
+
+            <div class="size">M • 12</div>
+
+            <div class="size">L • 10</div>
+
+            <div class="size">XL • 8</div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ======================================
+ADD BUTTON
+====================================== -->
+
+<button class="fab">
+
+    <span class="material-symbols-outlined">
+        add
+    </span>
+
+</button>
+
+<script>
+
+// =========================================
+// VALIDAR ADMIN
+// =========================================
+
+if(
+    localStorage.getItem('admin_activo')
+    !== 'true'
+){
+    window.location.href = './login.html';
+}
+
+</script>
+
+</body>
+</html>
