@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Partidos - Nápoles F.C.</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:#f3f6fb;
+
+    color:#111827;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:1px solid #e5e7eb;
+
+    padding:16px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.top-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.admin-info h1{
+
+    font-size:1.1rem;
+
+    font-weight:800;
+}
+
+.admin-info p{
+
+    font-size:.85rem;
+
+    color:#6b7280;
+
+    margin-top:2px;
+}
+
+.avatar{
+
+    width:46px;
+    height:46px;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+    135deg,
+    #16a34a,
+    #4ade80
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-weight:800;
+
+    font-size:1rem;
+}
+
+/* =========================================
+MATCHES
+========================================= */
+
+.matches{
+
+    padding:20px 18px 40px;
+}
+
+.match-card{
+
+    background:#fff;
+
+    border-radius:26px;
+
+    padding:20px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.match-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.match-date{
+
+    background:#ecfdf5;
+
+    color:#16a34a;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:.82rem;
+
+    font-weight:700;
+}
+
+.status{
+
+    background:#111827;
+
+    color:#fff;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:.78rem;
+
+    font-weight:700;
+}
+
+.teams{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:22px;
+}
+
+.team{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:10px;
+
+    width:40%;
+}
+
+.team-logo{
+
+    width:70px;
+    height:70px;
+
+    border-radius:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:1.1rem;
+
+    font-weight:800;
+}
+
+.home{
+    background:linear-gradient(
+    135deg,
+    #2563eb,
+    #60a5fa
+    );
+}
+
+.away{
+    background:linear-gradient(
+    135deg,
+    #ea580c,
+    #fb923c
+    );
+}
+
+.team h3{
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    text-align:center;
+}
+
+.score{
+
+    font-size:2rem;
+
+    font-weight:900;
+
+    color:#111827;
+}
+
+.match-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:10px;
+
+    padding-top:16px;
+
+    border-top:1px solid #e5e7eb;
+}
+
+.info-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#6b7280;
+
+    font-size:.85rem;
+}
+
+.info-item .material-symbols-outlined{
+    font-size:20px;
+}
+
+/* =========================================
+ADD BUTTON
+========================================= */
+
+.fab{
+
+    position:fixed;
+
+    right:20px;
+    bottom:20px;
+
+    width:64px;
+    height:64px;
+
+    border:none;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+    135deg,
+    #16a34a,
+    #4ade80
+    );
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 15px 35px rgba(22,163,74,.35);
+}
+
+.fab .material-symbols-outlined{
+    font-size:34px;
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(min-width:700px){
+
+    .matches{
+        max-width:700px;
+        margin:auto;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ======================================
+TOPBAR
+====================================== -->
+
+<header class="topbar">
+
+    <div class="top-left">
+
+        <div class="admin-info">
+
+            <h1>Partidos</h1>
+
+            <p>Nápoles F.C.</p>
+
+        </div>
+
+    </div>
+
+    <div class="avatar">
+        P
+    </div>
+
+</header>
+
+<!-- ======================================
+MATCHES
+====================================== -->
+
+<section class="matches">
+
+    <!-- MATCH -->
+
+    <div class="match-card">
+
+        <div class="match-top">
+
+            <div class="match-date">
+                12 Mayo 2026
+            </div>
+
+            <div class="status">
+                FINALIZADO
+            </div>
+
+        </div>
+
+        <div class="teams">
+
+            <div class="team">
+
+                <div class="team-logo home">
+                    NFC
+                </div>
+
+                <h3>Nápoles F.C.</h3>
+
+            </div>
+
+            <div class="score">
+                3 - 1
+            </div>
+
+            <div class="team">
+
+                <div class="team-logo away">
+                    RIV
+                </div>
+
+                <h3>River Club</h3>
+
+            </div>
+
+        </div>
+
+        <div class="match-info">
+
+            <div class="info-item">
+
+                <span class="material-symbols-outlined">
+                    schedule
+                </span>
+
+                <span>18:00</span>
+
+            </div>
+
+            <div class="info-item">
+
+                <span class="material-symbols-outlined">
+                    location_on
+                </span>
+
+                <span>Cancha Norte</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MATCH -->
+
+    <div class="match-card">
+
+        <div class="match-top">
+
+            <div class="match-date">
+                18 Mayo 2026
+            </div>
+
+            <div class="status">
+                PRÓXIMO
+            </div>
+
+        </div>
+
+        <div class="teams">
+
+            <div class="team">
+
+                <div class="team-logo home">
+                    NFC
+                </div>
+
+                <h3>Nápoles F.C.</h3>
+
+            </div>
+
+            <div class="score">
+                VS
+            </div>
+
+            <div class="team">
+
+                <div class="team-logo away">
+                    ATL
+                </div>
+
+                <h3>Atléticos</h3>
+
+            </div>
+
+        </div>
+
+        <div class="match-info">
+
+            <div class="info-item">
+
+                <span class="material-symbols-outlined">
+                    schedule
+                </span>
+
+                <span>20:00</span>
+
+            </div>
+
+            <div class="info-item">
+
+                <span class="material-symbols-outlined">
+                    location_on
+                </span>
+
+                <span>Estadio Central</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MATCH -->
+
+    <div class="match-card">
+
+        <div class="match-top">
+
+            <div class="match-date">
+                25 Mayo 2026
+            </div>
+
+            <div class="status">
+                PENDIENTE
+            </div>
+
+        </div>
+
+        <div class="teams">
+
+            <div class="team">
+
+                <div class="team-logo home">
+                    NFC
+                </div>
+
+                <h3>Nápoles F.C.</h3>
+
+            </div>
+
+            <div class="score">
+                VS
+            </div>
+
+            <div class="team">
+
+                <div class="team-logo away">
+                    LEO
+                </div>
+
+                <h3>Leones FC</h3>
+
+            </div>
+
+        </div>
+
+        <div class="match-info">
+
+            <div class="info-item">
+
+                <span class="material-symbols-outlined">
+                    schedule
+                </span>
+
+                <span>17:30</span>
+
+            </div>
+
+            <div class="info-item">
+
+                <span class="material-symbols-outlined">
+                    location_on
+                </span>
+
+                <span>Cancha Sur</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ======================================
+ADD MATCH BUTTON
+====================================== -->
+
+<button class="fab">
+
+    <span class="material-symbols-outlined">
+        add
+    </span>
+
+</button>
+
+<script>
+
+// =========================================
+// VALIDAR ADMIN
+// =========================================
+
+if(
+    localStorage.getItem('admin_activo')
+    !== 'true'
+){
+    window.location.href = './login.html';
+}
+
+</script>
+
+</body>
+</html>
