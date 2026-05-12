@@ -30,9 +30,13 @@ rel="stylesheet">
 }
 
 body{
+
     font-family:'Inter',sans-serif;
+
     background:#0f172a;
+
     color:white;
+
     overflow:hidden;
 }
 
@@ -44,6 +48,8 @@ SIDEBAR
 
     width:280px;
 
+    height:100vh;
+
     background:
     linear-gradient(
         180deg,
@@ -53,8 +59,6 @@ SIDEBAR
 
     border-right:
     1px solid rgba(255,255,255,.06);
-
-    height:100vh;
 
     position:fixed;
 
@@ -72,9 +76,9 @@ SIDEBAR
 
     font-weight:800;
 
-    margin-bottom:40px;
-
     color:#38bdf8;
+
+    margin-bottom:40px;
 }
 
 .menu{
@@ -83,10 +87,10 @@ SIDEBAR
 
     flex-direction:column;
 
-    gap:10px;
+    gap:12px;
 }
 
-.menu button{
+.menu-btn{
 
     width:100%;
 
@@ -110,10 +114,12 @@ SIDEBAR
 
     transition:.25s;
 
-    font-weight:600;
+    font-weight:700;
+
+    font-size:.95rem;
 }
 
-.menu button:hover{
+.menu-btn:hover{
 
     background:
     rgba(56,189,248,.12);
@@ -121,7 +127,7 @@ SIDEBAR
     color:white;
 }
 
-.menu button.active{
+.menu-btn.active{
 
     background:
     linear-gradient(
@@ -184,6 +190,8 @@ TOPBAR
     align-items:center;
 
     gap:10px;
+
+    font-weight:700;
 }
 
 /* =========================
@@ -238,7 +246,7 @@ CARDS
     margin-bottom:12px;
 }
 
-.card .number{
+.number{
 
     font-size:2rem;
 
@@ -309,9 +317,9 @@ th{
 
     text-align:left;
 
-    font-size:.85rem;
-
     color:#94a3b8;
+
+    font-size:.85rem;
 }
 
 td{
@@ -347,6 +355,10 @@ BUTTONS
     transition:.25s;
 }
 
+.btn:hover{
+    transform:scale(1.04);
+}
+
 .btn-blue{
 
     background:#0ea5e9;
@@ -368,12 +380,8 @@ BUTTONS
     color:white;
 }
 
-.btn:hover{
-    transform:scale(1.04);
-}
-
 /* =========================
-FORM
+FORMS
 ========================= */
 
 .form-grid{
@@ -411,10 +419,14 @@ input::placeholder{
 }
 
 /* =========================
-MOBILE
+RESPONSIVE
 ========================= */
 
 @media(max-width:900px){
+
+    body{
+        overflow:auto;
+    }
 
     .sidebar{
 
@@ -426,12 +438,7 @@ MOBILE
     }
 
     .main{
-
         margin-left:0;
-    }
-
-    body{
-        overflow:auto;
     }
 }
 
@@ -453,53 +460,88 @@ SIDEBAR
 
     <div class="menu">
 
-        <button class="active">
+        <button
+        class="menu-btn active"
+        onclick="mostrarSeccion('dashboard', this)">
+
             <span class="material-symbols-outlined">
                 dashboard
             </span>
+
             Dashboard
+
         </button>
 
-        <button>
+        <button
+        class="menu-btn"
+        onclick="mostrarSeccion('jugadores', this)">
+
             <span class="material-symbols-outlined">
                 groups
             </span>
+
             Jugadores
+
         </button>
 
-        <button>
+        <button
+        class="menu-btn"
+        onclick="mostrarSeccion('partidos', this)">
+
             <span class="material-symbols-outlined">
                 sports_soccer
             </span>
+
             Partidos
+
         </button>
 
-        <button>
+        <button
+        class="menu-btn"
+        onclick="mostrarSeccion('rivales', this)">
+
             <span class="material-symbols-outlined">
                 shield
             </span>
+
             Rivales
+
         </button>
 
-        <button>
+        <button
+        class="menu-btn"
+        onclick="mostrarSeccion('finanzas', this)">
+
             <span class="material-symbols-outlined">
                 payments
             </span>
+
             Finanzas
+
         </button>
 
-        <button>
+        <button
+        class="menu-btn"
+        onclick="mostrarSeccion('uniformes', this)">
+
             <span class="material-symbols-outlined">
                 inventory_2
             </span>
+
             Uniformes
+
         </button>
 
-        <button>
+        <button
+        class="menu-btn"
+        onclick="mostrarSeccion('configuracion', this)">
+
             <span class="material-symbols-outlined">
                 settings
             </span>
+
             Configuración
+
         </button>
 
     </div>
@@ -516,8 +558,12 @@ MAIN
 
     <div class="topbar">
 
-        <div class="title">
+        <div
+        class="title"
+        id="tituloSeccion">
+
             Dashboard
+
         </div>
 
         <div class="admin-box">
@@ -526,179 +572,384 @@ MAIN
                 admin_panel_settings
             </span>
 
-            ADMIN ACTIVO
+            Gata
 
         </div>
 
     </div>
 
-    <!-- CARDS -->
+    <!-- =========================
+    DASHBOARD
+    ========================= -->
 
-    <div class="cards">
+    <div
+    id="dashboard"
+    class="content-section">
 
-        <div class="card">
+        <div class="cards">
 
-            <h3>
-                Jugadores
-            </h3>
+            <div class="card">
 
-            <div class="number" id="totalJugadores">
-                0
+                <h3>
+                    Jugadores
+                </h3>
+
+                <div
+                class="number"
+                id="totalJugadores">
+
+                    0
+
+                </div>
+
             </div>
 
-        </div>
+            <div class="card">
 
-        <div class="card">
+                <h3>
+                    Aprobados
+                </h3>
 
-            <h3>
-                Aprobados
-            </h3>
+                <div
+                class="number"
+                id="totalAprobados">
 
-            <div class="number" id="totalAprobados">
-                0
+                    0
+
+                </div>
+
             </div>
 
-        </div>
+            <div class="card">
 
-        <div class="card">
+                <h3>
+                    Pendientes
+                </h3>
 
-            <h3>
-                Pendientes
-            </h3>
+                <div
+                class="number"
+                id="totalPendientes">
 
-            <div class="number" id="totalPendientes">
-                0
-            </div>
+                    0
 
-        </div>
+                </div>
 
-        <div class="card">
-
-            <h3>
-                Próximos Partidos
-            </h3>
-
-            <div class="number">
-                3
             </div>
 
         </div>
 
     </div>
 
-    <!-- JUGADORES -->
+    <!-- =========================
+    JUGADORES
+    ========================= -->
 
-    <div class="section">
+    <div
+    id="jugadores"
+    class="content-section"
+    style="display:none;">
 
-        <div class="section-title">
+        <div class="section">
 
-            <h2>
-                Gestión de Jugadores
-            </h2>
+            <div class="section-title">
+
+                <h2>
+                    Gestión de Jugadores
+                </h2>
+
+                <button
+                class="btn btn-blue">
+
+                    + Nuevo
+
+                </button>
+
+            </div>
+
+            <input
+            type="text"
+            placeholder="Buscar jugador..."
+            style="margin-bottom:20px;">
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Cédula
+                            </th>
+
+                            <th>
+                                Nombre
+                            </th>
+
+                            <th>
+                                Dorsal
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                            <th>
+                                Acciones
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaJugadores">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+    PARTIDOS
+    ========================= -->
+
+    <div
+    id="partidos"
+    class="content-section"
+    style="display:none;">
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <h2>
+                    Programar Partido
+                </h2>
+
+            </div>
+
+            <div class="form-grid">
+
+                <input
+                type="text"
+                placeholder="Rival">
+
+                <input
+                type="date">
+
+                <input
+                type="time">
+
+                <input
+                type="text"
+                placeholder="Estadio">
+
+            </div>
+
+            <div
+            style="margin-top:20px;">
+
+                <button
+                class="btn btn-green">
+
+                    Guardar Partido
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+    RIVALES
+    ========================= -->
+
+    <div
+    id="rivales"
+    class="content-section"
+    style="display:none;">
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <h2>
+                    Rivales
+                </h2>
+
+            </div>
+
+            <div class="form-grid">
+
+                <input
+                type="text"
+                placeholder="Nombre rival">
+
+                <input
+                type="text"
+                placeholder="Ciudad">
+
+            </div>
+
+            <div
+            style="margin-top:20px;">
+
+                <button
+                class="btn btn-blue">
+
+                    Agregar Rival
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+    FINANZAS
+    ========================= -->
+
+    <div
+    id="finanzas"
+    class="content-section"
+    style="display:none;">
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <h2>
+                    Finanzas
+                </h2>
+
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        Ingresos
+                    </h3>
+
+                    <div class="number">
+
+                        $0
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>
+                        Pendientes
+                    </h3>
+
+                    <div class="number">
+
+                        $0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+    UNIFORMES
+    ========================= -->
+
+    <div
+    id="uniformes"
+    class="content-section"
+    style="display:none;">
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <h2>
+                    Uniformes
+                </h2>
+
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        Entregados
+                    </h3>
+
+                    <div class="number">
+
+                        0
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>
+                        Pendientes
+                    </h3>
+
+                    <div class="number">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+    CONFIG
+    ========================= -->
+
+    <div
+    id="configuracion"
+    class="content-section"
+    style="display:none;">
+
+        <div class="section">
+
+            <div class="section-title">
+
+                <h2>
+                    Configuración
+                </h2>
+
+            </div>
 
             <button
-            class="btn btn-blue">
-                + Nuevo
-            </button>
+            class="btn btn-red"
+            onclick="cerrarSesion()">
 
-        </div>
+                Cerrar Sesión
 
-        <div
-        style="
-        margin-bottom:20px;
-        ">
-
-            <input
-            type="text"
-            id="buscarJugador"
-            placeholder="Buscar jugador...">
-
-        </div>
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Cédula
-                        </th>
-
-                        <th>
-                            Nombre
-                        </th>
-
-                        <th>
-                            Dorsal
-                        </th>
-
-                        <th>
-                            Talla
-                        </th>
-
-                        <th>
-                            Estado
-                        </th>
-
-                        <th>
-                            Acciones
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="tablaJugadores">
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-    <!-- PARTIDOS -->
-
-    <div class="section">
-
-        <div class="section-title">
-
-            <h2>
-                Programar Partido
-            </h2>
-
-        </div>
-
-        <div class="form-grid">
-
-            <input
-            type="text"
-            placeholder="Rival">
-
-            <input
-            type="date">
-
-            <input
-            type="time">
-
-            <input
-            type="text"
-            placeholder="Estadio">
-
-        </div>
-
-        <div
-        style="
-        margin-top:20px;
-        ">
-
-            <button
-            class="btn btn-green">
-                Guardar Partido
             </button>
 
         </div>
@@ -714,6 +965,60 @@ SCRIPT
 <script src="./config.js"></script>
 
 <script>
+
+function mostrarSeccion(id, btn){
+
+    const secciones =
+    document.querySelectorAll(
+    '.content-section'
+    );
+
+    secciones.forEach(sec => {
+
+        sec.style.display =
+        'none';
+
+    });
+
+    document.getElementById(id)
+    .style.display = 'block';
+
+    document.getElementById(
+    'tituloSeccion'
+    ).textContent =
+    id.charAt(0).toUpperCase()
+    + id.slice(1);
+
+    document
+    .querySelectorAll('.menu-btn')
+    .forEach(b => {
+
+        b.classList.remove(
+        'active'
+        );
+
+    });
+
+    btn.classList.add(
+    'active'
+    );
+}
+
+/* =========================
+CERRAR SESIÓN
+========================= */
+
+function cerrarSesion(){
+
+    localStorage.clear();
+
+    window.location.href =
+    './login.html';
+}
+
+/* =========================
+CARGAR JUGADORES
+========================= */
 
 const tabla =
 document.getElementById(
@@ -783,11 +1088,7 @@ async function cargarJugadores(){
                 </td>
 
                 <td>
-                    ${j.dorsal}
-                </td>
-
-                <td>
-                    ${j.talla}
+                    ${j.dorsal || '-'}
                 </td>
 
                 <td>
