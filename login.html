@@ -328,13 +328,9 @@
     <div class="login-card">
 
         <div class="logo-area">
-
-           
-
+            <img src="https://raw.githubusercontent.com/Kilometro0-Ec/NapolesFC/main/logo.png" alt="Nápoles F.C.">
             <h1>NÁPOLES F.C.</h1>
-
-            <p>Panel de Control de Jugadores</p>
-
+            <p>Panel oficial de Jugadores</p>
         </div>
 
         <div class="input-group">
@@ -344,7 +340,7 @@
                 type="text"
                 id="loginCedula"
                 maxlength="30"
-                placeholder="1234567890"
+                placeholder="0000000000"
                 autocomplete="off"
                 inputmode="text">
         </div>
@@ -356,39 +352,24 @@
         <div id="errorMsg" class="error-message"></div>
 
         <div class="footer-links">
-
-            <p style="margin-bottom:14px;">
-                ¿Eres nuevo en el club?
-            </p>
-
-            <a href="registro.html">
-                CREAR CUENTA NUEVA ✨
-            </a>
+            <p style="margin-bottom:14px;">¿Eres nuevo en el club?</p>
+            <a href="registro.html">CREAR CUENTA NUEVA ✨</a>
 
             <div id="containerDownload">
-
-                <button id="manualDownloadBtn"
-                    class="btn-download">
-
+                <button id="manualDownloadBtn" class="btn-download">
                     📲 INSTALAR APP
-
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
     <!-- CONFIG -->
     <script src="config.js"></script>
 
     <script>
-
         // =========================
         // ELEMENTOS
         // =========================
-
         const cedulaInput = document.getElementById('loginCedula');
         const btnLogin = document.getElementById('btnLogin');
         const errorDiv = document.getElementById('errorMsg');
@@ -397,228 +378,127 @@
         // =========================
         // ADMIN
         // =========================
-
         const ADMIN_SECRET = "GataFiera54321";
         const ADMIN_TRIGGER = "Gata";
 
         // =========================
         // UTILIDADES
         // =========================
-
         function mostrarError(mensaje) {
-
             errorDiv.innerHTML = mensaje;
             errorDiv.style.display = 'block';
-
             setTimeout(() => {
                 errorDiv.style.display = 'none';
             }, 5000);
         }
 
         function actualizarModoVisual() {
-
             const valor = cedulaInput.value.trim();
-
             btnLogin.disabled = valor === '';
 
             if (valor.includes(ADMIN_TRIGGER)) {
-
                 bodyElem.classList.add('admin-mode-body');
                 cedulaInput.classList.add('admin-mode');
-
             } else {
-
                 bodyElem.classList.remove('admin-mode-body');
                 cedulaInput.classList.remove('admin-mode');
             }
         }
 
         cedulaInput.addEventListener('input', () => {
-
             actualizarModoVisual();
             errorDiv.style.display = 'none';
-
         });
 
         // =========================
-        // LOGIN
+        // LOGIN (CORREGIDO)
         // =========================
-
         btnLogin.addEventListener('click', async () => {
-
             const valorIngresado = cedulaInput.value.trim();
 
-            // =========================
             // LOGIN ADMIN
-            // =========================
-
             if (valorIngresado === ADMIN_SECRET) {
-
                 localStorage.setItem('admin_session', 'true');
-
                 window.location.href = 'admin.html';
-
                 return;
             }
 
-            // =========================
-            // VALIDAR CEDULA
-            // =========================
-
+            // VALIDAR FORMATO CEDULA
             if (!/^\d{10}$/.test(valorIngresado)) {
-
                 mostrarError('❌ La cédula debe tener 10 dígitos');
-
                 return;
             }
 
-            // =========================
             // CONFIG
-            // =========================
-
-            if (
-                typeof CONFIG === 'undefined' ||
-                !CONFIG.URL_GAS
-            ) {
-
-                mostrarError('❌ No se cargó config.js');
-
+            if (typeof CONFIG === 'undefined' || !CONFIG.URL_GAS) {
+                mostrarError('❌ Error de configuración');
                 return;
             }
 
             btnLogin.disabled = true;
-
             const textoOriginal = btnLogin.innerHTML;
-
             btnLogin.innerHTML = 'VERIFICANDO...';
 
             try {
-
-                const url =
-                    `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valorIngresado}&t=${Date.now()}`;
-
-                console.log('Consultando:', url);
-
+                // Usamos la URL del script que ya probamos con éxito
+                const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valorIngresado}&t=${Date.now()}`;
+                
                 const response = await fetch(url);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
                 const data = await response.json();
 
-                console.log('Respuesta:', data);
-
-                // =========================
-                // RESPUESTA NUEVA
-                // =========================
-
-                if (data.ok === true && data.registrado === true) {
-
-                    localStorage.setItem(
-                        'jugador_actual',
-                        JSON.stringify({
-                            ...data.jugador,
-                            loginTime: Date.now()
-                        })
-                    );
+                // Lógica basada en tu nuevo Script de Google
+                if (data.success && data.estado === 'APROBADO') {
+                    
+                    // Guardamos la cédula y los datos del jugador para el perfil
+                    localStorage.setItem('userCedula', valorIngresado);
+                    localStorage.setItem('jugador_actual', JSON.stringify({
+                        ...data.datos,
+                        loginTime: Date.now()
+                    }));
 
                     window.location.href = 'perfil.html';
-
-                    return;
+                } else {
+                    // Muestra el mensaje específico (Ej: "Tu registro está en estado: PENDIENTE")
+                    mostrarError(`❌ ${data.message || 'No autorizado'}`);
                 }
-
-                // =========================
-                // NO REGISTRADO
-                // =========================
-
-                if (
-                    data.ok === true &&
-                    data.registrado === false
-                ) {
-
-                    mostrarError(
-                        '❌ Cédula no registrada'
-                    );
-
-                    return;
-                }
-
-                // =========================
-                // ERROR SERVIDOR
-                // =========================
-
-                mostrarError(
-                    data.error ||
-                    '⚠️ Respuesta inesperada del servidor'
-                );
 
             } catch (error) {
-
                 console.error(error);
-
-                mostrarError(
-                    '🔌 Error de conexión con el servidor'
-                );
-
+                mostrarError('🔌 Error de conexión con el servidor');
             } finally {
-
                 btnLogin.disabled = false;
                 btnLogin.innerHTML = textoOriginal;
-
                 actualizarModoVisual();
             }
-
         });
 
-        // =========================
-        // ENTER
-        // =========================
-
+        // ENTER KEY
         cedulaInput.addEventListener('keypress', (e) => {
-
             if (e.key === 'Enter' && !btnLogin.disabled) {
-
                 btnLogin.click();
             }
         });
 
         actualizarModoVisual();
 
-        // =========================
         // PWA
-        // =========================
-
         let deferredPrompt;
-
         window.addEventListener('beforeinstallprompt', (e) => {
-
             e.preventDefault();
-
             deferredPrompt = e;
         });
 
-        document
-            .getElementById('manualDownloadBtn')
-            .addEventListener('click', async () => {
-
-                if (deferredPrompt) {
-
-                    deferredPrompt.prompt();
-
-                    await deferredPrompt.userChoice;
-
-                    deferredPrompt = null;
-
-                } else {
-
-                    alert(
-                        "⚽ Usa 'Agregar a pantalla principal' o 'Instalar aplicación'"
-                    );
-                }
-            });
-
+        document.getElementById('manualDownloadBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else {
+                alert("⚽ Usa 'Agregar a pantalla principal' o 'Instalar aplicación'");
+            }
+        });
     </script>
-
 </body>
 </html>
