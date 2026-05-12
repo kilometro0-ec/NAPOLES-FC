@@ -7,15 +7,35 @@
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>Panel Admin</title>
+<title>Admin | Nápoles F.C.</title>
 
 <link
-href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
 rel="stylesheet">
 
 <style>
+
+:root{
+
+    --bg:#020c1a;
+
+    --card:
+    rgba(14,22,40,.82);
+
+    --primary:#a855f7;
+
+    --primary2:#7c3aed;
+
+    --success:#16a34a;
+
+    --danger:#dc2626;
+
+    --warning:#f59e0b;
+
+    --text:#ffffff;
+}
 
 *{
     margin:0;
@@ -29,25 +49,52 @@ body{
     'Plus Jakarta Sans',
     sans-serif;
 
-    background:#020c1a;
+    background:
+    radial-gradient(
+    circle at top left,
+    rgba(168,85,247,.18),
+    transparent 35%
+    ),
+    radial-gradient(
+    circle at bottom right,
+    rgba(0,210,255,.18),
+    transparent 35%
+    ),
+    var(--bg);
 
-    color:#fff;
+    min-height:100vh;
 
-    padding:20px;
+    color:var(--text);
+
+    overflow-x:hidden;
 }
 
-h1{
+header{
+
+    padding:24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:20px;
+}
+
+.logo{
 
     font-size:2rem;
 
-    margin-bottom:30px;
-
-    text-align:center;
+    font-weight:800;
 
     background:
     linear-gradient(
     to right,
     #fff,
+    #d8b4fe,
     #a855f7
     );
 
@@ -56,86 +103,277 @@ h1{
     -webkit-text-fill-color:transparent;
 }
 
-.container{
+.logout-btn{
 
-    max-width:1200px;
+    border:none;
 
-    margin:auto;
-}
+    padding:14px 22px;
 
-.card{
+    border-radius:18px;
 
     background:
-    rgba(18,25,45,.85);
+    linear-gradient(
+    135deg,
+    #7c3aed,
+    #a855f7
+    );
+
+    color:#fff;
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.dashboard{
+
+    width:100%;
+
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:0 20px 40px;
+}
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+    margin-bottom:30px;
+}
+
+.stat-card{
+
+    background:var(--card);
+
+    backdrop-filter:blur(18px);
 
     border:
     1px solid
-    rgba(168,85,247,.35);
+    rgba(168,85,247,.25);
 
-    border-radius:24px;
+    border-radius:28px;
 
-    padding:20px;
-
-    margin-bottom:20px;
+    padding:26px;
 
     box-shadow:
     0 0 25px
-    rgba(168,85,247,.15);
+    rgba(168,85,247,.12);
 }
 
-.nombre{
+.stat-title{
 
-    font-size:1.1rem;
+    font-size:.9rem;
 
-    font-weight:800;
+    opacity:.8;
 
     margin-bottom:10px;
 }
 
-.info{
+.stat-value{
 
-    line-height:1.8;
+    font-size:2rem;
 
-    opacity:.92;
+    font-weight:800;
 }
 
-.estado{
+.search-box{
 
-    margin-top:12px;
+    margin-bottom:30px;
+}
+
+.search-box input{
+
+    width:100%;
+
+    min-height:64px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:22px;
+
+    padding:0 22px;
+
+    background:
+    rgba(20,30,50,.82);
+
+    color:#fff;
+
+    font-size:1rem;
+
+    font-weight:700;
+
+    border:
+    1px solid
+    rgba(168,85,247,.25);
+}
+
+.players-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(340px,1fr));
+
+    gap:22px;
+}
+
+.player-card{
+
+    background:var(--card);
+
+    backdrop-filter:blur(18px);
+
+    border:
+    1px solid
+    rgba(168,85,247,.25);
+
+    border-radius:28px;
+
+    padding:24px;
+
+    box-shadow:
+    0 0 25px
+    rgba(168,85,247,.12);
+
+    transition:.25s;
+}
+
+.player-card:hover{
+
+    transform:translateY(-4px);
+}
+
+.player-name{
+
+    font-size:1.2rem;
+
+    font-weight:800;
+
+    margin-bottom:16px;
+}
+
+.player-info{
+
+    line-height:1.9;
+
+    opacity:.92;
+
+    margin-bottom:18px;
+}
+
+.badges{
 
     display:flex;
 
+    flex-wrap:wrap;
+
     gap:10px;
 
-    flex-wrap:wrap;
+    margin-bottom:20px;
 }
 
 .badge{
 
-    padding:8px 14px;
+    padding:9px 14px;
 
     border-radius:999px;
 
-    font-size:.8rem;
+    font-size:.78rem;
 
     font-weight:800;
 }
 
 .aprobado{
-    background:#16a34a;
+    background:var(--success);
 }
 
 .pendiente{
-    background:#dc2626;
+    background:var(--danger);
+}
+
+.actions{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:12px;
+}
+
+.actions button{
+
+    border:none;
+
+    min-height:50px;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-weight:800;
+
+    color:#fff;
+
+    transition:.2s;
+}
+
+.btn-inscripcion{
+    background:#2563eb;
+}
+
+.btn-uniforme{
+    background:#16a34a;
+}
+
+.btn-medias{
+    background:#f59e0b;
+}
+
+.btn-editar{
+    background:#7c3aed;
 }
 
 .loading{
 
     text-align:center;
 
-    margin-top:80px;
+    padding:80px 20px;
 
     font-size:1.2rem;
+}
+
+.empty{
+
+    text-align:center;
+
+    padding:80px 20px;
+
+    opacity:.8;
+}
+
+@media(max-width:640px){
+
+    header{
+        padding:20px;
+    }
+
+    .logo{
+        font-size:1.5rem;
+    }
+
+    .actions{
+        grid-template-columns:1fr;
+    }
 }
 
 </style>
@@ -144,14 +382,87 @@ h1{
 
 <body>
 
-<div class="container">
+<header>
 
-    <h1>
+    <div class="logo">
         PANEL ADMIN NÁPOLES F.C.
-    </h1>
+    </div>
+
+    <button
+        class="logout-btn"
+        id="logoutBtn">
+        Cerrar Sesión
+    </button>
+
+</header>
+
+<div class="dashboard">
+
+    <!-- ESTADÍSTICAS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                TOTAL JUGADORES
+            </div>
+
+            <div
+            class="stat-value"
+            id="totalJugadores">
+                0
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                INSCRIPCIONES APROBADAS
+            </div>
+
+            <div
+            class="stat-value"
+            id="totalAprobados">
+                0
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                PENDIENTES
+            </div>
+
+            <div
+            class="stat-value"
+            id="totalPendientes">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BUSCADOR -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar jugador por nombre, cédula o dorsal..."
+        >
+
+    </div>
+
+    <!-- CONTENEDOR -->
 
     <div
-    id="contenedorJugadores">
+    class="players-grid"
+    id="playersContainer">
 
         <div class="loading">
             Cargando jugadores...
@@ -180,16 +491,54 @@ if(
 }
 
 // =====================================================
-// CONTENEDOR
+// ELEMENTOS
 // =====================================================
 
-const contenedor =
+const playersContainer =
 document.getElementById(
-    'contenedorJugadores'
+    'playersContainer'
 );
 
+const totalJugadores =
+document.getElementById(
+    'totalJugadores'
+);
+
+const totalAprobados =
+document.getElementById(
+    'totalAprobados'
+);
+
+const totalPendientes =
+document.getElementById(
+    'totalPendientes'
+);
+
+const searchInput =
+document.getElementById(
+    'searchInput'
+);
+
+let jugadoresGlobal = [];
+
 // =====================================================
-// CARGAR JUGADORES
+// LOGOUT
+// =====================================================
+
+document
+.getElementById('logoutBtn')
+.addEventListener('click', () => {
+
+    localStorage.removeItem(
+        'admin_activo'
+    );
+
+    window.location.href =
+    './login.html';
+});
+
+// =====================================================
+// CARGAR
 // =====================================================
 
 async function cargarJugadores(){
@@ -209,113 +558,217 @@ async function cargarJugadores(){
             data.ok !== true
         ){
 
-            contenedor.innerHTML =
+            playersContainer.innerHTML =
             'Error cargando jugadores';
 
             return;
         }
 
-        const jugadores =
+        jugadoresGlobal =
         data.jugadores;
 
-        if(
-            jugadores.length === 0
-        ){
+        renderJugadores(
+            jugadoresGlobal
+        );
 
-            contenedor.innerHTML =
-            'No existen jugadores';
+    }catch(error){
 
-            return;
-        }
+        playersContainer.innerHTML =
+        'Error de conexión';
+    }
+}
 
-        contenedor.innerHTML = '';
+// =====================================================
+// RENDER
+// =====================================================
 
-        jugadores.forEach(j => {
+function renderJugadores(lista){
 
-            contenedor.innerHTML += `
+    if(lista.length === 0){
 
-            <div class="card">
+        playersContainer.innerHTML =
+        `<div class="empty">
+            No hay resultados
+        </div>`;
 
-                <div class="nombre">
-                    ${j.primerNombre}
-                    ${j.segundoNombre}
-                    ${j.apellidos}
+        return;
+    }
+
+    // STATS
+
+    totalJugadores.textContent =
+    lista.length;
+
+    totalAprobados.textContent =
+    lista.filter(j =>
+    j.inscripEstado === 'APROBADO'
+    ).length;
+
+    totalPendientes.textContent =
+    lista.filter(j =>
+    j.inscripEstado !== 'APROBADO'
+    ).length;
+
+    // HTML
+
+    playersContainer.innerHTML = '';
+
+    lista.forEach(j => {
+
+        playersContainer.innerHTML += `
+
+        <div class="player-card">
+
+            <div class="player-name">
+
+                ${j.primerNombre}
+                ${j.segundoNombre}
+                ${j.apellidos}
+
+            </div>
+
+            <div class="player-info">
+
+                <div>
+                    📄 Cédula:
+                    ${j.cedula}
                 </div>
 
-                <div class="info">
+                <div>
+                    👕 Camiseta:
+                    ${j.nombreCamiseta}
+                </div>
 
-                    <div>
-                        Cédula:
-                        ${j.cedula}
-                    </div>
+                <div>
+                    🔢 Dorsal:
+                    ${j.dorsal}
+                </div>
 
-                    <div>
-                        Camiseta:
-                        ${j.nombreCamiseta}
-                    </div>
+                <div>
+                    📏 Talla:
+                    ${j.talla}
+                </div>
 
-                    <div>
-                        Dorsal:
-                        ${j.dorsal}
-                    </div>
+            </div>
 
-                    <div>
-                        Talla:
-                        ${j.talla}
-                    </div>
+            <div class="badges">
+
+                <div class="badge
+                ${j.inscripEstado === 'APROBADO'
+                ? 'aprobado'
+                : 'pendiente'}">
+
+                    INSCRIPCIÓN:
+                    ${j.inscripEstado}
 
                 </div>
 
-                <div class="estado">
+                <div class="badge
+                ${j.unifEstado === 'APROBADO'
+                ? 'aprobado'
+                : 'pendiente'}">
 
-                    <div class="badge
-                    ${j.inscripEstado === 'APROBADO'
-                    ? 'aprobado'
-                    : 'pendiente'}">
+                    UNIFORME:
+                    ${j.unifEstado}
 
-                        INSCRIPCIÓN:
-                        ${j.inscripEstado}
+                </div>
 
-                    </div>
+                <div class="badge
+                ${j.mediasEstado === 'APROBADO'
+                ? 'aprobado'
+                : 'pendiente'}">
 
-                    <div class="badge
-                    ${j.unifEstado === 'APROBADO'
-                    ? 'aprobado'
-                    : 'pendiente'}">
-
-                        UNIFORME:
-                        ${j.unifEstado}
-
-                    </div>
-
-                    <div class="badge
-                    ${j.mediasEstado === 'APROBADO'
-                    ? 'aprobado'
-                    : 'pendiente'}">
-
-                        MEDIAS:
-                        ${j.mediasEstado}
-
-                    </div>
+                    MEDIAS:
+                    ${j.mediasEstado}
 
                 </div>
 
             </div>
 
-            `;
-        });
+            <div class="actions">
 
-    }catch(error){
+                <button
+                class="btn-inscripcion">
 
-        contenedor.innerHTML =
-        'Error de conexión';
-    }
+                    Aprobar Inscripción
+
+                </button>
+
+                <button
+                class="btn-uniforme">
+
+                    Aprobar Uniforme
+
+                </button>
+
+                <button
+                class="btn-medias">
+
+                    Aprobar Medias
+
+                </button>
+
+                <button
+                class="btn-editar">
+
+                    Editar Jugador
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+    });
 }
+
+// =====================================================
+// BUSCADOR
+// =====================================================
+
+searchInput.addEventListener('input', () => {
+
+    const texto =
+    searchInput.value
+    .toLowerCase()
+    .trim();
+
+    const filtrados =
+    jugadoresGlobal.filter(j => {
+
+        return (
+
+            `${j.primerNombre}
+            ${j.segundoNombre}
+            ${j.apellidos}`
+            .toLowerCase()
+            .includes(texto)
+
+            ||
+
+            String(j.cedula)
+            .includes(texto)
+
+            ||
+
+            String(j.dorsal)
+            .includes(texto)
+        );
+    });
+
+    renderJugadores(
+        filtrados
+    );
+});
+
+// =====================================================
+// INIT
+// =====================================================
 
 cargarJugadores();
 
 </script>
 
 </body>
-
 </html>
