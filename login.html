@@ -85,7 +85,7 @@
             cursor: pointer; transition: .25s;
         }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0, 210, 255, 0.22); }
-        .btn-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+        .btn-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
 
         .error-message {
             display: none; margin-top: 18px; padding: 14px; border-radius: 14px;
@@ -103,12 +103,13 @@
             color: var(--primary); font-size: .84rem; font-weight: 700; cursor: pointer; transition: .25s;
         }
 
+        /* ADMIN */
         body.admin-mode-body .login-card { border-color: var(--admin-border); box-shadow: 0 0 22px var(--admin-glow), 0 18px 45px rgba(0, 0, 0, 0.55); }
         body.admin-mode-body .input-group label { color: #d8b4fe; }
         input.admin-mode { background: var(--admin-bg); border-color: var(--admin-border); }
 
         @media(max-width: 480px) {
-            .login-card { padding: 30px 22px; }
+            .login-card { padding: 30px 22px; border-radius: 28px; }
             .logo-area h1 { font-size: 1.7rem; }
         }
     </style>
@@ -122,28 +123,37 @@
             <p>Panel de Control de Jugadores</p>
         </div>
 
-        <div class="input-group">
-            <label>Cédula o Clave Admin</label>
-            <input type="text" id="loginCedula" maxlength="30" placeholder="1234567890" autocomplete="off">
-        </div>
+        <!-- Agregamos un form ficticio pero prevenimos su envio -->
+        <form id="loginForm">
+            <div class="input-group">
+                <label>Número de Cédula / Clave Admin</label>
+                <input type="text" id="loginCedula" maxlength="30" placeholder="1234567890" autocomplete="off">
+            </div>
 
-        <button id="btnLogin" class="btn-submit" disabled>Iniciar Sesión</button>
+            <button type="submit" id="btnLogin" class="btn-submit" disabled>
+                Iniciar Sesión
+            </button>
+        </form>
+
         <div id="errorMsg" class="error-message"></div>
 
         <div class="footer-links">
             <p style="margin-bottom:14px;">¿Eres nuevo en el club?</p>
             <a href="registro.html">CREAR CUENTA NUEVA ✨</a>
-            <div>
+            <div id="containerDownload">
                 <button id="manualDownloadBtn" class="btn-download">📲 INSTALAR APP</button>
             </div>
         </div>
     </div>
 
+    <!-- CONFIG -->
     <script src="config.js"></script>
+
     <script>
         const cedulaInput = document.getElementById('loginCedula');
         const btnLogin = document.getElementById('btnLogin');
         const errorDiv = document.getElementById('errorMsg');
+        const loginForm = document.getElementById('loginForm');
         const bodyElem = document.body;
 
         const ADMIN_SECRET = "GataFiera54321";
@@ -152,7 +162,7 @@
         function mostrarError(mensaje) {
             errorDiv.innerHTML = mensaje;
             errorDiv.style.display = 'block';
-            setTimeout(() => { errorDiv.style.display = 'none'; }, 6000);
+            setTimeout(() => { errorDiv.style.display = 'none'; }, 7000);
         }
 
         function actualizarModoVisual() {
@@ -169,57 +179,78 @@
 
         cedulaInput.addEventListener('input', actualizarModoVisual);
 
-        btnLogin.addEventListener('click', async () => {
+        // MANEJO DEL LOGIN
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // DETIENE EL REFRESCO (F5)
+
             const valor = cedulaInput.value.trim();
 
+            // 1. LOGIN ADMIN
             if (valor === ADMIN_SECRET) {
                 localStorage.setItem('admin_session', 'true');
                 window.location.href = 'admin.html';
                 return;
             }
 
+            // 2. VALIDAR CEDULA
             if (!/^\d{10}$/.test(valor)) {
                 mostrarError('❌ La cédula debe tener 10 dígitos numéricos');
                 return;
             }
 
+            // 3. CONECTAR
             btnLogin.disabled = true;
-            btnLogin.innerHTML = 'VERIFICANDO...';
+            const originalText = btnLogin.innerHTML;
+            btnLogin.innerHTML = 'CONECTANDO...';
 
             try {
-                // LLAMADA AL SCRIPT DE GOOGLE QUE PASASTE
-                const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}`;
+                if (typeof CONFIG === 'undefined' || !CONFIG.URL_GAS) {
+                    throw new Error("Falta la URL en config.js");
+                }
+
+                // Llamada al script de Google
+                const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}&t=${Date.now()}`;
                 const response = await fetch(url);
+                
+                if (!response.ok) throw new Error("Error en servidor Google");
+                
                 const data = await response.json();
 
-                if (data.success) {
-                    // Si success es true y el estado es APROBADO (según tu script)
+                if (data.success && data.estado === 'APROBADO') {
+                    // Guardar sesión
                     localStorage.setItem('userCedula', valor);
                     localStorage.setItem('jugador_actual', JSON.stringify(data.datos));
                     window.location.href = 'perfil.html';
                 } else {
-                    // Si success es false, el script envía un "message" explicando por qué
-                    mostrarError(`⚠️ ${data.message}`);
+                    // Mostrar mensaje de error enviado por el script (Ej: PENDIENTE)
+                    mostrarError(`⚠️ ${data.message || 'Acceso no autorizado'}`);
                 }
-            } catch (e) {
-                mostrarError('🔌 Error de conexión. Revisa tu internet.');
+            } catch (err) {
+                console.error(err);
+                mostrarError('🔌 Error de conexión. Revisa config.js o tu internet.');
             } finally {
                 btnLogin.disabled = false;
-                btnLogin.innerHTML = 'Iniciar Sesión';
+                btnLogin.innerHTML = originalText;
             }
         });
 
-        // PWA logic
+        // PWA
         let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
         document.getElementById('manualDownloadBtn').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt = null;
             } else {
-                alert("⚽ Abre el menú de tu navegador y selecciona 'Instalar' o 'Agregar a inicio'.");
+                alert("⚽ Abre el menú de tu navegador y pulsa 'Instalar' o 'Agregar a inicio'");
             }
         });
+
+        actualizarModoVisual();
     </script>
 </body>
 </html>
