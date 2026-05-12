@@ -1,586 +1,550 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Nápoles F.C. - Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+:root{
+    --gold:#D4AF37;
+    --gold-light:#f5e6a3;
+    --bg:#060912;
+    --card:rgba(255,255,255,.06);
+    --border:rgba(255,255,255,.08);
+    --text:#fff;
+    --muted:#b3b3b3;
+    --danger:#e74c3c;
+    --success:#2ecc71;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+
+    background:
+    radial-gradient(circle at top,#142244 0%,#060912 100%);
+}
+
+.login-container{
+    width:100%;
+    max-width:420px;
+}
+
+.login-card{
+    position:relative;
+    overflow:hidden;
+
+    background:linear-gradient(
+        145deg,
+        rgba(15,25,45,.95),
+        rgba(5,10,20,.98)
+    );
+
+    border:1px solid rgba(212,175,55,.25);
+
+    border-radius:28px;
+
+    padding:30px 24px;
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.45),
+    0 0 25px rgba(212,175,55,.08);
+}
+
+.login-card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(212,175,55,.08),
+        transparent
+    );
+
+    animation:shine 4s linear infinite;
+}
+
+@keyframes shine{
+    0%{left:-100%;}
+    100%{left:100%;}
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo-circle{
+    width:90px;
+    height:90px;
+    border-radius:50%;
 
-    <title>Nápoles F.C. - Acceso Jugadores</title>
+    margin:auto auto 15px;
 
-    <!-- PWA -->
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#020c1a">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    <!-- Fuente -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    background:rgba(212,175,55,.1);
 
-    <style>
+    border:2px solid rgba(212,175,55,.3);
 
-        :root{
-            --primary:#00d2ff;
-            --primary-dark:#008f9b;
-            --accent:#FFD700;
-            --bg-dark:#020c1a;
-            --glass:rgba(12,25,45,.72);
-        }
+    box-shadow:0 0 25px rgba(212,175,55,.2);
+}
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            -webkit-tap-highlight-color:transparent;
-        }
+.logo-circle i{
+    font-size:2.5rem;
+    color:var(--gold);
+}
 
-        body{
-            font-family:'Plus Jakarta Sans',sans-serif;
+.logo h1{
+    font-family:'Outfit',sans-serif;
+    font-size:1.7rem;
+    font-weight:900;
+    letter-spacing:2px;
+    color:var(--gold);
+}
 
-            background:
-            radial-gradient(circle at top, rgba(0,210,255,.14), transparent 45%),
-            linear-gradient(rgba(2,12,26,.92), rgba(2,12,26,.96));
+.logo p{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:.9rem;
+}
 
-            background-color:var(--bg-dark);
+.form-group{
+    margin-bottom:18px;
+}
 
-            min-height:100vh;
+.form-label{
+    display:block;
+    margin-bottom:8px;
+    font-size:.85rem;
+    color:var(--gold-light);
+    font-weight:700;
+    letter-spacing:1px;
+}
 
-            display:flex;
-            align-items:center;
-            justify-content:center;
+.input-wrapper{
+    position:relative;
+}
 
-            padding:20px;
+.input-wrapper i{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--gold);
+    font-size:1rem;
+}
+
+.form-input{
+    width:100%;
+    height:56px;
+
+    border:none;
+    outline:none;
 
-            color:#fff;
+    border-radius:16px;
 
-            overflow-x:hidden;
-        }
+    background:rgba(255,255,255,.05);
 
-        .login-card{
-            width:100%;
-            max-width:430px;
+    border:1px solid rgba(255,255,255,.06);
 
-            background:var(--glass);
+    color:white;
 
-            backdrop-filter:blur(18px) saturate(180%);
+    padding:0 15px 0 48px;
+
+    font-size:1rem;
 
-            border:1px solid rgba(0,210,255,.35);
-
-            border-radius:34px;
-
-            padding:38px 28px;
-
-            box-shadow:
-            0 0 18px rgba(0,210,255,.18),
-            0 18px 45px rgba(0,0,0,.55);
-        }
-
-        .logo-area{
-            text-align:center;
-            margin-bottom:34px;
-        }
-
-        .logo-area img{
-            width:92px;
-            height:92px;
-            margin-bottom:18px;
-            object-fit:contain;
-
-            filter:drop-shadow(0 0 12px rgba(0,210,255,.35));
-        }
-
-        .logo-area h1{
-            font-size:2rem;
-            font-weight:800;
-
-            background:linear-gradient(to right,#fff,var(--primary));
-
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-
-            margin-bottom:8px;
-        }
-
-        .logo-area p{
-            opacity:.8;
-            font-size:.95rem;
-        }
-
-        .input-group{
-            margin-bottom:24px;
-        }
-
-        .input-group label{
-            display:block;
-
-            margin-bottom:10px;
-
-            color:var(--primary);
-
-            font-size:.8rem;
-            font-weight:700;
-
-            letter-spacing:1.6px;
-            text-transform:uppercase;
-        }
-
-        input{
-            width:100%;
-
-            min-height:62px;
-
-            border-radius:18px;
-
-            border:2px solid rgba(255,255,255,.06);
-
-            background:rgba(15,23,42,.7);
-
-            color:#fff;
-
-            font-size:1.05rem;
-            font-weight:700;
-
-            padding:0 18px;
-
-            text-align:center;
-
-            outline:none;
-
-            transition:.25s;
-        }
-
-        input:focus{
-            border-color:var(--primary);
-            background:rgba(15,23,42,.92);
-        }
-
-        .btn-submit{
-            width:100%;
-            height:58px;
-
-            border:none;
-            border-radius:18px;
-
-            background:
-            linear-gradient(
-                135deg,
-                var(--primary-dark),
-                var(--primary)
-            );
-
-            color:#fff;
-
-            font-size:1rem;
-            font-weight:800;
-
-            letter-spacing:1.5px;
-            text-transform:uppercase;
-
-            cursor:pointer;
-
-            transition:.25s;
-
-            margin-top:10px;
-        }
-
-        .btn-submit:disabled{
-            opacity:.55;
-            cursor:not-allowed;
-        }
-
-        .error-message{
-            display:none;
-
-            margin-top:18px;
-
-            padding:14px;
-
-            border-radius:14px;
-
-            background:rgba(239,68,68,.16);
-
-            border:1px solid rgba(239,68,68,.35);
-
-            color:#fecaca;
-
-            text-align:center;
-
-            font-size:.88rem;
-            font-weight:600;
-        }
-
-        .footer-links{
-            margin-top:34px;
-            text-align:center;
-        }
-
-        .footer-links a{
-            color:var(--accent);
-
-            text-decoration:none;
-
-            font-weight:800;
-            font-size:.95rem;
-        }
-
-        .install-btn{
-            padding:10px 20px;
-
-            border-radius:999px;
-
-            background:rgba(0,210,255,.1);
-
-            border:1px solid var(--primary);
-
-            color:var(--primary);
-
-            font-weight:700;
-
-            cursor:pointer;
-
-            margin-top:10px;
-        }
-
-        @media(max-width:480px){
-
-            body{
-                padding:12px;
-            }
-
-            .login-card{
-                padding:28px 20px;
-                border-radius:28px;
-            }
-
-            .logo-area h1{
-                font-size:1.7rem;
-            }
-
-            input{
-                min-height:56px;
-                font-size:1rem;
-            }
-
-            .btn-submit{
-                height:54px;
-                font-size:.95rem;
-            }
-        }
-
-    </style>
+    transition:.25s;
+}
+
+.form-input:focus{
+    border-color:rgba(212,175,55,.45);
+
+    box-shadow:
+    0 0 0 3px rgba(212,175,55,.08),
+    0 0 20px rgba(212,175,55,.12);
+}
+
+.form-input::placeholder{
+    color:#8d8d8d;
+}
+
+.login-btn{
+    width:100%;
+    height:56px;
+
+    margin-top:8px;
+
+    border:none;
+    border-radius:18px;
+
+    cursor:pointer;
+
+    background:linear-gradient(
+        135deg,
+        #D4AF37,
+        #f0d56b
+    );
+
+    color:#111;
+
+    font-weight:900;
+    font-size:1rem;
+    letter-spacing:1px;
+
+    transition:.25s;
+
+    box-shadow:
+    0 10px 25px rgba(212,175,55,.25);
+}
+
+.login-btn:hover{
+    transform:translateY(-2px);
+}
+
+.login-btn:active{
+    transform:scale(.98);
+}
+
+.status-box{
+    margin-top:18px;
+    padding:14px;
+    border-radius:14px;
+    display:none;
+    font-size:.9rem;
+    line-height:1.4;
+}
+
+.status-error{
+    background:rgba(231,76,60,.12);
+    border:1px solid rgba(231,76,60,.25);
+    color:#ffb0a8;
+}
+
+.status-success{
+    background:rgba(46,204,113,.12);
+    border:1px solid rgba(46,204,113,.25);
+    color:#b8ffd5;
+}
+
+.loading{
+    display:none;
+    text-align:center;
+    margin-top:20px;
+}
+
+.spinner{
+    width:40px;
+    height:40px;
+    margin:auto;
+
+    border-radius:50%;
+
+    border:4px solid rgba(255,255,255,.08);
+    border-top:4px solid var(--gold);
+
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+.footer{
+    margin-top:25px;
+    text-align:center;
+    color:#7f7f7f;
+    font-size:.75rem;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="login-card">
+<div class="login-container">
 
-    <div class="logo-area">
+    <div class="login-card">
 
-        <!-- Logo local -->
-        <img src="./logo.png" alt="Nápoles FC">
+        <div class="logo">
 
-        <h1>NÁPOLES F.C.</h1>
+            <div class="logo-circle">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
 
-        <p>Acceso de Jugadores PRO</p>
+            <h1>NÁPOLES F.C.</h1>
 
-    </div>
-
-    <form id="formLogin">
-
-        <div class="input-group">
-
-            <label for="loginCedula">
-                Cédula
-            </label>
-
-            <input
-                type="text"
-                id="loginCedula"
-                maxlength="10"
-                placeholder="0000000000"
-                autocomplete="username"
-                inputmode="numeric"
-                required
-            >
+            <p>Acceso de jugadores</p>
 
         </div>
 
-        <button
-            type="submit"
-            id="btnLogin"
-            class="btn-submit"
-            disabled
-        >
-            Ingresa al Vestuario
-        </button>
+        <form id="loginForm">
 
-    </form>
+            <div class="form-group">
 
-    <div id="errorMsg" class="error-message"></div>
+                <label class="form-label">
+                    CÉDULA
+                </label>
 
-    <div class="footer-links">
+                <div class="input-wrapper">
 
-        <p style="margin-bottom:15px;">
+                    <i class="fa-solid fa-id-card"></i>
 
-            ¿No tienes cuenta?
+                    <input
+                        type="text"
+                        id="cedula"
+                        class="form-input"
+                        placeholder="Ingrese su cédula"
+                        required
+                    >
 
-            <a href="./registro.html">
-                REGÍSTRATE ✨
-            </a>
+                </div>
 
-        </p>
+            </div>
 
-        <button id="manualDownloadBtn" class="install-btn">
-            📲 INSTALAR APP
-        </button>
+            <button type="submit" class="login-btn" id="btnLogin">
+                INGRESAR
+            </button>
+
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="status-box" id="statusBox"></div>
+
+        <div class="footer">
+            Sistema Oficial Nápoles F.C.
+        </div>
 
     </div>
 
 </div>
 
-<!-- CONFIG EN RAÍZ -->
-<script src="./config.js"></script>
+<script src="config.js"></script>
 
 <script>
 
-    // =========================
-    // ELEMENTOS
-    // =========================
+/* =========================================================
+   VALIDAR CONFIG
+========================================================= */
 
-    const formLogin = document.getElementById('formLogin');
+if(!window.CONFIG || !CONFIG.API_URL){
 
-    const cedulaInput = document.getElementById('loginCedula');
+    alert("Error cargando config.js");
 
-    const btnLogin = document.getElementById('btnLogin');
+    throw new Error("CONFIG no encontrado");
 
-    const errorDiv = document.getElementById('errorMsg');
+}
 
-    // =========================
-    // ERROR
-    // =========================
+/* =========================================================
+   ELEMENTOS
+========================================================= */
 
-    function mostrarError(msj){
+const form = document.getElementById("loginForm");
+const cedulaInput = document.getElementById("cedula");
+const loading = document.getElementById("loading");
+const statusBox = document.getElementById("statusBox");
+const btnLogin = document.getElementById("btnLogin");
 
-        errorDiv.textContent = msj;
+/* =========================================================
+   LIMPIAR SESIÓN VIEJA
+========================================================= */
 
-        errorDiv.style.display = 'block';
+localStorage.removeItem("jugador");
 
-        setTimeout(() => {
+/* =========================================================
+   MOSTRAR MENSAJE
+========================================================= */
 
-            errorDiv.style.display = 'none';
+function mostrarMensaje(tipo,mensaje){
 
-        }, 5000);
+    statusBox.style.display = "block";
+
+    statusBox.className = "status-box";
+
+    if(tipo === "error"){
+        statusBox.classList.add("status-error");
+    }else{
+        statusBox.classList.add("status-success");
     }
 
-    // =========================
-    // INPUT
-    // =========================
+    statusBox.innerHTML = mensaje;
+}
 
-    cedulaInput.addEventListener('input', () => {
+/* =========================================================
+   LOGIN
+========================================================= */
 
-        // SOLO NUMEROS
+form.addEventListener("submit", async (e)=>{
 
-        cedulaInput.value =
-        cedulaInput.value.replace(/\D/g,'');
+    e.preventDefault();
 
-        const val =
-        cedulaInput.value.trim();
+    const cedula = cedulaInput.value.trim();
 
-        btnLogin.disabled =
-        !val;
+    if(!cedula){
 
-    });
+        mostrarMensaje("error","Ingrese la cédula");
 
-    // =========================
-    // LOGIN
-    // =========================
+        return;
+    }
 
-    formLogin.addEventListener('submit', async (e) => {
+    try{
 
-        e.preventDefault();
-
-        const valor =
-        cedulaInput.value.trim();
-
-        // =========================
-        // INTERNET
-        // =========================
-
-        if(!navigator.onLine){
-
-            mostrarError(
-                '📡 Sin conexión a internet'
-            );
-
-            return;
-        }
-
-        // =========================
-        // VALIDAR CEDULA
-        // =========================
-
-        if(!/^\d{10}$/.test(valor)){
-
-            mostrarError(
-                '❌ La cédula debe tener 10 dígitos'
-            );
-
-            return;
-        }
-
-        // =========================
-        // VALIDAR CONFIG
-        // =========================
-
-        if(typeof CONFIG === 'undefined'){
-
-            mostrarError(
-                '❌ No se cargó config.js'
-            );
-
-            return;
-        }
-
-        if(!CONFIG.URL_GAS){
-
-            mostrarError(
-                '❌ URL_GAS no existe'
-            );
-
-            return;
-        }
-
-        // =========================
-        // UI
-        // =========================
+        loading.style.display = "block";
 
         btnLogin.disabled = true;
 
-        btnLogin.textContent =
-        'CONECTANDO...';
+        statusBox.style.display = "none";
 
-        try{
+        /* ============================================
+           CONSULTAR API
+        ============================================ */
 
-            const url =
-            `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}&t=${Date.now()}`;
+        const response = await fetch(
+            `${CONFIG.API_URL}?cedula=${encodeURIComponent(cedula)}`
+        );
 
-            console.log('Consultando:', url);
+        if(!response.ok){
 
-            const response =
-            await fetch(url);
+            throw new Error("Error del servidor");
 
-            if(!response.ok){
-
-                throw new Error(
-                    'Servidor no disponible'
-                );
-            }
-
-            const text =
-            await response.text();
-
-            let data;
-
-            try{
-
-                data = JSON.parse(text);
-
-            }catch{
-
-                console.error(text);
-
-                throw new Error(
-                    'Respuesta inválida del servidor'
-                );
-            }
-
-            console.log(data);
-
-            // =========================
-            // APROBADO
-            // =========================
-
-            if(
-                data.ok === true &&
-                data.cedulaExiste === true &&
-                data.estado === 'APROBADO'
-            ){
-
-                localStorage.setItem(
-                    'jugador_actual',
-                    JSON.stringify(data.datosJugador)
-                );
-
-                localStorage.setItem(
-                    'userCedula',
-                    valor
-                );
-
-                window.location.assign(
-                    'perfil.html'
-                );
-
-                return;
-            }
-
-            // =========================
-            // PENDIENTE
-            // =========================
-
-            if(
-                data.ok === true &&
-                data.cedulaExiste === true
-            ){
-
-                mostrarError(
-                    `⏳ Estado actual: ${data.estado}`
-                );
-
-                return;
-            }
-
-            // =========================
-            // NO EXISTE
-            // =========================
-
-            if(
-                data.ok === true &&
-                data.cedulaExiste === false
-            ){
-
-                mostrarError(
-                    '❌ Jugador no encontrado'
-                );
-
-                return;
-            }
-
-            // =========================
-            // ERROR GENERAL
-            // =========================
-
-            mostrarError(
-                data.error ||
-                '⚠️ Error inesperado'
-            );
-
-        }catch(error){
-
-            console.error(error);
-
-            mostrarError(
-                error.message ||
-                '🔌 Error de conexión'
-            );
-
-        }finally{
-
-            btnLogin.disabled = false;
-
-            btnLogin.textContent =
-            'Ingresa al Vestuario';
         }
 
-    });
+        const data = await response.json();
+
+        console.log("Respuesta API:",data);
+
+        /* ============================================
+           VALIDAR RESPUESTA
+        ============================================ */
+
+        if(!data){
+
+            mostrarMensaje(
+                "error",
+                "No se encontraron datos"
+            );
+
+            return;
+        }
+
+        /* ============================================
+           JUGADOR APROBADO
+        ============================================ */
+
+        if(data.estado === "APROBADO"){
+
+            localStorage.setItem(
+                "jugador",
+                JSON.stringify(data)
+            );
+
+            mostrarMensaje(
+                "success",
+                "Acceso autorizado..."
+            );
+
+            setTimeout(()=>{
+
+                window.location.href = "perfil.html";
+
+            },800);
+
+        }
+
+        /* ============================================
+           PENDIENTE
+        ============================================ */
+
+        else if(data.estado === "PENDIENTE"){
+
+            mostrarMensaje(
+                "error",
+                "Tu registro aún está pendiente de aprobación."
+            );
+
+        }
+
+        /* ============================================
+           BLOQUEADO
+        ============================================ */
+
+        else if(data.estado === "BLOQUEADO"){
+
+            mostrarMensaje(
+                "error",
+                "Tu acceso fue bloqueado."
+            );
+
+        }
+
+        /* ============================================
+           NO EXISTE
+        ============================================ */
+
+        else{
+
+            mostrarMensaje(
+                "error",
+                "Jugador no encontrado."
+            );
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        mostrarMensaje(
+            "error",
+            "Error conectando con el servidor."
+        );
+
+    }
+
+    finally{
+
+        loading.style.display = "none";
+
+        btnLogin.disabled = false;
+
+    }
+
+});
 
 </script>
 
