@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Configuración - Nápoles F.C.</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:#f3f6fb;
+
+    color:#111827;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:1px solid #e5e7eb;
+
+    padding:16px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.top-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.admin-info h1{
+
+    font-size:1.1rem;
+
+    font-weight:800;
+}
+
+.admin-info p{
+
+    font-size:.85rem;
+
+    color:#6b7280;
+
+    margin-top:2px;
+}
+
+.avatar{
+
+    width:46px;
+    height:46px;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+    135deg,
+    #0f172a,
+    #475569
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-weight:800;
+
+    font-size:1rem;
+}
+
+/* =========================================
+SETTINGS
+========================================= */
+
+.settings{
+
+    padding:20px 18px 40px;
+}
+
+.section-title{
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    margin-bottom:14px;
+
+    color:#111827;
+}
+
+.setting-card{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:18px;
+
+    margin-bottom:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.setting-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.setting-icon{
+
+    width:58px;
+    height:58px;
+
+    border-radius:18px;
+
+    background:linear-gradient(
+    135deg,
+    #0f172a,
+    #475569
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+}
+
+.setting-icon .material-symbols-outlined{
+    font-size:30px;
+}
+
+.setting-info h3{
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    margin-bottom:4px;
+}
+
+.setting-info p{
+
+    color:#6b7280;
+
+    font-size:.86rem;
+}
+
+.setting-action{
+
+    color:#6b7280;
+}
+
+.setting-action .material-symbols-outlined{
+    font-size:28px;
+}
+
+/* =========================================
+SWITCH
+========================================= */
+
+.switch{
+
+    position:relative;
+
+    width:52px;
+    height:30px;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+
+    position:absolute;
+
+    cursor:pointer;
+
+    inset:0;
+
+    background:#d1d5db;
+
+    border-radius:999px;
+
+    transition:.3s;
+}
+
+.slider::before{
+
+    content:'';
+
+    position:absolute;
+
+    width:22px;
+    height:22px;
+
+    left:4px;
+    top:4px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    transition:.3s;
+}
+
+.switch input:checked + .slider{
+
+    background:#111827;
+}
+
+.switch input:checked + .slider::before{
+
+    transform:translateX(22px);
+}
+
+/* =========================================
+LOGOUT
+========================================= */
+
+.logout-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:#ef4444;
+
+    color:#fff;
+
+    padding:18px;
+
+    border-radius:22px;
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    margin-top:12px;
+
+    box-shadow:
+    0 15px 35px rgba(239,68,68,.25);
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(min-width:700px){
+
+    .settings{
+        max-width:700px;
+        margin:auto;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ======================================
+TOPBAR
+====================================== -->
+
+<header class="topbar">
+
+    <div class="top-left">
+
+        <div class="admin-info">
+
+            <h1>Configuración</h1>
+
+            <p>Nápoles F.C.</p>
+
+        </div>
+
+    </div>
+
+    <div class="avatar">
+        C
+    </div>
+
+</header>
+
+<!-- ======================================
+SETTINGS
+====================================== -->
+
+<section class="settings">
+
+    <h2 class="section-title">
+        General
+    </h2>
+
+    <!-- PERFIL -->
+
+    <div class="setting-card">
+
+        <div class="setting-left">
+
+            <div class="setting-icon">
+
+                <span class="material-symbols-outlined">
+                    person
+                </span>
+
+            </div>
+
+            <div class="setting-info">
+
+                <h3>Perfil Admin</h3>
+
+                <p>Editar información del administrador</p>
+
+            </div>
+
+        </div>
+
+        <div class="setting-action">
+
+            <span class="material-symbols-outlined">
+                chevron_right
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- NOTIFICACIONES -->
+
+    <div class="setting-card">
+
+        <div class="setting-left">
+
+            <div class="setting-icon">
+
+                <span class="material-symbols-outlined">
+                    notifications
+                </span>
+
+            </div>
+
+            <div class="setting-info">
+
+                <h3>Notificaciones</h3>
+
+                <p>Activar alertas del sistema</p>
+
+            </div>
+
+        </div>
+
+        <label class="switch">
+
+            <input type="checkbox" checked>
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+    <!-- MODO OSCURO -->
+
+    <div class="setting-card">
+
+        <div class="setting-left">
+
+            <div class="setting-icon">
+
+                <span class="material-symbols-outlined">
+                    dark_mode
+                </span>
+
+            </div>
+
+            <div class="setting-info">
+
+                <h3>Modo Oscuro</h3>
+
+                <p>Cambiar apariencia del panel</p>
+
+            </div>
+
+        </div>
+
+        <label class="switch">
+
+            <input type="checkbox">
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+    <!-- SEGURIDAD -->
+
+    <div class="setting-card">
+
+        <div class="setting-left">
+
+            <div class="setting-icon">
+
+                <span class="material-symbols-outlined">
+                    lock
+                </span>
+
+            </div>
+
+            <div class="setting-info">
+
+                <h3>Seguridad</h3>
+
+                <p>Contraseña y accesos</p>
+
+            </div>
+
+        </div>
+
+        <div class="setting-action">
+
+            <span class="material-symbols-outlined">
+                chevron_right
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- BACKUP -->
+
+    <div class="setting-card">
+
+        <div class="setting-left">
+
+            <div class="setting-icon">
+
+                <span class="material-symbols-outlined">
+                    cloud_upload
+                </span>
+
+            </div>
+
+            <div class="setting-info">
+
+                <h3>Backup</h3>
+
+                <p>Guardar datos en la nube</p>
+
+            </div>
+
+        </div>
+
+        <div class="setting-action">
+
+            <span class="material-symbols-outlined">
+                chevron_right
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- LOGOUT -->
+
+    <button
+    class="logout-btn"
+    onclick="cerrarSesion()">
+
+        Cerrar Sesión
+
+    </button>
+
+</section>
+
+<script>
+
+// =========================================
+// VALIDAR ADMIN
+// =========================================
+
+if(
+    localStorage.getItem('admin_activo')
+    !== 'true'
+){
+    window.location.href = './login.html';
+}
+
+// =========================================
+// CERRAR SESIÓN
+// =========================================
+
+function cerrarSesion(){
+
+    localStorage.removeItem('admin_activo');
+
+    window.location.href = './login.html';
+}
+
+</script>
+
+</body>
+</html>
