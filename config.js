@@ -1,6 +1,6 @@
 const CONFIG = {
     // ASEGÚRATE DE QUE LA URL TERMINE EN /exec
-    URL_GAS: "https://script.google.com/macros/s/AKfycbxUPZH2yNEWIDz7PIEu13AFN4djea4D5d7WoWIeRZ41A6L6WZUAR6c90OFn4NjxpGTs/exec"
+    URL_GAS: "https://script.google.com/macros/s/AKfycbyq8Q9_GesrCwLp7lTQj8kewRahG5nn7T8JjesjAMAloYDoka0UbRdzWf4JGSNwQRJ2/exec"
 };
 
 // ESTO ES PARA PROBAR SI EL ARCHIVO CONFIG.JS SE CARGA BIEN
