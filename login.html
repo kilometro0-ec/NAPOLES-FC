@@ -116,82 +116,83 @@
     </div>
 
     <!-- Cargar Configuración -->
-    <script src="config.js"></script>
+ <script src="config.js"></script>
+<script>
+    const formLogin = document.getElementById('formLogin');
+    const cedulaInput = document.getElementById('loginCedula');
+    const btnLogin = document.getElementById('btnLogin');
+    const errorDiv = document.getElementById('errorMsg');
+    const bodyElem = document.body;
 
-    <script>
-        const formLogin = document.getElementById('formLogin');
-        const cedulaInput = document.getElementById('loginCedula');
-        const btnLogin = document.getElementById('btnLogin');
-        const errorDiv = document.getElementById('errorMsg');
-        const bodyElem = document.body;
+    const ADMIN_SECRET = "GataFiera54321";
+    const ADMIN_TRIGGER = "Gata";
 
-        const ADMIN_SECRET = "GataFiera54321";
-        const ADMIN_TRIGGER = "Gata";
+    function mostrarError(msj) {
+        errorDiv.innerHTML = msj;
+        errorDiv.style.display = 'block';
+        setTimeout(() => { errorDiv.style.display = 'none'; }, 6000);
+    }
 
-        function mostrarError(msj) {
-            errorDiv.innerHTML = msj;
-            errorDiv.style.display = 'block';
-            setTimeout(() => { errorDiv.style.display = 'none'; }, 6000);
+    cedulaInput.addEventListener('input', () => {
+        const val = cedulaInput.value.trim();
+        btnLogin.disabled = val === '';
+        if (val.includes(ADMIN_TRIGGER)) {
+            bodyElem.classList.add('admin-mode-body');
+            cedulaInput.classList.add('admin-mode');
+        } else {
+            bodyElem.classList.remove('admin-mode-body');
+            cedulaInput.classList.remove('admin-mode');
+        }
+    });
+
+    formLogin.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const valor = cedulaInput.value.trim();
+
+        if (valor === ADMIN_SECRET) {
+            localStorage.setItem('admin_session', 'true');
+            window.location.href = 'admin.html';
+            return;
         }
 
-        cedulaInput.addEventListener('input', () => {
-            const val = cedulaInput.value.trim();
-            btnLogin.disabled = val === '';
+        if (!/^\d{10}$/.test(valor)) {
+            mostrarError("❌ La cédula debe tener 10 dígitos numéricos");
+            return;
+        }
+
+        btnLogin.disabled = true;
+        btnLogin.innerText = "CONECTANDO...";
+
+        // === NUEVO: JSONP sin CORS ===
+        const callbackName = 'jsonp_callback_' + Date.now();
+        const script = document.createElement('script');
+        script.src = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}&callback=${callbackName}`;
+        
+        window[callbackName] = (data) => {
+            delete window[callbackName];
+            document.body.removeChild(script);
             
-            if (val.includes(ADMIN_TRIGGER)) {
-                bodyElem.classList.add('admin-mode-body');
-                cedulaInput.classList.add('admin-mode');
+            if (data.success) {
+                localStorage.setItem('userCedula', valor);
+                localStorage.setItem('jugador_actual', JSON.stringify(data.datos));
+                window.location.href = 'perfil.html';
             } else {
-                bodyElem.classList.remove('admin-mode-body');
-                cedulaInput.classList.remove('admin-mode');
+                mostrarError(`⚠️ ${data.message}`);
             }
-        });
-
-        formLogin.addEventListener('submit', async (e) => {
-            e.preventDefault(); // EVITA EL REFRESCO DE PÁGINA (F5)
-
-            const valor = cedulaInput.value.trim();
-
-            if (valor === ADMIN_SECRET) {
-                localStorage.setItem('admin_session', 'true');
-                window.location.href = 'admin.html';
-                return;
-            }
-
-            if (!/^\d{10}$/.test(valor)) {
-                mostrarError("❌ La cédula debe tener 10 dígitos numéricos");
-                return;
-            }
-
-            btnLogin.disabled = true;
-            btnLogin.innerText = "CONECTANDO...";
-
-            try {
-                // LLAMADA AJAX AL SCRIPT DE GOOGLE
-                const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}`;
-                
-                const response = await fetch(url, {
-                    method: 'GET',
-                    mode: 'cors'
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    localStorage.setItem('userCedula', valor);
-                    localStorage.setItem('jugador_actual', JSON.stringify(data.datos));
-                    window.location.href = 'perfil.html';
-                } else {
-                    mostrarError(`⚠️ ${data.message}`);
-                }
-            } catch (err) {
-                console.error(err);
-                mostrarError("🔌 Error de red o bloqueo de Google. Revisa la consola (F12).");
-            } finally {
-                btnLogin.disabled = false;
-                btnLogin.innerText = "Iniciar Sesión";
-            }
-        });
-    </script>
+            btnLogin.disabled = false;
+            btnLogin.innerText = "Iniciar Sesión";
+        };
+        
+        script.onerror = () => {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            mostrarError("🔌 Error de conexión. Revisa tu internet o la URL del script.");
+            btnLogin.disabled = false;
+            btnLogin.innerText = "Iniciar Sesión";
+        };
+        
+        document.body.appendChild(script);
+    });
+</script>
 </body>
 </html>
