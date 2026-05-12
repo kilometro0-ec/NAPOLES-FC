@@ -38,9 +38,7 @@ rel="stylesheet">
     -webkit-tap-highlight-color:transparent;
 }
 
-html{
-    overscroll-behavior:none;
-}
+
 
 body{
 
@@ -64,9 +62,7 @@ body{
 
     position:relative;
 
-    overscroll-behavior-y:none;
-
-    touch-action:pan-x pan-y;
+ 
 }
 
 /* =====================================================
@@ -643,27 +639,7 @@ document.getElementById('errorMsg');
 const loginCard =
 document.getElementById('loginCard');
 
-// =====================================================
-// BLOQUEAR REFRESH MOBILE
-// =====================================================
 
-document.body.addEventListener(
-
-    'touchmove',
-
-    function(e){
-
-        if(window.scrollY === 0){
-
-            e.preventDefault();
-        }
-
-    },
-
-    {
-        passive:false
-    }
-);
 
 // =====================================================
 // ERROR
