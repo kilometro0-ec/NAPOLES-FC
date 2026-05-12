@@ -1,101 +1,600 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias | Nápoles FC</title>
-    <link rel="stylesheet" href="estilos.css">
-    <style>
-        .noticia-card {
-            background: var(--gris-suave);
-            border-left: 4px solid var(--cardenillo);
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 0 10px 10px 0;
-            animation: slideIn 0.5s ease;
-        }
-        .noticia-tag {
-            background: var(--dorado);
-            color: var(--azul-noche);
-            font-size: 0.7em;
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .noticia-fecha {
-            font-size: 0.8em;
-            opacity: 0.6;
-            margin-left: 10px;
-        }
-        .noticia-titulo {
-            color: var(--dorado);
-            margin: 10px 0;
-            font-size: 1.2em;
-        }
-        .noticia-texto {
-            font-size: 0.95em;
-            line-height: 1.5;
-        }
-        #contenedor-noticias { margin-top: 20px; }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-    </style>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Noticias - Nápoles F.C.</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:#f3f6fb;
+
+    color:#111827;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:1px solid #e5e7eb;
+
+    padding:16px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.top-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.admin-info h1{
+
+    font-size:1.1rem;
+
+    font-weight:800;
+}
+
+.admin-info p{
+
+    font-size:.85rem;
+
+    color:#6b7280;
+
+    margin-top:2px;
+}
+
+.avatar{
+
+    width:46px;
+    height:46px;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+    135deg,
+    #0891b2,
+    #22d3ee
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-weight:800;
+
+    font-size:1rem;
+}
+
+/* =========================================
+NEWS
+========================================= */
+
+.news{
+
+    padding:20px 18px 40px;
+}
+
+.news-card{
+
+    background:#fff;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    margin-bottom:20px;
+
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.news-image{
+
+    width:100%;
+
+    height:180px;
+
+    background:linear-gradient(
+    135deg,
+    #0891b2,
+    #22d3ee
+    );
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+}
+
+.news-image .material-symbols-outlined{
+
+    font-size:70px;
+
+    opacity:.9;
+}
+
+.news-content{
+
+    padding:20px;
+}
+
+.news-tag{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    background:#ecfeff;
+
+    color:#0891b2;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:.78rem;
+
+    font-weight:800;
+
+    margin-bottom:14px;
+}
+
+.news-content h2{
+
+    font-size:1.15rem;
+
+    font-weight:800;
+
+    line-height:1.4;
+
+    margin-bottom:12px;
+}
+
+.news-content p{
+
+    color:#6b7280;
+
+    line-height:1.6;
+
+    font-size:.92rem;
+
+    margin-bottom:18px;
+}
+
+.news-footer{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding-top:16px;
+
+    border-top:1px solid #e5e7eb;
+}
+
+.news-date{
+
+    color:#6b7280;
+
+    font-size:.82rem;
+
+    font-weight:600;
+}
+
+.actions{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.action-btn{
+
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+}
+
+.edit{
+    background:#2563eb;
+}
+
+.delete{
+    background:#ef4444;
+}
+
+/* =========================================
+FAB
+========================================= */
+
+.fab{
+
+    position:fixed;
+
+    right:20px;
+    bottom:20px;
+
+    width:64px;
+    height:64px;
+
+    border:none;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+    135deg,
+    #0891b2,
+    #22d3ee
+    );
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 15px 35px rgba(8,145,178,.35);
+}
+
+.fab .material-symbols-outlined{
+    font-size:34px;
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(min-width:700px){
+
+    .news{
+        max-width:700px;
+        margin:auto;
+    }
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <div class="contenedor-principal">
-        <h2>Comunicados Oficiales</h2>
-        <p style="text-align: center; color: var(--dorado); font-size: 0.8em;">NÁPOLES F.C. - QUITO</p>
+<!-- ======================================
+TOPBAR
+====================================== -->
 
-        <div id="contenedor-noticias">
-            <p style="text-align: center;">Cargando últimas noticias...</p>
+<header class="topbar">
+
+    <div class="top-left">
+
+        <div class="admin-info">
+
+            <h1>Noticias</h1>
+
+            <p>Nápoles F.C.</p>
+
         </div>
+
     </div>
 
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLctY39LIa_aVSFKCIQl306huhIk6CiZzrUC2PczfeVlTJ9-V9Vt9giq1A2mYveAHW/exec";
+    <div class="avatar">
+        N
+    </div>
 
-        async function cargarNoticias() {
-            const contenedor = document.getElementById('contenedor-noticias');
-            
-            try {
-                // Petición al script de Google con la acción 'noticias'
-                const response = await fetch(`${SCRIPT_URL}?action=getNoticias`);
-                const noticias = await response.json();
+</header>
 
-                if (noticias.length === 0) {
-                    contenedor.innerHTML = "<p>No hay noticias recientes.</p>";
-                    return;
-                }
+<!-- ======================================
+NEWS
+====================================== -->
 
-                contenedor.innerHTML = ""; // Limpiar mensaje de carga
+<section class="news">
 
-                noticias.forEach(item => {
-                    const html = `
-                        <div class="noticia-card">
-                            <div>
-                                <span class="noticia-tag">${item.categoria}</span>
-                                <span class="noticia-fecha">${item.fecha}</span>
-                            </div>
-                            <h3 class="noticia-titulo">${item.titulo}</h3>
-                            <p class="noticia-texto">${item.contenido}</p>
-                        </div>
-                    `;
-                    contenedor.innerHTML += html;
-                });
+    <!-- NEWS -->
 
-            } catch (error) {
-                contenedor.innerHTML = "<p>Error al conectar con el servidor.</p>";
-            }
-        }
+    <div class="news-card">
 
-        document.addEventListener('DOMContentLoaded', cargarNoticias);
-    </script>
+        <div class="news-image">
 
-    <script src="nav.js"></script>
+            <span class="material-symbols-outlined">
+                campaign
+            </span>
+
+        </div>
+
+        <div class="news-content">
+
+            <div class="news-tag">
+
+                <span class="material-symbols-outlined">
+                    notifications
+                </span>
+
+                Oficial
+
+            </div>
+
+            <h2>
+                Nápoles F.C. gana el clásico 3-1
+            </h2>
+
+            <p>
+                El equipo consiguió una importante victoria
+                este fin de semana con una gran actuación
+                colectiva y excelente rendimiento ofensivo.
+            </p>
+
+            <div class="news-footer">
+
+                <div class="news-date">
+                    12 Mayo 2026
+                </div>
+
+                <div class="actions">
+
+                    <button class="action-btn edit">
+
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+
+                    </button>
+
+                    <button class="action-btn delete">
+
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- NEWS -->
+
+    <div class="news-card">
+
+        <div class="news-image">
+
+            <span class="material-symbols-outlined">
+                sports_soccer
+            </span>
+
+        </div>
+
+        <div class="news-content">
+
+            <div class="news-tag">
+
+                <span class="material-symbols-outlined">
+                    stadium
+                </span>
+
+                Partido
+
+            </div>
+
+            <h2>
+                Próximo encuentro este sábado
+            </h2>
+
+            <p>
+                El club enfrentará a Atléticos FC
+                en el Estadio Central a las 20:00.
+                Invitamos a toda la hinchada.
+            </p>
+
+            <div class="news-footer">
+
+                <div class="news-date">
+                    10 Mayo 2026
+                </div>
+
+                <div class="actions">
+
+                    <button class="action-btn edit">
+
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+
+                    </button>
+
+                    <button class="action-btn delete">
+
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- NEWS -->
+
+    <div class="news-card">
+
+        <div class="news-image">
+
+            <span class="material-symbols-outlined">
+                emoji_events
+            </span>
+
+        </div>
+
+        <div class="news-content">
+
+            <div class="news-tag">
+
+                <span class="material-symbols-outlined">
+                    star
+                </span>
+
+                Destacado
+
+            </div>
+
+            <h2>
+                Cristian Ruiz máximo goleador
+            </h2>
+
+            <p>
+                El delantero del club lidera
+                la tabla de goleadores con
+                12 anotaciones esta temporada.
+            </p>
+
+            <div class="news-footer">
+
+                <div class="news-date">
+                    07 Mayo 2026
+                </div>
+
+                <div class="actions">
+
+                    <button class="action-btn edit">
+
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+
+                    </button>
+
+                    <button class="action-btn delete">
+
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ======================================
+FAB
+====================================== -->
+
+<button class="fab">
+
+    <span class="material-symbols-outlined">
+        add
+    </span>
+
+</button>
+
+<script>
+
+// =========================================
+// VALIDAR ADMIN
+// =========================================
+
+if(
+    localStorage.getItem('admin_activo')
+    !== 'true'
+){
+    window.location.href = './login.html';
+}
+
+</script>
+
 </body>
 </html>
