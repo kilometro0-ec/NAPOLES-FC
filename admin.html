@@ -7,268 +7,226 @@
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+content="width=device-width, initial-scale=1.0">
 
-<title>Admin | Nápoles F.C.</title>
+<title>Nápoles F.C. | Admin PRO</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
 
 <link
-href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
 rel="stylesheet">
 
 <style>
-
-:root{
-
-    --bg:#07111f;
-    --card:#0f1c2e;
-    --border:#1d3557;
-
-    --cyan:#00d2ff;
-    --cyan2:#008f9b;
-
-    --purple:#a855f7;
-
-    --text:#ffffff;
-    --muted:#94a3b8;
-
-    --success:#10b981;
-    --warning:#f59e0b;
-    --danger:#ef4444;
-}
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
 }
 
 body{
-
-    font-family:'Plus Jakarta Sans',sans-serif;
-
-    background:var(--bg);
-
-    color:var(--text);
-
-    min-height:100vh;
-
-    overflow-x:hidden;
+    font-family:'Inter',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow:hidden;
 }
 
-/* =====================================================
-   FONDO
-===================================================== */
+/* =========================
+SIDEBAR
+========================= */
 
-body::before,
-body::after{
+.sidebar{
 
-    content:'';
+    width:280px;
+
+    background:
+    linear-gradient(
+        180deg,
+        #020617,
+        #111827
+    );
+
+    border-right:
+    1px solid rgba(255,255,255,.06);
+
+    height:100vh;
 
     position:fixed;
 
-    width:900px;
-    height:900px;
-
-    border-radius:50%;
-
-    filter:blur(130px);
-
-    opacity:.45;
-
-    z-index:-1;
-}
-
-body::before{
-
-    background:#00d2ff;
-
-    top:-300px;
-    left:-250px;
-}
-
-body::after{
-
-    background:#6d28d9;
-
-    bottom:-300px;
-    right:-250px;
-}
-
-/* =====================================================
-   TOPBAR
-===================================================== */
-
-.topbar{
-
-    position:sticky;
+    left:0;
     top:0;
 
-    z-index:999;
+    padding:24px;
 
-    backdrop-filter:blur(18px);
-
-    background:rgba(7,17,31,.78);
-
-    border-bottom:1px solid rgba(255,255,255,.06);
-
-    padding:18px 20px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    overflow-y:auto;
 }
 
-.topbar h1{
+.logo{
 
-    font-size:1.3rem;
+    font-size:1.7rem;
 
     font-weight:800;
 
-    background:
-    linear-gradient(
-    to right,
-    #fff,
-    #00d2ff
-    );
+    margin-bottom:40px;
 
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+    color:#38bdf8;
 }
 
-.logout-btn{
-
-    border:none;
-
-    background:
-    linear-gradient(
-    135deg,
-    #ef4444,
-    #dc2626
-    );
-
-    color:#fff;
-
-    padding:12px 16px;
-
-    border-radius:14px;
-
-    font-weight:800;
-
-    cursor:pointer;
-}
-
-/* =====================================================
-   TABS
-===================================================== */
-
-.tabs{
+.menu{
 
     display:flex;
 
-    overflow:auto;
+    flex-direction:column;
 
-    gap:12px;
-
-    padding:18px;
-
-    position:sticky;
-
-    top:74px;
-
-    z-index:998;
-
-    backdrop-filter:blur(18px);
-
-    background:rgba(7,17,31,.88);
-
-    border-bottom:1px solid rgba(255,255,255,.05);
+    gap:10px;
 }
 
-.tabs::-webkit-scrollbar{
-    display:none;
-}
+.menu button{
 
-.tab-btn{
-
-    flex:none;
+    width:100%;
 
     border:none;
 
-    padding:14px 18px;
-
-    border-radius:16px;
-
-    background:#10233d;
+    background:none;
 
     color:#cbd5e1;
 
-    font-weight:700;
+    padding:16px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
 
     cursor:pointer;
 
-    transition:.3s;
+    transition:.25s;
+
+    font-weight:600;
 }
 
-.tab-btn.active{
+.menu button:hover{
+
+    background:
+    rgba(56,189,248,.12);
+
+    color:white;
+}
+
+.menu button.active{
 
     background:
     linear-gradient(
-    135deg,
-    var(--cyan2),
-    var(--cyan)
+        135deg,
+        #0ea5e9,
+        #0284c7
     );
 
-    color:#fff;
-
-    box-shadow:
-    0 10px 25px rgba(0,210,255,.25);
+    color:white;
 }
 
-/* =====================================================
-   CONTENT
-===================================================== */
+/* =========================
+MAIN
+========================= */
 
-.content{
+.main{
 
-    padding:20px;
+    margin-left:280px;
 
-    padding-bottom:120px;
+    height:100vh;
+
+    overflow-y:auto;
+
+    padding:30px;
 }
 
-.tab-content{
-    display:none;
+/* =========================
+TOPBAR
+========================= */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
 }
 
-.tab-content.active{
-    display:block;
+.title{
+
+    font-size:2rem;
+
+    font-weight:800;
 }
 
-/* =====================================================
-   CARDS
-===================================================== */
+.admin-box{
+
+    background:
+    rgba(255,255,255,.06);
+
+    padding:12px 18px;
+
+    border-radius:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+/* =========================
+CARDS
+========================= */
 
 .cards{
 
     display:grid;
 
     grid-template-columns:
-    repeat(auto-fit,minmax(180px,1fr));
+    repeat(auto-fit,minmax(220px,1fr));
 
-    gap:18px;
+    gap:20px;
 
-    margin-bottom:24px;
+    margin-bottom:30px;
 }
 
 .card{
 
-    background:rgba(15,28,46,.92);
+    background:
+    linear-gradient(
+        145deg,
+        rgba(30,41,59,.95),
+        rgba(15,23,42,.95)
+    );
 
-    border:1px solid rgba(255,255,255,.06);
+    border:
+    1px solid rgba(255,255,255,.05);
 
     border-radius:24px;
 
-    padding:22px;
+    padding:24px;
+
+    transition:.25s;
+}
+
+.card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:
+    rgba(56,189,248,.4);
 }
 
 .card h3{
@@ -280,78 +238,59 @@ body::after{
     margin-bottom:12px;
 }
 
-.card p{
+.card .number{
 
     font-size:2rem;
 
     font-weight:800;
+
+    color:#38bdf8;
 }
 
-/* =====================================================
-   PANEL
-===================================================== */
+/* =========================
+SECTION
+========================= */
 
-.panel{
+.section{
 
-    background:rgba(15,28,46,.95);
+    background:
+    rgba(15,23,42,.95);
 
-    border:1px solid rgba(255,255,255,.06);
+    border:
+    1px solid rgba(255,255,255,.05);
 
     border-radius:28px;
 
-    padding:22px;
+    padding:24px;
+
+    margin-bottom:30px;
+}
+
+.section-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
 
     margin-bottom:24px;
 }
 
-.panel-title{
+.section-title h2{
 
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    font-size:1.3rem;
 
-    margin-bottom:20px;
+    font-weight:800;
 }
 
-.panel-title h2{
+/* =========================
+TABLE
+========================= */
 
-    font-size:1.1rem;
-}
-
-/* =====================================================
-   BUSCADOR
-===================================================== */
-
-.search{
-
-    width:100%;
-
-    height:58px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:#0b1727;
-
-    color:#fff;
-
-    padding:0 18px;
-
-    margin-bottom:18px;
-
-    font-size:1rem;
-}
-
-/* =====================================================
-   TABLA
-===================================================== */
-
-.table-wrap{
+.table-wrapper{
 
     overflow:auto;
-
-    border-radius:20px;
 }
 
 table{
@@ -359,100 +298,83 @@ table{
     width:100%;
 
     border-collapse:collapse;
-
-    min-width:900px;
 }
 
 th{
 
-    background:#0d2138;
+    background:
+    rgba(255,255,255,.05);
 
-    color:#00d2ff;
-
-    font-size:.82rem;
+    padding:14px;
 
     text-align:left;
 
-    padding:16px;
+    font-size:.85rem;
 
-    position:sticky;
-    top:0;
+    color:#94a3b8;
 }
 
 td{
 
-    padding:16px;
+    padding:16px 14px;
 
-    border-bottom:1px solid rgba(255,255,255,.05);
-
-    font-size:.92rem;
+    border-bottom:
+    1px solid rgba(255,255,255,.05);
 }
 
 tr:hover{
-    background:rgba(255,255,255,.03);
+
+    background:
+    rgba(255,255,255,.03);
 }
 
-/* =====================================================
-   ESTADOS
-===================================================== */
+/* =========================
+BUTTONS
+========================= */
 
-.badge{
-
-    padding:8px 12px;
-
-    border-radius:999px;
-
-    font-size:.75rem;
-
-    font-weight:800;
-}
-
-.ok{
-    background:rgba(16,185,129,.15);
-    color:#10b981;
-}
-
-.pending{
-    background:rgba(245,158,11,.15);
-    color:#f59e0b;
-}
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.action-btn{
+.btn{
 
     border:none;
 
-    padding:10px 14px;
+    padding:10px 16px;
 
     border-radius:12px;
 
-    color:#fff;
+    cursor:pointer;
 
     font-weight:700;
 
-    cursor:pointer;
-
-    margin-right:8px;
+    transition:.25s;
 }
 
-.btn-edit{
-    background:#2563eb;
+.btn-blue{
+
+    background:#0ea5e9;
+
+    color:white;
 }
 
-.btn-approve{
+.btn-green{
+
     background:#10b981;
+
+    color:white;
 }
 
-.btn-delete{
+.btn-red{
+
     background:#ef4444;
+
+    color:white;
 }
 
-/* =====================================================
-   FORM
-===================================================== */
+.btn:hover{
+    transform:scale(1.04);
+}
+
+/* =========================
+FORM
+========================= */
 
 .form-grid{
 
@@ -464,61 +386,52 @@ tr:hover{
     gap:18px;
 }
 
-.input{
+input{
 
     width:100%;
 
-    height:56px;
+    height:52px;
 
     border:none;
 
-    border-radius:16px;
+    outline:none;
 
-    background:#091423;
+    border-radius:14px;
 
-    color:#fff;
+    background:
+    rgba(255,255,255,.05);
+
+    color:white;
 
     padding:0 16px;
 }
 
-.save-btn{
-
-    width:100%;
-
-    height:56px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:
-    linear-gradient(
-    135deg,
-    #6d28d9,
-    #a855f7
-    );
-
-    color:#fff;
-
-    font-weight:800;
-
-    margin-top:18px;
-
-    cursor:pointer;
+input::placeholder{
+    color:#64748b;
 }
 
-@media(max-width:700px){
+/* =========================
+MOBILE
+========================= */
 
-    .content{
-        padding:16px;
+@media(max-width:900px){
+
+    .sidebar{
+
+        width:100%;
+
+        height:auto;
+
+        position:relative;
     }
 
-    .panel{
-        padding:18px;
+    .main{
+
+        margin-left:0;
     }
 
-    .tabs{
-        top:72px;
+    body{
+        overflow:auto;
     }
 }
 
@@ -528,98 +441,145 @@ tr:hover{
 
 <body>
 
-<!-- =====================================================
-TOPBAR
-===================================================== -->
+<!-- =========================
+SIDEBAR
+========================= -->
 
-<div class="topbar">
+<div class="sidebar">
 
-    <h1>NÁPOLES F.C. ADMIN</h1>
+    <div class="logo">
+        NÁPOLES F.C.
+    </div>
 
-    <button
-    class="logout-btn"
-    onclick="logoutAdmin()">
-        SALIR
-    </button>
+    <div class="menu">
+
+        <button class="active">
+            <span class="material-symbols-outlined">
+                dashboard
+            </span>
+            Dashboard
+        </button>
+
+        <button>
+            <span class="material-symbols-outlined">
+                groups
+            </span>
+            Jugadores
+        </button>
+
+        <button>
+            <span class="material-symbols-outlined">
+                sports_soccer
+            </span>
+            Partidos
+        </button>
+
+        <button>
+            <span class="material-symbols-outlined">
+                shield
+            </span>
+            Rivales
+        </button>
+
+        <button>
+            <span class="material-symbols-outlined">
+                payments
+            </span>
+            Finanzas
+        </button>
+
+        <button>
+            <span class="material-symbols-outlined">
+                inventory_2
+            </span>
+            Uniformes
+        </button>
+
+        <button>
+            <span class="material-symbols-outlined">
+                settings
+            </span>
+            Configuración
+        </button>
+
+    </div>
 
 </div>
 
-<!-- =====================================================
-TABS
-===================================================== -->
+<!-- =========================
+MAIN
+========================= -->
 
-<div class="tabs">
+<div class="main">
 
-    <button
-    class="tab-btn active"
-    onclick="openTab('dashboard',this)">
-        🏠 Inicio
-    </button>
+    <!-- TOPBAR -->
 
-    <button
-    class="tab-btn"
-    onclick="openTab('jugadores',this)">
-        👥 Jugadores
-    </button>
+    <div class="topbar">
 
-    <button
-    class="tab-btn"
-    onclick="openTab('partidos',this)">
-        ⚽ Partidos
-    </button>
+        <div class="title">
+            Dashboard
+        </div>
 
-    <button
-    class="tab-btn"
-    onclick="openTab('rivales',this)">
-        🛡️ Rivales
-    </button>
+        <div class="admin-box">
 
-    <button
-    class="tab-btn"
-    onclick="openTab('pagos',this)">
-        💰 Pagos
-    </button>
+            <span class="material-symbols-outlined">
+                admin_panel_settings
+            </span>
 
-    <button
-    class="tab-btn"
-    onclick="openTab('config',this)">
-        ⚙️ Ajustes
-    </button>
+            ADMIN ACTIVO
 
-</div>
+        </div>
 
-<!-- =====================================================
-CONTENT
-===================================================== -->
+    </div>
 
-<div class="content">
+    <!-- CARDS -->
 
-    <!-- DASHBOARD -->
+    <div class="cards">
 
-    <div
-    id="dashboard"
-    class="tab-content active">
+        <div class="card">
 
-        <div class="cards">
+            <h3>
+                Jugadores
+            </h3>
 
-            <div class="card">
-                <h3>Jugadores</h3>
-                <p id="totalJugadores">0</p>
+            <div class="number" id="totalJugadores">
+                0
             </div>
 
-            <div class="card">
-                <h3>Aprobados</h3>
-                <p id="totalAprobados">0</p>
+        </div>
+
+        <div class="card">
+
+            <h3>
+                Aprobados
+            </h3>
+
+            <div class="number" id="totalAprobados">
+                0
             </div>
 
-            <div class="card">
-                <h3>Pendientes</h3>
-                <p id="totalPendientes">0</p>
+        </div>
+
+        <div class="card">
+
+            <h3>
+                Pendientes
+            </h3>
+
+            <div class="number" id="totalPendientes">
+                0
             </div>
 
-            <div class="card">
-                <h3>Partidos</h3>
-                <p>12</p>
+        </div>
+
+        <div class="card">
+
+            <h3>
+                Próximos Partidos
+            </h3>
+
+            <div class="number">
+                3
             </div>
 
         </div>
@@ -628,50 +588,74 @@ CONTENT
 
     <!-- JUGADORES -->
 
-    <div
-    id="jugadores"
-    class="tab-content">
+    <div class="section">
 
-        <div class="panel">
+        <div class="section-title">
 
-            <div class="panel-title">
+            <h2>
+                Gestión de Jugadores
+            </h2>
 
-                <h2>Lista de Jugadores</h2>
+            <button
+            class="btn btn-blue">
+                + Nuevo
+            </button>
 
-            </div>
+        </div>
+
+        <div
+        style="
+        margin-bottom:20px;
+        ">
 
             <input
             type="text"
-            class="search"
-            placeholder="Buscar jugador..."
-            id="searchJugador">
+            id="buscarJugador"
+            placeholder="Buscar jugador...">
 
-            <div class="table-wrap">
+        </div>
 
-                <table>
+        <div class="table-wrapper">
 
-                    <thead>
+            <table>
 
-                        <tr>
+                <thead>
 
-                            <th>Jugador</th>
-                            <th>Cédula</th>
-                            <th>Dorsal</th>
-                            <th>Uniforme</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
+                    <tr>
 
-                        </tr>
+                        <th>
+                            Cédula
+                        </th>
 
-                    </thead>
+                        <th>
+                            Nombre
+                        </th>
 
-                    <tbody id="tablaJugadores">
+                        <th>
+                            Dorsal
+                        </th>
 
-                    </tbody>
+                        <th>
+                            Talla
+                        </th>
 
-                </table>
+                        <th>
+                            Estado
+                        </th>
 
-            </div>
+                        <th>
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaJugadores">
+
+                </tbody>
+
+            </table>
 
         </div>
 
@@ -679,122 +663,42 @@ CONTENT
 
     <!-- PARTIDOS -->
 
-    <div
-    id="partidos"
-    class="tab-content">
+    <div class="section">
 
-        <div class="panel">
+        <div class="section-title">
 
-            <div class="panel-title">
-
-                <h2>Programar Partido</h2>
-
-            </div>
-
-            <div class="form-grid">
-
-                <input
-                class="input"
-                placeholder="Rival">
-
-                <input
-                class="input"
-                type="date">
-
-                <input
-                class="input"
-                type="time">
-
-                <input
-                class="input"
-                placeholder="Cancha">
-
-            </div>
-
-            <button class="save-btn">
-                GUARDAR PARTIDO
-            </button>
+            <h2>
+                Programar Partido
+            </h2>
 
         </div>
 
-    </div>
+        <div class="form-grid">
 
-    <!-- RIVALES -->
+            <input
+            type="text"
+            placeholder="Rival">
 
-    <div
-    id="rivales"
-    class="tab-content">
+            <input
+            type="date">
 
-        <div class="panel">
+            <input
+            type="time">
 
-            <div class="panel-title">
-
-                <h2>Agregar Rival</h2>
-
-            </div>
-
-            <div class="form-grid">
-
-                <input
-                class="input"
-                placeholder="Nombre rival">
-
-                <input
-                class="input"
-                placeholder="Ciudad">
-
-                <input
-                class="input"
-                placeholder="Contacto">
-
-            </div>
-
-            <button class="save-btn">
-                GUARDAR RIVAL
-            </button>
+            <input
+            type="text"
+            placeholder="Estadio">
 
         </div>
 
-    </div>
+        <div
+        style="
+        margin-top:20px;
+        ">
 
-    <!-- PAGOS -->
-
-    <div
-    id="pagos"
-    class="tab-content">
-
-        <div class="panel">
-
-            <div class="panel-title">
-
-                <h2>Control de Pagos</h2>
-
-            </div>
-
-            <p style="color:#94a3b8;">
-                Próximamente módulo financiero.
-            </p>
-
-        </div>
-
-    </div>
-
-    <!-- CONFIG -->
-
-    <div
-    id="config"
-    class="tab-content">
-
-        <div class="panel">
-
-            <div class="panel-title">
-
-                <h2>Configuración</h2>
-
-            </div>
-
-            <button class="save-btn">
-                RESPALDAR DATOS
+            <button
+            class="btn btn-green">
+                Guardar Partido
             </button>
 
         </div>
@@ -803,65 +707,18 @@ CONTENT
 
 </div>
 
+<!-- =========================
+SCRIPT
+========================= -->
+
 <script src="./config.js"></script>
 
 <script>
 
-// =====================================================
-// SEGURIDAD ADMIN
-// =====================================================
-
-if(
-    localStorage.getItem('admin_activo')
-    !== 'true'
-){
-    window.location.href = './login.html';
-}
-
-// =====================================================
-// TABS
-// =====================================================
-
-function openTab(id,btn){
-
-    document
-    .querySelectorAll('.tab-content')
-    .forEach(tab => {
-
-        tab.classList.remove('active');
-    });
-
-    document
-    .querySelectorAll('.tab-btn')
-    .forEach(b => {
-
-        b.classList.remove('active');
-    });
-
-    document
-    .getElementById(id)
-    .classList.add('active');
-
-    btn.classList.add('active');
-}
-
-// =====================================================
-// LOGOUT
-// =====================================================
-
-function logoutAdmin(){
-
-    localStorage.removeItem(
-        'admin_activo'
-    );
-
-    window.location.href =
-    './login.html';
-}
-
-// =====================================================
-// CARGAR JUGADORES
-// =====================================================
+const tabla =
+document.getElementById(
+'tablaJugadores'
+);
 
 async function cargarJugadores(){
 
@@ -876,26 +733,39 @@ async function cargarJugadores(){
         const data =
         await response.json();
 
-        if(!data.ok) return;
+        if(!data.ok){
 
-        const tabla =
+            alert(
+            'Error cargando jugadores'
+            );
+
+            return;
+        }
+
+        const jugadores =
+        data.jugadores || [];
+
         document.getElementById(
-            'tablaJugadores'
-        );
-
-        tabla.innerHTML = '';
+        'totalJugadores'
+        ).textContent =
+        jugadores.length;
 
         let aprobados = 0;
         let pendientes = 0;
 
-        data.jugadores.forEach(j => {
+        tabla.innerHTML = '';
 
-            const estado =
-            j.inscripEstado || 'PENDIENTE';
+        jugadores.forEach(j => {
 
-            if(estado === 'APROBADO'){
+            if(
+                j.inscripEstado ===
+                'APROBADO'
+            ){
+
                 aprobados++;
+
             }else{
+
                 pendientes++;
             }
 
@@ -904,104 +774,73 @@ async function cargarJugadores(){
             <tr>
 
                 <td>
+                    ${j.cedula}
+                </td>
+
+                <td>
                     ${j.primerNombre}
                     ${j.apellidos}
                 </td>
 
-                <td>${j.cedula}</td>
-
-                <td>${j.dorsal}</td>
-
-                <td>${j.talla}</td>
+                <td>
+                    ${j.dorsal}
+                </td>
 
                 <td>
+                    ${j.talla}
+                </td>
 
-                    <span class="
-                    badge
-                    ${estado === 'APROBADO'
-                    ? 'ok'
-                    : 'pending'}">
-
-                        ${estado}
-
-                    </span>
-
+                <td>
+                    ${j.inscripEstado}
                 </td>
 
                 <td>
 
                     <button
-                    class="action-btn btn-edit">
-                        Editar
+                    class="btn btn-green">
+
+                        Aprobar
+
                     </button>
 
                     <button
-                    class="action-btn btn-approve">
-                        Aprobar
+                    class="btn btn-red">
+
+                        Eliminar
+
                     </button>
 
                 </td>
 
             </tr>
+
             `;
         });
 
         document.getElementById(
-            'totalJugadores'
-        ).textContent =
-        data.jugadores.length;
-
-        document.getElementById(
-            'totalAprobados'
+        'totalAprobados'
         ).textContent =
         aprobados;
 
         document.getElementById(
-            'totalPendientes'
+        'totalPendientes'
         ).textContent =
         pendientes;
 
-    }catch(err){
+    }catch(error){
 
-        console.log(err);
+        console.error(error);
+
+        alert(
+        'Error conectando con GAS'
+        );
     }
 }
-
-// =====================================================
-// BUSCADOR
-// =====================================================
-
-document
-.getElementById('searchJugador')
-.addEventListener('keyup', function(){
-
-    const filtro =
-    this.value.toLowerCase();
-
-    const filas =
-    document.querySelectorAll(
-        '#tablaJugadores tr'
-    );
-
-    filas.forEach(fila => {
-
-        fila.style.display =
-        fila.innerText
-        .toLowerCase()
-        .includes(filtro)
-        ? ''
-        : 'none';
-    });
-
-});
-
-// =====================================================
-// INIT
-// =====================================================
 
 cargarJugadores();
 
 </script>
 
 </body>
+
 </html>
