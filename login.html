@@ -27,20 +27,16 @@ rel="stylesheet">
     --primary:#00d2ff;
     --primary-dark:#008f9b;
     --accent:#FFD700;
-    --bg-dark:#020c1a;
-    --glass:rgba(12,25,45,.72);
-}
-
-html,
-body{
-    height:100%;
 }
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    height:100%;
 }
 
 body{
@@ -49,7 +45,7 @@ body{
 
     background:#020c1a;
 
-    min-height:100vh;
+    min-height:100dvh;
 
     display:flex;
 
@@ -61,22 +57,20 @@ body{
 
     color:#fff;
 
-    position:relative;
-
     overflow-x:hidden;
     overflow-y:auto;
+
+    position:relative;
 }
 
-/* =====================================================
-   FONDO HOLOGRÁFICO
-===================================================== */
+/* FONDO */
 
 body::before,
 body::after{
 
     content:'';
 
-    position:fixed;
+    position:absolute;
 
     width:950px;
     height:950px;
@@ -90,8 +84,6 @@ body::after{
     z-index:0;
 
     animation:moveGlow 14s infinite ease-in-out;
-
-    pointer-events:none;
 }
 
 body::before{
@@ -123,44 +115,27 @@ body::after{
 @keyframes moveGlow{
 
     0%{
-        transform:
-        translate(0,0)
-        scale(1)
-        rotate(0deg);
+        transform:translate(0,0) scale(1);
     }
 
     25%{
-        transform:
-        translate(120px,60px)
-        scale(1.15)
-        rotate(90deg);
+        transform:translate(120px,60px) scale(1.15);
     }
 
     50%{
-        transform:
-        translate(-90px,120px)
-        scale(.9)
-        rotate(180deg);
+        transform:translate(-90px,120px) scale(.9);
     }
 
     75%{
-        transform:
-        translate(80px,-90px)
-        scale(1.08)
-        rotate(270deg);
+        transform:translate(80px,-90px) scale(1.08);
     }
 
     100%{
-        transform:
-        translate(0,0)
-        scale(1)
-        rotate(360deg);
+        transform:translate(0,0) scale(1);
     }
 }
 
-/* =====================================================
-   CARD
-===================================================== */
+/* CARD */
 
 .login-card{
 
@@ -169,7 +144,7 @@ body::after{
 
     background:rgba(10,18,35,.76);
 
-    backdrop-filter:blur(24px) saturate(180%);
+    backdrop-filter:blur(24px);
 
     border:1px solid rgba(0,210,255,.45);
 
@@ -188,9 +163,7 @@ body::after{
     transition:.45s;
 }
 
-/* =====================================================
-   MODO ADMIN MORADO
-===================================================== */
+/* MODO ADMIN */
 
 .login-card.admin-mode{
 
@@ -203,7 +176,7 @@ body::after{
     0 18px 45px rgba(0,0,0,.75);
 }
 
-.login-card.admin-mode .logo-area h1{
+.login-card.admin-mode h1{
 
     background:
     linear-gradient(
@@ -216,67 +189,6 @@ body::after{
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
-
-.login-card.admin-mode .logo-area p{
-    color:#f3e8ff;
-}
-
-.login-card.admin-mode label{
-    color:#d8b4fe;
-}
-
-.login-card.admin-mode input{
-
-    border:2px solid rgba(168,85,247,.4);
-
-    background:
-    rgba(55,25,80,.78);
-
-    box-shadow:
-    0 0 18px rgba(168,85,247,.2);
-}
-
-.login-card.admin-mode input:focus{
-
-    border-color:#c084fc;
-
-    box-shadow:
-    0 0 25px rgba(168,85,247,.45);
-}
-
-.login-card.admin-mode .btn-submit{
-
-    background:
-    linear-gradient(
-        135deg,
-        #6d28d9,
-        #a855f7
-    );
-
-    box-shadow:
-    0 10px 25px rgba(168,85,247,.35);
-}
-
-.login-card.admin-mode #manualDownloadBtn{
-
-    background:
-    linear-gradient(
-        135deg,
-        #7c3aed,
-        #a855f7
-    );
-
-    box-shadow:
-    0 10px 25px rgba(168,85,247,.35);
-}
-
-.login-card.admin-mode a{
-    color:#f3e8ff;
-}
-
-/* =====================================================
-   LOGO
-===================================================== */
 
 .logo-area{
     text-align:center;
@@ -305,20 +217,12 @@ body::after{
 
 .logo-area p{
 
-    opacity:.92;
-
     font-size:1rem;
 
     font-weight:700;
 
     color:#d7f7ff;
-
-    letter-spacing:1px;
 }
-
-/* =====================================================
-   INPUTS
-===================================================== */
 
 .input-group{
     margin-bottom:28px;
@@ -339,8 +243,6 @@ body::after{
     letter-spacing:1.6px;
 
     text-transform:uppercase;
-
-    transition:.35s;
 }
 
 input{
@@ -370,20 +272,6 @@ input{
     transition:.35s;
 }
 
-input:focus{
-
-    border-color:var(--primary);
-
-    background:rgba(15,23,42,.92);
-
-    box-shadow:
-    0 0 18px rgba(0,210,255,.35);
-}
-
-/* =====================================================
-   BOTÓN
-===================================================== */
-
 .btn-submit{
 
     width:100%;
@@ -407,33 +295,10 @@ input:focus{
 
     font-weight:800;
 
-    letter-spacing:1.5px;
-
-    text-transform:uppercase;
-
     cursor:pointer;
-
-    transition:.35s;
 
     margin-top:12px;
 }
-
-.btn-submit:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:
-    0 10px 25px rgba(0,210,255,.35);
-}
-
-.btn-submit:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-}
-
-/* =====================================================
-   ERROR
-===================================================== */
 
 .error-message{
 
@@ -452,35 +317,22 @@ input:focus{
     color:#fecaca;
 
     text-align:center;
-
-    font-size:.88rem;
-
-    font-weight:600;
 }
 
-/* =====================================================
-   FOOTER
-===================================================== */
-
 .footer-links{
-    width:100%;
     margin-top:34px;
+    text-align:center;
 }
 
 .footer-links a{
-
     color:#FFD700;
-
     font-weight:800;
-
     text-decoration:none;
 }
 
-.footer-links a:hover{
-    opacity:.9;
-}
-
 #manualDownloadBtn{
+
+    margin-top:24px;
 
     padding:14px 24px;
 
@@ -499,45 +351,7 @@ input:focus{
 
     font-weight:800;
 
-    font-size:.95rem;
-
     cursor:pointer;
-
-    transition:.35s;
-
-    box-shadow:
-    0 10px 25px rgba(0,210,255,.25);
-}
-
-#manualDownloadBtn:hover{
-    transform:translateY(-2px);
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media(max-width:480px){
-
-    body{
-        padding:16px;
-    }
-
-    .login-card{
-        padding:32px 22px;
-    }
-
-    .logo-area h1{
-        font-size:1.7rem;
-    }
-
-    input{
-        min-height:56px;
-    }
-
-    .btn-submit{
-        height:54px;
-    }
 }
 
 </style>
@@ -593,13 +407,7 @@ id="loginCard">
 
     <div class="footer-links">
 
-        <p
-        style="
-        margin-top:30px;
-        margin-bottom:24px;
-        text-align:center;
-        line-height:1.8;
-        ">
+        <p style="margin-bottom:20px;">
 
             ¿No tienes cuenta?
 
@@ -609,20 +417,12 @@ id="loginCard">
 
         </p>
 
-        <div
-        style="
-        display:flex;
-        justify-content:center;
-        ">
-
-            <button
-                id="manualDownloadBtn"
-                type="button"
-            >
-                📲 INSTALAR APP
-            </button>
-
-        </div>
+        <button
+            id="manualDownloadBtn"
+            type="button"
+        >
+            📲 INSTALAR APP
+        </button>
 
     </div>
 
@@ -647,9 +447,31 @@ document.getElementById('errorMsg');
 const loginCard =
 document.getElementById('loginCard');
 
-// =====================================================
+// INPUT
+
+cedulaInput.addEventListener('input', () => {
+
+    const val =
+    cedulaInput.value.trim();
+
+    btnLogin.disabled =
+    !val;
+
+    if(val.includes('Gata')){
+
+        loginCard.classList.add(
+            'admin-mode'
+        );
+
+    }else{
+
+        loginCard.classList.remove(
+            'admin-mode'
+        );
+    }
+});
+
 // ERROR
-// =====================================================
 
 function mostrarError(msj){
 
@@ -664,38 +486,7 @@ function mostrarError(msj){
     }, 5000);
 }
 
-// =====================================================
-// INPUT
-// =====================================================
-
-cedulaInput.addEventListener('input', () => {
-
-    const val =
-    cedulaInput.value.trim();
-
-    btnLogin.disabled =
-    !val;
-
-    // EFECTO ADMIN MORADO
-
-    if(val.includes('Gata')){
-
-        loginCard.classList.add(
-            'admin-mode'
-        );
-
-    }else{
-
-        loginCard.classList.remove(
-            'admin-mode'
-        );
-    }
-
-});
-
-// =====================================================
 // LOGIN
-// =====================================================
 
 formLogin.addEventListener('submit', async (e) => {
 
@@ -704,33 +495,6 @@ formLogin.addEventListener('submit', async (e) => {
     const valor =
     cedulaInput.value.trim();
 
-    if(!navigator.onLine){
-
-        mostrarError(
-            '📡 Sin conexión a internet'
-        );
-
-        return;
-    }
-
-    if(typeof CONFIG === 'undefined'){
-
-        mostrarError(
-            '❌ No se cargó config.js'
-        );
-
-        return;
-    }
-
-    if(!CONFIG.URL_GAS){
-
-        mostrarError(
-            '❌ URL_GAS no existe'
-        );
-
-        return;
-    }
-
     btnLogin.disabled = true;
 
     btnLogin.textContent =
@@ -738,71 +502,52 @@ formLogin.addEventListener('submit', async (e) => {
 
     try{
 
-        // LOGIN ADMIN
+        // ADMIN
 
-        if(valor === 'GataFiera54321'){
+        const urlAdmin =
+        `${CONFIG.URL_GAS}?action=loginAdmin&clave=${encodeURIComponent(valor)}`;
 
-            const urlAdmin =
-            `${CONFIG.URL_GAS}?action=loginAdmin&clave=${encodeURIComponent(valor)}&t=${Date.now()}`;
+        const responseAdmin =
+        await fetch(urlAdmin);
 
-            const responseAdmin =
-            await fetch(urlAdmin);
+        const dataAdmin =
+        await responseAdmin.json();
 
-            const dataAdmin =
-            await responseAdmin.json();
+        if(
+            dataAdmin.ok === true &&
+            dataAdmin.acceso === true
+        ){
 
-            if(
-                dataAdmin.ok === true &&
-                dataAdmin.acceso === true
-            ){
-
-                localStorage.setItem(
-                    'admin_activo',
-                    'true'
-                );
-
-                window.location.assign(
-                    './admin.html'
-                );
-
-                return;
-            }
-
-            mostrarError(
-                '❌ Clave admin incorrecta'
+            localStorage.setItem(
+                'admin_activo',
+                'true'
             );
+
+            window.location.href =
+            './admin.html';
 
             return;
         }
 
-        // LOGIN JUGADOR
+        // JUGADOR
 
         if(!/^\d{10}$/.test(valor)){
 
             mostrarError(
-                '❌ Ingresa una cédula válida o clave admin'
+                '❌ Ingresa una cédula válida'
             );
 
             return;
         }
 
         const url =
-        `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}&t=${Date.now()}`;
+        `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}`;
 
         const response =
         await fetch(url);
 
-        if(!response.ok){
-
-            throw new Error(
-                'Servidor no disponible'
-            );
-        }
-
         const data =
         await response.json();
-
-        // APROBADO
 
         if(
             data.ok === true &&
@@ -820,50 +565,19 @@ formLogin.addEventListener('submit', async (e) => {
                 valor
             );
 
-            window.location.assign(
-                './perfil.html'
-            );
-
-            return;
-        }
-
-        // PENDIENTE
-
-        if(
-            data.ok === true &&
-            data.cedulaExiste === true
-        ){
-
-            mostrarError(
-                `⏳ Estado actual: ${data.estado}`
-            );
-
-            return;
-        }
-
-        // NO EXISTE
-
-        if(
-            data.ok === true &&
-            data.cedulaExiste === false
-        ){
-
-            mostrarError(
-                '❌ Jugador no encontrado'
-            );
+            window.location.href =
+            './perfil.html';
 
             return;
         }
 
         mostrarError(
-            data.error ||
-            '⚠️ Error inesperado'
+            '❌ Acceso no válido'
         );
 
     }catch(error){
 
         mostrarError(
-            error.message ||
             '🔌 Error de conexión'
         );
 
@@ -877,21 +591,18 @@ formLogin.addEventListener('submit', async (e) => {
 
 });
 
-// =====================================================
 // INSTALAR APP
-// =====================================================
 
-const manualDownloadBtn =
-document.getElementById('manualDownloadBtn');
-
-manualDownloadBtn.addEventListener('click', () => {
+document
+.getElementById('manualDownloadBtn')
+.addEventListener('click', () => {
 
     alert(
 `📲 INSTALAR APP
 
-1. Abre el menú del navegador
+1. Abrir menú del navegador
 
-2. Presiona:
+2. Presionar:
 "Instalar aplicación"
 
 3. Agregar a pantalla principal`
