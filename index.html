@@ -8,11 +8,9 @@
     <style>
         * {
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
             margin: 0;
             padding: 0;
         }
-
         :root {
             --azul-noche: #0a1a2f;
             --cardenillo: #008B94;
@@ -23,12 +21,10 @@
             --negro-trans: rgba(0, 0, 0, 0.5);
             --rojo-error: #e74c3c;
             --verde-exito: #2ecc71;
-            --oro-glow: rgba(245, 184, 27, 0.6);
         }
-
         body {
             background: radial-gradient(circle at 20% 30%, #0a1428, #01060f);
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -36,9 +32,7 @@
             justify-content: center;
             padding: 1.5rem;
             position: relative;
-            overflow-x: hidden;
         }
-
         body::before {
             content: "";
             position: fixed;
@@ -51,67 +45,42 @@
             pointer-events: none;
             z-index: 0;
         }
-
         @keyframes rotateGlow {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .contenedor-principal {
             max-width: 540px;
             width: 100%;
-            margin: 20px auto;
             background: rgba(10, 26, 47, 0.85);
             backdrop-filter: blur(18px);
             border-radius: 2rem;
             border: 2px solid rgba(245, 184, 27, 0.6);
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(245, 184, 27, 0.2) inset, 0 0 18px rgba(245, 184, 27, 0.3);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(245, 184, 27, 0.2) inset;
             padding: 2rem 1.8rem;
-            transition: transform 0.3s ease, box-shadow 0.3s;
+            transition: transform 0.3s ease;
             animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             position: relative;
             z-index: 2;
         }
-
         .contenedor-principal:hover {
             transform: translateY(-5px);
-            box-shadow: 0 40px 60px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(245, 184, 27, 0.5) inset;
         }
-
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        header {
-            text-align: center;
-            margin-bottom: 1.8rem;
-        }
-
+        header { text-align: center; margin-bottom: 1.8rem; }
         h1 {
             font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #F9D976, #F39F1A, #FFD966);
+            background: linear-gradient(135deg, #F9D976, #F39F1A);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
             margin-bottom: 0.3rem;
-            text-shadow: 0 0 8px rgba(245,184,27,0.3);
         }
-
-        .subtitulo {
-            color: #c9e2f5;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
+        .subtitulo { color: #c9e2f5; font-size: 0.85rem; font-weight: 500; }
         .badge {
             display: inline-block;
             background: linear-gradient(95deg, rgba(0, 139, 148, 0.3), rgba(245, 184, 27, 0.2));
@@ -121,98 +90,37 @@
             color: var(--dorado);
             font-weight: 700;
             margin-top: 0.6rem;
-            border-left: 2px solid var(--dorado);
-            border-right: 2px solid var(--dorado);
         }
-
         .golden-extra-container {
             background: radial-gradient(ellipse at 30% 40%, rgba(0,0,0,0.6), rgba(245,184,27,0.08));
             border-radius: 1.8rem;
-            padding: 1rem 0.8rem;
+            padding: 1rem;
             margin-top: 1rem;
             text-align: center;
             border: 1px solid rgba(245, 184, 27, 0.7);
-            box-shadow: 0 0 20px rgba(245,184,27,0.2);
             animation: pulseGold 2s infinite ease-in-out;
         }
-
         @keyframes pulseGold {
-            0% { box-shadow: 0 0 0 0 rgba(245,184,27,0.2); border-color: rgba(245,184,27,0.5);}
-            70% { box-shadow: 0 0 0 8px rgba(245,184,27,0); border-color: rgba(245,184,27,0.9);}
-            100% { box-shadow: 0 0 0 0 rgba(245,184,27,0); border-color: rgba(245,184,27,0.5);}
+            0% { box-shadow: 0 0 0 0 rgba(245,184,27,0.2); }
+            70% { box-shadow: 0 0 0 8px rgba(245,184,27,0); }
         }
-
-        .golden-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(145deg, #FFD966, #E6A017);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            margin-bottom: 0.3rem;
-        }
-
-        .golden-message {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #FFDD88;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            margin: 0.5rem 0;
-            letter-spacing: 1px;
-        }
-
-        .golden-sub {
-            font-size: 0.8rem;
-            color: #cfe6ff;
-            background: rgba(0,0,0,0.5);
-            display: inline-block;
-            padding: 0.2rem 1rem;
-            border-radius: 60px;
-            backdrop-filter: blur(2px);
-        }
-
-        .golden-icon {
-            font-size: 2rem;
-            filter: drop-shadow(0 0 6px gold);
-            margin-top: 6px;
-        }
-
-        .paso {
-            display: none;
-            animation: fadeSlide 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        .paso.activo {
-            display: block;
-        }
-
+        .golden-message { font-size: 1.5rem; font-weight: 800; color: #FFDD88; margin: 0.5rem 0; }
+        .golden-sub { font-size: 0.8rem; color: #cfe6ff; background: rgba(0,0,0,0.5); display: inline-block; padding: 0.2rem 1rem; border-radius: 60px; }
+        .paso { display: none; animation: fadeSlide 0.4s ease; }
+        .paso.activo { display: block; }
         @keyframes fadeSlide {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
-
-        .campo {
-            margin-bottom: 1.2rem;
-        }
-
+        .campo { margin-bottom: 1.2rem; }
         label {
             display: block;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
             color: #FFE2A4;
             margin-bottom: 0.25rem;
         }
-
         input, select {
             width: 100%;
             padding: 0.9rem 1.2rem;
@@ -221,39 +129,15 @@
             border-radius: 1rem;
             color: white;
             font-size: 1rem;
-            font-family: 'Inter', monospace;
             transition: all 0.25s;
             outline: none;
         }
-
         input:focus, select:focus {
             border-color: var(--dorado);
             box-shadow: 0 0 0 3px rgba(245, 184, 27, 0.4);
-            background: rgba(0, 0, 0, 0.8);
-            transform: scale(1.01);
         }
-
-        input.error, select.error {
-            border-color: var(--rojo-error);
-            animation: shake 0.3s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .help-note {
-            font-size: 0.7rem;
-            color: #c2d9f0;
-            margin-top: 0.3rem;
-            margin-left: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        input.error { border-color: var(--rojo-error); animation: shake 0.3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);} }
         .btn-primary {
             background: linear-gradient(105deg, #D4AF37, #B47C00);
             border: none;
@@ -269,56 +153,11 @@
             margin-top: 1.2rem;
             transition: all 0.3s;
             box-shadow: 0 5px 14px rgba(212, 175, 55, 0.4);
-            position: relative;
-            overflow: hidden;
         }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            background: linear-gradient(105deg, #F5C542, #E6A017);
-            box-shadow: 0 10px 22px rgba(212, 175, 55, 0.6);
-        }
-
-        .btn-primary:active {
-            transform: translateY(1px);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            filter: grayscale(0.1);
-        }
-
-        .grid-2cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .file-input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .mensaje-exito-foto {
-            color: var(--verde-exito);
-            font-size: 0.75rem;
-            margin-top: 5px;
-            margin-left: 12px;
-            display: none;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .visto-icon {
-            font-size: 1.4rem;
-            display: none;
-            min-width: 30px;
-            text-align: center;
-            filter: drop-shadow(0 0 2px green);
-        }
-
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); background: linear-gradient(105deg, #F5C542, #E6A017); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .grid-2cols { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .mensaje-exito-foto { color: var(--verde-exito); font-size: 0.75rem; margin-top: 5px; display: none; align-items: center; gap: 5px; }
         #loader {
             display: none;
             position: fixed;
@@ -331,21 +170,15 @@
             gap: 20px;
             z-index: 10000;
         }
-
         .spinner {
             width: 60px;
             height: 60px;
-            border: 4px solid rgba(245, 184, 27, 0.3);
+            border: 4px solid rgba(245,184,27,0.3);
             border-top: 4px solid var(--dorado);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        @keyframes spin { to { transform: rotate(360deg); } }
         #modalExito {
             display: none;
             position: fixed;
@@ -356,39 +189,15 @@
             align-items: center;
             z-index: 10002;
         }
-
         .modal-card {
             background: linear-gradient(145deg, #0f1f32, #030c17);
             border-radius: 2rem;
             padding: 2rem;
             text-align: center;
             border: 2px solid var(--dorado);
-            box-shadow: 0 0 35px rgba(245, 184, 27, 0.6);
             max-width: 340px;
-            width: 85%;
         }
-
-        .modal-card h2 {
-            color: var(--dorado);
-            font-size: 1.7rem;
-        }
-
-        #contador {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--dorado), #ffd966);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            animation: pulseScale 0.9s infinite;
-        }
-
-        @keyframes pulseScale {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-
+        .modal-card h2 { color: var(--dorado); font-size: 1.7rem; }
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -399,50 +208,40 @@
             color: white;
             padding: 12px 24px;
             border-radius: 60px;
-            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 12px;
             z-index: 10001;
             animation: toastSlideUp 0.3s ease forwards;
             border-left: 5px solid var(--dorado);
-            box-shadow: 0 8px 20px black;
         }
-
         @keyframes toastSlideUp {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
+            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
-
+        .disabled-by-date {
+            filter: blur(2px);
+            pointer-events: none;
+            opacity: 0.7;
+        }
         @media (max-width: 550px) {
             body { padding: 0.8rem; }
             .contenedor-principal { padding: 1.3rem; }
-            h1 { font-size: 1.5rem; }
             .golden-message { font-size: 1.2rem; }
-            .grid-2cols { grid-template-columns: 1fr; gap: 8px; }
+            .grid-2cols { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-
 <div class="contenedor-principal">
     <header>
         <h1>⚽ NÁPOLES F.C. ⚽</h1>
         <p class="subtitulo">GOL DE ORO · TIEMPO EXTRA OFICIAL</p>
         <div class="badge">🏆 TEMPORADA 2026 · ¡INSCRIPCIONES ABIERTAS! 🏆</div>
-        
         <div class="golden-extra-container">
-            <div class="golden-title">⚡ GOL DE ORO ⚡</div>
-            <div class="golden-message">¡TIEMPO EXTRA!</div>
-            <div class="golden-sub">Registro extendido — Sin límite de plazo — Oportunidad única</div>
-            <div class="golden-icon">🥇✨🏆🔥</div>
-            <div class="golden-sub" style="font-size:0.7rem; margin-top:10px;">❗ Las inscripciones continúan abiertas por tiempo indefinido. Asegura tu dorsal hoy.</div>
+            <div class="golden-message">⚡ GOL DE ORO ⚡</div>
+            <div class="golden-sub">Registro extendido  — Oportunidad única</div>
+            <div class="golden-sub" style="margin-top:10px;">❗ Las inscripciones cierran el VIERNES a las 11:00 PM</div>
         </div>
     </header>
 
@@ -451,394 +250,263 @@
             <div class="campo">
                 <label>🔢 CÉDULA (10 dígitos)</label>
                 <input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890" autocomplete="off">
-                <div class="help-note"><span>🔑</span> Ingresa tu número de cédula para empezar</div>
             </div>
             <button type="button" id="btnCedula" class="btn-primary" disabled>Validar cédula</button>
         </div>
-
         <div id="paso2" class="paso">
             <div class="campo"><label>📝 Primer nombre</label><input type="text" id="n1" placeholder="Ej: LEONARDO"></div>
-            <div class="campo"><label>📝 Segundo nombre (opcional)</label><input type="text" id="n2" placeholder="Ej: ADRIAN"></div>
+            <div class="campo"><label>📝 Segundo nombre </label><input type="text" id="n2" placeholder="Ej: ADRIAN"></div>
             <div class="campo"><label>📝 Apellidos</label><input type="text" id="ape" placeholder="Ej: MUÑOZ BUENDIA"></div>
             <div class="campo"><label>📅 Fecha de nacimiento</label><input type="date" id="fecha"></div>
             <button type="button" id="btnPaso2" class="btn-primary" disabled>Siguiente</button>
         </div>
-
         <div id="paso3" class="paso">
             <div class="campo"><label>📞 Teléfono (10 dígitos)</label><input type="tel" id="tel" maxlength="10" placeholder="Ej: 0991234567"></div>
             <div class="campo"><label>✉️ Correo electrónico</label><input type="email" id="correo" placeholder="tú@ejemplo.com"></div>
             <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
         </div>
-
         <div id="paso4" class="paso">
-            <div class="campo">
-                <label>📸 Foto de perfil (sonríe)</label>
-                <div class="file-input-wrapper">
-                    <input type="file" id="rostro" accept="image/jpeg,image/png">
-                    <span id="vistoRostro" class="visto-icon">✅</span>
-                </div>
-                <div id="mensajeRostro" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
-            </div>
-            <div class="campo">
-                <label>🪪 Foto de tu cédula (frontal)</label>
-                <div class="file-input-wrapper">
-                    <input type="file" id="cedulaFile" accept="image/jpeg,image/png">
-                    <span id="vistoCedula" class="visto-icon">✅</span>
-                </div>
-                <div id="mensajeCedula" class="mensaje-exito-foto">✓ Documento subido con éxito</div>
-            </div>
+            <div class="campo"><label>📸 Foto de perfil (sonríe)</label><input type="file" id="rostro" accept="image/jpeg,image/png"></div>
+            <div class="campo"><label>🪪 Foto de tu cédula (frontal)</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"></div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
-
         <div id="paso5" class="paso">
             <div class="grid-2cols">
-                <div class="campo">
-                    <label>🏷️ Nombre en tu camiseta</label>
-                    <select id="nombreCamiseta">
-                        <option value="">Selecciona</option>
-                    </select>
-                </div>
-                <div class="campo">
-                    <label>🔢 Número en tu dorsal</label>
-                    <select id="dorsal">
-                        <option value="">Selecciona</option>
-                    </select>
-                </div>
+                <div class="campo"><label>🏷️ Nombre en la camiseta</label><select id="nombreCamiseta"><option value="">Selecciona</option></select></div>
+                <div class="campo"><label>🔢 Dorsal</label><select id="dorsal"><option value="">Selecciona</option></select></div>
             </div>
             <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
         </div>
-
         <div id="paso6" class="paso">
-            <div class="campo">
-                <label>👕 Talla de uniforme</label>
+            <div class="campo"><label>👕 Talla de uniforme</label>
                 <select id="talla">
                     <option value="">Selecciona</option>
-                    <option value="S">S</option><option value="M">M</option><option value="L">L</option>
-                    <option value="XL">XL</option><option value="XXL">XXL</option>
+                    <option value="38">38</option><option value="40">40</option><option value="42">42</option>
+                    <option value="44">44</option><option value="46">46</option><option value="48">48</option>
                 </select>
             </div>
-            <div class="campo">
-                <label>🧦 Medias extras (+$2)</label>
-                <select id="medias">
-                    <option value="">Selecciona</option>
-                    <option value="NO">No</option>
-                    <option value="SI">Sí</option>
-                </select>
+            <div class="campo"><label>🧦 Medias extras (+$2)</label>
+                <select id="medias"><option value="">Selecciona</option><option value="NO">No</option><option value="SI">Sí</option></select>
             </div>
-            <div class="campo">
-                <label>💰 N° transacción inscripción ($5)</label>
-                <input id="inscripcion" placeholder="Ej: PAGO-12345">
-            </div>
-            <div class="campo">
-                <label>👕 N° transacción uniforme (75% + medias)</label>
-                <input id="uniforme" placeholder="Ej: PAGO-67890">
-            </div>
+            <div class="campo"><label>💰 N° transacción inscripción ($5)</label><input id="inscripcion" placeholder="Ej: PAGO-12345"></div>
+            <div class="campo"><label>👕 N° transacción uniforme (75% + medias)</label><input id="uniforme" placeholder="Ej: PAGO-67890"></div>
             <button type="button" id="btnFinal" class="btn-primary" disabled>⚽ FINALIZAR REGISTRO ⚽</button>
         </div>
-
-        <input type="hidden" id="fotoRostroB64">
-        <input type="hidden" id="fotoCedulaB64">
+        <input type="hidden" id="fotoRostroB64"><input type="hidden" id="fotoCedulaB64">
     </form>
 </div>
-
-<div id="loader">
-    <div class="spinner"></div>
-    <div id="loader-texto">Procesando Gol de Oro...</div>
-</div>
-
-<div id="modalExito">
-    <div class="modal-card">
-        <h2>✅ ¡GOL DE ORO!</h2>
-        <p>Registro exitoso. Redirigiendo en <span id="contador">3</span> segundos...</p>
-        <div style="margin-top: 12px;">⚽⚡🏆</div>
-    </div>
-</div>
+<div id="loader"><div class="spinner"></div><div id="loader-texto">Procesando...</div></div>
+<div id="modalExito"><div class="modal-card"><h2>✅ ¡GOL DE ORO!</h2><p>Registro exitoso. Redirigiendo en <span id="contador">3</span> segundos...</p></div></div>
 
 <script src="config.js"></script>
 <script>
-    (function() {
-        // ================= VALIDAR CONFIG =================
-        if (typeof CONFIG === 'undefined') {
-            mostrarToast("Error: No se encontró config.js. Asegúrate de que el archivo existe en la raíz.", "error");
-            return;
-        }
-        if (!CONFIG.URL_GAS) {
-            mostrarToast("Error: CONFIG.URL_GAS no está definido en config.js", "error");
+    (function(){
+        if(typeof CONFIG === 'undefined' || !CONFIG.URL_GAS){
+            alert("Error crítico: archivo config.js no encontrado o URL no definida.");
             return;
         }
         const URL_GAS = CONFIG.URL_GAS;
+        let registroAbierto = true;
 
-        // ================= TOASTS =================
-        function mostrarToast(mensaje, tipo = 'info', duracion = 4000) {
-            const toastAnterior = document.querySelector('.toast-notification');
-            if (toastAnterior) toastAnterior.remove();
+        // -------- helpers visuales ----------
+        function mostrarToast(mensaje, tipo='info', duracion=4000){
+            const existing = document.querySelector('.toast-notification');
+            if(existing) existing.remove();
             const toast = document.createElement('div');
-            toast.className = `toast-notification ${tipo}`;
-            toast.innerHTML = `<span>${tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : '⚡'}</span><span>${mensaje}</span>`;
+            toast.className = `toast-notification`;
+            toast.innerHTML = `<span>${tipo==='error'?'❌':tipo==='success'?'✅':'⚡'}</span><span>${mensaje}</span>`;
             document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.animation = 'toastSlideUp 0.3s reverse forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, duracion);
+            setTimeout(()=>{ toast.style.animation = 'toastSlideUp 0.3s reverse forwards'; setTimeout(()=>toast.remove(),300); }, duracion);
         }
-
-        function marcarErrorInput(input, mensaje) {
-            input.classList.add('error');
-            mostrarToast(mensaje, 'error', 2500);
-            setTimeout(() => input.classList.remove('error'), 500);
+        function mostrarLoader(visible, texto="Procesando..."){ 
+            const loader = document.getElementById('loader');
+            loader.style.display = visible ? "flex" : "none";
+            if(texto) document.getElementById('loader-texto').innerText = texto;
         }
-
-        const loaderDiv = document.getElementById('loader');
-        const loaderTexto = document.getElementById('loader-texto');
-        const modalExito = document.getElementById('modalExito');
-
-        function mostrarLoader(visible, texto = "Procesando...") {
-            loaderDiv.style.display = visible ? "flex" : "none";
-            if (texto) loaderTexto.innerText = texto;
+        function verPaso(n){ document.querySelectorAll(".paso").forEach(p=>p.classList.remove("activo")); document.getElementById(`paso${n}`).classList.add("activo"); }
+        
+        // deshabilitar todo si el plazo cerró
+        function bloquearPorFecha(){
+            if(!registroAbierto){
+                document.querySelectorAll('input, select, button').forEach(el => el.disabled = true);
+                document.querySelector('.contenedor-principal').style.opacity = '0.6';
+                mostrarToast("⛔ INSCRIPCIONES CERRADAS. Plazo finalizado el viernes 11PM.", "error", 8000);
+            }
         }
-
-        function verPaso(n) {
-            document.querySelectorAll(".paso").forEach(p => p.classList.remove("activo"));
-            document.getElementById(`paso${n}`).classList.add("activo");
+        
+        // consultar al servidor si el registro sigue abierto
+        async function verificarEstadoRegistro(){
+            mostrarLoader(true, "Verificando plazo...");
+            try{
+                const resp = await fetch(`${URL_GAS}?action=checkRegistrationOpen`);
+                const data = await resp.json();
+                registroAbierto = data.open === true;
+                if(!registroAbierto){
+                    bloquearPorFecha();
+                }else{
+                    console.log("✅ Registro habilitado hasta el viernes 11PM.");
+                }
+            }catch(e){
+                console.error("Error verificando estado:", e);
+                mostrarToast("No se pudo verificar el plazo, contacte administrador.", "error");
+            }finally{
+                mostrarLoader(false);
+            }
         }
-
-        // Mayúsculas automáticas excepto email
-        document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp => {
-            inp.addEventListener('input', function() {
-                if (this.id !== 'correo') this.value = this.value.toUpperCase();
-            });
-        });
-
-        // ================= PASO 1 =================
+        
+        // ------ lógica de campos y pasos ------
         const ced = document.getElementById('ced');
         const btnCedula = document.getElementById('btnCedula');
-        ced.addEventListener('input', () => {
-            ced.value = ced.value.replace(/\D/g, '').slice(0, 10);
-            btnCedula.disabled = ced.value.length !== 10;
+        ced.addEventListener('input', ()=>{
+            ced.value = ced.value.replace(/\D/g,'').slice(0,10);
+            btnCedula.disabled = ced.value.length !== 10 || !registroAbierto;
         });
-        btnCedula.addEventListener('click', async () => {
-            if (ced.value.length !== 10) {
-                marcarErrorInput(ced, "La cédula debe tener 10 dígitos");
-                return;
-            }
+        
+        btnCedula.addEventListener('click', async ()=>{
+            if(!registroAbierto) return mostrarToast("Plazo cerrado", "error");
+            if(ced.value.length !== 10) return marcarError(ced, "Cédula 10 dígitos");
             mostrarLoader(true, "Validando cédula...");
-            try {
+            try{
                 const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
-                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 const data = await resp.json();
-                if (data.cedulaExiste) {
-                    mostrarToast("⚠️ Esta cédula ya está registrada. Contacta al administrador.", "error");
-                } else {
-                    mostrarToast("✅ Cédula válida • ¡Gol de oro!", "success");
-                    verPaso(2);
-                }
-            } catch (error) {
-                console.error(error);
-                mostrarToast("Error de conexión con el servidor.", "error");
-            }
+                if(data.cedulaExiste) mostrarToast("⚠️ Cédula ya registrada", "error");
+                else { mostrarToast("✅ Cédula válida", "success"); verPaso(2); }
+            }catch(e){ mostrarToast("Error conectando", "error"); }
             mostrarLoader(false);
         });
-
-        // ================= PASO 2 =================
-        const n1 = document.getElementById('n1');
-        const n2 = document.getElementById('n2');
-        const ape = document.getElementById('ape');
-        const fecha = document.getElementById('fecha');
+        
+        // Paso 2
+        const n1 = document.getElementById('n1'), n2 = document.getElementById('n2'), ape = document.getElementById('ape'), fecha = document.getElementById('fecha');
         const btnPaso2 = document.getElementById('btnPaso2');
-        
-        function validarPaso2() {
-            const fechaValida = fecha.value && !isNaN(new Date(fecha.value));
+        function validarPaso2(){
+            const fechaVal = fecha.value && !isNaN(new Date(fecha.value));
             let fechaOk = true;
-            if (fechaValida) {
-                const hoy = new Date();
-                hoy.setHours(0,0,0,0);
-                if (new Date(fecha.value) > hoy) fechaOk = false;
-            }
-            btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fechaValida && fechaOk);
+            if(fechaVal && new Date(fecha.value) > new Date()) fechaOk = false;
+            btnPaso2.disabled = !(n1.value.trim() && ape.value.trim() && fechaVal && fechaOk);
         }
-        [n1, n2, ape, fecha].forEach(el => el.addEventListener('input', validarPaso2));
-        
-        btnPaso2.addEventListener('click', () => {
-            if (!n1.value.trim()) return marcarErrorInput(n1, "Primer nombre obligatorio");
-            if (!ape.value.trim()) return marcarErrorInput(ape, "Apellidos obligatorios");
-            if (!fecha.value) return marcarErrorInput(fecha, "Fecha de nacimiento obligatoria");
-            const hoy = new Date(); hoy.setHours(0,0,0,0);
-            if (new Date(fecha.value) > hoy) return marcarErrorInput(fecha, "Fecha futura no válida");
+        [n1,n2,ape,fecha].forEach(el=>el.addEventListener('input',validarPaso2));
+        btnPaso2.addEventListener('click',()=>{
+            if(!n1.value.trim()) return marcarError(n1,"Primer nombre");
+            if(!ape.value.trim()) return marcarError(ape,"Apellidos");
+            if(!fecha.value) return marcarError(fecha,"Fecha nacimiento");
+            if(new Date(fecha.value) > new Date()) return marcarError(fecha,"Fecha futura");
             verPaso(3);
         });
-
-        // ================= PASO 3 =================
-        const tel = document.getElementById('tel');
-        const correo = document.getElementById('correo');
-        const btnPaso3 = document.getElementById('btnPaso3');
-        function validarPaso3() {
-            const telOk = tel.value.replace(/\D/g, '').length === 10;
-            const emailOk = correo.value.includes('@') && correo.value.includes('.');
-            btnPaso3.disabled = !(telOk && emailOk);
-        }
-        [tel, correo].forEach(el => el.addEventListener('input', validarPaso3));
-        tel.addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10); });
-        btnPaso3.addEventListener('click', () => {
-            if (tel.value.replace(/\D/g, '').length !== 10) return marcarErrorInput(tel, "Teléfono debe tener 10 dígitos");
-            if (!correo.value.includes('@') || !correo.value.includes('.')) return marcarErrorInput(correo, "Correo inválido");
+        
+        // Paso 3
+        const tel = document.getElementById('tel'), correo = document.getElementById('correo'), btnPaso3 = document.getElementById('btnPaso3');
+        tel.addEventListener('input', e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,10));
+        function validarPaso3(){ btnPaso3.disabled = !(tel.value.replace(/\D/g,'').length===10 && correo.value.includes('@') && correo.value.includes('.')); }
+        [tel,correo].forEach(el=>el.addEventListener('input',validarPaso3));
+        btnPaso3.addEventListener('click',()=>{
+            if(tel.value.replace(/\D/g,'').length!==10) return marcarError(tel,"Teléfono 10 dígitos");
+            if(!correo.value.includes('@')||!correo.value.includes('.')) return marcarError(correo,"Email inválido");
             verPaso(4);
         });
-
-        // ================= PASO 4 ================= (fotos)
-        const rostro = document.getElementById('rostro');
-        const cedulaFile = document.getElementById('cedulaFile');
-        const fotoRostroB64 = document.getElementById('fotoRostroB64');
-        const fotoCedulaB64 = document.getElementById('fotoCedulaB64');
+        
+        // Paso 4 fotos
+        const rostro = document.getElementById('rostro'), cedulaFile = document.getElementById('cedulaFile');
+        const fotoRostroB64 = document.getElementById('fotoRostroB64'), fotoCedulaB64 = document.getElementById('fotoCedulaB64');
         const btnPaso4 = document.getElementById('btnPaso4');
-        const mensajeRostro = document.getElementById('mensajeRostro');
-        const mensajeCedula = document.getElementById('mensajeCedula');
-        const vistoRostro = document.getElementById('vistoRostro');
-        const vistoCedula = document.getElementById('vistoCedula');
-
-        function archivoABase64(file, inputHidden, mensajeElemento, vistoElemento) {
-            return new Promise((resolve, reject) => {
-                if (!file) return resolve(null);
+        function archivoABase64(file, inputHidden){
+            return new Promise((resolve, reject)=>{
+                if(!file) return resolve(null);
                 const reader = new FileReader();
-                reader.onload = () => {
-                    inputHidden.value = reader.result;
-                    if (mensajeElemento) mensajeElemento.style.display = 'flex';
-                    if (vistoElemento) vistoElemento.style.display = 'inline-block';
-                    resolve(true);
-                };
+                reader.onload = ()=> { inputHidden.value = reader.result; resolve(true); };
                 reader.onerror = reject;
                 reader.readAsDataURL(file);
             });
         }
-
-        function verificarFotos() {
-            const tieneRostro = fotoRostroB64.value && fotoRostroB64.value !== '';
-            const tieneCedula = fotoCedulaB64.value && fotoCedulaB64.value !== '';
-            btnPaso4.disabled = !(tieneRostro && tieneCedula);
-        }
-
-        rostro.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (file && !file.type.startsWith('image/')) { mostrarToast("Solo JPG/PNG", "error"); rostro.value = ''; return; }
-            if (file && file.size > 2 * 1024 * 1024) { mostrarToast("La imagen máx 2MB", "error"); rostro.value = ''; return; }
-            await archivoABase64(file, fotoRostroB64, mensajeRostro, vistoRostro);
+        function verificarFotos(){ btnPaso4.disabled = !(fotoRostroB64.value && fotoCedulaB64.value); }
+        rostro.addEventListener('change', async(e)=>{
+            const f = e.target.files[0];
+            if(f && !f.type.startsWith('image/')) return mostrarToast("Formato imagen", "error");
+            if(f && f.size>2*1024*1024) return mostrarToast("Max 2MB", "error");
+            await archivoABase64(f, fotoRostroB64);
             verificarFotos();
         });
-        cedulaFile.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (file && !file.type.startsWith('image/')) { mostrarToast("Solo JPG/PNG", "error"); cedulaFile.value = ''; return; }
-            if (file && file.size > 2 * 1024 * 1024) { mostrarToast("Imagen máx 2MB", "error"); cedulaFile.value = ''; return; }
-            await archivoABase64(file, fotoCedulaB64, mensajeCedula, vistoCedula);
+        cedulaFile.addEventListener('change', async(e)=>{
+            const f = e.target.files[0];
+            if(f && !f.type.startsWith('image/')) return mostrarToast("Formato imagen", "error");
+            if(f && f.size>2*1024*1024) return mostrarToast("Max 2MB", "error");
+            await archivoABase64(f, fotoCedulaB64);
             verificarFotos();
         });
-
-        btnPaso4.addEventListener('click', async () => {
-            if (!fotoRostroB64.value) return mostrarToast("Sube tu foto de perfil", "error");
-            if (!fotoCedulaB64.value) return mostrarToast("Sube foto de tu cédula", "error");
-            mostrarLoader(true, "Cargando dorsales disponibles...");
+        
+        btnPaso4.addEventListener('click', async ()=>{
+            if(!fotoRostroB64.value) return mostrarToast("Sube foto de perfil","error");
+            if(!fotoCedulaB64.value) return mostrarToast("Sube foto cédula","error");
+            mostrarLoader(true, "Cargando dorsales...");
             const selectNombre = document.getElementById('nombreCamiseta');
             const selectDorsal = document.getElementById('dorsal');
             selectNombre.innerHTML = '<option value="">Selecciona</option>';
             selectDorsal.innerHTML = '<option value="">Selecciona</option>';
             selectNombre.add(new Option(n1.value.trim(), n1.value.trim()));
-            if (n2.value.trim()) selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
-            try {
+            if(n2.value.trim()) selectNombre.add(new Option(n2.value.trim(), n2.value.trim()));
+            try{
                 const resp = await fetch(`${URL_GAS}?action=getDorsales`);
-                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 const ocupados = await resp.json();
-                for (let i = 1; i <= 99; i++) {
-                    if (!ocupados.includes(String(i))) selectDorsal.add(new Option(i, i));
-                }
-                if (selectDorsal.options.length === 1) {
-                    mostrarToast("No hay dorsales libres temporalmente, contacta al club.", "error");
-                    mostrarLoader(false);
-                    return;
-                }
-            } catch (error) { 
-                console.error(error);
-                mostrarToast("Error cargando dorsales", "error"); 
-            }
+                for(let i=1;i<=99;i++) if(!ocupados.includes(String(i))) selectDorsal.add(new Option(i,i));
+                if(selectDorsal.options.length===1) throw new Error("No hay dorsales libres");
+            }catch(e){ mostrarToast("Error cargando dorsales", "error"); mostrarLoader(false); return; }
             mostrarLoader(false);
             verPaso(5);
         });
-
-        // ================= PASO 5 =================
-        const nombreCamiseta = document.getElementById('nombreCamiseta');
-        const dorsal = document.getElementById('dorsal');
-        const btnPaso5 = document.getElementById('btnPaso5');
-        function validarPaso5() { btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value); }
-        nombreCamiseta.addEventListener('change', validarPaso5);
-        dorsal.addEventListener('change', validarPaso5);
-        btnPaso5.addEventListener('click', () => {
-            if (!nombreCamiseta.value) return mostrarToast("Selecciona nombre para camiseta", "error");
-            if (!dorsal.value) return mostrarToast("Selecciona tu dorsal", "error");
-            verPaso(6);
-        });
-
-        // ================= PASO 6 & FINAL =================
-        const talla = document.getElementById('talla');
-        const medias = document.getElementById('medias');
-        const inscripcion = document.getElementById('inscripcion');
-        const uniforme = document.getElementById('uniforme');
-        const btnFinal = document.getElementById('btnFinal');
-        function validarPaso6() {
-            btnFinal.disabled = !(talla.value && medias.value && inscripcion.value.trim() !== "" && uniforme.value.trim() !== "");
-        }
-        [talla, medias, inscripcion, uniforme].forEach(el => el.addEventListener('input', validarPaso6));
-        [talla, medias, inscripcion, uniforme].forEach(el => el.addEventListener('change', validarPaso6));
-
-        btnFinal.addEventListener('click', async () => {
-            if (btnFinal.disabled) return mostrarToast("Completa números de transacción y talla", "error");
-            mostrarLoader(true, "Registrando nuevo jugador... ¡GOL DE ORO!");
-            const datos = {
-                ced: ced.value,
-                n1: n1.value.trim(),
-                n2: n2.value.trim(),
-                ape: ape.value.trim(),
-                fecha: fecha.value,
-                tel: tel.value.replace(/\D/g, ''),
-                correo: correo.value.trim().toLowerCase(),
-                medias: medias.value,
-                dorsal: dorsal.value,
-                nombreCamiseta: nombreCamiseta.value,
-                inscripcion: inscripcion.value.trim(),
-                uniforme: uniforme.value.trim(),
-                talla: talla.value,
-                fotoRostroB64: fotoRostroB64.value,
-                fotoCedulaB64: fotoCedulaB64.value
+        
+        // Paso 5
+        const nombreCamiseta = document.getElementById('nombreCamiseta'), dorsal = document.getElementById('dorsal'), btnPaso5 = document.getElementById('btnPaso5');
+        function validarPaso5(){ btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value); }
+        nombreCamiseta.addEventListener('change',validarPaso5); dorsal.addEventListener('change',validarPaso5);
+        btnPaso5.addEventListener('click',()=>{ if(nombreCamiseta.value && dorsal.value) verPaso(6); else mostrarToast("Selecciona nombre y dorsal","error"); });
+        
+        // Paso 6 final
+        const talla = document.getElementById('talla'), medias = document.getElementById('medias'), inscripcion = document.getElementById('inscripcion'), uniforme = document.getElementById('uniforme'), btnFinal = document.getElementById('btnFinal');
+        function validarPaso6(){ btnFinal.disabled = !(talla.value && medias.value && inscripcion.value.trim() && uniforme.value.trim()); }
+        [talla, medias, inscripcion, uniforme].forEach(el=>el.addEventListener('input',validarPaso6));
+        
+        btnFinal.addEventListener('click', async ()=>{
+            if(btnFinal.disabled) return;
+            if(!registroAbierto) return mostrarToast("Plazo de inscripción cerrado", "error");
+            mostrarLoader(true, "Registrando... ¡GOL DE ORO!");
+            const payload = {
+                ced: ced.value, n1: n1.value.trim(), n2: n2.value.trim(), ape: ape.value.trim(),
+                fecha: fecha.value, tel: tel.value.replace(/\D/g,''), correo: correo.value.trim().toLowerCase(),
+                medias: medias.value, dorsal: dorsal.value, nombreCamiseta: nombreCamiseta.value,
+                inscripcion: inscripcion.value.trim(), uniforme: uniforme.value.trim(), talla: talla.value,
+                fotoRostroB64: fotoRostroB64.value, fotoCedulaB64: fotoCedulaB64.value
             };
-            try {
+            try{
                 const response = await fetch(URL_GAS, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams(datos)
+                    body: new URLSearchParams(payload)
                 });
                 const result = await response.json();
-                if (result && result.ok) {
+                if(result && result.ok){
                     mostrarLoader(false);
-                    modalExito.style.display = 'flex';
-                    let segundos = 3;
-                    const spanContador = document.getElementById('contador');
-                    const intervalo = setInterval(() => {
-                        segundos--;
-                        if (spanContador) spanContador.innerText = segundos;
-                        if (segundos <= 0) {
-                            clearInterval(intervalo);
-                            window.location.href = 'login.html';
-                        }
-                    }, 1000);
-                } else {
-                    throw new Error(result?.error || "Error desconocido del servidor");
-                }
-            } catch (error) {
+                    document.getElementById('modalExito').style.display = 'flex';
+                    let seg = 3;
+                    const intervalo = setInterval(()=>{
+                        seg--;
+                        document.getElementById('contador').innerText = seg;
+                        if(seg<=0){ clearInterval(intervalo); window.location.href = 'login.html'; }
+                    },1000);
+                } else throw new Error(result?.error || "Error del servidor");
+            }catch(e){
                 mostrarLoader(false);
-                console.error("Error en registro:", error);
-                mostrarToast("❌ Error al registrar: " + error.message, "error");
+                mostrarToast("Error: "+e.message, "error");
             }
         });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            verificarFotos();
-            console.log("⚽ GOL DE ORO — Inscripciones EXTENDIDAS. Bienvenido al Nápoles FC.");
+        
+        function marcarError(input, msg){ input.classList.add('error'); mostrarToast(msg, "error", 2500); setTimeout(()=>input.classList.remove('error'),500); }
+        
+        // Inicialización: verificar plazo y luego activar lógica
+        window.addEventListener('DOMContentLoaded', async ()=>{
+            await verificarEstadoRegistro();
+            // Aplica mayúsculas
+            document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp=>{
+                inp.addEventListener('input',function(){ if(this.id !== 'correo') this.value = this.value.toUpperCase(); });
+            });
         });
     })();
 </script>
