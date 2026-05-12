@@ -13,6 +13,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <!-- QUITAR FAVICON -->
+    <link rel="icon" href="data:,">
+
     <!-- Fuente -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
@@ -35,24 +38,68 @@
 
         body{
             font-family:'Plus Jakarta Sans',sans-serif;
-
-            background:
-            radial-gradient(circle at top, rgba(0,210,255,.14), transparent 45%),
-            linear-gradient(rgba(2,12,26,.92), rgba(2,12,26,.96));
-
-            background-color:var(--bg-dark);
-
+            background:#020c1a;
             min-height:100vh;
-
             display:flex;
             align-items:center;
             justify-content:center;
-
             padding:20px;
-
             color:#fff;
+            overflow:hidden;
+            position:relative;
+        }
 
-            overflow-x:hidden;
+        /* =========================
+           FONDO ANIMADO HOLOGRÁFICO
+        ========================= */
+
+        body::before,
+        body::after{
+            content:'';
+            position:absolute;
+            width:700px;
+            height:700px;
+            border-radius:50%;
+            filter:blur(100px);
+            opacity:.35;
+            animation:moveGlow 10s infinite ease-in-out;
+            z-index:0;
+        }
+
+        body::before{
+            background:#00d2ff;
+            top:-250px;
+            left:-200px;
+        }
+
+        body::after{
+            background:#0044ff;
+            bottom:-250px;
+            right:-200px;
+            animation-delay:5s;
+        }
+
+        @keyframes moveGlow{
+
+            0%{
+                transform:translate(0,0) scale(1);
+            }
+
+            25%{
+                transform:translate(80px,40px) scale(1.1);
+            }
+
+            50%{
+                transform:translate(-50px,80px) scale(.95);
+            }
+
+            75%{
+                transform:translate(50px,-60px) scale(1.05);
+            }
+
+            100%{
+                transform:translate(0,0) scale(1);
+            }
         }
 
         .login-card{
@@ -72,6 +119,9 @@
             box-shadow:
             0 0 18px rgba(0,210,255,.18),
             0 18px 45px rgba(0,0,0,.55);
+
+            position:relative;
+            z-index:2;
         }
 
         .logo-area{
@@ -79,13 +129,9 @@
             margin-bottom:34px;
         }
 
-      .logo-area img{
-            width:92px;
-            height:92px;
-            margin-bottom:18px;
-            object-fit:contain;
-
-            filter:drop-shadow(0 0 12px rgba(0,210,255,.35));
+        /* OCULTAR BALÓN / LOGO */
+        .logo-area img{
+            display:none;
         }
 
         .logo-area h1{
@@ -101,8 +147,11 @@
         }
 
         .logo-area p{
-            opacity:.8;
-            font-size:.95rem;
+            opacity:.9;
+            font-size:1rem;
+            font-weight:700;
+            color:#d7f7ff;
+            letter-spacing:1px;
         }
 
         .input-group{
@@ -151,6 +200,8 @@
         input:focus{
             border-color:var(--primary);
             background:rgba(15,23,42,.92);
+
+            box-shadow:0 0 18px rgba(0,210,255,.35);
         }
 
         .btn-submit{
@@ -180,6 +231,13 @@
             transition:.25s;
 
             margin-top:10px;
+        }
+
+        .btn-submit:hover{
+            transform:translateY(-2px);
+
+            box-shadow:
+            0 10px 25px rgba(0,210,255,.35);
         }
 
         .btn-submit:disabled{
@@ -238,6 +296,13 @@
             cursor:pointer;
 
             margin-top:10px;
+
+            transition:.25s;
+        }
+
+        .install-btn:hover{
+            background:rgba(0,210,255,.2);
+            transform:translateY(-2px);
         }
 
         @media(max-width:480px){
@@ -275,8 +340,7 @@
 
     <div class="logo-area">
 
-        <!-- Logo local -->
-        <img src="./logo.png" alt="Nápoles FC">
+        <img src="./logo.png" alt="Logo">
 
         <h1>NÁPOLES F.C.</h1>
 
@@ -337,7 +401,7 @@
 
 </div>
 
-<!-- CONFIG EN RAÍZ -->
+<!-- CONFIG -->
 <script src="./config.js"></script>
 
 <script>
@@ -346,13 +410,17 @@
     // ELEMENTOS
     // =========================
 
-    const formLogin = document.getElementById('formLogin');
+    const formLogin =
+    document.getElementById('formLogin');
 
-    const cedulaInput = document.getElementById('loginCedula');
+    const cedulaInput =
+    document.getElementById('loginCedula');
 
-    const btnLogin = document.getElementById('btnLogin');
+    const btnLogin =
+    document.getElementById('btnLogin');
 
-    const errorDiv = document.getElementById('errorMsg');
+    const errorDiv =
+    document.getElementById('errorMsg');
 
     // =========================
     // ERROR
@@ -377,8 +445,6 @@
 
     cedulaInput.addEventListener('input', () => {
 
-        // SOLO NUMEROS
-
         cedulaInput.value =
         cedulaInput.value.replace(/\D/g,'');
 
@@ -401,9 +467,7 @@
         const valor =
         cedulaInput.value.trim();
 
-        // =========================
         // INTERNET
-        // =========================
 
         if(!navigator.onLine){
 
@@ -414,9 +478,7 @@
             return;
         }
 
-        // =========================
-        // VALIDAR CEDULA
-        // =========================
+        // VALIDAR CÉDULA
 
         if(!/^\d{10}$/.test(valor)){
 
@@ -427,9 +489,7 @@
             return;
         }
 
-        // =========================
         // VALIDAR CONFIG
-        // =========================
 
         if(typeof CONFIG === 'undefined'){
 
@@ -449,9 +509,7 @@
             return;
         }
 
-        // =========================
         // UI
-        // =========================
 
         btnLogin.disabled = true;
 
@@ -462,8 +520,6 @@
 
             const url =
             `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}&t=${Date.now()}`;
-
-            console.log('Consultando:', url);
 
             const response =
             await fetch(url);
@@ -486,18 +542,12 @@
 
             }catch{
 
-                console.error(text);
-
                 throw new Error(
                     'Respuesta inválida del servidor'
                 );
             }
 
-            console.log(data);
-
-            // =========================
             // APROBADO
-            // =========================
 
             if(
                 data.ok === true &&
@@ -522,9 +572,7 @@
                 return;
             }
 
-            // =========================
             // PENDIENTE
-            // =========================
 
             if(
                 data.ok === true &&
@@ -538,9 +586,7 @@
                 return;
             }
 
-            // =========================
             // NO EXISTE
-            // =========================
 
             if(
                 data.ok === true &&
@@ -554,9 +600,7 @@
                 return;
             }
 
-            // =========================
             // ERROR GENERAL
-            // =========================
 
             mostrarError(
                 data.error ||
@@ -564,8 +608,6 @@
             );
 
         }catch(error){
-
-            console.error(error);
 
             mostrarError(
                 error.message ||
@@ -585,4 +627,4 @@
 </script>
 
 </body>
-</html> 
+</html>
