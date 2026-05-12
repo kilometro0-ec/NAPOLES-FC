@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>Nápoles F.C. - Login</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+<title>Nápoles F.C. - Acceso Jugadores</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 
@@ -16,12 +20,12 @@
     --gold:#D4AF37;
     --gold-light:#f5e6a3;
     --bg:#060912;
-    --card:rgba(255,255,255,.06);
-    --border:rgba(255,255,255,.08);
+    --card-bg:rgba(255,255,255,.05);
     --text:#fff;
-    --muted:#b3b3b3;
+    --muted:#9ca3af;
     --danger:#e74c3c;
     --success:#2ecc71;
+    --info:#3498db;
 }
 
 *{
@@ -33,15 +37,19 @@
 
 body{
     min-height:100vh;
+
     display:flex;
     justify-content:center;
     align-items:center;
+
     padding:20px;
+
     font-family:'Inter',sans-serif;
+
     color:var(--text);
 
     background:
-    radial-gradient(circle at top,#142244 0%,#060912 100%);
+    radial-gradient(circle at top,#111a33 0%,#060912 100%);
 }
 
 .login-container{
@@ -50,175 +58,218 @@ body{
 }
 
 .login-card{
-    position:relative;
-    overflow:hidden;
 
-    background:linear-gradient(
+    background:
+    linear-gradient(
         145deg,
-        rgba(15,25,45,.95),
-        rgba(5,10,20,.98)
+        rgba(10,20,40,.9),
+        rgba(5,10,20,.97)
     );
-
-    border:1px solid rgba(212,175,55,.25);
 
     border-radius:28px;
 
+    border:1px solid rgba(212,175,55,.25);
+
+    backdrop-filter:blur(10px);
+
+    overflow:hidden;
+
+    position:relative;
+
     padding:30px 24px;
 
-    backdrop-filter:blur(12px);
-
     box-shadow:
-    0 15px 40px rgba(0,0,0,.45),
-    0 0 25px rgba(212,175,55,.08);
+    0 20px 40px rgba(0,0,0,.45),
+    0 0 30px rgba(212,175,55,.08);
 }
 
 .login-card::before{
     content:'';
+
     position:absolute;
+
     top:0;
     left:-100%;
+
     width:100%;
     height:100%;
 
-    background:linear-gradient(
+    background:
+    linear-gradient(
         90deg,
         transparent,
         rgba(212,175,55,.08),
         transparent
     );
 
-    animation:shine 4s linear infinite;
+    animation:shine 4s infinite linear;
 }
 
 @keyframes shine{
-    0%{left:-100%;}
-    100%{left:100%;}
+
+    0%{
+        left:-100%;
+    }
+
+    100%{
+        left:100%;
+    }
+
 }
 
-.logo{
+.logo-area{
     text-align:center;
-    margin-bottom:25px;
+    margin-bottom:30px;
 }
 
 .logo-circle{
+
     width:90px;
     height:90px;
+
     border-radius:50%;
 
-    margin:auto auto 15px;
+    margin:0 auto 18px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    background:rgba(212,175,55,.1);
+    background:
+    rgba(212,175,55,.08);
 
-    border:2px solid rgba(212,175,55,.3);
+    border:
+    2px solid rgba(212,175,55,.25);
 
-    box-shadow:0 0 25px rgba(212,175,55,.2);
+    box-shadow:
+    0 0 25px rgba(212,175,55,.15);
 }
 
 .logo-circle i{
-    font-size:2.5rem;
+    font-size:2.7rem;
     color:var(--gold);
 }
 
-.logo h1{
+.logo-title{
+
     font-family:'Outfit',sans-serif;
-    font-size:1.7rem;
+
+    font-size:1.8rem;
+
     font-weight:900;
+
     letter-spacing:2px;
+
     color:var(--gold);
 }
 
-.logo p{
-    margin-top:6px;
-    color:var(--muted);
+.logo-sub{
+
+    margin-top:8px;
+
     font-size:.9rem;
+
+    color:var(--muted);
 }
 
 .form-group{
-    margin-bottom:18px;
+    margin-bottom:20px;
 }
 
 .form-label{
+
     display:block;
-    margin-bottom:8px;
+
+    margin-bottom:10px;
+
     font-size:.85rem;
-    color:var(--gold-light);
+
     font-weight:700;
+
     letter-spacing:1px;
+
+    color:var(--gold-light);
 }
 
-.input-wrapper{
+.input-box{
     position:relative;
 }
 
-.input-wrapper i{
+.input-box i{
+
     position:absolute;
-    left:15px;
+
     top:50%;
+    left:16px;
+
     transform:translateY(-50%);
+
     color:var(--gold);
-    font-size:1rem;
 }
 
-.form-input{
+.input-box input{
+
     width:100%;
-    height:56px;
+    height:58px;
 
     border:none;
     outline:none;
 
-    border-radius:16px;
+    border-radius:18px;
 
-    background:rgba(255,255,255,.05);
+    background:
+    rgba(255,255,255,.05);
 
-    border:1px solid rgba(255,255,255,.06);
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    padding-left:50px;
 
     color:white;
 
-    padding:0 15px 0 48px;
-
     font-size:1rem;
 
-    transition:.25s;
+    transition:.3s;
 }
 
-.form-input:focus{
-    border-color:rgba(212,175,55,.45);
+.input-box input:focus{
+
+    border-color:
+    rgba(212,175,55,.4);
 
     box-shadow:
-    0 0 0 3px rgba(212,175,55,.08),
     0 0 20px rgba(212,175,55,.12);
 }
 
-.form-input::placeholder{
-    color:#8d8d8d;
+.input-box input::placeholder{
+    color:#7f7f7f;
 }
 
 .login-btn{
-    width:100%;
-    height:56px;
 
-    margin-top:8px;
+    width:100%;
+    height:58px;
 
     border:none;
+
     border-radius:18px;
 
     cursor:pointer;
 
-    background:linear-gradient(
+    font-size:1rem;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    background:
+    linear-gradient(
         135deg,
         #D4AF37,
-        #f0d56b
+        #f7df84
     );
 
     color:#111;
-
-    font-weight:900;
-    font-size:1rem;
-    letter-spacing:1px;
 
     transition:.25s;
 
@@ -234,57 +285,94 @@ body{
     transform:scale(.98);
 }
 
-.status-box{
-    margin-top:18px;
-    padding:14px;
-    border-radius:14px;
-    display:none;
-    font-size:.9rem;
-    line-height:1.4;
+.login-btn:disabled{
+    opacity:.7;
+    cursor:not-allowed;
 }
 
-.status-error{
-    background:rgba(231,76,60,.12);
-    border:1px solid rgba(231,76,60,.25);
+.message{
+
+    margin-top:18px;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    font-size:.9rem;
+
+    display:none;
+}
+
+.message.error{
+
+    background:
+    rgba(231,76,60,.12);
+
+    border:
+    1px solid rgba(231,76,60,.25);
+
     color:#ffb0a8;
 }
 
-.status-success{
-    background:rgba(46,204,113,.12);
-    border:1px solid rgba(46,204,113,.25);
-    color:#b8ffd5;
+.message.success{
+
+    background:
+    rgba(46,204,113,.12);
+
+    border:
+    1px solid rgba(46,204,113,.25);
+
+    color:#baffd5;
 }
 
-.loading{
-    display:none;
-    text-align:center;
-    margin-top:20px;
+.message.info{
+
+    background:
+    rgba(52,152,219,.12);
+
+    border:
+    1px solid rgba(52,152,219,.25);
+
+    color:#b8ddff;
 }
 
 .spinner{
+
     width:40px;
     height:40px;
-    margin:auto;
+
+    margin:20px auto 0;
 
     border-radius:50%;
 
-    border:4px solid rgba(255,255,255,.08);
-    border-top:4px solid var(--gold);
+    border:
+    4px solid rgba(255,255,255,.08);
+
+    border-top:
+    4px solid var(--gold);
 
     animation:spin 1s linear infinite;
+
+    display:none;
 }
 
 @keyframes spin{
+
     100%{
         transform:rotate(360deg);
     }
+
 }
 
 .footer{
+
     margin-top:25px;
+
     text-align:center;
-    color:#7f7f7f;
+
     font-size:.75rem;
+
+    color:#6b7280;
 }
 
 </style>
@@ -296,15 +384,19 @@ body{
 
     <div class="login-card">
 
-        <div class="logo">
+        <div class="logo-area">
 
             <div class="logo-circle">
                 <i class="fa-solid fa-shield-halved"></i>
             </div>
 
-            <h1>NÁPOLES F.C.</h1>
+            <div class="logo-title">
+                NÁPOLES F.C.
+            </div>
 
-            <p>Acceso de jugadores</p>
+            <div class="logo-sub">
+                Plataforma Oficial de Jugadores
+            </div>
 
         </div>
 
@@ -316,15 +408,15 @@ body{
                     CÉDULA
                 </label>
 
-                <div class="input-wrapper">
+                <div class="input-box">
 
                     <i class="fa-solid fa-id-card"></i>
 
                     <input
                         type="text"
                         id="cedula"
-                        class="form-input"
                         placeholder="Ingrese su cédula"
+                        autocomplete="off"
                         required
                     >
 
@@ -332,105 +424,122 @@ body{
 
             </div>
 
-            <button type="submit" class="login-btn" id="btnLogin">
+            <button
+                type="submit"
+                class="login-btn"
+                id="btnLogin"
+            >
                 INGRESAR
             </button>
 
         </form>
 
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-        </div>
+        <div class="spinner" id="spinner"></div>
 
-        <div class="status-box" id="statusBox"></div>
+        <div class="message" id="mensaje"></div>
 
         <div class="footer">
-            Sistema Oficial Nápoles F.C.
+            Sistema Deportivo Nápoles F.C.
         </div>
 
     </div>
 
 </div>
 
+<!-- =========================
+     CONFIG
+========================= -->
+
 <script src="config.js"></script>
+
+<!-- =========================
+     LOGIN
+========================= -->
 
 <script>
 
-/* =========================================================
+/* =========================================
    VALIDAR CONFIG
-========================================================= */
+========================================= */
 
 if(!window.CONFIG || !CONFIG.API_URL){
 
     alert("Error cargando config.js");
 
-    throw new Error("CONFIG no encontrado");
+    throw new Error("CONFIG no cargado");
 
 }
 
-/* =========================================================
+/* =========================================
    ELEMENTOS
-========================================================= */
+========================================= */
 
 const form = document.getElementById("loginForm");
-const cedulaInput = document.getElementById("cedula");
-const loading = document.getElementById("loading");
-const statusBox = document.getElementById("statusBox");
-const btnLogin = document.getElementById("btnLogin");
 
-/* =========================================================
-   LIMPIAR SESIÓN VIEJA
-========================================================= */
+const cedulaInput =
+document.getElementById("cedula");
+
+const btnLogin =
+document.getElementById("btnLogin");
+
+const spinner =
+document.getElementById("spinner");
+
+const mensaje =
+document.getElementById("mensaje");
+
+/* =========================================
+   LIMPIAR SESIÓN ANTERIOR
+========================================= */
 
 localStorage.removeItem("jugador");
 
-/* =========================================================
+/* =========================================
    MOSTRAR MENSAJE
-========================================================= */
+========================================= */
 
-function mostrarMensaje(tipo,mensaje){
+function mostrarMensaje(texto,tipo="error"){
 
-    statusBox.style.display = "block";
+    mensaje.style.display = "block";
 
-    statusBox.className = "status-box";
+    mensaje.className = "message";
 
-    if(tipo === "error"){
-        statusBox.classList.add("status-error");
-    }else{
-        statusBox.classList.add("status-success");
-    }
+    mensaje.classList.add(tipo);
 
-    statusBox.innerHTML = mensaje;
+    mensaje.innerHTML = texto;
 }
 
-/* =========================================================
+/* =========================================
    LOGIN
-========================================================= */
+========================================= */
 
-form.addEventListener("submit", async (e)=>{
+form.addEventListener("submit", async(e)=>{
 
     e.preventDefault();
 
-    const cedula = cedulaInput.value.trim();
+    const cedula =
+    cedulaInput.value.trim();
 
     if(!cedula){
 
-        mostrarMensaje("error","Ingrese la cédula");
+        mostrarMensaje(
+            "Ingrese la cédula"
+        );
 
         return;
     }
 
     try{
 
-        loading.style.display = "block";
-
         btnLogin.disabled = true;
 
-        statusBox.style.display = "none";
+        spinner.style.display = "block";
 
-        /* ============================================
+        mensaje.style.display = "none";
+
+        /* =====================================
            CONSULTAR API
-        ============================================ */
+        ===================================== */
 
         const response = await fetch(
             `${CONFIG.API_URL}?cedula=${encodeURIComponent(cedula)}`
@@ -438,31 +547,34 @@ form.addEventListener("submit", async (e)=>{
 
         if(!response.ok){
 
-            throw new Error("Error del servidor");
+            throw new Error(
+                "Error del servidor"
+            );
 
         }
 
-        const data = await response.json();
+        const data =
+        await response.json();
 
-        console.log("Respuesta API:",data);
+        console.log(data);
 
-        /* ============================================
-           VALIDAR RESPUESTA
-        ============================================ */
+        /* =====================================
+           VALIDAR EXISTENCIA
+        ===================================== */
 
-        if(!data){
+        if(!data ||
+           Object.keys(data).length === 0){
 
             mostrarMensaje(
-                "error",
-                "No se encontraron datos"
+                "Jugador no encontrado"
             );
 
             return;
         }
 
-        /* ============================================
-           JUGADOR APROBADO
-        ============================================ */
+        /* =====================================
+           APROBADO
+        ===================================== */
 
         if(data.estado === "APROBADO"){
 
@@ -472,53 +584,55 @@ form.addEventListener("submit", async (e)=>{
             );
 
             mostrarMensaje(
-                "success",
-                "Acceso autorizado..."
+                "Acceso autorizado",
+                "success"
             );
 
             setTimeout(()=>{
 
-                window.location.href = "perfil.html";
+                window.location.href =
+                "perfil.html";
 
-            },800);
+            },700);
 
         }
 
-        /* ============================================
+        /* =====================================
            PENDIENTE
-        ============================================ */
+        ===================================== */
 
-        else if(data.estado === "PENDIENTE"){
+        else if(
+            data.estado === "PENDIENTE"
+        ){
 
             mostrarMensaje(
-                "error",
-                "Tu registro aún está pendiente de aprobación."
+                "Jugador pendiente de aprobación"
             );
 
         }
 
-        /* ============================================
+        /* =====================================
            BLOQUEADO
-        ============================================ */
+        ===================================== */
 
-        else if(data.estado === "BLOQUEADO"){
+        else if(
+            data.estado === "BLOQUEADO"
+        ){
 
             mostrarMensaje(
-                "error",
-                "Tu acceso fue bloqueado."
+                "Jugador bloqueado"
             );
 
         }
 
-        /* ============================================
-           NO EXISTE
-        ============================================ */
+        /* =====================================
+           ERROR GENERAL
+        ===================================== */
 
         else{
 
             mostrarMensaje(
-                "error",
-                "Jugador no encontrado."
+                "Acceso denegado"
             );
 
         }
@@ -530,15 +644,14 @@ form.addEventListener("submit", async (e)=>{
         console.error(error);
 
         mostrarMensaje(
-            "error",
-            "Error conectando con el servidor."
+            "Error conectando con el servidor"
         );
 
     }
 
     finally{
 
-        loading.style.display = "none";
+        spinner.style.display = "none";
 
         btnLogin.disabled = false;
 
