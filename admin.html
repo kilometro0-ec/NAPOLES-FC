@@ -7,9 +7,9 @@
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>Nápoles F.C. | Admin PRO</title>
+<title>Gata Admin - Nápoles F.C.</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -19,427 +19,120 @@ rel="stylesheet">
 
 <link
 href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-rel="stylesheet">
+rel="stylesheet" />
 
 <style>
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+    -webkit-tap-highlight-color:transparent;
 }
 
 body{
-
-    font-family:'Inter',sans-serif;
-
-    background:#0f172a;
-
+    background:#081120;
     color:white;
+    overflow-x:hidden;
+}
 
+/* =====================================================
+   FONDO
+===================================================== */
+
+.bg-glow{
+    position:fixed;
+    inset:0;
+    z-index:-1;
     overflow:hidden;
 }
 
-/* =========================
-SIDEBAR
-========================= */
+.bg-glow::before,
+.bg-glow::after{
 
-.sidebar{
+    content:'';
 
-    width:280px;
+    position:absolute;
 
-    height:100vh;
+    width:550px;
+    height:550px;
+
+    border-radius:50%;
+
+    filter:blur(120px);
+
+    opacity:.45;
+
+    animation:moveGlow 12s infinite ease-in-out;
+}
+
+.bg-glow::before{
+    background:#00d2ff;
+    top:-200px;
+    left:-150px;
+}
+
+.bg-glow::after{
+    background:#7c3aed;
+    bottom:-200px;
+    right:-150px;
+    animation-delay:6s;
+}
+
+@keyframes moveGlow{
+
+    0%{
+        transform:
+        translate(0,0)
+        scale(1);
+    }
+
+    50%{
+        transform:
+        translate(60px,50px)
+        scale(1.15);
+    }
+
+    100%{
+        transform:
+        translate(0,0)
+        scale(1);
+    }
+}
+
+/* =====================================================
+   GLASS
+===================================================== */
+
+.glass{
 
     background:
-    linear-gradient(
-        180deg,
-        #020617,
-        #111827
-    );
+    rgba(12,18,35,.72);
 
-    border-right:
-    1px solid rgba(255,255,255,.06);
-
-    position:fixed;
-
-    left:0;
-    top:0;
-
-    padding:24px;
-
-    overflow-y:auto;
-}
-
-.logo{
-
-    font-size:1.7rem;
-
-    font-weight:800;
-
-    color:#38bdf8;
-
-    margin-bottom:40px;
-}
-
-.menu{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:12px;
-}
-
-.menu-btn{
-
-    width:100%;
-
-    border:none;
-
-    background:none;
-
-    color:#cbd5e1;
-
-    padding:16px;
-
-    border-radius:18px;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-    font-weight:700;
-
-    font-size:.95rem;
-}
-
-.menu-btn:hover{
-
-    background:
-    rgba(56,189,248,.12);
-
-    color:white;
-}
-
-.menu-btn.active{
-
-    background:
-    linear-gradient(
-        135deg,
-        #0ea5e9,
-        #0284c7
-    );
-
-    color:white;
-}
-
-/* =========================
-MAIN
-========================= */
-
-.main{
-
-    margin-left:280px;
-
-    height:100vh;
-
-    overflow-y:auto;
-
-    padding:30px;
-}
-
-/* =========================
-TOPBAR
-========================= */
-
-.topbar{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:30px;
-}
-
-.title{
-
-    font-size:2rem;
-
-    font-weight:800;
-}
-
-.admin-box{
-
-    background:
-    rgba(255,255,255,.06);
-
-    padding:12px 18px;
-
-    border-radius:16px;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    font-weight:700;
-}
-
-/* =========================
-CARDS
-========================= */
-
-.cards{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(220px,1fr));
-
-    gap:20px;
-
-    margin-bottom:30px;
-}
-
-.card{
-
-    background:
-    linear-gradient(
-        145deg,
-        rgba(30,41,59,.95),
-        rgba(15,23,42,.95)
-    );
+    backdrop-filter:
+    blur(18px);
 
     border:
-    1px solid rgba(255,255,255,.05);
-
-    border-radius:24px;
-
-    padding:24px;
-
-    transition:.25s;
+    1px solid rgba(255,255,255,.08);
 }
 
-.card:hover{
+/* =====================================================
+   PANTALLAS
+===================================================== */
 
-    transform:translateY(-4px);
-
-    border-color:
-    rgba(56,189,248,.4);
+.screen{
+    display:none;
 }
 
-.card h3{
-
-    font-size:.9rem;
-
-    color:#94a3b8;
-
-    margin-bottom:12px;
+.screen.active{
+    display:block;
 }
 
-.number{
-
-    font-size:2rem;
-
-    font-weight:800;
-
-    color:#38bdf8;
-}
-
-/* =========================
-SECTION
-========================= */
-
-.section{
-
-    background:
-    rgba(15,23,42,.95);
-
-    border:
-    1px solid rgba(255,255,255,.05);
-
-    border-radius:28px;
-
-    padding:24px;
-
-    margin-bottom:30px;
-}
-
-.section-title{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:24px;
-}
-
-.section-title h2{
-
-    font-size:1.3rem;
-
-    font-weight:800;
-}
-
-/* =========================
-TABLE
-========================= */
-
-.table-wrapper{
-
-    overflow:auto;
-}
-
-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-}
-
-th{
-
-    background:
-    rgba(255,255,255,.05);
-
-    padding:14px;
-
-    text-align:left;
-
-    color:#94a3b8;
-
-    font-size:.85rem;
-}
-
-td{
-
-    padding:16px 14px;
-
-    border-bottom:
-    1px solid rgba(255,255,255,.05);
-}
-
-tr:hover{
-
-    background:
-    rgba(255,255,255,.03);
-}
-
-/* =========================
-BUTTONS
-========================= */
-
-.btn{
-
-    border:none;
-
-    padding:10px 16px;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    font-weight:700;
-
-    transition:.25s;
-}
-
-.btn:hover{
-    transform:scale(1.04);
-}
-
-.btn-blue{
-
-    background:#0ea5e9;
-
-    color:white;
-}
-
-.btn-green{
-
-    background:#10b981;
-
-    color:white;
-}
-
-.btn-red{
-
-    background:#ef4444;
-
-    color:white;
-}
-
-/* =========================
-FORMS
-========================= */
-
-.form-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(220px,1fr));
-
-    gap:18px;
-}
-
-input{
-
-    width:100%;
-
-    height:52px;
-
-    border:none;
-
-    outline:none;
-
-    border-radius:14px;
-
-    background:
-    rgba(255,255,255,.05);
-
-    color:white;
-
-    padding:0 16px;
-}
-
-input::placeholder{
-    color:#64748b;
-}
-
-/* =========================
-RESPONSIVE
-========================= */
-
-@media(max-width:900px){
-
-    body{
-        overflow:auto;
-    }
-
-    .sidebar{
-
-        width:100%;
-
-        height:auto;
-
-        position:relative;
-    }
-
-    .main{
-        margin-left:0;
-    }
+/* =====================================================
+   SCROLL
+===================================================== */
+
+::-webkit-scrollbar{
+    width:0;
+    height:0;
 }
 
 </style>
@@ -448,700 +141,956 @@ RESPONSIVE
 
 <body>
 
-<!-- =========================
-SIDEBAR
-========================= -->
+<div class="bg-glow"></div>
 
-<div class="sidebar">
+<!-- =====================================================
+     HOME
+===================================================== -->
 
-    <div class="logo">
-        NÁPOLES F.C.
-    </div>
+<section
+id="homeScreen"
+class="screen active min-h-screen pb-10">
 
-    <div class="menu">
+    <!-- HEADER -->
 
-        <button
-        class="menu-btn active"
-        onclick="mostrarSeccion('dashboard', this)">
+    <div class="px-5 pt-6 pb-4">
 
-            <span class="material-symbols-outlined">
-                dashboard
-            </span>
+        <div class="flex items-center justify-between">
 
-            Dashboard
+            <div>
 
-        </button>
+                <h1 class="text-3xl font-extrabold">
+                    Gata Admin
+                </h1>
 
-        <button
-        class="menu-btn"
-        onclick="mostrarSeccion('jugadores', this)">
-
-            <span class="material-symbols-outlined">
-                groups
-            </span>
-
-            Jugadores
-
-        </button>
-
-        <button
-        class="menu-btn"
-        onclick="mostrarSeccion('partidos', this)">
-
-            <span class="material-symbols-outlined">
-                sports_soccer
-            </span>
-
-            Partidos
-
-        </button>
-
-        <button
-        class="menu-btn"
-        onclick="mostrarSeccion('rivales', this)">
-
-            <span class="material-symbols-outlined">
-                shield
-            </span>
-
-            Rivales
-
-        </button>
-
-        <button
-        class="menu-btn"
-        onclick="mostrarSeccion('finanzas', this)">
-
-            <span class="material-symbols-outlined">
-                payments
-            </span>
-
-            Finanzas
-
-        </button>
-
-        <button
-        class="menu-btn"
-        onclick="mostrarSeccion('uniformes', this)">
-
-            <span class="material-symbols-outlined">
-                inventory_2
-            </span>
-
-            Uniformes
-
-        </button>
-
-        <button
-        class="menu-btn"
-        onclick="mostrarSeccion('configuracion', this)">
-
-            <span class="material-symbols-outlined">
-                settings
-            </span>
-
-            Configuración
-
-        </button>
-
-    </div>
-
-</div>
-
-<!-- =========================
-MAIN
-========================= -->
-
-<div class="main">
-
-    <!-- TOPBAR -->
-
-    <div class="topbar">
-
-        <div
-        class="title"
-        id="tituloSeccion">
-
-            Dashboard
-
-        </div>
-
-        <div class="admin-box">
-
-            <span class="material-symbols-outlined">
-                admin_panel_settings
-            </span>
-
-            Gata
-
-        </div>
-
-    </div>
-
-    <!-- =========================
-    DASHBOARD
-    ========================= -->
-
-    <div
-    id="dashboard"
-    class="content-section">
-
-        <div class="cards">
-
-            <div class="card">
-
-                <h3>
-                    Jugadores
-                </h3>
-
-                <div
-                class="number"
-                id="totalJugadores">
-
-                    0
-
-                </div>
-
-            </div>
-
-            <div class="card">
-
-                <h3>
-                    Aprobados
-                </h3>
-
-                <div
-                class="number"
-                id="totalAprobados">
-
-                    0
-
-                </div>
-
-            </div>
-
-            <div class="card">
-
-                <h3>
-                    Pendientes
-                </h3>
-
-                <div
-                class="number"
-                id="totalPendientes">
-
-                    0
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- =========================
-    JUGADORES
-    ========================= -->
-
-    <div
-    id="jugadores"
-    class="content-section"
-    style="display:none;">
-
-        <div class="section">
-
-            <div class="section-title">
-
-                <h2>
-                    Gestión de Jugadores
-                </h2>
-
-                <button
-                class="btn btn-blue">
-
-                    + Nuevo
-
-                </button>
-
-            </div>
-
-            <input
-            type="text"
-            placeholder="Buscar jugador..."
-            style="margin-bottom:20px;">
-
-            <div class="table-wrapper">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Cédula
-                            </th>
-
-                            <th>
-                                Nombre
-                            </th>
-
-                            <th>
-                                Dorsal
-                            </th>
-
-                            <th>
-                                Estado
-                            </th>
-
-                            <th>
-                                Acciones
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="tablaJugadores">
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- =========================
-    PARTIDOS
-    ========================= -->
-
-    <div
-    id="partidos"
-    class="content-section"
-    style="display:none;">
-
-        <div class="section">
-
-            <div class="section-title">
-
-                <h2>
-                    Programar Partido
-                </h2>
-
-            </div>
-
-            <div class="form-grid">
-
-                <input
-                type="text"
-                placeholder="Rival">
-
-                <input
-                type="date">
-
-                <input
-                type="time">
-
-                <input
-                type="text"
-                placeholder="Estadio">
-
-            </div>
-
-            <div
-            style="margin-top:20px;">
-
-                <button
-                class="btn btn-green">
-
-                    Guardar Partido
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- =========================
-    RIVALES
-    ========================= -->
-
-    <div
-    id="rivales"
-    class="content-section"
-    style="display:none;">
-
-        <div class="section">
-
-            <div class="section-title">
-
-                <h2>
-                    Rivales
-                </h2>
-
-            </div>
-
-            <div class="form-grid">
-
-                <input
-                type="text"
-                placeholder="Nombre rival">
-
-                <input
-                type="text"
-                placeholder="Ciudad">
-
-            </div>
-
-            <div
-            style="margin-top:20px;">
-
-                <button
-                class="btn btn-blue">
-
-                    Agregar Rival
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- =========================
-    FINANZAS
-    ========================= -->
-
-    <div
-    id="finanzas"
-    class="content-section"
-    style="display:none;">
-
-        <div class="section">
-
-            <div class="section-title">
-
-                <h2>
-                    Finanzas
-                </h2>
-
-            </div>
-
-            <div class="cards">
-
-                <div class="card">
-
-                    <h3>
-                        Ingresos
-                    </h3>
-
-                    <div class="number">
-
-                        $0
-
-                    </div>
-
-                </div>
-
-                <div class="card">
-
-                    <h3>
-                        Pendientes
-                    </h3>
-
-                    <div class="number">
-
-                        $0
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- =========================
-    UNIFORMES
-    ========================= -->
-
-    <div
-    id="uniformes"
-    class="content-section"
-    style="display:none;">
-
-        <div class="section">
-
-            <div class="section-title">
-
-                <h2>
-                    Uniformes
-                </h2>
-
-            </div>
-
-            <div class="cards">
-
-                <div class="card">
-
-                    <h3>
-                        Entregados
-                    </h3>
-
-                    <div class="number">
-
-                        0
-
-                    </div>
-
-                </div>
-
-                <div class="card">
-
-                    <h3>
-                        Pendientes
-                    </h3>
-
-                    <div class="number">
-
-                        0
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- =========================
-    CONFIG
-    ========================= -->
-
-    <div
-    id="configuracion"
-    class="content-section"
-    style="display:none;">
-
-        <div class="section">
-
-            <div class="section-title">
-
-                <h2>
-                    Configuración
-                </h2>
+                <p class="text-cyan-300 font-semibold mt-1">
+                    Nápoles F.C.
+                </p>
 
             </div>
 
             <button
-            class="btn btn-red"
-            onclick="cerrarSesion()">
-
-                Cerrar Sesión
-
+                onclick="logout()"
+                class="
+                w-12
+                h-12
+                rounded-2xl
+                glass
+                flex
+                items-center
+                justify-center
+                "
+            >
+                <span class="material-symbols-outlined">
+                    logout
+                </span>
             </button>
 
         </div>
 
     </div>
 
-</div>
+    <!-- STATS -->
 
-<!-- =========================
-SCRIPT
-========================= -->
+    <div class="px-5">
+
+        <div class="grid grid-cols-2 gap-3">
+
+            <div class="glass rounded-3xl p-5">
+
+                <p class="text-sm text-gray-300">
+                    Jugadores
+                </p>
+
+                <h2
+                    id="totalJugadores"
+                    class="text-4xl font-extrabold mt-2"
+                >
+                    0
+                </h2>
+
+            </div>
+
+            <div class="glass rounded-3xl p-5">
+
+                <p class="text-sm text-gray-300">
+                    Pendientes
+                </p>
+
+                <h2
+                    id="pendientes"
+                    class="text-4xl font-extrabold mt-2 text-yellow-300"
+                >
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MENU -->
+
+    <div class="px-5 mt-5 space-y-4">
+
+        <!-- JUGADORES -->
+
+        <button
+            onclick="openScreen('jugadoresScreen')"
+            class="
+            w-full
+            glass
+            rounded-3xl
+            p-5
+            flex
+            items-center
+            justify-between
+            "
+        >
+
+            <div class="flex items-center gap-4">
+
+                <div
+                    class="
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-cyan-500/20
+                    flex
+                    items-center
+                    justify-center
+                    "
+                >
+                    <span class="material-symbols-outlined text-cyan-300 text-3xl">
+                        sports_soccer
+                    </span>
+                </div>
+
+                <div class="text-left">
+
+                    <h2 class="font-extrabold text-lg">
+                        Jugadores
+                    </h2>
+
+                    <p
+                        id="jugadoresPendientesText"
+                        class="text-sm text-gray-300"
+                    >
+                        0 pendientes
+                    </p>
+
+                </div>
+
+            </div>
+
+            <span class="material-symbols-outlined text-3xl">
+                chevron_right
+            </span>
+
+        </button>
+
+        <!-- PARTIDOS -->
+
+        <button
+            onclick="openScreen('partidosScreen')"
+            class="
+            w-full
+            glass
+            rounded-3xl
+            p-5
+            flex
+            items-center
+            justify-between
+            "
+        >
+
+            <div class="flex items-center gap-4">
+
+                <div
+                    class="
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-purple-500/20
+                    flex
+                    items-center
+                    justify-center
+                    "
+                >
+                    <span class="material-symbols-outlined text-purple-300 text-3xl">
+                        shield
+                    </span>
+                </div>
+
+                <div class="text-left">
+
+                    <h2 class="font-extrabold text-lg">
+                        Partidos
+                    </h2>
+
+                    <p class="text-sm text-gray-300">
+                        Gestionar partidos
+                    </p>
+
+                </div>
+
+            </div>
+
+            <span class="material-symbols-outlined text-3xl">
+                chevron_right
+            </span>
+
+        </button>
+
+        <!-- RIVALES -->
+
+        <button
+            onclick="openScreen('rivalesScreen')"
+            class="
+            w-full
+            glass
+            rounded-3xl
+            p-5
+            flex
+            items-center
+            justify-between
+            "
+        >
+
+            <div class="flex items-center gap-4">
+
+                <div
+                    class="
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-orange-500/20
+                    flex
+                    items-center
+                    justify-center
+                    "
+                >
+                    <span class="material-symbols-outlined text-orange-300 text-3xl">
+                        groups
+                    </span>
+                </div>
+
+                <div class="text-left">
+
+                    <h2 class="font-extrabold text-lg">
+                        Rivales
+                    </h2>
+
+                    <p class="text-sm text-gray-300">
+                        Equipos registrados
+                    </p>
+
+                </div>
+
+            </div>
+
+            <span class="material-symbols-outlined text-3xl">
+                chevron_right
+            </span>
+
+        </button>
+
+        <!-- UNIFORMES -->
+
+        <button
+            onclick="openScreen('uniformesScreen')"
+            class="
+            w-full
+            glass
+            rounded-3xl
+            p-5
+            flex
+            items-center
+            justify-between
+            "
+        >
+
+            <div class="flex items-center gap-4">
+
+                <div
+                    class="
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-pink-500/20
+                    flex
+                    items-center
+                    justify-center
+                    "
+                >
+                    <span class="material-symbols-outlined text-pink-300 text-3xl">
+                        inventory_2
+                    </span>
+                </div>
+
+                <div class="text-left">
+
+                    <h2 class="font-extrabold text-lg">
+                        Uniformes
+                    </h2>
+
+                    <p class="text-sm text-gray-300">
+                        Estado de entrega
+                    </p>
+
+                </div>
+
+            </div>
+
+            <span class="material-symbols-outlined text-3xl">
+                chevron_right
+            </span>
+
+        </button>
+
+        <!-- FINANZAS -->
+
+        <button
+            onclick="openScreen('finanzasScreen')"
+            class="
+            w-full
+            glass
+            rounded-3xl
+            p-5
+            flex
+            items-center
+            justify-between
+            "
+        >
+
+            <div class="flex items-center gap-4">
+
+                <div
+                    class="
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-green-500/20
+                    flex
+                    items-center
+                    justify-center
+                    "
+                >
+                    <span class="material-symbols-outlined text-green-300 text-3xl">
+                        payments
+                    </span>
+                </div>
+
+                <div class="text-left">
+
+                    <h2 class="font-extrabold text-lg">
+                        Finanzas
+                    </h2>
+
+                    <p class="text-sm text-gray-300">
+                        Pagos y gastos
+                    </p>
+
+                </div>
+
+            </div>
+
+            <span class="material-symbols-outlined text-3xl">
+                chevron_right
+            </span>
+
+        </button>
+
+    </div>
+
+</section>
+
+<!-- =====================================================
+     JUGADORES
+===================================================== -->
+
+<section
+id="jugadoresScreen"
+class="screen min-h-screen pb-10">
+
+    <div
+        class="
+        sticky
+        top-0
+        z-40
+        glass
+        border-b
+        border-white/10
+        "
+    >
+
+        <div class="px-5 py-4 flex items-center gap-4">
+
+            <button
+                onclick="backHome()"
+                class="
+                w-11
+                h-11
+                rounded-2xl
+                bg-white/10
+                flex
+                items-center
+                justify-center
+                "
+            >
+                <span class="material-symbols-outlined">
+                    arrow_back
+                </span>
+            </button>
+
+            <h2 class="text-2xl font-extrabold">
+                Jugadores
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="px-5 pt-5">
+
+        <input
+            type="text"
+            id="searchJugador"
+            placeholder="Buscar jugador..."
+            class="
+            w-full
+            glass
+            rounded-2xl
+            px-5
+            py-4
+            outline-none
+            "
+        >
+
+    </div>
+
+    <div
+        id="listaJugadores"
+        class="
+        px-5
+        pt-5
+        space-y-4
+        "
+    ></div>
+
+</section>
+
+<!-- =====================================================
+     PARTIDOS
+===================================================== -->
+
+<section
+id="partidosScreen"
+class="screen min-h-screen pb-10">
+
+    <div class="sticky top-0 z-40 glass border-b border-white/10">
+
+        <div class="px-5 py-4 flex items-center gap-4">
+
+            <button
+                onclick="backHome()"
+                class="
+                w-11
+                h-11
+                rounded-2xl
+                bg-white/10
+                flex
+                items-center
+                justify-center
+                "
+            >
+                <span class="material-symbols-outlined">
+                    arrow_back
+                </span>
+            </button>
+
+            <h2 class="text-2xl font-extrabold">
+                Partidos
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="p-5">
+
+        <div class="glass rounded-3xl p-5 space-y-4">
+
+            <input
+                type="text"
+                id="partidoRival"
+                placeholder="Nombre rival"
+                class="
+                w-full
+                bg-black/20
+                rounded-2xl
+                p-4
+                outline-none
+                "
+            >
+
+            <input
+                type="date"
+                id="partidoFecha"
+                class="
+                w-full
+                bg-black/20
+                rounded-2xl
+                p-4
+                outline-none
+                "
+            >
+
+            <button
+                onclick="guardarPartido()"
+                class="
+                w-full
+                py-4
+                rounded-2xl
+                bg-cyan-500
+                font-extrabold
+                "
+            >
+                Guardar Partido
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =====================================================
+     RIVALES
+===================================================== -->
+
+<section
+id="rivalesScreen"
+class="screen min-h-screen pb-10">
+
+    <div class="sticky top-0 z-40 glass border-b border-white/10">
+
+        <div class="px-5 py-4 flex items-center gap-4">
+
+            <button
+                onclick="backHome()"
+                class="
+                w-11
+                h-11
+                rounded-2xl
+                bg-white/10
+                flex
+                items-center
+                justify-center
+                "
+            >
+                <span class="material-symbols-outlined">
+                    arrow_back
+                </span>
+            </button>
+
+            <h2 class="text-2xl font-extrabold">
+                Rivales
+            </h2>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =====================================================
+     UNIFORMES
+===================================================== -->
+
+<section
+id="uniformesScreen"
+class="screen min-h-screen pb-10">
+
+    <div class="sticky top-0 z-40 glass border-b border-white/10">
+
+        <div class="px-5 py-4 flex items-center gap-4">
+
+            <button
+                onclick="backHome()"
+                class="
+                w-11
+                h-11
+                rounded-2xl
+                bg-white/10
+                flex
+                items-center
+                justify-center
+                "
+            >
+                <span class="material-symbols-outlined">
+                    arrow_back
+                </span>
+            </button>
+
+            <h2 class="text-2xl font-extrabold">
+                Uniformes
+            </h2>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =====================================================
+     FINANZAS
+===================================================== -->
+
+<section
+id="finanzasScreen"
+class="screen min-h-screen pb-10">
+
+    <div class="sticky top-0 z-40 glass border-b border-white/10">
+
+        <div class="px-5 py-4 flex items-center gap-4">
+
+            <button
+                onclick="backHome()"
+                class="
+                w-11
+                h-11
+                rounded-2xl
+                bg-white/10
+                flex
+                items-center
+                justify-center
+                "
+            >
+                <span class="material-symbols-outlined">
+                    arrow_back
+                </span>
+            </button>
+
+            <h2 class="text-2xl font-extrabold">
+                Finanzas
+            </h2>
+
+        </div>
+
+    </div>
+
+</section>
 
 <script src="./config.js"></script>
 
 <script>
 
-function mostrarSeccion(id, btn){
+// =====================================================
+// SEGURIDAD
+// =====================================================
 
-    const secciones =
-    document.querySelectorAll(
-    '.content-section'
-    );
-
-    secciones.forEach(sec => {
-
-        sec.style.display =
-        'none';
-
-    });
-
-    document.getElementById(id)
-    .style.display = 'block';
-
-    document.getElementById(
-    'tituloSeccion'
-    ).textContent =
-    id.charAt(0).toUpperCase()
-    + id.slice(1);
-
-    document
-    .querySelectorAll('.menu-btn')
-    .forEach(b => {
-
-        b.classList.remove(
-        'active'
-        );
-
-    });
-
-    btn.classList.add(
-    'active'
-    );
+if(
+    localStorage.getItem('admin_activo')
+    !== 'true'
+){
+    window.location.href =
+    './login.html';
 }
 
-/* =========================
-CERRAR SESIÓN
-========================= */
+// =====================================================
+// CAMBIO PANTALLAS
+// =====================================================
 
-function cerrarSesion(){
+function openScreen(id){
 
-    localStorage.clear();
+    document
+    .querySelectorAll('.screen')
+    .forEach(el=>{
+
+        el.classList.remove('active');
+    });
+
+    document
+    .getElementById(id)
+    .classList.add('active');
+
+    window.scrollTo(0,0);
+}
+
+function backHome(){
+
+    document
+    .querySelectorAll('.screen')
+    .forEach(el=>{
+
+        el.classList.remove('active');
+    });
+
+    document
+    .getElementById('homeScreen')
+    .classList.add('active');
+
+    window.scrollTo(0,0);
+}
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+function logout(){
+
+    localStorage.removeItem(
+        'admin_activo'
+    );
 
     window.location.href =
     './login.html';
 }
 
-/* =========================
-CARGAR JUGADORES
-========================= */
-
-const tabla =
-document.getElementById(
-'tablaJugadores'
-);
+// =====================================================
+// CARGAR JUGADORES
+// =====================================================
 
 async function cargarJugadores(){
 
     try{
 
-        const url =
-`${CONFIG.URL_GAS}?action=getResumenJugadoresCompleto&t=${Date.now()}`;
-
         const response =
-        await fetch(url);
+        await fetch(
+        `${CONFIG.URL_GAS}?action=getResumenJugadoresCompleto&t=${Date.now()}`
+        );
 
         const data =
         await response.json();
 
-        if(!data.ok){
-
-            alert(
-            'Error cargando jugadores'
-            );
-
-            return;
-        }
+        if(!data.ok) return;
 
         const jugadores =
         data.jugadores || [];
 
-        document.getElementById(
-        'totalJugadores'
-        ).textContent =
+        renderJugadores(
+            jugadores
+        );
+
+        document
+        .getElementById('totalJugadores')
+        .textContent =
         jugadores.length;
 
-        let aprobados = 0;
-        let pendientes = 0;
+        const pendientes =
+        jugadores.filter(j=>
+            j.inscripEstado !== 'APROBADO'
+        ).length;
 
-        tabla.innerHTML = '';
-
-        jugadores.forEach(j => {
-
-            if(
-                j.inscripEstado ===
-                'APROBADO'
-            ){
-
-                aprobados++;
-
-            }else{
-
-                pendientes++;
-            }
-
-            tabla.innerHTML += `
-
-            <tr>
-
-                <td>
-                    ${j.cedula}
-                </td>
-
-                <td>
-                    ${j.primerNombre}
-                    ${j.apellidos}
-                </td>
-
-                <td>
-                    ${j.dorsal || '-'}
-                </td>
-
-                <td>
-                    ${j.inscripEstado}
-                </td>
-
-                <td>
-
-                    <button
-                    class="btn btn-green">
-
-                        Aprobar
-
-                    </button>
-
-                    <button
-                    class="btn btn-red">
-
-                        Eliminar
-
-                    </button>
-
-                </td>
-
-            </tr>
-
-            `;
-        });
-
-        document.getElementById(
-        'totalAprobados'
-        ).textContent =
-        aprobados;
-
-        document.getElementById(
-        'totalPendientes'
-        ).textContent =
+        document
+        .getElementById('pendientes')
+        .textContent =
         pendientes;
 
-    }catch(error){
+        document
+        .getElementById('jugadoresPendientesText')
+        .textContent =
+        `${pendientes} pendientes`;
 
-        console.error(error);
+    }catch(err){
 
-        alert(
-        'Error conectando con GAS'
-        );
+        console.error(err);
     }
 }
+
+// =====================================================
+// RENDER JUGADORES
+// =====================================================
+
+function renderJugadores(jugadores){
+
+    const cont =
+    document.getElementById(
+        'listaJugadores'
+    );
+
+    cont.innerHTML='';
+
+    jugadores.forEach(j=>{
+
+        cont.innerHTML += `
+
+        <div class="
+        player-card
+        glass
+        rounded-3xl
+        p-5
+        ">
+
+            <div class="
+            flex
+            justify-between
+            items-center
+            gap-3
+            ">
+
+                <div>
+
+                    <h3 class="
+                    text-lg
+                    font-extrabold
+                    ">
+                        ${j.primerNombre || ''}
+                        ${j.apellidos || ''}
+                    </h3>
+
+                    <p class="
+                    text-cyan-300
+                    text-sm
+                    mt-1
+                    ">
+                        #${j.dorsal || '--'}
+                    </p>
+
+                    <p class="
+                    text-gray-400
+                    text-xs
+                    mt-1
+                    ">
+                        ${j.cedula}
+                    </p>
+
+                </div>
+
+                <div class="text-right">
+
+                    <span class="
+                    px-3
+                    py-1
+                    rounded-full
+                    text-xs
+                    font-bold
+                    ${
+                        j.inscripEstado === 'APROBADO'
+                        ?
+                        'bg-green-500/20 text-green-300'
+                        :
+                        'bg-yellow-500/20 text-yellow-300'
+                    }
+                    ">
+                        ${j.inscripEstado}
+                    </span>
+
+                    <div class="
+                    flex
+                    gap-2
+                    mt-3
+                    justify-end
+                    ">
+
+                        <button
+                            onclick="
+                            aprobarJugador('${j.cedula}')
+                            "
+                            class="
+                            w-10
+                            h-10
+                            rounded-2xl
+                            bg-green-500/20
+                            "
+                        >
+                            ✅
+                        </button>
+
+                        <button
+                            onclick="
+                            editarJugador('${j.cedula}')
+                            "
+                            class="
+                            w-10
+                            h-10
+                            rounded-2xl
+                            bg-cyan-500/20
+                            "
+                        >
+                            ✏️
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+    });
+}
+
+// =====================================================
+// BUSCADOR
+// =====================================================
+
+document
+.getElementById('searchJugador')
+.addEventListener('input',e=>{
+
+    const val =
+    e.target.value.toLowerCase();
+
+    document
+    .querySelectorAll('.player-card')
+    .forEach(card=>{
+
+        card.style.display =
+        card.innerText
+        .toLowerCase()
+        .includes(val)
+        ?
+        'block'
+        :
+        'none';
+    });
+});
+
+// =====================================================
+// ACCIONES
+// =====================================================
+
+function aprobarJugador(cedula){
+
+    alert(
+        'Aprobar jugador: '
+        + cedula
+    );
+}
+
+function editarJugador(cedula){
+
+    alert(
+        'Editar jugador: '
+        + cedula
+    );
+}
+
+function guardarPartido(){
+
+    const rival =
+    document.getElementById(
+        'partidoRival'
+    ).value;
+
+    alert(
+        'Partido guardado vs '
+        + rival
+    );
+}
+
+// =====================================================
+// INIT
+// =====================================================
 
 cargarJugadores();
 
 </script>
 
 </body>
-
 </html>
