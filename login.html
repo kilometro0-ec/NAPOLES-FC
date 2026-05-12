@@ -164,32 +164,22 @@
         btnLogin.innerText = "CONECTANDO...";
 
         // === NUEVO: JSONP sin CORS ===
-        const callbackName = 'jsonp_callback_' + Date.now();
-        const script = document.createElement('script');
-        script.src = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}&callback=${callbackName}`;
+window[callbackName] = (data) => {
+    console.log("📦 Respuesta completa:", data);  // <--- VER ESTO EN CONSOLA
+    delete window[callbackName];
+    document.body.removeChild(script);
+    
+    if (data.success && data.datos) {
+        localStorage.setItem('userCedula', valor);
+        localStorage.setItem('jugador_actual', JSON.stringify(data.datos));
+        window.location.href = 'perfil.html';
+    } else {
+        mostrarError(`⚠️ ${data.message || "Error: datos no recibidos"}`);
+    }
+    btnLogin.disabled = false;
+    btnLogin.innerText = "Iniciar Sesión";
+};
         
-        window[callbackName] = (data) => {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            
-            if (data.success) {
-                localStorage.setItem('userCedula', valor);
-                localStorage.setItem('jugador_actual', JSON.stringify(data.datos));
-                window.location.href = 'perfil.html';
-            } else {
-                mostrarError(`⚠️ ${data.message}`);
-            }
-            btnLogin.disabled = false;
-            btnLogin.innerText = "Iniciar Sesión";
-        };
-        
-        script.onerror = () => {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            mostrarError("🔌 Error de conexión. Revisa tu internet o la URL del script.");
-            btnLogin.disabled = false;
-            btnLogin.innerText = "Iniciar Sesión";
-        };
         
         document.body.appendChild(script);
     });
