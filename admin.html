@@ -32,13 +32,137 @@ body{
 
     font-family:'Inter',sans-serif;
 
-    background:#f3f6fb;
+    background:
+    linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #faf7ff 45%,
+    #f5f3ff 100%
+    );
 
     color:#111827;
 
     min-height:100vh;
 
     overflow-x:hidden;
+
+    position:relative;
+}
+
+/* =========================================
+ONDAS FONDO
+========================================= */
+
+.wave-bg{
+
+    position:fixed;
+
+    inset:0;
+
+    overflow:hidden;
+
+    z-index:-1;
+
+    pointer-events:none;
+}
+
+.wave{
+
+    position:absolute;
+
+    width:220%;
+
+    height:280px;
+
+    left:-60%;
+
+    border-radius:45%;
+
+    opacity:.18;
+
+    filter:blur(8px);
+}
+
+.wave1{
+
+    background:
+    linear-gradient(
+    90deg,
+    #a855f7,
+    #c084fc,
+    #e9d5ff
+    );
+
+    bottom:-140px;
+
+    animation:
+    waveMove 18s linear infinite;
+}
+
+.wave2{
+
+    background:
+    linear-gradient(
+    90deg,
+    #7c3aed,
+    #d8b4fe,
+    #ede9fe
+    );
+
+    bottom:-170px;
+
+    opacity:.12;
+
+    animation:
+    waveMoveReverse 26s linear infinite;
+}
+
+.wave3{
+
+    background:
+    linear-gradient(
+    90deg,
+    #c084fc,
+    #f3e8ff,
+    #ffffff
+    );
+
+    bottom:-200px;
+
+    opacity:.08;
+
+    animation:
+    waveMove 34s linear infinite;
+}
+
+@keyframes waveMove{
+
+    0%{
+        transform:
+        translateX(0)
+        rotate(0deg);
+    }
+
+    100%{
+        transform:
+        translateX(-12%)
+        rotate(360deg);
+    }
+}
+
+@keyframes waveMoveReverse{
+
+    0%{
+        transform:
+        translateX(0)
+        rotate(0deg);
+    }
+
+    100%{
+        transform:
+        translateX(12%)
+        rotate(-360deg);
+    }
 }
 
 /* =========================================
@@ -53,11 +177,11 @@ HEADER
 
     z-index:100;
 
-    background:rgba(255,255,255,.92);
+    background:rgba(255,255,255,.75);
 
     backdrop-filter:blur(14px);
 
-    border-bottom:1px solid #e5e7eb;
+    border-bottom:1px solid rgba(168,85,247,.08);
 
     padding:16px 18px;
 
@@ -117,6 +241,9 @@ HEADER
     font-weight:800;
 
     font-size:1rem;
+
+    box-shadow:
+    0 10px 20px rgba(124,58,237,.25);
 }
 
 /* =========================================
@@ -133,8 +260,8 @@ WELCOME
     background:
     linear-gradient(
     135deg,
-    #7c3aed,
-    #4f46e5
+    rgba(124,58,237,.95),
+    rgba(79,70,229,.95)
     );
 
     border-radius:28px;
@@ -146,6 +273,9 @@ WELCOME
     position:relative;
 
     overflow:hidden;
+
+    box-shadow:
+    0 20px 45px rgba(124,58,237,.18);
 }
 
 .hero-card::before{
@@ -181,7 +311,7 @@ WELCOME
 
 .hero p{
 
-    opacity:.9;
+    opacity:.92;
 
     line-height:1.5;
 
@@ -214,7 +344,11 @@ CARDS
 
 .card{
 
-    background:#fff;
+    background:rgba(255,255,255,.82);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(168,85,247,.08);
 
     border-radius:24px;
 
@@ -231,7 +365,16 @@ CARDS
     transition:.25s;
 
     box-shadow:
-    0 10px 30px rgba(15,23,42,.06);
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.card:hover{
+
+    transform:
+    translateY(-3px);
+
+    box-shadow:
+    0 18px 40px rgba(124,58,237,.10);
 }
 
 .card:active{
@@ -403,6 +546,20 @@ RESPONSIVE
 <body>
 
 <!-- ======================================
+ONDAS
+====================================== -->
+
+<div class="wave-bg">
+
+    <div class="wave wave1"></div>
+
+    <div class="wave wave2"></div>
+
+    <div class="wave wave3"></div>
+
+</div>
+
+<!-- ======================================
 TOPBAR
 ====================================== -->
 
@@ -456,8 +613,6 @@ DASHBOARD
 
     <div class="grid">
 
-        <!-- JUGADORES -->
-
         <div
         class="card players"
         onclick="window.location.href='jugadores.html'">
@@ -486,8 +641,6 @@ DASHBOARD
             </p>
 
         </div>
-
-        <!-- PARTIDOS -->
 
         <div
         class="card matches"
@@ -518,8 +671,6 @@ DASHBOARD
 
         </div>
 
-        <!-- RIVALES -->
-
         <div
         class="card rivals"
         onclick="window.location.href='rivales.html'">
@@ -548,8 +699,6 @@ DASHBOARD
             </p>
 
         </div>
-
-        <!-- FINANZAS -->
 
         <div
         class="card finance"
@@ -580,8 +729,6 @@ DASHBOARD
 
         </div>
 
-        <!-- UNIFORMES -->
-
         <div
         class="card uniforms"
         onclick="window.location.href='uniformes.html'">
@@ -610,8 +757,6 @@ DASHBOARD
             </p>
 
         </div>
-
-        <!-- CONFIG -->
 
         <div
         class="card settings"
@@ -642,77 +787,11 @@ DASHBOARD
 
         </div>
 
-        <!-- ESTADISTICAS -->
-
-        <div
-        class="card stats"
-        onclick="window.location.href='estadisticas.html'">
-
-            <div class="card-top">
-
-                <div class="icon">
-
-                    <span class="material-symbols-outlined">
-                        bar_chart
-                    </span>
-
-                </div>
-
-                <div class="badge">
-                    14
-                </div>
-
-            </div>
-
-            <h3>Estadísticas</h3>
-
-            <p>
-                Mira rendimiento,
-                goles y asistencias.
-            </p>
-
-        </div>
-
-        <!-- NOTICIAS -->
-
-        <div
-        class="card news"
-        onclick="window.location.href='noticias.html'">
-
-            <div class="card-top">
-
-                <div class="icon">
-
-                    <span class="material-symbols-outlined">
-                        campaign
-                    </span>
-
-                </div>
-
-                <div class="badge">
-                    4
-                </div>
-
-            </div>
-
-            <h3>Noticias</h3>
-
-            <p>
-                Publica anuncios
-                y novedades del club.
-            </p>
-
-        </div>
-
     </div>
 
 </section>
 
 <script>
-
-// =========================================
-// VALIDAR ADMIN
-// =========================================
 
 if(
     localStorage.getItem('admin_activo')
@@ -720,10 +799,6 @@ if(
 ){
     window.location.href = './login.html';
 }
-
-// =========================================
-// REFRESH NATIVO
-// =========================================
 
 document.body.style.overscrollBehaviorY =
 'auto';
