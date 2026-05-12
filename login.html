@@ -31,6 +31,11 @@ rel="stylesheet">
     --glass:rgba(12,25,45,.72);
 }
 
+html,
+body{
+    height:100%;
+}
+
 *{
     margin:0;
     padding:0;
@@ -56,9 +61,10 @@ body{
 
     color:#fff;
 
-    overflow:hidden;
-
     position:relative;
+
+    overflow-x:hidden;
+    overflow-y:auto;
 }
 
 /* =====================================================
@@ -70,7 +76,7 @@ body::after{
 
     content:'';
 
-    position:absolute;
+    position:fixed;
 
     width:950px;
     height:950px;
@@ -84,6 +90,8 @@ body::after{
     z-index:0;
 
     animation:moveGlow 14s infinite ease-in-out;
+
+    pointer-events:none;
 }
 
 body::before{
@@ -511,6 +519,10 @@ input:focus{
 
 @media(max-width:480px){
 
+    body{
+        padding:16px;
+    }
+
     .login-card{
         padding:32px 22px;
     }
@@ -551,7 +563,7 @@ id="loginCard">
         <div class="input-group">
 
             <label>
-                Cédula o Clave Admin
+                Ingresa tus credenciales
             </label>
 
             <input
@@ -664,9 +676,7 @@ cedulaInput.addEventListener('input', () => {
     btnLogin.disabled =
     !val;
 
-    // =================================================
     // EFECTO ADMIN MORADO
-    // =================================================
 
     if(val.includes('Gata')){
 
@@ -728,9 +738,7 @@ formLogin.addEventListener('submit', async (e) => {
 
     try{
 
-        // =================================================
         // LOGIN ADMIN
-        // =================================================
 
         if(valor === 'GataFiera54321'){
 
@@ -767,9 +775,7 @@ formLogin.addEventListener('submit', async (e) => {
             return;
         }
 
-        // =================================================
         // LOGIN JUGADOR
-        // =================================================
 
         if(!/^\d{10}$/.test(valor)){
 
@@ -796,9 +802,7 @@ formLogin.addEventListener('submit', async (e) => {
         const data =
         await response.json();
 
-        // =================================================
         // APROBADO
-        // =================================================
 
         if(
             data.ok === true &&
@@ -823,9 +827,7 @@ formLogin.addEventListener('submit', async (e) => {
             return;
         }
 
-        // =================================================
         // PENDIENTE
-        // =================================================
 
         if(
             data.ok === true &&
@@ -839,9 +841,7 @@ formLogin.addEventListener('submit', async (e) => {
             return;
         }
 
-        // =================================================
         // NO EXISTE
-        // =================================================
 
         if(
             data.ok === true &&
