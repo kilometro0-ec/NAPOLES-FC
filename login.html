@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
     <title>Nápoles F.C. - Acceso Jugadores</title>
 
-    <link rel="manifest" href="manifest.json">
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#020c1a">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <!-- Fuente -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --primary: #00d2ff;
-            --primary-dark: #008f9b;
-            --accent: #FFD700;
-            --bg-dark: #020c1a;
-            --glass: rgba(12, 25, 45, 0.72);
-            --admin-border: #a78bfa;
-            --admin-bg: rgba(139, 92, 246, 0.18);
+
+        :root{
+            --primary:#00d2ff;
+            --primary-dark:#008f9b;
+            --accent:#FFD700;
+            --bg-dark:#020c1a;
+            --glass:rgba(12,25,45,.72);
         }
 
         *{
@@ -32,30 +35,43 @@
 
         body{
             font-family:'Plus Jakarta Sans',sans-serif;
+
             background:
-            radial-gradient(circle at top, rgba(0,210,255,0.14), transparent 45%),
-            linear-gradient(rgba(2,12,26,0.92), rgba(2,12,26,0.96));
+            radial-gradient(circle at top, rgba(0,210,255,.14), transparent 45%),
+            linear-gradient(rgba(2,12,26,.92), rgba(2,12,26,.96));
+
             background-color:var(--bg-dark);
+
             min-height:100vh;
+
             display:flex;
             align-items:center;
             justify-content:center;
+
             padding:20px;
-            color:white;
+
+            color:#fff;
+
             overflow-x:hidden;
         }
 
         .login-card{
             width:100%;
             max-width:430px;
+
             background:var(--glass);
+
             backdrop-filter:blur(18px) saturate(180%);
-            border:1px solid rgba(0,210,255,0.35);
+
+            border:1px solid rgba(0,210,255,.35);
+
             border-radius:34px;
+
             padding:38px 28px;
+
             box-shadow:
-            0 0 18px rgba(0,210,255,0.18),
-            0 18px 45px rgba(0,0,0,0.55);
+            0 0 18px rgba(0,210,255,.18),
+            0 18px 45px rgba(0,0,0,.55);
         }
 
         .logo-area{
@@ -67,16 +83,26 @@
             width:92px;
             height:92px;
             margin-bottom:18px;
-            filter:drop-shadow(0 0 12px rgba(0,210,255,0.35));
+            object-fit:contain;
+
+            filter:drop-shadow(0 0 12px rgba(0,210,255,.35));
         }
 
         .logo-area h1{
             font-size:2rem;
             font-weight:800;
+
             background:linear-gradient(to right,#fff,var(--primary));
+
             -webkit-background-clip:text;
-            color:transparent;
+            -webkit-text-fill-color:transparent;
+
             margin-bottom:8px;
+        }
+
+        .logo-area p{
+            opacity:.8;
+            font-size:.95rem;
         }
 
         .input-group{
@@ -85,64 +111,99 @@
 
         .input-group label{
             display:block;
+
             margin-bottom:10px;
+
             color:var(--primary);
+
             font-size:.8rem;
             font-weight:700;
+
             letter-spacing:1.6px;
             text-transform:uppercase;
         }
 
         input{
             width:100%;
-            height:62px;
+
+            min-height:62px;
+
             border-radius:18px;
-            border:2px solid rgba(255,255,255,0.06);
-            background:rgba(15,23,42,0.7);
-            color:white;
-            font-size:1.15rem;
+
+            border:2px solid rgba(255,255,255,.06);
+
+            background:rgba(15,23,42,.7);
+
+            color:#fff;
+
+            font-size:1.05rem;
             font-weight:700;
+
             padding:0 18px;
+
             text-align:center;
+
             outline:none;
+
             transition:.25s;
         }
 
         input:focus{
             border-color:var(--primary);
-            background:rgba(15,23,42,0.92);
+            background:rgba(15,23,42,.92);
         }
 
         .btn-submit{
             width:100%;
             height:58px;
+
             border:none;
             border-radius:18px;
-            background:linear-gradient(135deg,var(--primary-dark),var(--primary));
-            color:white;
+
+            background:
+            linear-gradient(
+                135deg,
+                var(--primary-dark),
+                var(--primary)
+            );
+
+            color:#fff;
+
             font-size:1rem;
             font-weight:800;
+
             letter-spacing:1.5px;
             text-transform:uppercase;
+
             cursor:pointer;
+
             transition:.25s;
+
             margin-top:10px;
         }
 
         .btn-submit:disabled{
-            opacity:.5;
+            opacity:.55;
             cursor:not-allowed;
         }
 
         .error-message{
             display:none;
+
             margin-top:18px;
+
             padding:14px;
+
             border-radius:14px;
-            background:rgba(239,68,68,0.16);
-            border:1px solid rgba(239,68,68,0.35);
+
+            background:rgba(239,68,68,.16);
+
+            border:1px solid rgba(239,68,68,.35);
+
             color:#fecaca;
+
             text-align:center;
+
             font-size:.88rem;
             font-weight:600;
         }
@@ -154,28 +215,28 @@
 
         .footer-links a{
             color:var(--accent);
+
             text-decoration:none;
+
             font-weight:800;
             font-size:.95rem;
         }
 
-        body.admin-mode-body .login-card{
-            border-color:var(--admin-border);
-        }
-
-        input.admin-mode{
-            border-color:var(--admin-border);
-            background:var(--admin-bg);
-        }
-
         .install-btn{
             padding:10px 20px;
+
             border-radius:999px;
-            background:rgba(0,210,255,0.1);
+
+            background:rgba(0,210,255,.1);
+
             border:1px solid var(--primary);
+
             color:var(--primary);
+
             font-weight:700;
+
             cursor:pointer;
+
             margin-top:10px;
         }
 
@@ -195,7 +256,7 @@
             }
 
             input{
-                height:56px;
+                min-height:56px;
                 font-size:1rem;
             }
 
@@ -204,33 +265,51 @@
                 font-size:.95rem;
             }
         }
+
     </style>
 </head>
+
 <body>
 
 <div class="login-card">
 
     <div class="logo-area">
-        <img src="https://raw.githubusercontent.com/Kilometro0-Ec/NapolesFC/main/logo.png" alt="Nápoles FC">
+
+        <!-- Logo local -->
+        <img src="./logo.png" alt="Nápoles FC">
+
         <h1>NÁPOLES F.C.</h1>
+
         <p>Acceso de Jugadores PRO</p>
+
     </div>
 
     <form id="formLogin">
 
         <div class="input-group">
-            <label for="loginCedula">Cédula</label>
+
+            <label for="loginCedula">
+                Cédula
+            </label>
 
             <input
                 type="text"
                 id="loginCedula"
-                maxlength="30"
+                maxlength="10"
                 placeholder="0000000000"
-                autocomplete="off"
+                autocomplete="username"
+                inputmode="numeric"
+                required
             >
+
         </div>
 
-        <button type="submit" id="btnLogin" class="btn-submit" disabled>
+        <button
+            type="submit"
+            id="btnLogin"
+            class="btn-submit"
+            disabled
+        >
             Ingresa al Vestuario
         </button>
 
@@ -241,8 +320,13 @@
     <div class="footer-links">
 
         <p style="margin-bottom:15px;">
+
             ¿No tienes cuenta?
-            <a href="registro.html">REGÍSTRATE ✨</a>
+
+            <a href="./registro.html">
+                REGÍSTRATE ✨
+            </a>
+
         </p>
 
         <button id="manualDownloadBtn" class="install-btn">
@@ -253,7 +337,8 @@
 
 </div>
 
-<script src="config.js"></script>
+<!-- CONFIG EN RAÍZ -->
+<script src="./config.js"></script>
 
 <script>
 
@@ -262,26 +347,28 @@
     // =========================
 
     const formLogin = document.getElementById('formLogin');
-    const cedulaInput = document.getElementById('loginCedula');
-    const btnLogin = document.getElementById('btnLogin');
-    const errorDiv = document.getElementById('errorMsg');
-    const bodyElem = document.body;
 
-    const ADMIN_SECRET = "GataFiera54321";
-    const ADMIN_TRIGGER = "Gata";
+    const cedulaInput = document.getElementById('loginCedula');
+
+    const btnLogin = document.getElementById('btnLogin');
+
+    const errorDiv = document.getElementById('errorMsg');
 
     // =========================
-    // MOSTRAR ERROR
+    // ERROR
     // =========================
 
     function mostrarError(msj){
 
-        errorDiv.innerHTML = msj;
+        errorDiv.textContent = msj;
+
         errorDiv.style.display = 'block';
 
         setTimeout(() => {
+
             errorDiv.style.display = 'none';
-        }, 6000);
+
+        }, 5000);
     }
 
     // =========================
@@ -290,20 +377,17 @@
 
     cedulaInput.addEventListener('input', () => {
 
-        const val = cedulaInput.value.trim();
+        // SOLO NUMEROS
 
-        btnLogin.disabled = val === '';
+        cedulaInput.value =
+        cedulaInput.value.replace(/\D/g,'');
 
-        if(val.includes(ADMIN_TRIGGER)){
+        const val =
+        cedulaInput.value.trim();
 
-            bodyElem.classList.add('admin-mode-body');
-            cedulaInput.classList.add('admin-mode');
+        btnLogin.disabled =
+        !val;
 
-        }else{
-
-            bodyElem.classList.remove('admin-mode-body');
-            cedulaInput.classList.remove('admin-mode');
-        }
     });
 
     // =========================
@@ -314,16 +398,19 @@
 
         e.preventDefault();
 
-        const valor = cedulaInput.value.trim();
+        const valor =
+        cedulaInput.value.trim();
 
         // =========================
-        // LOGIN ADMIN
+        // INTERNET
         // =========================
 
-        if(valor === ADMIN_SECRET){
+        if(!navigator.onLine){
 
-            localStorage.setItem('admin_session', 'true');
-            window.location.href = 'admin.html';
+            mostrarError(
+                '📡 Sin conexión a internet'
+            );
+
             return;
         }
 
@@ -333,7 +420,10 @@
 
         if(!/^\d{10}$/.test(valor)){
 
-            mostrarError("❌ La cédula debe tener 10 dígitos");
+            mostrarError(
+                '❌ La cédula debe tener 10 dígitos'
+            );
+
             return;
         }
 
@@ -343,13 +433,19 @@
 
         if(typeof CONFIG === 'undefined'){
 
-            mostrarError("❌ No se cargó config.js");
+            mostrarError(
+                '❌ No se cargó config.js'
+            );
+
             return;
         }
 
         if(!CONFIG.URL_GAS){
 
-            mostrarError("❌ URL_GAS no existe en config.js");
+            mostrarError(
+                '❌ URL_GAS no existe'
+            );
+
             return;
         }
 
@@ -358,23 +454,49 @@
         // =========================
 
         btnLogin.disabled = true;
-        btnLogin.innerText = "CONECTANDO...";
+
+        btnLogin.textContent =
+        'CONECTANDO...';
 
         try{
 
             const url =
             `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}&t=${Date.now()}`;
 
-            console.log("Consultando:", url);
+            console.log('Consultando:', url);
 
-            const response = await fetch(url);
+            const response =
+            await fetch(url);
 
-            const data = await response.json();
+            if(!response.ok){
 
-            console.log("Respuesta:", data);
+                throw new Error(
+                    'Servidor no disponible'
+                );
+            }
+
+            const text =
+            await response.text();
+
+            let data;
+
+            try{
+
+                data = JSON.parse(text);
+
+            }catch{
+
+                console.error(text);
+
+                throw new Error(
+                    'Respuesta inválida del servidor'
+                );
+            }
+
+            console.log(data);
 
             // =========================
-            // JUGADOR APROBADO
+            // APROBADO
             // =========================
 
             if(
@@ -388,9 +510,14 @@
                     JSON.stringify(data.datosJugador)
                 );
 
-                localStorage.setItem('userCedula', valor);
+                localStorage.setItem(
+                    'userCedula',
+                    valor
+                );
 
-                window.location.href = 'perfil.html';
+                window.location.assign(
+                    './perfil.html'
+                );
 
                 return;
             }
@@ -421,18 +548,19 @@
             ){
 
                 mostrarError(
-                    "❌ Jugador no encontrado"
+                    '❌ Jugador no encontrado'
                 );
 
                 return;
             }
 
             // =========================
-            // ERROR SERVER
+            // ERROR GENERAL
             // =========================
 
             mostrarError(
-                data.error || "⚠️ Error inesperado"
+                data.error ||
+                '⚠️ Error inesperado'
             );
 
         }catch(error){
@@ -440,14 +568,18 @@
             console.error(error);
 
             mostrarError(
-                "🔌 Error de conexión con Google Script"
+                error.message ||
+                '🔌 Error de conexión'
             );
 
         }finally{
 
             btnLogin.disabled = false;
-            btnLogin.innerText = "Ingresa al Vestuario";
+
+            btnLogin.textContent =
+            'Ingresa al Vestuario';
         }
+
     });
 
 </script>
