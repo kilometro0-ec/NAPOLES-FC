@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Rivales - Nápoles F.C.</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:#f3f6fb;
+
+    color:#111827;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:1px solid #e5e7eb;
+
+    padding:16px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.top-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.admin-info h1{
+
+    font-size:1.1rem;
+
+    font-weight:800;
+}
+
+.admin-info p{
+
+    font-size:.85rem;
+
+    color:#6b7280;
+
+    margin-top:2px;
+}
+
+.avatar{
+
+    width:46px;
+    height:46px;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+    135deg,
+    #ea580c,
+    #fb923c
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-weight:800;
+
+    font-size:1rem;
+}
+
+/* =========================================
+SEARCH
+========================================= */
+
+.search-box{
+
+    padding:20px 18px 10px;
+}
+
+.search{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:14px 16px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.search input{
+
+    border:none;
+
+    outline:none;
+
+    width:100%;
+
+    background:none;
+
+    font-size:.95rem;
+
+    font-family:'Inter',sans-serif;
+}
+
+.search .material-symbols-outlined{
+
+    color:#6b7280;
+}
+
+/* =========================================
+RIVALS
+========================================= */
+
+.rivals{
+
+    padding:14px 18px 40px;
+}
+
+.rival-card{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:18px;
+
+    margin-bottom:16px;
+
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.rival-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+}
+
+.rival-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.rival-logo{
+
+    width:64px;
+    height:64px;
+
+    border-radius:20px;
+
+    background:linear-gradient(
+    135deg,
+    #ea580c,
+    #fb923c
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:1.1rem;
+
+    font-weight:800;
+}
+
+.rival-info h3{
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    margin-bottom:4px;
+}
+
+.rival-info p{
+
+    color:#6b7280;
+
+    font-size:.88rem;
+}
+
+.stats{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding-top:14px;
+
+    border-top:1px solid #e5e7eb;
+}
+
+.stat{
+
+    text-align:center;
+
+    flex:1;
+}
+
+.stat h4{
+
+    font-size:1.1rem;
+
+    font-weight:800;
+
+    margin-bottom:4px;
+}
+
+.stat p{
+
+    color:#6b7280;
+
+    font-size:.8rem;
+}
+
+/* =========================================
+BUTTONS
+========================================= */
+
+.actions{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.action-btn{
+
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+}
+
+.edit{
+    background:#2563eb;
+}
+
+.delete{
+    background:#ef4444;
+}
+
+/* =========================================
+FAB
+========================================= */
+
+.fab{
+
+    position:fixed;
+
+    right:20px;
+    bottom:20px;
+
+    width:64px;
+    height:64px;
+
+    border:none;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+    135deg,
+    #ea580c,
+    #fb923c
+    );
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 15px 35px rgba(234,88,12,.35);
+}
+
+.fab .material-symbols-outlined{
+    font-size:34px;
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(min-width:700px){
+
+    .rivals,
+    .search-box{
+        max-width:700px;
+        margin:auto;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ======================================
+TOPBAR
+====================================== -->
+
+<header class="topbar">
+
+    <div class="top-left">
+
+        <div class="admin-info">
+
+            <h1>Rivales</h1>
+
+            <p>Nápoles F.C.</p>
+
+        </div>
+
+    </div>
+
+    <div class="avatar">
+        R
+    </div>
+
+</header>
+
+<!-- ======================================
+SEARCH
+====================================== -->
+
+<section class="search-box">
+
+    <div class="search">
+
+        <span class="material-symbols-outlined">
+            search
+        </span>
+
+        <input
+        type="text"
+        placeholder="Buscar rival...">
+
+    </div>
+
+</section>
+
+<!-- ======================================
+RIVALS
+====================================== -->
+
+<section class="rivals">
+
+    <!-- RIVAL -->
+
+    <div class="rival-card">
+
+        <div class="rival-top">
+
+            <div class="rival-left">
+
+                <div class="rival-logo">
+                    RIV
+                </div>
+
+                <div class="rival-info">
+
+                    <h3>River Club</h3>
+
+                    <p>Quito • Ecuador</p>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn edit">
+
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+
+                </button>
+
+                <button class="action-btn delete">
+
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <h4>12</h4>
+
+                <p>Partidos</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>7</h4>
+
+                <p>Victorias</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>3</h4>
+
+                <p>Empates</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>2</h4>
+
+                <p>Derrotas</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIVAL -->
+
+    <div class="rival-card">
+
+        <div class="rival-top">
+
+            <div class="rival-left">
+
+                <div class="rival-logo">
+                    ATL
+                </div>
+
+                <div class="rival-info">
+
+                    <h3>Atléticos FC</h3>
+
+                    <p>Guayaquil • Ecuador</p>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn edit">
+
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+
+                </button>
+
+                <button class="action-btn delete">
+
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <h4>8</h4>
+
+                <p>Partidos</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>5</h4>
+
+                <p>Victorias</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>1</h4>
+
+                <p>Empates</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>2</h4>
+
+                <p>Derrotas</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIVAL -->
+
+    <div class="rival-card">
+
+        <div class="rival-top">
+
+            <div class="rival-left">
+
+                <div class="rival-logo">
+                    LEO
+                </div>
+
+                <div class="rival-info">
+
+                    <h3>Leones FC</h3>
+
+                    <p>Ambato • Ecuador</p>
+
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="action-btn edit">
+
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+
+                </button>
+
+                <button class="action-btn delete">
+
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <h4>6</h4>
+
+                <p>Partidos</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>4</h4>
+
+                <p>Victorias</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>1</h4>
+
+                <p>Empates</p>
+
+            </div>
+
+            <div class="stat">
+
+                <h4>1</h4>
+
+                <p>Derrotas</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ======================================
+ADD BUTTON
+====================================== -->
+
+<button class="fab">
+
+    <span class="material-symbols-outlined">
+        add
+    </span>
+
+</button>
+
+<script>
+
+// =========================================
+// VALIDAR ADMIN
+// =========================================
+
+if(
+    localStorage.getItem('admin_activo')
+    !== 'true'
+){
+    window.location.href = './login.html';
+}
+
+</script>
+
+</body>
+</html>
