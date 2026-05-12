@@ -32,13 +32,119 @@ body{
 
     font-family:'Inter',sans-serif;
 
-    background:#f3f6fb;
+    background:
+    linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #faf7ff 45%,
+    #f5f3ff 100%
+    );
 
     color:#111827;
 
     min-height:100vh;
 
     overflow-x:hidden;
+
+    position:relative;
+}
+
+/* =========================================
+ONDAS
+========================================= */
+
+.wave-bg{
+
+    position:fixed;
+
+    inset:0;
+
+    overflow:hidden;
+
+    z-index:-1;
+
+    pointer-events:none;
+}
+
+.wave{
+
+    position:absolute;
+
+    width:220%;
+
+    height:280px;
+
+    left:-60%;
+
+    border-radius:45%;
+
+    opacity:.14;
+
+    filter:blur(8px);
+}
+
+.wave1{
+
+    background:
+    linear-gradient(
+    90deg,
+    #a855f7,
+    #c084fc,
+    #f3e8ff
+    );
+
+    bottom:-140px;
+
+    animation:
+    waveMove 18s linear infinite;
+}
+
+.wave2{
+
+    background:
+    linear-gradient(
+    90deg,
+    #7c3aed,
+    #d8b4fe,
+    #ffffff
+    );
+
+    bottom:-180px;
+
+    opacity:.08;
+
+    animation:
+    waveMoveReverse 28s linear infinite;
+}
+
+@keyframes waveMove{
+
+    0%{
+        transform:
+        translateX(0)
+        rotate(0deg);
+    }
+
+    100%{
+        transform:
+        translateX(-12%)
+        rotate(360deg);
+    }
+}
+
+@keyframes waveMoveReverse{
+
+    0%{
+        transform:
+        translateX(0)
+        rotate(0deg);
+    }
+
+    100%{
+        transform:
+        translateX(12%)
+        rotate(-360deg);
+    }
 }
 
 /* =========================================
@@ -53,11 +159,11 @@ HEADER
 
     z-index:100;
 
-    background:rgba(255,255,255,.92);
+    background:rgba(255,255,255,.78);
 
     backdrop-filter:blur(14px);
 
-    border-bottom:1px solid #e5e7eb;
+    border-bottom:1px solid rgba(168,85,247,.08);
 
     padding:16px 18px;
 
@@ -117,6 +223,9 @@ HEADER
     font-weight:800;
 
     font-size:1rem;
+
+    box-shadow:
+    0 10px 25px rgba(37,99,235,.25);
 }
 
 /* =========================================
@@ -130,9 +239,13 @@ SEARCH
 
 .search{
 
-    background:#fff;
+    background:rgba(255,255,255,.85);
 
-    border-radius:18px;
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(168,85,247,.08);
+
+    border-radius:20px;
 
     padding:14px 16px;
 
@@ -172,12 +285,16 @@ PLAYERS
 
 .players{
 
-    padding:14px 18px 40px;
+    padding:14px 18px 120px;
 }
 
 .player-card{
 
-    background:#fff;
+    background:rgba(255,255,255,.86);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(168,85,247,.08);
 
     border-radius:24px;
 
@@ -193,6 +310,17 @@ PLAYERS
 
     box-shadow:
     0 10px 30px rgba(15,23,42,.05);
+
+    transition:.25s;
+}
+
+.player-card:hover{
+
+    transform:
+    translateY(-2px);
+
+    box-shadow:
+    0 18px 35px rgba(124,58,237,.08);
 }
 
 .player-left{
@@ -225,9 +353,20 @@ PLAYERS
 
     color:#fff;
 
-    font-size:1.1rem;
+    font-size:1rem;
 
     font-weight:800;
+
+    overflow:hidden;
+
+    flex-shrink:0;
+}
+
+.player-avatar img{
+
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
 .player-info h3{
@@ -244,6 +383,8 @@ PLAYERS
     color:#6b7280;
 
     font-size:.88rem;
+
+    line-height:1.4;
 }
 
 .player-actions{
@@ -271,6 +412,12 @@ PLAYERS
     justify-content:center;
 
     color:#fff;
+
+    transition:.2s;
+}
+
+.action-btn:active{
+    transform:scale(.95);
 }
 
 .edit{
@@ -282,7 +429,7 @@ PLAYERS
 }
 
 /* =========================================
-ADD BUTTON
+FAB
 ========================================= */
 
 .fab{
@@ -301,8 +448,8 @@ ADD BUTTON
 
     background:linear-gradient(
     135deg,
-    #2563eb,
-    #60a5fa
+    #7c3aed,
+    #a855f7
     );
 
     color:#fff;
@@ -316,7 +463,9 @@ ADD BUTTON
     cursor:pointer;
 
     box-shadow:
-    0 15px 35px rgba(37,99,235,.35);
+    0 18px 40px rgba(124,58,237,.35);
+
+    z-index:99;
 }
 
 .fab .material-symbols-outlined{
@@ -341,6 +490,18 @@ RESPONSIVE
 </head>
 
 <body>
+
+<!-- ======================================
+ONDAS
+====================================== -->
+
+<div class="wave-bg">
+
+    <div class="wave wave1"></div>
+
+    <div class="wave wave2"></div>
+
+</div>
 
 <!-- ======================================
 TOPBAR
@@ -380,6 +541,7 @@ SEARCH
 
         <input
         type="text"
+        id="searchInput"
         placeholder="Buscar jugador...">
 
     </div>
@@ -390,189 +552,31 @@ SEARCH
 PLAYERS
 ====================================== -->
 
-<section class="players">
-
-    <!-- PLAYER -->
-
-    <div class="player-card">
-
-        <div class="player-left">
-
-            <div class="player-avatar">
-                CR
-            </div>
-
-            <div class="player-info">
-
-                <h3>Cristian Ruiz</h3>
-
-                <p>Delantero • #9</p>
-
-            </div>
-
-        </div>
-
-        <div class="player-actions">
-
-            <button class="action-btn edit">
-
-                <span class="material-symbols-outlined">
-                    edit
-                </span>
-
-            </button>
-
-            <button class="action-btn delete">
-
-                <span class="material-symbols-outlined">
-                    delete
-                </span>
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- PLAYER -->
-
-    <div class="player-card">
-
-        <div class="player-left">
-
-            <div class="player-avatar">
-                LM
-            </div>
-
-            <div class="player-info">
-
-                <h3>Luis Mendoza</h3>
-
-                <p>Mediocampista • #10</p>
-
-            </div>
-
-        </div>
-
-        <div class="player-actions">
-
-            <button class="action-btn edit">
-
-                <span class="material-symbols-outlined">
-                    edit
-                </span>
-
-            </button>
-
-            <button class="action-btn delete">
-
-                <span class="material-symbols-outlined">
-                    delete
-                </span>
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- PLAYER -->
-
-    <div class="player-card">
-
-        <div class="player-left">
-
-            <div class="player-avatar">
-                JP
-            </div>
-
-            <div class="player-info">
-
-                <h3>Juan Pérez</h3>
-
-                <p>Defensa • #4</p>
-
-            </div>
-
-        </div>
-
-        <div class="player-actions">
-
-            <button class="action-btn edit">
-
-                <span class="material-symbols-outlined">
-                    edit
-                </span>
-
-            </button>
-
-            <button class="action-btn delete">
-
-                <span class="material-symbols-outlined">
-                    delete
-                </span>
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- PLAYER -->
-
-    <div class="player-card">
-
-        <div class="player-left">
-
-            <div class="player-avatar">
-                AG
-            </div>
-
-            <div class="player-info">
-
-                <h3>Andrés Gómez</h3>
-
-                <p>Portero • #1</p>
-
-            </div>
-
-        </div>
-
-        <div class="player-actions">
-
-            <button class="action-btn edit">
-
-                <span class="material-symbols-outlined">
-                    edit
-                </span>
-
-            </button>
-
-            <button class="action-btn delete">
-
-                <span class="material-symbols-outlined">
-                    delete
-                </span>
-
-            </button>
-
-        </div>
-
-    </div>
+<section
+class="players"
+id="playersContainer">
+
+    <p style="padding:20px">
+        Cargando jugadores...
+    </p>
 
 </section>
 
 <!-- ======================================
-ADD PLAYER BUTTON
+FAB
 ====================================== -->
 
-<button class="fab">
+<button
+class="fab"
+onclick="window.location.href='nuevo-jugador.html'">
 
     <span class="material-symbols-outlined">
         add
     </span>
 
 </button>
+
+<script src="./config.js"></script>
 
 <script>
 
@@ -584,8 +588,261 @@ if(
     localStorage.getItem('admin_activo')
     !== 'true'
 ){
-    window.location.href = './login.html';
+    window.location.href =
+    './login.html';
 }
+
+const playersContainer =
+document.getElementById(
+    'playersContainer'
+);
+
+const searchInput =
+document.getElementById(
+    'searchInput'
+);
+
+let jugadoresGlobal = [];
+
+// =========================================
+// CARGAR JUGADORES
+// =========================================
+
+async function cargarJugadores(){
+
+    try{
+
+        const response =
+        await fetch(
+`${CONFIG.URL_GAS}?action=getJugadores&t=${Date.now()}`
+        );
+
+        const data =
+        await response.json();
+
+        if(!data.ok){
+
+            playersContainer.innerHTML =
+            '<p>Error cargando jugadores</p>';
+
+            return;
+        }
+
+        jugadoresGlobal =
+        data.jugadores;
+
+        renderJugadores(
+            jugadoresGlobal
+        );
+
+    }catch(err){
+
+        playersContainer.innerHTML =
+        '<p>Error conexión</p>';
+
+        console.log(err);
+    }
+}
+
+// =========================================
+// RENDER
+// =========================================
+
+function renderJugadores(lista){
+
+    playersContainer.innerHTML = '';
+
+    if(lista.length === 0){
+
+        playersContainer.innerHTML =
+        '<p>No hay jugadores</p>';
+
+        return;
+    }
+
+    lista.forEach(jugador => {
+
+        const iniciales =
+        (
+            (jugador.primerNombre || '')
+            .charAt(0) +
+
+            (jugador.apellidos || '')
+            .charAt(0)
+        ).toUpperCase();
+
+        const card =
+        document.createElement('div');
+
+        card.className =
+        'player-card';
+
+        card.innerHTML = `
+
+        <div class="player-left">
+
+            <div class="player-avatar">
+
+                ${
+                    jugador.foto
+                    ?
+                    `<img
+                    src="${jugador.foto}"
+                    alt="foto">`
+                    :
+                    iniciales
+                }
+
+            </div>
+
+            <div class="player-info">
+
+                <h3>
+                ${jugador.primerNombre}
+                ${jugador.apellidos}
+                </h3>
+
+                <p>
+                #${jugador.dorsal || '-'}
+                •
+                ${jugador.estado || 'PENDIENTE'}
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="player-actions">
+
+            <button
+            class="action-btn edit"
+            onclick="editarJugador('${jugador.cedula}')">
+
+                <span class="material-symbols-outlined">
+                    edit
+                </span>
+
+            </button>
+
+            <button
+            class="action-btn delete"
+            onclick="eliminarJugador(${jugador.fila})">
+
+                <span class="material-symbols-outlined">
+                    delete
+                </span>
+
+            </button>
+
+        </div>
+        `;
+
+        playersContainer.appendChild(card);
+    });
+}
+
+// =========================================
+// BUSCADOR
+// =========================================
+
+searchInput.addEventListener('input', e => {
+
+    const texto =
+    e.target.value
+    .toLowerCase()
+    .trim();
+
+    const filtrados =
+    jugadoresGlobal.filter(j => {
+
+        return (
+
+            (j.primerNombre || '')
+            .toLowerCase()
+            .includes(texto)
+
+            ||
+
+            (j.apellidos || '')
+            .toLowerCase()
+            .includes(texto)
+
+            ||
+
+            (j.cedula || '')
+            .includes(texto)
+        );
+    });
+
+    renderJugadores(
+        filtrados
+    );
+});
+
+// =========================================
+// ELIMINAR
+// =========================================
+
+async function eliminarJugador(fila){
+
+    const ok =
+    confirm(
+        '¿Eliminar jugador?'
+    );
+
+    if(!ok){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(
+`${CONFIG.URL_GAS}?action=eliminarJugador&fila=${fila}`
+        );
+
+        const data =
+        await response.json();
+
+        if(data.ok){
+
+            cargarJugadores();
+
+        }else{
+
+            alert(
+                data.error
+            );
+        }
+
+    }catch(err){
+
+        alert(
+            'Error eliminando'
+        );
+    }
+}
+
+// =========================================
+// EDITAR
+// =========================================
+
+function editarJugador(cedula){
+
+    localStorage.setItem(
+        'editCedula',
+        cedula
+    );
+
+    window.location.href =
+    './editar-jugador.html';
+}
+
+// =========================================
+// INIT
+// =========================================
+
+cargarJugadores();
 
 </script>
 
