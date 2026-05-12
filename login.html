@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
+<meta
+name="viewport"
 content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>Nápoles F.C. - Acceso</title>
@@ -15,7 +17,9 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <link rel="icon" href="data:,">
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link
+href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
+rel="stylesheet">
 
 <style>
 
@@ -34,56 +38,84 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     -webkit-tap-highlight-color:transparent;
 }
 
+html{
+    overscroll-behavior:none;
+}
+
 body{
+
     font-family:'Plus Jakarta Sans',sans-serif;
+
     background:#020c1a;
+
     min-height:100vh;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     padding:20px;
+
     color:#fff;
+
     overflow:hidden;
+
     position:relative;
+
+    overscroll-behavior-y:none;
+
+    touch-action:pan-x pan-y;
 }
 
 /* =====================================================
-   FONDO ULTRA HOLOGRÁFICO
+   FONDO HOLOGRÁFICO
 ===================================================== */
 
 body::before,
 body::after{
+
     content:'';
+
     position:absolute;
-    width:900px;
-    height:900px;
+
+    width:950px;
+    height:950px;
+
     border-radius:50%;
-    filter:blur(120px);
-    opacity:.75;
+
+    filter:blur(130px);
+
+    opacity:.85;
+
     z-index:0;
+
     animation:moveGlow 14s infinite ease-in-out;
 }
 
 body::before{
+
     background:
     radial-gradient(circle,
     rgba(0,210,255,.95) 0%,
-    rgba(0,140,255,.5) 40%,
+    rgba(0,140,255,.55) 40%,
     transparent 75%);
 
-    top:-320px;
-    left:-240px;
+    top:-340px;
+    left:-260px;
 }
 
 body::after{
+
     background:
     radial-gradient(circle,
-    rgba(0,89,255,.95) 0%,
-    rgba(111,0,255,.45) 40%,
+    rgba(111,0,255,.95) 0%,
+    rgba(168,85,247,.55) 40%,
     transparent 75%);
 
-    bottom:-320px;
-    right:-240px;
+    bottom:-340px;
+    right:-260px;
 
     animation-delay:7s;
 }
@@ -135,7 +167,7 @@ body::after{
     width:100%;
     max-width:430px;
 
-    background:rgba(10,18,35,.72);
+    background:rgba(10,18,35,.76);
 
     backdrop-filter:blur(24px) saturate(180%);
 
@@ -150,23 +182,24 @@ body::after{
     0 18px 45px rgba(0,0,0,.65);
 
     position:relative;
+
     z-index:2;
 
     transition:.45s;
 }
 
 /* =====================================================
-   MODO MORADO ADMIN
+   MODO ADMIN MORADO
 ===================================================== */
 
 .login-card.admin-mode{
 
-    background:rgba(32,12,50,.82);
+    background:rgba(38,16,60,.84);
 
     border:1px solid rgba(168,85,247,.95);
 
     box-shadow:
-    0 0 40px rgba(168,85,247,.55),
+    0 0 45px rgba(168,85,247,.55),
     0 18px 45px rgba(0,0,0,.75);
 }
 
@@ -185,7 +218,7 @@ body::after{
 }
 
 .login-card.admin-mode .logo-area p{
-    color:#e9d5ff;
+    color:#f3e8ff;
 }
 
 .login-card.admin-mode label{
@@ -194,13 +227,13 @@ body::after{
 
 .login-card.admin-mode input{
 
-    border:2px solid rgba(168,85,247,.35);
+    border:2px solid rgba(168,85,247,.4);
 
     background:
-    rgba(45,20,70,.72);
+    rgba(55,25,80,.78);
 
     box-shadow:
-    0 0 18px rgba(168,85,247,.15);
+    0 0 18px rgba(168,85,247,.2);
 }
 
 .login-card.admin-mode input:focus{
@@ -238,7 +271,7 @@ body::after{
 }
 
 .login-card.admin-mode a{
-    color:#e9d5ff;
+    color:#f3e8ff;
 }
 
 /* =====================================================
@@ -247,12 +280,13 @@ body::after{
 
 .logo-area{
     text-align:center;
-    margin-bottom:36px;
+    margin-bottom:38px;
 }
 
 .logo-area h1{
 
     font-size:2rem;
+
     font-weight:800;
 
     background:
@@ -263,6 +297,7 @@ body::after{
     );
 
     -webkit-background-clip:text;
+
     -webkit-text-fill-color:transparent;
 
     margin-bottom:10px;
@@ -270,10 +305,14 @@ body::after{
 
 .logo-area p{
 
-    opacity:.9;
+    opacity:.92;
+
     font-size:1rem;
+
     font-weight:700;
+
     color:#d7f7ff;
+
     letter-spacing:1px;
 }
 
@@ -282,7 +321,7 @@ body::after{
 ===================================================== */
 
 .input-group{
-    margin-bottom:26px;
+    margin-bottom:28px;
 }
 
 .input-group label{
@@ -294,9 +333,11 @@ body::after{
     color:var(--primary);
 
     font-size:.82rem;
+
     font-weight:700;
 
     letter-spacing:1.6px;
+
     text-transform:uppercase;
 
     transition:.35s;
@@ -317,6 +358,7 @@ input{
     color:#fff;
 
     font-size:1.05rem;
+
     font-weight:700;
 
     padding:0 18px;
@@ -334,7 +376,8 @@ input:focus{
 
     background:rgba(15,23,42,.92);
 
-    box-shadow:0 0 18px rgba(0,210,255,.35);
+    box-shadow:
+    0 0 18px rgba(0,210,255,.35);
 }
 
 /* =====================================================
@@ -344,9 +387,11 @@ input:focus{
 .btn-submit{
 
     width:100%;
+
     height:58px;
 
     border:none;
+
     border-radius:18px;
 
     background:
@@ -359,9 +404,11 @@ input:focus{
     color:#fff;
 
     font-size:1rem;
+
     font-weight:800;
 
     letter-spacing:1.5px;
+
     text-transform:uppercase;
 
     cursor:pointer;
@@ -407,6 +454,7 @@ input:focus{
     text-align:center;
 
     font-size:.88rem;
+
     font-weight:600;
 }
 
@@ -420,8 +468,11 @@ input:focus{
 }
 
 .footer-links a{
+
     color:#FFD700;
+
     font-weight:800;
+
     text-decoration:none;
 }
 
@@ -491,7 +542,9 @@ input:focus{
 
 <body>
 
-<div class="login-card" id="loginCard">
+<div
+class="login-card"
+id="loginCard">
 
     <div class="logo-area">
 
@@ -506,7 +559,7 @@ input:focus{
         <div class="input-group">
 
             <label>
-                Digita tú Cédula para ingresar
+                Cédula o Clave Admin
             </label>
 
             <input
@@ -530,7 +583,8 @@ input:focus{
 
     </form>
 
-    <div id="errorMsg"
+    <div
+    id="errorMsg"
     class="error-message"></div>
 
     <div class="footer-links">
@@ -588,6 +642,28 @@ document.getElementById('errorMsg');
 
 const loginCard =
 document.getElementById('loginCard');
+
+// =====================================================
+// BLOQUEAR REFRESH MOBILE
+// =====================================================
+
+document.body.addEventListener(
+
+    'touchmove',
+
+    function(e){
+
+        if(window.scrollY === 0){
+
+            e.preventDefault();
+        }
+
+    },
+
+    {
+        passive:false
+    }
+);
 
 // =====================================================
 // ERROR
@@ -683,7 +759,7 @@ formLogin.addEventListener('submit', async (e) => {
     try{
 
         // =================================================
-        // ADMIN
+        // LOGIN ADMIN
         // =================================================
 
         if(valor === 'GataFiera54321'){
@@ -722,7 +798,7 @@ formLogin.addEventListener('submit', async (e) => {
         }
 
         // =================================================
-        // JUGADOR
+        // LOGIN JUGADOR
         // =================================================
 
         if(!/^\d{10}$/.test(valor)){
@@ -750,6 +826,10 @@ formLogin.addEventListener('submit', async (e) => {
         const data =
         await response.json();
 
+        // =================================================
+        // APROBADO
+        // =================================================
+
         if(
             data.ok === true &&
             data.cedulaExiste === true &&
@@ -773,6 +853,10 @@ formLogin.addEventListener('submit', async (e) => {
             return;
         }
 
+        // =================================================
+        // PENDIENTE
+        // =================================================
+
         if(
             data.ok === true &&
             data.cedulaExiste === true
@@ -784,6 +868,10 @@ formLogin.addEventListener('submit', async (e) => {
 
             return;
         }
+
+        // =================================================
+        // NO EXISTE
+        // =================================================
 
         if(
             data.ok === true &&
