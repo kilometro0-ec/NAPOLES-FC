@@ -3,22 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Nápoles F.C. · Gol de Oro · Inscripciones Abiertas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <title>Nápoles F.C. · Gol de Oro · Inscripciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
             --azul-noche: #0a1a2f;
-            --cardenillo: #008B94;
             --dorado: #F5B81B;
-            --dorado-oscuro: #C98500;
-            --blanco-puro: #ffffff;
-            --gris-suave: rgba(255, 255, 255, 0.1);
-            --negro-trans: rgba(0, 0, 0, 0.5);
             --rojo-error: #e74c3c;
             --verde-exito: #2ecc71;
         }
@@ -27,27 +18,9 @@
             font-family: 'Inter', system-ui, sans-serif;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            position: relative;
-        }
-        body::before {
-            content: "";
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(245,184,27,0.08) 0%, rgba(0,0,0,0) 70%);
-            animation: rotateGlow 25s linear infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-        @keyframes rotateGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         .contenedor-principal {
             max-width: 540px;
@@ -56,71 +29,32 @@
             backdrop-filter: blur(18px);
             border-radius: 2rem;
             border: 2px solid rgba(245, 184, 27, 0.6);
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(245, 184, 27, 0.2) inset;
             padding: 2rem 1.8rem;
-            transition: transform 0.3s ease;
-            animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            position: relative;
-            z-index: 2;
+            animation: slideUp 0.6s ease;
         }
-        .contenedor-principal:hover {
-            transform: translateY(-5px);
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        header { text-align: center; margin-bottom: 1.8rem; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
         h1 {
             font-size: 2rem;
-            font-weight: 800;
             background: linear-gradient(135deg, #F9D976, #F39F1A);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 0.3rem;
-        }
-        .subtitulo { color: #c9e2f5; font-size: 0.85rem; font-weight: 500; }
-        .badge {
-            display: inline-block;
-            background: linear-gradient(95deg, rgba(0, 139, 148, 0.3), rgba(245, 184, 27, 0.2));
-            border-radius: 60px;
-            padding: 0.3rem 1rem;
-            font-size: 0.7rem;
-            color: var(--dorado);
-            font-weight: 700;
-            margin-top: 0.6rem;
+            text-align: center;
         }
         .golden-extra-container {
-            background: radial-gradient(ellipse at 30% 40%, rgba(0,0,0,0.6), rgba(245,184,27,0.08));
+            background: rgba(0,0,0,0.5);
             border-radius: 1.8rem;
             padding: 1rem;
-            margin-top: 1rem;
             text-align: center;
-            border: 1px solid rgba(245, 184, 27, 0.7);
-            animation: pulseGold 2s infinite ease-in-out;
+            margin: 1rem 0;
+            border: 1px solid var(--dorado);
         }
-        @keyframes pulseGold {
-            0% { box-shadow: 0 0 0 0 rgba(245,184,27,0.2); }
-            70% { box-shadow: 0 0 0 8px rgba(245,184,27,0); }
-        }
-        .golden-message { font-size: 1.5rem; font-weight: 800; color: #FFDD88; margin: 0.5rem 0; }
-        .golden-sub { font-size: 0.8rem; color: #cfe6ff; background: rgba(0,0,0,0.5); display: inline-block; padding: 0.2rem 1rem; border-radius: 60px; }
-        .paso { display: none; animation: fadeSlide 0.4s ease; }
+        .golden-message { font-size: 1.5rem; font-weight: 800; color: #FFDD88; }
+        .paso { display: none; animation: fade 0.3s ease; }
         .paso.activo { display: block; }
-        @keyframes fadeSlide {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes fade { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
         .campo { margin-bottom: 1.2rem; }
-        label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #FFE2A4;
-            margin-bottom: 0.25rem;
-        }
+        label { display: block; font-size: 0.75rem; font-weight: 700; color: #FFE2A4; margin-bottom: 0.25rem; }
         input, select {
             width: 100%;
             padding: 0.9rem 1.2rem;
@@ -129,15 +63,8 @@
             border-radius: 1rem;
             color: white;
             font-size: 1rem;
-            transition: all 0.25s;
-            outline: none;
         }
-        input:focus, select:focus {
-            border-color: var(--dorado);
-            box-shadow: 0 0 0 3px rgba(245, 184, 27, 0.4);
-        }
-        input.error { border-color: var(--rojo-error); animation: shake 0.3s ease; }
-        @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);} }
+        input:focus, select:focus { border-color: var(--dorado); outline: none; box-shadow: 0 0 0 3px rgba(245,184,27,0.4); }
         .btn-primary {
             background: linear-gradient(105deg, #D4AF37, #B47C00);
             border: none;
@@ -145,19 +72,28 @@
             width: 100%;
             border-radius: 3rem;
             font-weight: 800;
-            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
             color: #0a1e2c;
             cursor: pointer;
             margin-top: 1.2rem;
-            transition: all 0.3s;
-            box-shadow: 0 5px 14px rgba(212, 175, 55, 0.4);
         }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); background: linear-gradient(105deg, #F5C542, #E6A017); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
         .grid-2cols { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .mensaje-exito-foto { color: var(--verde-exito); font-size: 0.75rem; margin-top: 5px; display: none; align-items: center; gap: 5px; }
+        .conditional-field { display: none; margin-top: 0.5rem; }
+        .conditional-field.visible { display: block; }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0A1428ee;
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            z-index: 10001;
+            border-left: 5px solid var(--dorado);
+        }
         #loader {
             display: none;
             position: fixed;
@@ -166,8 +102,6 @@
             backdrop-filter: blur(10px);
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            gap: 20px;
             z-index: 10000;
         }
         .spinner {
@@ -179,105 +113,65 @@
             animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        #modalExito {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            justify-content: center;
-            align-items: center;
-            z-index: 10002;
-        }
-        .modal-card {
-            background: linear-gradient(145deg, #0f1f32, #030c17);
-            border-radius: 2rem;
-            padding: 2rem;
-            text-align: center;
-            border: 2px solid var(--dorado);
-            max-width: 340px;
-        }
-        .modal-card h2 { color: var(--dorado); font-size: 1.7rem; }
-        .toast-notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0A1428ee;
-            backdrop-filter: blur(12px);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 60px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 10001;
-            animation: toastSlideUp 0.3s ease forwards;
-            border-left: 5px solid var(--dorado);
-        }
-        @keyframes toastSlideUp {
-            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        .disabled-by-date {
-            filter: blur(2px);
-            pointer-events: none;
-            opacity: 0.7;
-        }
-        @media (max-width: 550px) {
-            body { padding: 0.8rem; }
-            .contenedor-principal { padding: 1.3rem; }
-            .golden-message { font-size: 1.2rem; }
-            .grid-2cols { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 550px) { .contenedor-principal { padding: 1.3rem; } .grid-2cols { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 <div class="contenedor-principal">
-    <header>
-        <h1>⚽ NÁPOLES F.C. ⚽</h1>
-        <p class="subtitulo">GOL DE ORO · TIEMPO EXTRA OFICIAL</p>
-        <div class="badge">🏆 TEMPORADA 2026 · ¡INSCRIPCIONES ABIERTAS! 🏆</div>
-        <div class="golden-extra-container">
-            <div class="golden-message">⚡ GOL DE ORO ⚡</div>
-            <div class="golden-sub">Registro extendido  — Oportunidad única</div>
-            <div class="golden-sub" style="margin-top:10px;">❗ Las inscripciones cierran el VIERNES a las 11:00 PM</div>
-        </div>
-    </header>
+    <h1>⚽ NÁPOLES F.C. ⚽</h1>
+    <div class="golden-extra-container">
+        <div class="golden-message">⚡ GOL DE ORO ⚡</div>
+        <div class="golden-sub">Cierre: Viernes 11:00 PM</div>
+    </div>
 
     <form id="formRegistro">
+        <!-- PASO 1: Cédula -->
         <div id="paso1" class="paso activo">
-            <div class="campo">
-                <label>🔢 CÉDULA (10 dígitos)</label>
-                <input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890" autocomplete="off">
-            </div>
+            <div class="campo"><label>🔢 CÉDULA (10 dígitos)</label><input type="text" id="ced" maxlength="10" placeholder="Ej: 1234567890"></div>
             <button type="button" id="btnCedula" class="btn-primary" disabled>Validar cédula</button>
         </div>
+
+        <!-- PASO 2: Nombres y fecha -->
         <div id="paso2" class="paso">
-            <div class="campo"><label>📝 Primer nombre</label><input type="text" id="n1" placeholder="Ej: LEONARDO"></div>
-            <div class="campo"><label>📝 Segundo nombre </label><input type="text" id="n2" placeholder="Ej: ADRIAN"></div>
-            <div class="campo"><label>📝 Apellidos</label><input type="text" id="ape" placeholder="Ej: MUÑOZ BUENDIA"></div>
-            <div class="campo"><label>📅 Fecha de nacimiento</label><input type="date" id="fecha"></div>
+            <div class="campo"><label>Primer nombre</label><input type="text" id="n1"></div>
+            <div class="campo"><label>Segundo nombre (opcional)</label><input type="text" id="n2"></div>
+            <div class="campo"><label>Apellidos</label><input type="text" id="ape"></div>
+            <div class="campo"><label>Fecha de nacimiento</label><input type="date" id="fecha"></div>
             <button type="button" id="btnPaso2" class="btn-primary" disabled>Siguiente</button>
         </div>
+
+        <!-- PASO 3: Contacto -->
         <div id="paso3" class="paso">
-            <div class="campo"><label>📞 Teléfono (10 dígitos)</label><input type="tel" id="tel" maxlength="10" placeholder="Ej: 0991234567"></div>
-            <div class="campo"><label>✉️ Correo electrónico</label><input type="email" id="correo" placeholder="tú@ejemplo.com"></div>
+            <div class="campo"><label>Teléfono (10 dígitos)</label><input type="tel" id="tel" maxlength="10"></div>
+            <div class="campo"><label>Correo electrónico</label><input type="email" id="correo"></div>
             <button type="button" id="btnPaso3" class="btn-primary" disabled>Siguiente</button>
         </div>
+
+        <!-- PASO 4: Fotos -->
         <div id="paso4" class="paso">
-            <div class="campo"><label>📸 Foto de perfil (sonríe)</label><input type="file" id="rostro" accept="image/jpeg,image/png"></div>
-            <div class="campo"><label>🪪 Foto de tu cédula (frontal)</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"></div>
+            <div class="campo"><label>📸 Foto de perfil</label><input type="file" id="rostro" accept="image/jpeg,image/png"></div>
+            <div class="campo"><label>🪪 Foto de cédula (frontal)</label><input type="file" id="cedulaFile" accept="image/jpeg,image/png"></div>
             <button type="button" id="btnPaso4" class="btn-primary" disabled>Siguiente</button>
         </div>
+
+        <!-- PASO 5: Dorsal y nombre camiseta -->
         <div id="paso5" class="paso">
             <div class="grid-2cols">
-                <div class="campo"><label>🏷️ Nombre en la camiseta</label><select id="nombreCamiseta"><option value="">Selecciona</option></select></div>
-                <div class="campo"><label>🔢 Dorsal</label><select id="dorsal"><option value="">Selecciona</option></select></div>
+                <div class="campo"><label>Nombre en camiseta</label><select id="nombreCamiseta"><option value="">Selecciona</option></select></div>
+                <div class="campo"><label>Número de dorsal</label><select id="dorsal"><option value="">Selecciona</option></select></div>
             </div>
             <button type="button" id="btnPaso5" class="btn-primary" disabled>Siguiente</button>
         </div>
+
+        <!-- PASO 6: Categoría, talla, medias, pagos -->
         <div id="paso6" class="paso">
+            <div class="campo"><label>⚧ Categoría</label>
+                <select id="categoria" required>
+                    <option value="">Selecciona</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                </select>
+            </div>
             <div class="campo"><label>👕 Talla de uniforme</label>
                 <select id="talla">
                     <option value="">Selecciona</option>
@@ -288,53 +182,78 @@
             <div class="campo"><label>🧦 Medias extras (+$2)</label>
                 <select id="medias"><option value="">Selecciona</option><option value="NO">No</option><option value="SI">Sí</option></select>
             </div>
-            <div class="campo"><label>💰 N° transacción inscripción ($5)</label><input id="inscripcion" placeholder="Ej: PAGO-12345"></div>
-            <div class="campo"><label>👕 N° transacción uniforme (75% + medias)</label><input id="uniforme" placeholder="Ej: PAGO-67890"></div>
+
+            <!-- Pago de inscripción -->
+            <div class="campo"><label>💰 N° transferencia inscripción ($5) - solo números 5 a 10 dígitos</label>
+                <input type="text" id="inscripcion" placeholder="Ej: 123456789" pattern="\d{5,10}">
+            </div>
+
+            <!-- Pago del uniforme -->
+            <div class="campo"><label>👕 ¿Pagaste el uniforme? ($17)</label>
+                <select id="pagoUniformeOpcion">
+                    <option value="">Selecciona</option>
+                    <option value="SI">Sí, ya pagué</option>
+                    <option value="NO">No pagaré hoy, prometo pagar</option>
+                </select>
+            </div>
+            <div id="campoTransaccionUni" class="conditional-field">
+                <label>🔢 N° transferencia uniforme (5 a 10 dígitos)</label>
+                <input type="text" id="transaccionUniforme" placeholder="Ej: 987654321" pattern="\d{5,10}">
+            </div>
+            <div id="campoFechaPromesa" class="conditional-field">
+                <label>📅 Fecha compromiso de pago (máximo 5 días desde hoy)</label>
+                <input type="date" id="fechaPromesaPago">
+            </div>
+
             <button type="button" id="btnFinal" class="btn-primary" disabled>⚽ FINALIZAR REGISTRO ⚽</button>
         </div>
-        <input type="hidden" id="fotoRostroB64"><input type="hidden" id="fotoCedulaB64">
+
+        <input type="hidden" id="fotoRostroB64">
+        <input type="hidden" id="fotoCedulaB64">
     </form>
 </div>
+
 <div id="loader"><div class="spinner"></div><div id="loader-texto">Procesando...</div></div>
-<div id="modalExito"><div class="modal-card"><h2>✅ ¡GOL DE ORO!</h2><p>Registro exitoso. Redirigiendo en <span id="contador">3</span> segundos...</p></div></div>
 
 <script src="config.js"></script>
 <script>
     (function(){
         if(typeof CONFIG === 'undefined' || !CONFIG.URL_GAS){
-            alert("Error crítico: archivo config.js no encontrado o URL no definida.");
+            alert("Error crítico: config.js no encontrado o URL no definida.");
             return;
         }
         const URL_GAS = CONFIG.URL_GAS;
         let registroAbierto = true;
 
-        // -------- helpers visuales ----------
+        // ----- Toast -----
         function mostrarToast(mensaje, tipo='info', duracion=4000){
-            const existing = document.querySelector('.toast-notification');
+            const existing = document.querySelector('.toast');
             if(existing) existing.remove();
             const toast = document.createElement('div');
-            toast.className = `toast-notification`;
-            toast.innerHTML = `<span>${tipo==='error'?'❌':tipo==='success'?'✅':'⚡'}</span><span>${mensaje}</span>`;
+            toast.className = 'toast';
+            toast.innerHTML = `<span>${tipo==='error'?'❌':tipo==='success'?'✅':'⚡'}</span> ${mensaje}`;
             document.body.appendChild(toast);
-            setTimeout(()=>{ toast.style.animation = 'toastSlideUp 0.3s reverse forwards'; setTimeout(()=>toast.remove(),300); }, duracion);
+            setTimeout(()=> toast.remove(), duracion);
         }
+
         function mostrarLoader(visible, texto="Procesando..."){ 
             const loader = document.getElementById('loader');
             loader.style.display = visible ? "flex" : "none";
             if(texto) document.getElementById('loader-texto').innerText = texto;
         }
-        function verPaso(n){ document.querySelectorAll(".paso").forEach(p=>p.classList.remove("activo")); document.getElementById(`paso${n}`).classList.add("activo"); }
-        
-        // deshabilitar todo si el plazo cerró
-        function bloquearPorFecha(){
-            if(!registroAbierto){
-                document.querySelectorAll('input, select, button').forEach(el => el.disabled = true);
-                document.querySelector('.contenedor-principal').style.opacity = '0.6';
-                mostrarToast("⛔ INSCRIPCIONES CERRADAS. Plazo finalizado el viernes 11PM.", "error", 8000);
-            }
+
+        function verPaso(n){ 
+            document.querySelectorAll(".paso").forEach(p=>p.classList.remove("activo")); 
+            document.getElementById(`paso${n}`).classList.add("activo"); 
         }
-        
-        // consultar al servidor si el registro sigue abierto
+
+        function marcarError(input, msg){ 
+            input.classList.add('error'); 
+            mostrarToast(msg, "error", 2500); 
+            setTimeout(()=>input.classList.remove('error'),500); 
+        }
+
+        // ----- Verificar fecha límite -----
         async function verificarEstadoRegistro(){
             mostrarLoader(true, "Verificando plazo...");
             try{
@@ -342,39 +261,35 @@
                 const data = await resp.json();
                 registroAbierto = data.open === true;
                 if(!registroAbierto){
-                    bloquearPorFecha();
-                }else{
-                    console.log("✅ Registro habilitado hasta el viernes 11PM.");
+                    document.querySelectorAll('input, select, button').forEach(el => el.disabled = true);
+                    document.querySelector('.contenedor-principal').style.opacity = '0.6';
+                    mostrarToast("⛔ INSCRIPCIONES CERRADAS. Plazo finalizado.", "error", 8000);
                 }
-            }catch(e){
-                console.error("Error verificando estado:", e);
-                mostrarToast("No se pudo verificar el plazo, contacte administrador.", "error");
-            }finally{
-                mostrarLoader(false);
-            }
+            }catch(e){ console.error(e); mostrarToast("Error verificando plazo", "error"); }
+            finally{ mostrarLoader(false); }
         }
-        
-        // ------ lógica de campos y pasos ------
+
+        // ----- Lógica de campos -----
         const ced = document.getElementById('ced');
         const btnCedula = document.getElementById('btnCedula');
         ced.addEventListener('input', ()=>{
             ced.value = ced.value.replace(/\D/g,'').slice(0,10);
             btnCedula.disabled = ced.value.length !== 10 || !registroAbierto;
         });
-        
+
         btnCedula.addEventListener('click', async ()=>{
             if(!registroAbierto) return mostrarToast("Plazo cerrado", "error");
             if(ced.value.length !== 10) return marcarError(ced, "Cédula 10 dígitos");
-            mostrarLoader(true, "Validando cédula...");
+            mostrarLoader(true, "Validando...");
             try{
                 const resp = await fetch(`${URL_GAS}?action=validarRegistro&cedula=${ced.value}`);
                 const data = await resp.json();
                 if(data.cedulaExiste) mostrarToast("⚠️ Cédula ya registrada", "error");
                 else { mostrarToast("✅ Cédula válida", "success"); verPaso(2); }
-            }catch(e){ mostrarToast("Error conectando", "error"); }
+            }catch(e){ mostrarToast("Error de conexión", "error"); }
             mostrarLoader(false);
         });
-        
+
         // Paso 2
         const n1 = document.getElementById('n1'), n2 = document.getElementById('n2'), ape = document.getElementById('ape'), fecha = document.getElementById('fecha');
         const btnPaso2 = document.getElementById('btnPaso2');
@@ -386,13 +301,13 @@
         }
         [n1,n2,ape,fecha].forEach(el=>el.addEventListener('input',validarPaso2));
         btnPaso2.addEventListener('click',()=>{
-            if(!n1.value.trim()) return marcarError(n1,"Primer nombre");
-            if(!ape.value.trim()) return marcarError(ape,"Apellidos");
+            if(!n1.value.trim()) return marcarError(n1,"Primer nombre obligatorio");
+            if(!ape.value.trim()) return marcarError(ape,"Apellidos obligatorios");
             if(!fecha.value) return marcarError(fecha,"Fecha nacimiento");
             if(new Date(fecha.value) > new Date()) return marcarError(fecha,"Fecha futura");
             verPaso(3);
         });
-        
+
         // Paso 3
         const tel = document.getElementById('tel'), correo = document.getElementById('correo'), btnPaso3 = document.getElementById('btnPaso3');
         tel.addEventListener('input', e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,10));
@@ -403,7 +318,7 @@
             if(!correo.value.includes('@')||!correo.value.includes('.')) return marcarError(correo,"Email inválido");
             verPaso(4);
         });
-        
+
         // Paso 4 fotos
         const rostro = document.getElementById('rostro'), cedulaFile = document.getElementById('cedulaFile');
         const fotoRostroB64 = document.getElementById('fotoRostroB64'), fotoCedulaB64 = document.getElementById('fotoCedulaB64');
@@ -432,10 +347,9 @@
             await archivoABase64(f, fotoCedulaB64);
             verificarFotos();
         });
-        
         btnPaso4.addEventListener('click', async ()=>{
-            if(!fotoRostroB64.value) return mostrarToast("Sube foto de perfil","error");
-            if(!fotoCedulaB64.value) return mostrarToast("Sube foto cédula","error");
+            if(!fotoRostroB64.value) return mostrarToast("Foto de perfil requerida","error");
+            if(!fotoCedulaB64.value) return mostrarToast("Foto de cédula requerida","error");
             mostrarLoader(true, "Cargando dorsales...");
             const selectNombre = document.getElementById('nombreCamiseta');
             const selectDorsal = document.getElementById('dorsal');
@@ -452,28 +366,109 @@
             mostrarLoader(false);
             verPaso(5);
         });
-        
+
         // Paso 5
         const nombreCamiseta = document.getElementById('nombreCamiseta'), dorsal = document.getElementById('dorsal'), btnPaso5 = document.getElementById('btnPaso5');
         function validarPaso5(){ btnPaso5.disabled = !(nombreCamiseta.value && dorsal.value); }
         nombreCamiseta.addEventListener('change',validarPaso5); dorsal.addEventListener('change',validarPaso5);
         btnPaso5.addEventListener('click',()=>{ if(nombreCamiseta.value && dorsal.value) verPaso(6); else mostrarToast("Selecciona nombre y dorsal","error"); });
-        
-        // Paso 6 final
-        const talla = document.getElementById('talla'), medias = document.getElementById('medias'), inscripcion = document.getElementById('inscripcion'), uniforme = document.getElementById('uniforme'), btnFinal = document.getElementById('btnFinal');
-        function validarPaso6(){ btnFinal.disabled = !(talla.value && medias.value && inscripcion.value.trim() && uniforme.value.trim()); }
-        [talla, medias, inscripcion, uniforme].forEach(el=>el.addEventListener('input',validarPaso6));
-        
+
+        // Paso 6: lógica condicional pago uniforme
+        const pagoUniformeOpcion = document.getElementById('pagoUniformeOpcion');
+        const campoTransaccionUni = document.getElementById('campoTransaccionUni');
+        const campoFechaPromesa = document.getElementById('campoFechaPromesa');
+        const transaccionUniforme = document.getElementById('transaccionUniforme');
+        const fechaPromesaPago = document.getElementById('fechaPromesaPago');
+        const categoria = document.getElementById('categoria');
+        const talla = document.getElementById('talla');
+        const medias = document.getElementById('medias');
+        const inscripcionInput = document.getElementById('inscripcion');
+        const btnFinal = document.getElementById('btnFinal');
+
+        function actualizarCamposPago() {
+            const opcion = pagoUniformeOpcion.value;
+            campoTransaccionUni.classList.remove('visible');
+            campoFechaPromesa.classList.remove('visible');
+            if (opcion === 'SI') {
+                campoTransaccionUni.classList.add('visible');
+            } else if (opcion === 'NO') {
+                campoFechaPromesa.classList.add('visible');
+                // Establecer fechas mínima hoy, máxima hoy+5
+                const hoy = new Date();
+                const max = new Date();
+                max.setDate(hoy.getDate() + 5);
+                fechaPromesaPago.min = hoy.toISOString().split('T')[0];
+                fechaPromesaPago.max = max.toISOString().split('T')[0];
+                fechaPromesaPago.value = hoy.toISOString().split('T')[0];
+            }
+            validarPaso6();
+        }
+        pagoUniformeOpcion.addEventListener('change', actualizarCamposPago);
+        transaccionUniforme.addEventListener('input', validarPaso6);
+        fechaPromesaPago.addEventListener('change', validarPaso6);
+
+        function validarPaso6(){
+            let ok = true;
+            if(!categoria.value) ok = false;
+            if(!talla.value) ok = false;
+            if(!medias.value) ok = false;
+            // Validar transferencia inscripción: números de 5 a 10 dígitos
+            const numInsc = inscripcionInput.value.trim();
+            if(!/^\d{5,10}$/.test(numInsc)) ok = false;
+            // Validar pago uniforme
+            const opcion = pagoUniformeOpcion.value;
+            if(opcion === 'SI'){
+                const numUni = transaccionUniforme.value.trim();
+                if(!/^\d{5,10}$/.test(numUni)) ok = false;
+            } else if(opcion === 'NO'){
+                if(!fechaPromesaPago.value) ok = false;
+            } else {
+                ok = false;
+            }
+            btnFinal.disabled = !ok;
+        }
+        [categoria, talla, medias, inscripcionInput].forEach(el=>el.addEventListener('input', validarPaso6));
+        [categoria, talla, medias, inscripcionInput].forEach(el=>el.addEventListener('change', validarPaso6));
+
+        // Reglas para solo números en transferencias
+        inscripcionInput.addEventListener('input', function(e){
+            this.value = this.value.replace(/\D/g, '').slice(0,10);
+        });
+        transaccionUniforme.addEventListener('input', function(e){
+            this.value = this.value.replace(/\D/g, '').slice(0,10);
+        });
+
+        // Finalizar registro
         btnFinal.addEventListener('click', async ()=>{
-            if(btnFinal.disabled) return;
-            if(!registroAbierto) return mostrarToast("Plazo de inscripción cerrado", "error");
+            if(btnFinal.disabled || !registroAbierto) return;
             mostrarLoader(true, "Registrando... ¡GOL DE ORO!");
+            let pagoUniformeData = {};
+            const opcion = pagoUniformeOpcion.value;
+            if(opcion === 'SI'){
+                pagoUniformeData = { pagado: true, transaccion: transaccionUniforme.value.trim() };
+            } else {
+                pagoUniformeData = { pagado: false, fechaPromesa: fechaPromesaPago.value };
+            }
+
             const payload = {
-                ced: ced.value, n1: n1.value.trim(), n2: n2.value.trim(), ape: ape.value.trim(),
-                fecha: fecha.value, tel: tel.value.replace(/\D/g,''), correo: correo.value.trim().toLowerCase(),
-                medias: medias.value, dorsal: dorsal.value, nombreCamiseta: nombreCamiseta.value,
-                inscripcion: inscripcion.value.trim(), uniforme: uniforme.value.trim(), talla: talla.value,
-                fotoRostroB64: fotoRostroB64.value, fotoCedulaB64: fotoCedulaB64.value
+                ced: ced.value,
+                n1: n1.value.trim(),
+                n2: n2.value.trim(),
+                ape: ape.value.trim(),
+                fecha: fecha.value,
+                tel: tel.value.replace(/\D/g,''),
+                correo: correo.value.trim().toLowerCase(),
+                categoria: categoria.value,
+                talla: talla.value,
+                medias: medias.value,
+                nombreCamiseta: nombreCamiseta.value,
+                dorsal: dorsal.value,
+                inscripcion: inscripcionInput.value.trim(),
+                pagoUniformeOpcion: opcion,
+                transaccionUniforme: pagoUniformeData.transaccion || '',
+                fechaPromesaPago: pagoUniformeData.fechaPromesa || '',
+                fotoRostroB64: fotoRostroB64.value,
+                fotoCedulaB64: fotoCedulaB64.value
             };
             try{
                 const response = await fetch(URL_GAS, {
@@ -484,29 +479,23 @@
                 const result = await response.json();
                 if(result && result.ok){
                     mostrarLoader(false);
-                    document.getElementById('modalExito').style.display = 'flex';
-                    let seg = 3;
-                    const intervalo = setInterval(()=>{
-                        seg--;
-                        document.getElementById('contador').innerText = seg;
-                        if(seg<=0){ clearInterval(intervalo); window.location.href = 'login.html'; }
-                    },1000);
+                    alert("✅ Registro exitoso. Redirigiendo...");
+                    window.location.href = 'login.html';
                 } else throw new Error(result?.error || "Error del servidor");
             }catch(e){
                 mostrarLoader(false);
                 mostrarToast("Error: "+e.message, "error");
             }
         });
-        
-        function marcarError(input, msg){ input.classList.add('error'); mostrarToast(msg, "error", 2500); setTimeout(()=>input.classList.remove('error'),500); }
-        
-        // Inicialización: verificar plazo y luego activar lógica
+
+        // Inicializar
         window.addEventListener('DOMContentLoaded', async ()=>{
             await verificarEstadoRegistro();
-            // Aplica mayúsculas
+            // Convertir a mayúsculas excepto email
             document.querySelectorAll('input:not([type="email"]):not([type="file"]):not([type="hidden"])').forEach(inp=>{
                 inp.addEventListener('input',function(){ if(this.id !== 'correo') this.value = this.value.toUpperCase(); });
             });
+            actualizarCamposPago();
         });
     })();
 </script>
