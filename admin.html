@@ -1,20 +1,321 @@
-function getResumenJugadoresCompleto() {
-  const sheet = getJugadoresSheet();
-  const data = sheet.getDataRange().getValues();
-  const jugadores = [];
-  for (let i = 1; i < data.length; i++) {
-    jugadores.push({
-      cedula: data[i][4],
-      primerNombre: data[i][1] || '',
-      segundoNombre: data[i][2] || '',
-      apellidos: data[i][3] || '',
-      nombreCamiseta: data[i][16] || '',
-      dorsal: data[i][17] || '',
-      talla: data[i][27] || '',
-      inscripEstado: data[i][23] || 'PENDIENTE',
-      unifEstado: data[i][24] || 'PENDIENTE',
-      mediasEstado: data[i][25] || 'PENDIENTE'
-    });
-  }
-  return json({ ok: true, jugadores });
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Panel Admin</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
+
+body{
+
+    font-family:
+    'Plus Jakarta Sans',
+    sans-serif;
+
+    background:#020c1a;
+
+    color:#fff;
+
+    padding:20px;
+}
+
+h1{
+
+    font-size:2rem;
+
+    margin-bottom:30px;
+
+    text-align:center;
+
+    background:
+    linear-gradient(
+    to right,
+    #fff,
+    #a855f7
+    );
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+}
+
+.container{
+
+    max-width:1200px;
+
+    margin:auto;
+}
+
+.card{
+
+    background:
+    rgba(18,25,45,.85);
+
+    border:
+    1px solid
+    rgba(168,85,247,.35);
+
+    border-radius:24px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+    0 0 25px
+    rgba(168,85,247,.15);
+}
+
+.nombre{
+
+    font-size:1.1rem;
+
+    font-weight:800;
+
+    margin-bottom:10px;
+}
+
+.info{
+
+    line-height:1.8;
+
+    opacity:.92;
+}
+
+.estado{
+
+    margin-top:12px;
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+}
+
+.badge{
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:.8rem;
+
+    font-weight:800;
+}
+
+.aprobado{
+    background:#16a34a;
+}
+
+.pendiente{
+    background:#dc2626;
+}
+
+.loading{
+
+    text-align:center;
+
+    margin-top:80px;
+
+    font-size:1.2rem;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        PANEL ADMIN NÁPOLES F.C.
+    </h1>
+
+    <div
+    id="contenedorJugadores">
+
+        <div class="loading">
+            Cargando jugadores...
+        </div>
+
+    </div>
+
+</div>
+
+<script src="./config.js"></script>
+
+<script>
+
+// =====================================================
+// SEGURIDAD
+// =====================================================
+
+if(
+    localStorage.getItem(
+        'admin_activo'
+    ) !== 'true'
+){
+
+    window.location.href =
+    './login.html';
+}
+
+// =====================================================
+// CONTENEDOR
+// =====================================================
+
+const contenedor =
+document.getElementById(
+    'contenedorJugadores'
+);
+
+// =====================================================
+// CARGAR JUGADORES
+// =====================================================
+
+async function cargarJugadores(){
+
+    try{
+
+        const url =
+        `${CONFIG.URL_GAS}?action=getResumenJugadoresCompleto&t=${Date.now()}`;
+
+        const response =
+        await fetch(url);
+
+        const data =
+        await response.json();
+
+        if(
+            data.ok !== true
+        ){
+
+            contenedor.innerHTML =
+            'Error cargando jugadores';
+
+            return;
+        }
+
+        const jugadores =
+        data.jugadores;
+
+        if(
+            jugadores.length === 0
+        ){
+
+            contenedor.innerHTML =
+            'No existen jugadores';
+
+            return;
+        }
+
+        contenedor.innerHTML = '';
+
+        jugadores.forEach(j => {
+
+            contenedor.innerHTML += `
+
+            <div class="card">
+
+                <div class="nombre">
+                    ${j.primerNombre}
+                    ${j.segundoNombre}
+                    ${j.apellidos}
+                </div>
+
+                <div class="info">
+
+                    <div>
+                        Cédula:
+                        ${j.cedula}
+                    </div>
+
+                    <div>
+                        Camiseta:
+                        ${j.nombreCamiseta}
+                    </div>
+
+                    <div>
+                        Dorsal:
+                        ${j.dorsal}
+                    </div>
+
+                    <div>
+                        Talla:
+                        ${j.talla}
+                    </div>
+
+                </div>
+
+                <div class="estado">
+
+                    <div class="badge
+                    ${j.inscripEstado === 'APROBADO'
+                    ? 'aprobado'
+                    : 'pendiente'}">
+
+                        INSCRIPCIÓN:
+                        ${j.inscripEstado}
+
+                    </div>
+
+                    <div class="badge
+                    ${j.unifEstado === 'APROBADO'
+                    ? 'aprobado'
+                    : 'pendiente'}">
+
+                        UNIFORME:
+                        ${j.unifEstado}
+
+                    </div>
+
+                    <div class="badge
+                    ${j.mediasEstado === 'APROBADO'
+                    ? 'aprobado'
+                    : 'pendiente'}">
+
+                        MEDIAS:
+                        ${j.mediasEstado}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            `;
+        });
+
+    }catch(error){
+
+        contenedor.innerHTML =
+        'Error de conexión';
+    }
+}
+
+cargarJugadores();
+
+</script>
+
+</body>
+
+</html>
