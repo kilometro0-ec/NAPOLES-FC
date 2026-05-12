@@ -1,341 +1,803 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Nápoles F.C.</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Admin | Nápoles F.C.</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
+rel="stylesheet">
 
 <style>
 
 :root{
-    --bg:#08111f;
-    --card:#101b2e;
-    --primary:#00d2ff;
-    --primary2:#008f9b;
+
+    --bg:#07111f;
+    --card:#0f1c2e;
+    --border:#1d3557;
+
+    --cyan:#00d2ff;
+    --cyan2:#008f9b;
+
     --purple:#a855f7;
+
     --text:#ffffff;
-    --danger:#ef4444;
+    --muted:#94a3b8;
+
     --success:#10b981;
     --warning:#f59e0b;
+    --danger:#ef4444;
 }
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
 body{
+
     font-family:'Plus Jakarta Sans',sans-serif;
+
     background:var(--bg);
+
     color:var(--text);
+
     min-height:100vh;
+
+    overflow-x:hidden;
 }
 
-.header{
-    padding:24px;
-    background:rgba(0,0,0,.25);
-    border-bottom:1px solid rgba(255,255,255,.08);
+/* =====================================================
+   FONDO
+===================================================== */
+
+body::before,
+body::after{
+
+    content:'';
+
+    position:fixed;
+
+    width:900px;
+    height:900px;
+
+    border-radius:50%;
+
+    filter:blur(130px);
+
+    opacity:.45;
+
+    z-index:-1;
+}
+
+body::before{
+
+    background:#00d2ff;
+
+    top:-300px;
+    left:-250px;
+}
+
+body::after{
+
+    background:#6d28d9;
+
+    bottom:-300px;
+    right:-250px;
+}
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+
+.topbar{
+
     position:sticky;
     top:0;
-    z-index:100;
-    backdrop-filter:blur(12px);
+
+    z-index:999;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(7,17,31,.78);
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+    padding:18px 20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 }
 
-.header h1{
-    font-size:2rem;
+.topbar h1{
+
+    font-size:1.3rem;
+
     font-weight:800;
-    background:linear-gradient(to right,#fff,var(--primary));
+
+    background:
+    linear-gradient(
+    to right,
+    #fff,
+    #00d2ff
+    );
+
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
 
-.container{
-    padding:24px;
+.logout-btn{
+
+    border:none;
+
+    background:
+    linear-gradient(
+    135deg,
+    #ef4444,
+    #dc2626
+    );
+
+    color:#fff;
+
+    padding:12px 16px;
+
+    border-radius:14px;
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.tabs{
+
+    display:flex;
+
+    overflow:auto;
+
+    gap:12px;
+
+    padding:18px;
+
+    position:sticky;
+
+    top:74px;
+
+    z-index:998;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(7,17,31,.88);
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.tabs::-webkit-scrollbar{
+    display:none;
+}
+
+.tab-btn{
+
+    flex:none;
+
+    border:none;
+
+    padding:14px 18px;
+
+    border-radius:16px;
+
+    background:#10233d;
+
+    color:#cbd5e1;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.tab-btn.active{
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--cyan2),
+    var(--cyan)
+    );
+
+    color:#fff;
+
+    box-shadow:
+    0 10px 25px rgba(0,210,255,.25);
+}
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content{
+
+    padding:20px;
+
+    padding-bottom:120px;
+}
+
+.tab-content{
+    display:none;
+}
+
+.tab-content.active{
+    display:block;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.cards{
+
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:24px;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
+
+    gap:18px;
+
+    margin-bottom:24px;
 }
 
 .card{
-    background:var(--card);
-    border:1px solid rgba(255,255,255,.08);
+
+    background:rgba(15,28,46,.92);
+
+    border:1px solid rgba(255,255,255,.06);
+
     border-radius:24px;
+
     padding:22px;
-    box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 
-.card h2{
-    margin-bottom:18px;
-    color:var(--primary);
-    font-size:1.2rem;
-}
+.card h3{
 
-input,
-select,
-textarea{
-    width:100%;
-    background:#0d1728;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:14px;
-    padding:14px;
-    color:#fff;
-    margin-bottom:14px;
-    font-size:.95rem;
-}
-
-button{
-    width:100%;
-    border:none;
-    border-radius:14px;
-    padding:14px;
-    font-weight:800;
-    cursor:pointer;
-    color:#fff;
-    background:linear-gradient(135deg,var(--primary2),var(--primary));
-    transition:.25s;
-}
-
-button:hover{
-    transform:translateY(-2px);
-}
-
-.btn-danger{
-    background:linear-gradient(135deg,#991b1b,var(--danger));
-}
-
-.btn-success{
-    background:linear-gradient(135deg,#047857,var(--success));
-}
-
-.btn-warning{
-    background:linear-gradient(135deg,#b45309,var(--warning));
-}
-
-.table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:14px;
-}
-
-.table th,
-.table td{
-    border-bottom:1px solid rgba(255,255,255,.08);
-    padding:12px;
-    text-align:left;
     font-size:.9rem;
+
+    color:#94a3b8;
+
+    margin-bottom:12px;
 }
+
+.card p{
+
+    font-size:2rem;
+
+    font-weight:800;
+}
+
+/* =====================================================
+   PANEL
+===================================================== */
+
+.panel{
+
+    background:rgba(15,28,46,.95);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    border-radius:28px;
+
+    padding:22px;
+
+    margin-bottom:24px;
+}
+
+.panel-title{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:20px;
+}
+
+.panel-title h2{
+
+    font-size:1.1rem;
+}
+
+/* =====================================================
+   BUSCADOR
+===================================================== */
+
+.search{
+
+    width:100%;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:#0b1727;
+
+    color:#fff;
+
+    padding:0 18px;
+
+    margin-bottom:18px;
+
+    font-size:1rem;
+}
+
+/* =====================================================
+   TABLA
+===================================================== */
+
+.table-wrap{
+
+    overflow:auto;
+
+    border-radius:20px;
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:900px;
+}
+
+th{
+
+    background:#0d2138;
+
+    color:#00d2ff;
+
+    font-size:.82rem;
+
+    text-align:left;
+
+    padding:16px;
+
+    position:sticky;
+    top:0;
+}
+
+td{
+
+    padding:16px;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+    font-size:.92rem;
+}
+
+tr:hover{
+    background:rgba(255,255,255,.03);
+}
+
+/* =====================================================
+   ESTADOS
+===================================================== */
 
 .badge{
-    padding:6px 12px;
+
+    padding:8px 12px;
+
     border-radius:999px;
+
     font-size:.75rem;
+
     font-weight:800;
 }
 
-.aprobado{
+.ok{
     background:rgba(16,185,129,.15);
-    color:#6ee7b7;
+    color:#10b981;
 }
 
-.pendiente{
+.pending{
     background:rgba(245,158,11,.15);
-    color:#fcd34d;
+    color:#f59e0b;
 }
 
-.rechazado{
-    background:rgba(239,68,68,.15);
-    color:#fca5a5;
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.action-btn{
+
+    border:none;
+
+    padding:10px 14px;
+
+    border-radius:12px;
+
+    color:#fff;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    margin-right:8px;
 }
 
-.flex{
-    display:flex;
-    gap:10px;
+.btn-edit{
+    background:#2563eb;
 }
 
-.stats{
+.btn-approve{
+    background:#10b981;
+}
+
+.btn-delete{
+    background:#ef4444;
+}
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.form-grid{
+
     display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:14px;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:18px;
 }
 
-.stat{
-    background:#0d1728;
+.input{
+
+    width:100%;
+
+    height:56px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:#091423;
+
+    color:#fff;
+
+    padding:0 16px;
+}
+
+.save-btn{
+
+    width:100%;
+
+    height:56px;
+
+    border:none;
+
     border-radius:18px;
-    padding:18px;
-    text-align:center;
-}
 
-.stat h3{
-    font-size:2rem;
-    margin-bottom:8px;
-}
+    background:
+    linear-gradient(
+    135deg,
+    #6d28d9,
+    #a855f7
+    );
 
-.stat p{
-    opacity:.8;
+    color:#fff;
+
+    font-weight:800;
+
+    margin-top:18px;
+
+    cursor:pointer;
 }
 
 @media(max-width:700px){
 
-    .container{
-        grid-template-columns:1fr;
+    .content{
         padding:16px;
     }
 
-    .flex{
-        flex-direction:column;
+    .panel{
+        padding:18px;
+    }
+
+    .tabs{
+        top:72px;
     }
 }
 
 </style>
+
 </head>
+
 <body>
 
-<div class="header">
-    <h1>⚽ PANEL ADMIN NÁPOLES F.C.</h1>
+<!-- =====================================================
+TOPBAR
+===================================================== -->
+
+<div class="topbar">
+
+    <h1>NÁPOLES F.C. ADMIN</h1>
+
+    <button
+    class="logout-btn"
+    onclick="logoutAdmin()">
+        SALIR
+    </button>
+
 </div>
 
-<div class="container">
+<!-- =====================================================
+TABS
+===================================================== -->
 
-    <!-- ESTADÍSTICAS -->
+<div class="tabs">
 
-    <div class="card">
+    <button
+    class="tab-btn active"
+    onclick="openTab('dashboard',this)">
+        🏠 Inicio
+    </button>
 
-        <h2>📊 Resumen General</h2>
+    <button
+    class="tab-btn"
+    onclick="openTab('jugadores',this)">
+        👥 Jugadores
+    </button>
 
-        <div class="stats">
+    <button
+    class="tab-btn"
+    onclick="openTab('partidos',this)">
+        ⚽ Partidos
+    </button>
 
-            <div class="stat">
-                <h3 id="totalJugadores">0</h3>
-                <p>Jugadores</p>
+    <button
+    class="tab-btn"
+    onclick="openTab('rivales',this)">
+        🛡️ Rivales
+    </button>
+
+    <button
+    class="tab-btn"
+    onclick="openTab('pagos',this)">
+        💰 Pagos
+    </button>
+
+    <button
+    class="tab-btn"
+    onclick="openTab('config',this)">
+        ⚙️ Ajustes
+    </button>
+
+</div>
+
+<!-- =====================================================
+CONTENT
+===================================================== -->
+
+<div class="content">
+
+    <!-- DASHBOARD -->
+
+    <div
+    id="dashboard"
+    class="tab-content active">
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Jugadores</h3>
+                <p id="totalJugadores">0</p>
             </div>
 
-            <div class="stat">
-                <h3 id="totalAprobados">0</h3>
-                <p>Aprobados</p>
+            <div class="card">
+                <h3>Aprobados</h3>
+                <p id="totalAprobados">0</p>
             </div>
 
-            <div class="stat">
-                <h3 id="totalPendientes">0</h3>
-                <p>Pendientes</p>
+            <div class="card">
+                <h3>Pendientes</h3>
+                <p id="totalPendientes">0</p>
             </div>
 
-            <div class="stat">
-                <h3 id="totalPartidos">0</h3>
-                <p>Partidos</p>
+            <div class="card">
+                <h3>Partidos</h3>
+                <p>12</p>
             </div>
 
         </div>
 
     </div>
 
-    <!-- APROBAR JUGADORES -->
+    <!-- JUGADORES -->
 
-    <div class="card">
+    <div
+    id="jugadores"
+    class="tab-content">
 
-        <h2>✅ Aprobar Jugadores</h2>
+        <div class="panel">
 
-        <input type="text" id="buscarJugador" placeholder="Buscar por nombre o cédula">
+            <div class="panel-title">
 
-        <button onclick="cargarJugadores()">
-            🔄 Actualizar Lista
-        </button>
+                <h2>Lista de Jugadores</h2>
 
-        <div style="overflow:auto; margin-top:16px;">
+            </div>
 
-            <table class="table">
+            <input
+            type="text"
+            class="search"
+            placeholder="Buscar jugador..."
+            id="searchJugador">
 
-                <thead>
-                    <tr>
-                        <th>Jugador</th>
-                        <th>Estado</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
+            <div class="table-wrap">
 
-                <tbody id="tablaJugadores"></tbody>
+                <table>
 
-            </table>
+                    <thead>
+
+                        <tr>
+
+                            <th>Jugador</th>
+                            <th>Cédula</th>
+                            <th>Dorsal</th>
+                            <th>Uniforme</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaJugadores">
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
     </div>
 
-    <!-- PROGRAMAR PARTIDOS -->
+    <!-- PARTIDOS -->
 
-    <div class="card">
+    <div
+    id="partidos"
+    class="tab-content">
 
-        <h2>📅 Programar Partido</h2>
+        <div class="panel">
 
-        <input type="date" id="fechaPartido">
+            <div class="panel-title">
 
-        <input type="time" id="horaPartido">
+                <h2>Programar Partido</h2>
 
-        <input type="text" id="rivalPartido" placeholder="Nombre rival">
+            </div>
 
-        <input type="text" id="canchaPartido" placeholder="Cancha">
+            <div class="form-grid">
 
-        <button onclick="guardarPartido()">
-            ⚽ Guardar Partido
-        </button>
+                <input
+                class="input"
+                placeholder="Rival">
 
-    </div>
+                <input
+                class="input"
+                type="date">
 
-    <!-- AGREGAR RIVALES -->
+                <input
+                class="input"
+                type="time">
 
-    <div class="card">
+                <input
+                class="input"
+                placeholder="Cancha">
 
-        <h2>🛡️ Agregar Rival</h2>
+            </div>
 
-        <input type="text" id="nombreRival" placeholder="Nombre del rival">
+            <button class="save-btn">
+                GUARDAR PARTIDO
+            </button>
 
-        <input type="text" id="contactoRival" placeholder="Contacto">
-
-        <textarea id="detalleRival" placeholder="Detalles"></textarea>
-
-        <button onclick="guardarRival()">
-            ➕ Guardar Rival
-        </button>
-
-    </div>
-
-    <!-- EDITAR JUGADOR -->
-
-    <div class="card">
-
-        <h2>✏️ Editar Jugador</h2>
-
-        <input type="text" id="editCedula" placeholder="Cédula">
-
-        <input type="text" id="editNombre" placeholder="Nombre">
-
-        <input type="text" id="editApellido" placeholder="Apellido">
-
-        <input type="text" id="editDorsal" placeholder="Dorsal">
-
-        <select id="editEstado">
-            <option value="APROBADO">APROBADO</option>
-            <option value="PENDIENTE">PENDIENTE</option>
-            <option value="RECHAZADO">RECHAZADO</option>
-        </select>
-
-        <button onclick="editarJugador()">
-            💾 Guardar Cambios
-        </button>
+        </div>
 
     </div>
 
-    <!-- CERRAR SESIÓN -->
+    <!-- RIVALES -->
 
-    <div class="card">
+    <div
+    id="rivales"
+    class="tab-content">
 
-        <h2>🔐 Sesión</h2>
+        <div class="panel">
 
-        <button class="btn-danger" onclick="cerrarSesion()">
-            Cerrar Sesión
-        </button>
+            <div class="panel-title">
+
+                <h2>Agregar Rival</h2>
+
+            </div>
+
+            <div class="form-grid">
+
+                <input
+                class="input"
+                placeholder="Nombre rival">
+
+                <input
+                class="input"
+                placeholder="Ciudad">
+
+                <input
+                class="input"
+                placeholder="Contacto">
+
+            </div>
+
+            <button class="save-btn">
+                GUARDAR RIVAL
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- PAGOS -->
+
+    <div
+    id="pagos"
+    class="tab-content">
+
+        <div class="panel">
+
+            <div class="panel-title">
+
+                <h2>Control de Pagos</h2>
+
+            </div>
+
+            <p style="color:#94a3b8;">
+                Próximamente módulo financiero.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- CONFIG -->
+
+    <div
+    id="config"
+    class="tab-content">
+
+        <div class="panel">
+
+            <div class="panel-title">
+
+                <h2>Configuración</h2>
+
+            </div>
+
+            <button class="save-btn">
+                RESPALDAR DATOS
+            </button>
+
+        </div>
 
     </div>
 
@@ -346,19 +808,56 @@ button:hover{
 <script>
 
 // =====================================================
-// SEGURIDAD
+// SEGURIDAD ADMIN
 // =====================================================
 
-if(localStorage.getItem('admin_activo') !== 'true'){
-
+if(
+    localStorage.getItem('admin_activo')
+    !== 'true'
+){
     window.location.href = './login.html';
 }
 
 // =====================================================
-// URL
+// TABS
 // =====================================================
 
-const URL = CONFIG.URL_GAS;
+function openTab(id,btn){
+
+    document
+    .querySelectorAll('.tab-content')
+    .forEach(tab => {
+
+        tab.classList.remove('active');
+    });
+
+    document
+    .querySelectorAll('.tab-btn')
+    .forEach(b => {
+
+        b.classList.remove('active');
+    });
+
+    document
+    .getElementById(id)
+    .classList.add('active');
+
+    btn.classList.add('active');
+}
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+function logoutAdmin(){
+
+    localStorage.removeItem(
+        'admin_activo'
+    );
+
+    window.location.href =
+    './login.html';
+}
 
 // =====================================================
 // CARGAR JUGADORES
@@ -368,18 +867,21 @@ async function cargarJugadores(){
 
     try{
 
-        const response = await fetch(
-            `${URL}?action=getResumenJugadoresCompleto&t=${Date.now()}`
+        const url =
+`${CONFIG.URL_GAS}?action=getResumenJugadoresCompleto&t=${Date.now()}`;
+
+        const response =
+        await fetch(url);
+
+        const data =
+        await response.json();
+
+        if(!data.ok) return;
+
+        const tabla =
+        document.getElementById(
+            'tablaJugadores'
         );
-
-        const data = await response.json();
-
-        if(!data.ok){
-            alert('Error cargando jugadores');
-            return;
-        }
-
-        const tabla = document.getElementById('tablaJugadores');
 
         tabla.innerHTML = '';
 
@@ -388,7 +890,8 @@ async function cargarJugadores(){
 
         data.jugadores.forEach(j => {
 
-            const estado = (j.inscripEstado || 'PENDIENTE').toUpperCase();
+            const estado =
+            j.inscripEstado || 'PENDIENTE';
 
             if(estado === 'APROBADO'){
                 aprobados++;
@@ -397,133 +900,100 @@ async function cargarJugadores(){
             }
 
             tabla.innerHTML += `
+
             <tr>
-                <td>
-                    ${j.primerNombre} ${j.apellidos}<br>
-                    <small>${j.cedula}</small>
-                </td>
 
                 <td>
-                    <span class="badge ${estado.toLowerCase()}">
+                    ${j.primerNombre}
+                    ${j.apellidos}
+                </td>
+
+                <td>${j.cedula}</td>
+
+                <td>${j.dorsal}</td>
+
+                <td>${j.talla}</td>
+
+                <td>
+
+                    <span class="
+                    badge
+                    ${estado === 'APROBADO'
+                    ? 'ok'
+                    : 'pending'}">
+
                         ${estado}
+
                     </span>
+
                 </td>
 
                 <td>
+
                     <button
-                    class="btn-success"
-                    onclick="aprobarJugador('${j.cedula}')">
+                    class="action-btn btn-edit">
+                        Editar
+                    </button>
+
+                    <button
+                    class="action-btn btn-approve">
                         Aprobar
                     </button>
+
                 </td>
+
             </tr>
             `;
         });
 
-        document.getElementById('totalJugadores').textContent = data.jugadores.length;
-        document.getElementById('totalAprobados').textContent = aprobados;
-        document.getElementById('totalPendientes').textContent = pendientes;
+        document.getElementById(
+            'totalJugadores'
+        ).textContent =
+        data.jugadores.length;
 
-    }catch(error){
+        document.getElementById(
+            'totalAprobados'
+        ).textContent =
+        aprobados;
 
-        console.error(error);
-        alert('Error de conexión');
+        document.getElementById(
+            'totalPendientes'
+        ).textContent =
+        pendientes;
+
+    }catch(err){
+
+        console.log(err);
     }
 }
 
 // =====================================================
-// APROBAR JUGADOR
+// BUSCADOR
 // =====================================================
 
-async function aprobarJugador(cedula){
+document
+.getElementById('searchJugador')
+.addEventListener('keyup', function(){
 
-    if(!confirm('¿Aprobar jugador?')) return;
+    const filtro =
+    this.value.toLowerCase();
 
-    try{
+    const filas =
+    document.querySelectorAll(
+        '#tablaJugadores tr'
+    );
 
-        const response = await fetch(
-            `${URL}?action=aprobarJugador&cedula=${cedula}`
-        );
+    filas.forEach(fila => {
 
-        const data = await response.json();
+        fila.style.display =
+        fila.innerText
+        .toLowerCase()
+        .includes(filtro)
+        ? ''
+        : 'none';
+    });
 
-        if(data.ok){
-
-            alert('Jugador aprobado');
-            cargarJugadores();
-
-        }else{
-
-            alert(data.error || 'Error');
-        }
-
-    }catch(error){
-
-        alert('Error de conexión');
-    }
-}
-
-// =====================================================
-// PARTIDO
-// =====================================================
-
-async function guardarPartido(){
-
-    const fecha = document.getElementById('fechaPartido').value;
-    const hora = document.getElementById('horaPartido').value;
-    const rival = document.getElementById('rivalPartido').value;
-    const cancha = document.getElementById('canchaPartido').value;
-
-    if(!fecha || !hora || !rival){
-        alert('Completa todos los campos');
-        return;
-    }
-
-    alert('Partido programado correctamente');
-}
-
-// =====================================================
-// RIVAL
-// =====================================================
-
-function guardarRival(){
-
-    const nombre = document.getElementById('nombreRival').value;
-
-    if(!nombre){
-        alert('Ingresa nombre rival');
-        return;
-    }
-
-    alert('Rival guardado');
-}
-
-// =====================================================
-// EDITAR
-// =====================================================
-
-function editarJugador(){
-
-    const cedula = document.getElementById('editCedula').value;
-
-    if(!cedula){
-        alert('Ingresa cédula');
-        return;
-    }
-
-    alert('Jugador actualizado');
-}
-
-// =====================================================
-// CERRAR
-// =====================================================
-
-function cerrarSesion(){
-
-    localStorage.removeItem('admin_activo');
-
-    window.location.href = './login.html';
-}
+});
 
 // =====================================================
 // INIT
