@@ -162,7 +162,7 @@
             display: none;
         }
 
-        /* Modo admin visual (opcional) */
+        /* Modo admin visual */
         body.admin-mode-body .login-card {
             border-color: var(--admin-border);
             box-shadow: 0 0 18px rgba(139, 92, 246, 0.5);
@@ -180,8 +180,8 @@
     </div>
 
     <div class="input-group">
-        <label>Número de Cédula</label>
-        <input type="text" id="loginCedula" maxlength="10" placeholder="1234567890" inputmode="numeric" autocomplete="off">
+        <label>Número de Cédula / Clave Admin</label>
+        <input type="text" id="loginCedula" maxlength="30" placeholder="1234567890" inputmode="text" autocomplete="off">
     </div>
 
     <button id="btnLogin" class="btn-submit" disabled>Iniciar Sesión</button>
@@ -237,17 +237,17 @@
 
     // ======================== LOGIN PRINCIPAL ========================
     btnLogin.addEventListener('click', async () => {
-        const cedula = cedulaInput.value.trim();
+        const valorIngresado = cedulaInput.value.trim();
 
-        // 🔐 Acceso administrador (opcional)
-        if (cedula === ADMIN_SECRET) {
+        // 🔐 ACCESO ADMINISTRADOR (sin validación numérica)
+        if (valorIngresado === ADMIN_SECRET) {
             localStorage.setItem('admin_session', 'true');
             window.location.href = 'admin.html';
             return;
         }
 
-        // Validar cédula (10 dígitos numéricos)
-        if (!/^\d{10}$/.test(cedula)) {
+        // Validar que sea una cédula de 10 dígitos (solo para jugadores)
+        if (!/^\d{10}$/.test(valorIngresado)) {
             mostrarError('❌ Cédula inválida – debe tener 10 dígitos numéricos');
             return;
         }
@@ -258,12 +258,11 @@
         btnLogin.innerText = 'VERIFICANDO...';
 
         try {
-            // Verificar que CONFIG esté disponible
             if (typeof CONFIG === 'undefined' || !CONFIG.URL_GAS) {
                 throw new Error('Configuración no cargada. Revisa config.js');
             }
 
-            const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
+            const url = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(valorIngresado)}&t=${Date.now()}`;
             console.log('Consultando:', url);
             const respuesta = await fetch(url);
 
@@ -274,27 +273,22 @@
             const data = await respuesta.json();
             console.log('Respuesta del servidor:', data);
 
-            // ========== VALIDACIÓN SEGÚN LA HOJA "Jugadores" ==========
-            // Se espera que el script de Google devuelva:
-            // { cedulaExiste: true/false, estado: "APROBADO" u otro, datosJugador: {...} }
             if (data.cedulaExiste === true) {
-                const estadoActual = (data.estado || '').toString().trim().toUpperCase();
+                const estadoNormalizado = (data.estado || '').toString().trim().toUpperCase();
                 
-                if (estadoActual === 'APROBADO') {
+                if (estadoNormalizado === 'APROBADO') {
                     if (!data.datosJugador) {
                         mostrarError('⚠️ Datos del jugador no recibidos. Contacta al administrador.');
                         return;
                     }
                     
-                    // Guardar sesión completa
                     const sesion = {
                         ...data.datosJugador,
-                        cedula: cedula,
+                        cedula: valorIngresado,
                         loginTime: Date.now()
                     };
                     localStorage.setItem('jugador_actual', JSON.stringify(sesion));
                     
-                    // Redirigir al perfil
                     window.location.href = 'perfil.html';
                     return;
                 } else {
@@ -305,15 +299,14 @@
                 mostrarError('❌ Cédula no registrada. Regístrate primero.');
                 return;
             } else {
-                // Si la respuesta no tiene el formato esperado
-                mostrarError('⚠️ Respuesta inesperada del servidor. Verifica con el administrador.');
+                mostrarError('⚠️ Respuesta inesperada del servidor.');
                 console.error('Formato inesperado:', data);
                 return;
             }
 
         } catch (error) {
             console.error('Error en login:', error);
-            mostrarError(`🔌 Error de conexión: ${error.message}. Verifica tu internet y que el servidor esté activo.`);
+            mostrarError(`🔌 Error de conexión: ${error.message}. Verifica tu internet.`);
         } finally {
             btnLogin.disabled = false;
             btnLogin.innerText = textoOriginal;
