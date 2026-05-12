@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Finanzas - Nápoles F.C.</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:#f3f6fb;
+
+    color:#111827;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:1px solid #e5e7eb;
+
+    padding:16px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.top-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.admin-info h1{
+
+    font-size:1.1rem;
+
+    font-weight:800;
+}
+
+.admin-info p{
+
+    font-size:.85rem;
+
+    color:#6b7280;
+
+    margin-top:2px;
+}
+
+.avatar{
+
+    width:46px;
+    height:46px;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+    135deg,
+    #d97706,
+    #facc15
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-weight:800;
+
+    font-size:1rem;
+}
+
+/* =========================================
+SUMMARY
+========================================= */
+
+.summary{
+
+    padding:20px 18px 10px;
+}
+
+.summary-card{
+
+    background:linear-gradient(
+    135deg,
+    #d97706,
+    #facc15
+    );
+
+    border-radius:28px;
+
+    padding:24px;
+
+    color:#fff;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.summary-card::before{
+
+    content:'';
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.12);
+
+    right:-60px;
+    top:-60px;
+}
+
+.summary-card h2{
+
+    font-size:1rem;
+
+    margin-bottom:10px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.balance{
+
+    font-size:2rem;
+
+    font-weight:900;
+
+    margin-bottom:18px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.summary-stats{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.summary-item h3{
+
+    font-size:1rem;
+
+    font-weight:800;
+}
+
+.summary-item p{
+
+    font-size:.82rem;
+
+    opacity:.9;
+
+    margin-top:4px;
+}
+
+/* =========================================
+MOVEMENTS
+========================================= */
+
+.movements{
+
+    padding:14px 18px 40px;
+}
+
+.movement-card{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:18px;
+
+    margin-bottom:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
+}
+
+.movement-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.movement-icon{
+
+    width:58px;
+    height:58px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+}
+
+.income{
+    background:linear-gradient(
+    135deg,
+    #16a34a,
+    #4ade80
+    );
+}
+
+.expense{
+    background:linear-gradient(
+    135deg,
+    #ef4444,
+    #f87171
+    );
+}
+
+.movement-info h3{
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    margin-bottom:4px;
+}
+
+.movement-info p{
+
+    color:#6b7280;
+
+    font-size:.85rem;
+}
+
+.amount{
+
+    font-size:1rem;
+
+    font-weight:800;
+}
+
+.positive{
+    color:#16a34a;
+}
+
+.negative{
+    color:#ef4444;
+}
+
+/* =========================================
+FAB
+========================================= */
+
+.fab{
+
+    position:fixed;
+
+    right:20px;
+    bottom:20px;
+
+    width:64px;
+    height:64px;
+
+    border:none;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+    135deg,
+    #d97706,
+    #facc15
+    );
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 15px 35px rgba(217,119,6,.35);
+}
+
+.fab .material-symbols-outlined{
+    font-size:34px;
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(min-width:700px){
+
+    .summary,
+    .movements{
+        max-width:700px;
+        margin:auto;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ======================================
+TOPBAR
+====================================== -->
+
+<header class="topbar">
+
+    <div class="top-left">
+
+        <div class="admin-info">
+
+            <h1>Finanzas</h1>
+
+            <p>Nápoles F.C.</p>
+
+        </div>
+
+    </div>
+
+    <div class="avatar">
+        $
+    </div>
+
+</header>
+
+<!-- ======================================
+SUMMARY
+====================================== -->
+
+<section class="summary">
+
+    <div class="summary-card">
+
+        <h2>Balance General</h2>
+
+        <div class="balance">
+            $4,850
+        </div>
+
+        <div class="summary-stats">
+
+            <div class="summary-item">
+
+                <h3>$7,200</h3>
+
+                <p>Ingresos</p>
+
+            </div>
+
+            <div class="summary-item">
+
+                <h3>$2,350</h3>
+
+                <p>Gastos</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ======================================
+MOVEMENTS
+====================================== -->
+
+<section class="movements">
+
+    <!-- MOVEMENT -->
+
+    <div class="movement-card">
+
+        <div class="movement-left">
+
+            <div class="movement-icon income">
+
+                <span class="material-symbols-outlined">
+                    payments
+                </span>
+
+            </div>
+
+            <div class="movement-info">
+
+                <h3>Pago de Inscripción</h3>
+
+                <p>12 Mayo 2026</p>
+
+            </div>
+
+        </div>
+
+        <div class="amount positive">
+            + $250
+        </div>
+
+    </div>
+
+    <!-- MOVEMENT -->
+
+    <div class="movement-card">
+
+        <div class="movement-left">
+
+            <div class="movement-icon expense">
+
+                <span class="material-symbols-outlined">
+                    shopping_bag
+                </span>
+
+            </div>
+
+            <div class="movement-info">
+
+                <h3>Compra de Uniformes</h3>
+
+                <p>10 Mayo 2026</p>
+
+            </div>
+
+        </div>
+
+        <div class="amount negative">
+            - $480
+        </div>
+
+    </div>
+
+    <!-- MOVEMENT -->
+
+    <div class="movement-card">
+
+        <div class="movement-left">
+
+            <div class="movement-icon income">
+
+                <span class="material-symbols-outlined">
+                    volunteer_activism
+                </span>
+
+            </div>
+
+            <div class="movement-info">
+
+                <h3>Patrocinador Oficial</h3>
+
+                <p>08 Mayo 2026</p>
+
+            </div>
+
+        </div>
+
+        <div class="amount positive">
+            + $1,000
+        </div>
+
+    </div>
+
+    <!-- MOVEMENT -->
+
+    <div class="movement-card">
+
+        <div class="movement-left">
+
+            <div class="movement-icon expense">
+
+                <span class="material-symbols-outlined">
+                    sports_soccer
+                </span>
+
+            </div>
+
+            <div class="movement-info">
+
+                <h3>Alquiler de Cancha</h3>
+
+                <p>05 Mayo 2026</p>
+
+            </div>
+
+        </div>
+
+        <div class="amount negative">
+            - $120
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ======================================
+ADD BUTTON
+====================================== -->
+
+<button class="fab">
+
+    <span class="material-symbols-outlined">
+        add
+    </span>
+
+</button>
+
+<script>
+
+// =========================================
+// VALIDAR ADMIN
+// =========================================
+
+if(
+    localStorage.getItem('admin_activo')
+    !== 'true'
+){
+    window.location.href = './login.html';
+}
+
+</script>
+
+</body>
+</html>
