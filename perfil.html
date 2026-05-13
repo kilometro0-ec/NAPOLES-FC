@@ -12,12 +12,11 @@
 <style>
 
 :root{
-    --primary-gold:#D4AF37;
-    --primary-gold-light:#f5e6a3;
-    --dark-bg:#060912;
-    --card-bg:rgba(255,255,255,0.05);
-    --text-main:#fff;
-    --text-muted:#a0a0a0;
+    --gold:#D4AF37;
+    --bg:#060912;
+    --card:rgba(255,255,255,.05);
+    --text:#fff;
+    --muted:#9ca3af;
     --success:#2ecc71;
     --danger:#e74c3c;
     --warning:#f39c12;
@@ -34,16 +33,16 @@
 body{
     background:radial-gradient(circle at top,#111a33 0%,#060912 100%);
     font-family:'Inter',sans-serif;
+    color:var(--text);
     min-height:100vh;
     padding:15px;
-    color:var(--text-main);
     display:flex;
     justify-content:center;
 }
 
 .profile-container{
     width:100%;
-    max-width:450px;
+    max-width:460px;
 }
 
 .profile-header{
@@ -53,9 +52,8 @@ body{
 
 .profile-header h1{
     font-family:'Outfit',sans-serif;
+    color:var(--gold);
     font-size:1.3rem;
-    color:var(--primary-gold);
-    text-transform:uppercase;
     letter-spacing:2px;
 }
 
@@ -63,14 +61,13 @@ body{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:12px;
-    margin-bottom:20px;
+    margin-bottom:15px;
 }
 
 .glass-card{
     background:linear-gradient(145deg,rgba(10,20,40,.85),rgba(5,10,20,.95));
     border-radius:20px;
-    border:1px solid rgba(212,175,55,.3);
-    backdrop-filter:blur(10px);
+    border:1px solid rgba(212,175,55,.25);
     overflow:hidden;
     position:relative;
 }
@@ -84,32 +81,32 @@ body{
     width:80px;
     height:80px;
     border-radius:50%;
-    border:3px solid var(--primary-gold);
+    border:3px solid var(--gold);
     object-fit:cover;
     margin-bottom:10px;
     background:#000;
 }
 
 .id-card-jersey-wrap{
-    perspective:800px;
+    perspective:900px;
     height:180px;
 }
 
 .jersey-card-inner{
-    position:relative;
     width:100%;
     height:100%;
+    position:relative;
     transform-style:preserve-3d;
-    animation:rotateJersey 12s linear infinite;
+    animation:rotateCard 12s linear infinite;
 }
 
-@keyframes rotateJersey{
+@keyframes rotateCard{
     from{transform:rotateY(0deg);}
     to{transform:rotateY(360deg);}
 }
 
-.face-jersey-front,
-.face-jersey-back{
+.face-front,
+.face-back{
     position:absolute;
     width:100%;
     height:100%;
@@ -123,30 +120,30 @@ body{
     justify-content:center;
 }
 
-.face-jersey-back{
+.face-back{
     transform:rotateY(180deg);
-}
-
-.jersey-number{
-    font-size:4.5rem;
-    font-weight:900;
-    color:var(--primary-gold);
-    font-family:'Outfit';
-    line-height:1;
 }
 
 .jersey-name{
     font-size:.7rem;
-    font-weight:800;
-    color:var(--primary-gold-light);
+    color:#f5e6a3;
     text-transform:uppercase;
     letter-spacing:2px;
+    font-weight:800;
 }
 
+.jersey-number{
+    font-size:4.5rem;
+    font-family:'Outfit';
+    font-weight:900;
+    line-height:1;
+    color:var(--gold);
+}
+
+.section-box,
 .stats-section,
-.performance-section,
-.section-box{
-    background:var(--card-bg);
+.performance-section{
+    background:var(--card);
     border-radius:20px;
     padding:15px;
     margin-bottom:15px;
@@ -155,14 +152,14 @@ body{
 }
 
 .section-title{
-    font-size:.8rem;
-    font-weight:800;
-    color:var(--primary-gold);
-    margin-bottom:15px;
-    text-transform:uppercase;
     display:flex;
     align-items:center;
     gap:8px;
+    margin-bottom:15px;
+    color:var(--gold);
+    font-size:.8rem;
+    font-weight:800;
+    text-transform:uppercase;
 }
 
 .stats-grid{
@@ -171,7 +168,7 @@ body{
     gap:8px;
 }
 
-.stat-card-modern{
+.stat-card{
     background:rgba(0,0,0,.35);
     border-radius:16px;
     padding:10px 5px;
@@ -179,19 +176,19 @@ body{
 }
 
 .stat-icon{
-    font-size:1.4rem;
+    font-size:1.3rem;
     margin-bottom:8px;
 }
 
 .stat-value{
     font-size:1.5rem;
-    font-weight:900;
     font-family:'Outfit';
+    font-weight:900;
 }
 
-.stat-label-modern{
+.stat-label{
     font-size:.55rem;
-    color:var(--text-muted);
+    color:var(--muted);
 }
 
 .performance-grid{
@@ -203,7 +200,7 @@ body{
 .metric-card{
     background:rgba(0,0,0,.35);
     border-radius:16px;
-    padding:15px 10px;
+    padding:14px 10px;
     text-align:center;
 }
 
@@ -220,19 +217,19 @@ body{
     transform:rotate(-90deg);
 }
 
-.progress-circle-bg{
-    stroke:rgba(255,255,255,.1);
+.progress-bg{
+    stroke:rgba(255,255,255,.08);
     stroke-width:8;
     fill:none;
 }
 
-.progress-circle-fill{
+.progress-fill{
     stroke-width:8;
     fill:none;
     stroke-linecap:round;
 }
 
-.progress-circle-text{
+.progress-text{
     position:absolute;
     top:50%;
     left:50%;
@@ -247,11 +244,11 @@ body{
     font-weight:700;
 }
 
-.average-container{
+.average-box{
     margin-top:15px;
     background:rgba(212,175,55,.08);
     border:1px solid rgba(212,175,55,.2);
-    border-radius:16px;
+    border-radius:15px;
     padding:15px;
     text-align:center;
 }
@@ -259,67 +256,72 @@ body{
 .average-score{
     font-size:2.2rem;
     font-weight:900;
-    color:var(--primary-gold);
+    color:var(--gold);
     font-family:'Outfit';
 }
 
-.admin-stats-grid{
+.admin-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:12px;
 }
 
-.admin-stat-card{
+.admin-card{
     background:rgba(0,0,0,.35);
     border-radius:16px;
     padding:12px;
     text-align:center;
 }
 
-.admin-stat-icon{
+.admin-icon{
     font-size:1.7rem;
     margin-bottom:8px;
 }
 
-.admin-stat-value{
+.admin-value{
     font-size:1.2rem;
     font-weight:900;
 }
 
-.admin-stat-label{
+.admin-label{
     font-size:.65rem;
-    color:var(--text-muted);
-    margin-top:4px;
+    color:var(--muted);
+    margin-top:5px;
 }
 
-.admin-stat-status{
+.admin-status{
     margin-top:8px;
     padding:4px 8px;
     border-radius:20px;
-    font-size:.65rem;
     display:inline-block;
+    font-size:.65rem;
 }
 
-.status-badge-pending{
+.pending{
     background:rgba(231,76,60,.15);
     color:var(--danger);
 }
 
-.status-badge-warning{
+.warning{
     background:rgba(243,156,18,.15);
     color:var(--warning);
 }
 
-.status-badge-info{
+.info{
     background:rgba(52,152,219,.15);
     color:var(--info);
 }
 
-.debt-container{
+.vocalia{
+    background:rgba(155,89,182,.15);
+    color:#9b59b6;
+}
+
+.debt-box{
+    margin-top:15px;
     background:rgba(0,0,0,.4);
     border-radius:14px;
     padding:12px;
-    margin-top:15px;
 }
 
 .debt-header{
@@ -330,7 +332,7 @@ body{
 
 .debt-label{
     font-size:.75rem;
-    color:var(--text-muted);
+    color:var(--muted);
 }
 
 .debt-amount{
@@ -338,17 +340,17 @@ body{
     font-weight:900;
 }
 
-.progress-bar-bg{
-    background:rgba(255,255,255,.08);
-    border-radius:10px;
+.progress-bar{
+    width:100%;
     height:8px;
+    border-radius:10px;
+    background:rgba(255,255,255,.08);
     overflow:hidden;
     margin-top:10px;
 }
 
-.progress-bar-fill{
+.progress-fill-bar{
     height:100%;
-    border-radius:10px;
     background:linear-gradient(90deg,#e74c3c,#f39c12);
 }
 
@@ -364,8 +366,8 @@ body{
     display:flex;
     justify-content:space-between;
     margin-top:15px;
-    padding-top:15px;
     border-top:1px solid rgba(255,255,255,.08);
+    padding-top:15px;
 }
 
 .detail-item{
@@ -375,30 +377,30 @@ body{
 
 .detail-label{
     font-size:.6rem;
-    color:var(--text-muted);
+    color:var(--muted);
 }
 
 .detail-value{
     font-size:.8rem;
     font-weight:700;
-    color:var(--primary-gold);
+    color:var(--gold);
 }
 
 .btn-sync,
 .btn-logout{
     width:100%;
-    padding:14px;
     border:none;
     border-radius:14px;
+    padding:14px;
     font-weight:800;
     cursor:pointer;
 }
 
 .btn-sync{
-    margin-bottom:15px;
     background:rgba(212,175,55,.12);
-    color:var(--primary-gold);
+    color:var(--gold);
     border:1px solid rgba(212,175,55,.3);
+    margin-bottom:15px;
 }
 
 .btn-logout{
@@ -410,7 +412,7 @@ body{
     width:45px;
     height:45px;
     border:4px solid rgba(255,255,255,.08);
-    border-top-color:var(--primary-gold);
+    border-top-color:var(--gold);
     border-radius:50%;
     animation:spin 1s linear infinite;
     margin:120px auto;
@@ -450,9 +452,15 @@ function escapeHtml(str){
 }
 
 function sanitizeUrl(url){
+
     if(!url) return CONFIG.DEFAULT_AVATAR;
+
     let clean = String(url).trim();
-    if(clean.startsWith('javascript:')) return CONFIG.DEFAULT_AVATAR;
+
+    if(clean.startsWith('javascript:')){
+        return CONFIG.DEFAULT_AVATAR;
+    }
+
     return clean;
 }
 
@@ -475,6 +483,7 @@ function calcularEdad(fechaNacimiento){
             );
 
         }
+
     }
 
     if(isNaN(fecha.getTime())) return '--';
@@ -506,11 +515,18 @@ function renderProgressCircle(valor,color){
 
     return `
     <div class="progress-circle">
+
         <svg viewBox="0 0 100 100">
-            <circle class="progress-circle-bg" cx="50" cy="50" r="40"></circle>
 
             <circle
-                class="progress-circle-fill"
+                class="progress-bg"
+                cx="50"
+                cy="50"
+                r="40">
+            </circle>
+
+            <circle
+                class="progress-fill"
                 cx="50"
                 cy="50"
                 r="40"
@@ -518,9 +534,11 @@ function renderProgressCircle(valor,color){
                 stroke-dasharray="${circumference}"
                 stroke-dashoffset="${dash}">
             </circle>
+
         </svg>
 
-        <div class="progress-circle-text">${value}</div>
+        <div class="progress-text">${value}</div>
+
     </div>
     `;
 }
@@ -546,9 +564,13 @@ async function cargarPerfil(cedula){
                 primerNombre:escapeHtml(j.primerNombre || ''),
                 segundoNombre:escapeHtml(j.segundoNombre || ''),
                 urlFotoRostro:sanitizeUrl(j.urlFotoRostro),
+
                 fechaNacimiento:j.fechaNacimiento || '',
+
                 nombreCamiseta:escapeHtml(j.nombreCamiseta || 'NAPOLES'),
+
                 dorsal:escapeHtml(j.dorsal || '00'),
+
                 tallaUni:escapeHtml(j.tallaUni || 'M'),
 
                 partidosJugados:Number(j.partidosJugados) || 0,
@@ -561,15 +583,17 @@ async function cargarPerfil(cedula){
                 respeto:Number(j.respeto) || 0,
                 humildad:Number(j.humildad) || 0,
 
+                deudaVocalia:Number(j.deudaVocalia) || 0,
+
                 inscripEstado:escapeHtml(j.inscripEstado || 'PENDIENTE'),
                 unifEstado:escapeHtml(j.unifEstado || 'PENDIENTE'),
                 mediasEstado:escapeHtml(j.mediasEstado || 'PENDIENTE')
 
             };
 
-            const edad = calcularEdad(sanitized.fechaNacimiento);
+            let edad = calcularEdad(sanitized.fechaNacimiento);
 
-            const promedio = Math.round(
+            let promedio = Math.round(
                 (
                     sanitized.puntualidad +
                     sanitized.companerismo +
@@ -578,13 +602,25 @@ async function cargarPerfil(cedula){
                 ) / 4
             );
 
-            let deudaInscripcion = sanitized.inscripEstado.toUpperCase().includes('PENDIENTE') ? 5 : 0;
+            let deudaInscripcion =
+                sanitized.inscripEstado.toUpperCase().includes('PENDIENTE')
+                ? 5 : 0;
 
-            let deudaUniforme = sanitized.unifEstado.toUpperCase().includes('PENDIENTE') ? 17 : 0;
+            let deudaUniforme =
+                sanitized.unifEstado.toUpperCase().includes('PENDIENTE')
+                ? 17 : 0;
 
-            let deudaMedias = sanitized.mediasEstado.toUpperCase().includes('PENDIENTE') ? 2 : 0;
+            let deudaMedias =
+                sanitized.mediasEstado.toUpperCase().includes('PENDIENTE')
+                ? 2 : 0;
 
-            let totalAdmin = deudaInscripcion + deudaUniforme + deudaMedias;
+            let deudaVocalia = sanitized.deudaVocalia;
+
+            let totalAdmin =
+                deudaInscripcion +
+                deudaUniforme +
+                deudaMedias +
+                deudaVocalia;
 
             container.innerHTML = `
 
@@ -602,15 +638,16 @@ async function cargarPerfil(cedula){
                         onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
 
                     <div style="font-weight:900;font-family:'Outfit';font-size:.9rem;text-transform:uppercase;">
-                        ${sanitized.primerNombre} ${sanitized.segundoNombre}
+                        ${sanitized.primerNombre}
+                        ${sanitized.segundoNombre}
                     </div>
 
-                    <div style="font-size:.65rem;color:var(--text-muted);margin-top:4px;">
+                    <div style="font-size:.65rem;color:var(--muted);margin-top:4px;">
                         <i class="fas fa-id-card"></i>
                         ${cedula}
                     </div>
 
-                    <div style="margin-top:10px;background:rgba(212,175,55,.12);padding:6px 12px;border-radius:12px;font-size:.75rem;color:var(--primary-gold);">
+                    <div style="margin-top:10px;background:rgba(212,175,55,.12);padding:6px 12px;border-radius:12px;font-size:.75rem;color:var(--gold);">
                         <i class="fas fa-cake-candles"></i>
                         ${edad} años
                     </div>
@@ -621,7 +658,7 @@ async function cargarPerfil(cedula){
 
                     <div class="jersey-card-inner">
 
-                        <div class="face-jersey-front">
+                        <div class="face-front">
                             <div class="jersey-name">${sanitized.nombreCamiseta}</div>
                             <div class="jersey-number">${sanitized.dorsal}</div>
                             <div style="font-size:.6rem;margin-top:5px;">
@@ -629,7 +666,7 @@ async function cargarPerfil(cedula){
                             </div>
                         </div>
 
-                        <div class="face-jersey-back">
+                        <div class="face-back">
                             <div class="jersey-name">NÁPOLES FC</div>
                             <div class="jersey-number">${sanitized.dorsal}</div>
                             <div style="font-size:.6rem;margin-top:5px;">
@@ -648,61 +685,49 @@ async function cargarPerfil(cedula){
                 ACTUALIZAR INFORMACIÓN
             </button>
 
+            <!-- ESTADISTICAS -->
+
             <div class="stats-section">
 
                 <div class="stats-grid">
 
-                    <div class="stat-card-modern">
+                    <div class="stat-card">
                         <div class="stat-icon" style="color:#3498db">
                             <i class="fas fa-running"></i>
                         </div>
-
                         <div class="stat-value">${sanitized.partidosJugados}</div>
-
-                        <div class="stat-label-modern">
-                            PARTIDOS
-                        </div>
+                        <div class="stat-label">PARTIDOS</div>
                     </div>
 
-                    <div class="stat-card-modern">
+                    <div class="stat-card">
                         <div class="stat-icon" style="color:#2ecc71">
                             <i class="fas fa-futbol"></i>
                         </div>
-
                         <div class="stat-value">${sanitized.goles}</div>
-
-                        <div class="stat-label-modern">
-                            GOLES
-                        </div>
+                        <div class="stat-label">GOLES</div>
                     </div>
 
-                    <div class="stat-card-modern">
+                    <div class="stat-card">
                         <div class="stat-icon" style="color:#f39c12">
                             <i class="fas fa-square"></i>
                         </div>
-
                         <div class="stat-value">${sanitized.amarillas}</div>
-
-                        <div class="stat-label-modern">
-                            AMARILLAS
-                        </div>
+                        <div class="stat-label">AMARILLAS</div>
                     </div>
 
-                    <div class="stat-card-modern">
+                    <div class="stat-card">
                         <div class="stat-icon" style="color:#e74c3c">
                             <i class="fas fa-square"></i>
                         </div>
-
                         <div class="stat-value">${sanitized.rojas}</div>
-
-                        <div class="stat-label-modern">
-                            ROJAS
-                        </div>
+                        <div class="stat-label">ROJAS</div>
                     </div>
 
                 </div>
 
             </div>
+
+            <!-- RENDIMIENTO -->
 
             <div class="performance-section">
 
@@ -715,29 +740,29 @@ async function cargarPerfil(cedula){
 
                     <div class="metric-card">
                         ${renderProgressCircle(sanitized.puntualidad,'#3498db')}
-                        <div class="metric-title">Puntualidad</div>
+                        <div class="metric-title">PUNTUALIDAD</div>
                     </div>
 
                     <div class="metric-card">
                         ${renderProgressCircle(sanitized.companerismo,'#2ecc71')}
-                        <div class="metric-title">Compañerismo</div>
+                        <div class="metric-title">COMPAÑERISMO</div>
                     </div>
 
                     <div class="metric-card">
                         ${renderProgressCircle(sanitized.respeto,'#f39c12')}
-                        <div class="metric-title">Respeto</div>
+                        <div class="metric-title">RESPETO</div>
                     </div>
 
                     <div class="metric-card">
                         ${renderProgressCircle(sanitized.humildad,'#9b59b6')}
-                        <div class="metric-title">Humildad</div>
+                        <div class="metric-title">HUMILDAD</div>
                     </div>
 
                 </div>
 
-                <div class="average-container">
+                <div class="average-box">
 
-                    <div style="font-size:.7rem;color:var(--text-muted);">
+                    <div style="font-size:.7rem;color:var(--muted);">
                         PROMEDIO GENERAL
                     </div>
 
@@ -758,25 +783,25 @@ async function cargarPerfil(cedula){
                     Estado Administrativo
                 </div>
 
-                <div class="admin-stats-grid">
+                <div class="admin-grid">
 
                     ${deudaInscripcion > 0 ? `
 
-                    <div class="admin-stat-card">
+                    <div class="admin-card">
 
-                        <div class="admin-stat-icon">
+                        <div class="admin-icon">
                             <i class="fas fa-file-signature" style="color:#e74c3c;"></i>
                         </div>
 
-                        <div class="admin-stat-value" style="color:#e74c3c;">
+                        <div class="admin-value" style="color:#e74c3c;">
                             $5
                         </div>
 
-                        <div class="admin-stat-label">
+                        <div class="admin-label">
                             INSCRIPCIÓN
                         </div>
 
-                        <div class="admin-stat-status status-badge-pending">
+                        <div class="admin-status pending">
                             PENDIENTE
                         </div>
 
@@ -786,21 +811,21 @@ async function cargarPerfil(cedula){
 
                     ${deudaUniforme > 0 ? `
 
-                    <div class="admin-stat-card">
+                    <div class="admin-card">
 
-                        <div class="admin-stat-icon">
+                        <div class="admin-icon">
                             <i class="fas fa-tshirt" style="color:#f39c12;"></i>
                         </div>
 
-                        <div class="admin-stat-value" style="color:#f39c12;">
+                        <div class="admin-value" style="color:#f39c12;">
                             $17
                         </div>
 
-                        <div class="admin-stat-label">
+                        <div class="admin-label">
                             UNIFORME
                         </div>
 
-                        <div class="admin-stat-status status-badge-warning">
+                        <div class="admin-status warning">
                             PENDIENTE
                         </div>
 
@@ -810,21 +835,45 @@ async function cargarPerfil(cedula){
 
                     ${deudaMedias > 0 ? `
 
-                    <div class="admin-stat-card">
+                    <div class="admin-card">
 
-                        <div class="admin-stat-icon">
+                        <div class="admin-icon">
                             <i class="fas fa-socks" style="color:#3498db;"></i>
                         </div>
 
-                        <div class="admin-stat-value" style="color:#3498db;">
+                        <div class="admin-value" style="color:#3498db;">
                             $2
                         </div>
 
-                        <div class="admin-stat-label">
+                        <div class="admin-label">
                             MEDIAS
                         </div>
 
-                        <div class="admin-stat-status status-badge-info">
+                        <div class="admin-status info">
+                            PENDIENTE
+                        </div>
+
+                    </div>
+
+                    ` : ''}
+
+                    ${deudaVocalia > 0 ? `
+
+                    <div class="admin-card">
+
+                        <div class="admin-icon">
+                            <i class="fas fa-money-bill-wave" style="color:#9b59b6;"></i>
+                        </div>
+
+                        <div class="admin-value" style="color:#9b59b6;">
+                            $${deudaVocalia.toFixed(2)}
+                        </div>
+
+                        <div class="admin-label">
+                            VOCALÍA
+                        </div>
+
+                        <div class="admin-status vocalia">
                             PENDIENTE
                         </div>
 
@@ -834,25 +883,30 @@ async function cargarPerfil(cedula){
 
                 </div>
 
-                <div class="debt-container">
+                <div class="debt-box">
 
                     <div class="debt-header">
 
                         <span class="debt-label">
-                            TOTAL PENDIENTE
+                            <i class="fas fa-dollar-sign"></i>
+                            TOTAL PENDIENTE + VOCALÍA
                         </span>
 
-                        <span class="debt-amount" style="color:${totalAdmin > 0 ? '#e74c3c' : '#2ecc71'}">
+                        <span
+                            class="debt-amount"
+                            style="color:${totalAdmin > 0 ? '#e74c3c' : '#2ecc71'}">
+
                             $${totalAdmin.toFixed(2)}
+
                         </span>
 
                     </div>
 
-                    <div class="progress-bar-bg">
+                    <div class="progress-bar">
 
                         <div
-                            class="progress-bar-fill"
-                            style="width:${Math.min((totalAdmin/24)*100,100)}%">
+                            class="progress-fill-bar"
+                            style="width:${Math.min((totalAdmin / 30) * 100,100)}%">
                         </div>
 
                     </div>
@@ -861,8 +915,8 @@ async function cargarPerfil(cedula){
                         class="debt-message"
                         style="
                             background:${totalAdmin === 0
-                                ? 'rgba(46,204,113,.1)'
-                                : 'rgba(231,76,60,.1)'};
+                            ? 'rgba(46,204,113,.1)'
+                            : 'rgba(231,76,60,.1)'};
                         ">
 
                         ${
@@ -933,7 +987,8 @@ async function cargarPerfil(cedula){
 
 window.recargarPerfil = async function(){
 
-    const session = JSON.parse(localStorage.getItem('jugador_actual'));
+    const session =
+        JSON.parse(localStorage.getItem('jugador_actual'));
 
     if(!session || !session.cedula){
 
@@ -943,7 +998,7 @@ window.recargarPerfil = async function(){
     }
 
     document.getElementById('perfilContent').innerHTML =
-    '<div class="spinner"></div>';
+        '<div class="spinner"></div>';
 
     cargarPerfil(session.cedula);
 
@@ -963,7 +1018,8 @@ window.cerrarSesion = function(){
 
 (function(){
 
-    const session = JSON.parse(localStorage.getItem('jugador_actual'));
+    const session =
+        JSON.parse(localStorage.getItem('jugador_actual'));
 
     if(!session || !session.cedula){
 
