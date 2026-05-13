@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>Nápoles F.C. - Mi Perfil</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
@@ -31,12 +36,23 @@
 }
 
 body{
-    background:radial-gradient(circle at top,#111a33 0%,#060912 100%);
+    background:
+    radial-gradient(
+        circle at top,
+        #111a33 0%,
+        #060912 100%
+    );
+
     font-family:'Inter',sans-serif;
+
     color:var(--text);
+
     min-height:100vh;
+
     padding:15px;
+
     display:flex;
+
     justify-content:center;
 }
 
@@ -65,10 +81,19 @@ body{
 }
 
 .glass-card{
-    background:linear-gradient(145deg,rgba(10,20,40,.85),rgba(5,10,20,.95));
+    background:
+    linear-gradient(
+        145deg,
+        rgba(10,20,40,.85),
+        rgba(5,10,20,.95)
+    );
+
     border-radius:20px;
+
     border:1px solid rgba(212,175,55,.25);
+
     overflow:hidden;
+
     position:relative;
 }
 
@@ -101,22 +126,43 @@ body{
 }
 
 @keyframes rotateCard{
-    from{transform:rotateY(0deg);}
-    to{transform:rotateY(360deg);}
+
+    from{
+        transform:rotateY(0deg);
+    }
+
+    to{
+        transform:rotateY(360deg);
+    }
 }
 
 .face-front,
 .face-back{
+
     position:absolute;
+
     width:100%;
     height:100%;
+
     border-radius:20px;
+
     backface-visibility:hidden;
-    background:linear-gradient(145deg,#0a1428,#000814);
+
+    background:
+    linear-gradient(
+        145deg,
+        #0a1428,
+        #000814
+    );
+
     border:2px solid rgba(212,175,55,.4);
+
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     justify-content:center;
 }
 
@@ -143,22 +189,36 @@ body{
 .section-box,
 .stats-section,
 .performance-section{
+
     background:var(--card);
+
     border-radius:20px;
+
     padding:15px;
+
     margin-bottom:15px;
+
     border:1px solid rgba(255,255,255,.05);
+
     backdrop-filter:blur(5px);
 }
 
 .section-title{
+
     display:flex;
+
     align-items:center;
+
     gap:8px;
+
     margin-bottom:15px;
+
     color:var(--gold);
+
     font-size:.8rem;
+
     font-weight:800;
+
     text-transform:uppercase;
 }
 
@@ -169,9 +229,13 @@ body{
 }
 
 .stat-card{
+
     background:rgba(0,0,0,.35);
+
     border-radius:16px;
+
     padding:10px 5px;
+
     text-align:center;
 }
 
@@ -198,9 +262,13 @@ body{
 }
 
 .metric-card{
+
     background:rgba(0,0,0,.35);
+
     border-radius:16px;
+
     padding:14px 10px;
+
     text-align:center;
 }
 
@@ -230,11 +298,16 @@ body{
 }
 
 .progress-text{
+
     position:absolute;
+
     top:50%;
     left:50%;
+
     transform:translate(-50%,-50%);
+
     font-size:1.3rem;
+
     font-weight:900;
 }
 
@@ -245,11 +318,17 @@ body{
 }
 
 .average-box{
+
     margin-top:15px;
+
     background:rgba(212,175,55,.08);
+
     border:1px solid rgba(212,175,55,.2);
+
     border-radius:15px;
+
     padding:15px;
+
     text-align:center;
 }
 
@@ -260,166 +339,60 @@ body{
     font-family:'Outfit';
 }
 
-.admin-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-}
-
-.admin-card{
-    background:rgba(0,0,0,.35);
-    border-radius:16px;
-    padding:12px;
-    text-align:center;
-}
-
-.admin-icon{
-    font-size:1.7rem;
-    margin-bottom:8px;
-}
-
-.admin-value{
-    font-size:1.2rem;
-    font-weight:900;
-}
-
-.admin-label{
-    font-size:.65rem;
-    color:var(--muted);
-    margin-top:5px;
-}
-
-.admin-status{
-    margin-top:8px;
-    padding:4px 8px;
-    border-radius:20px;
-    display:inline-block;
-    font-size:.65rem;
-}
-
-.pending{
-    background:rgba(231,76,60,.15);
-    color:var(--danger);
-}
-
-.warning{
-    background:rgba(243,156,18,.15);
-    color:var(--warning);
-}
-
-.info{
-    background:rgba(52,152,219,.15);
-    color:var(--info);
-}
-
-.vocalia{
-    background:rgba(155,89,182,.15);
-    color:#9b59b6;
-}
-
-.debt-box{
-    margin-top:15px;
-    background:rgba(0,0,0,.4);
-    border-radius:14px;
-    padding:12px;
-}
-
-.debt-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.debt-label{
-    font-size:.75rem;
-    color:var(--muted);
-}
-
-.debt-amount{
-    font-size:1.4rem;
-    font-weight:900;
-}
-
-.progress-bar{
-    width:100%;
-    height:8px;
-    border-radius:10px;
-    background:rgba(255,255,255,.08);
-    overflow:hidden;
-    margin-top:10px;
-}
-
-.progress-fill-bar{
-    height:100%;
-    background:linear-gradient(90deg,#e74c3c,#f39c12);
-}
-
-.debt-message{
-    margin-top:10px;
-    font-size:.7rem;
-    padding:8px;
-    border-radius:10px;
-    text-align:center;
-}
-
-.admin-details{
-    display:flex;
-    justify-content:space-between;
-    margin-top:15px;
-    border-top:1px solid rgba(255,255,255,.08);
-    padding-top:15px;
-}
-
-.detail-item{
-    text-align:center;
-    flex:1;
-}
-
-.detail-label{
-    font-size:.6rem;
-    color:var(--muted);
-}
-
-.detail-value{
-    font-size:.8rem;
-    font-weight:700;
-    color:var(--gold);
-}
-
 .btn-sync,
 .btn-logout{
+
     width:100%;
+
     border:none;
+
     border-radius:14px;
+
     padding:14px;
+
     font-weight:800;
+
     cursor:pointer;
 }
 
 .btn-sync{
+
     background:rgba(212,175,55,.12);
+
     color:var(--gold);
+
     border:1px solid rgba(212,175,55,.3);
+
     margin-bottom:15px;
 }
 
 .btn-logout{
+
     background:rgba(231,76,60,.12);
+
     color:#e74c3c;
 }
 
 .spinner{
+
     width:45px;
     height:45px;
+
     border:4px solid rgba(255,255,255,.08);
+
     border-top-color:var(--gold);
+
     border-radius:50%;
+
     animation:spin 1s linear infinite;
+
     margin:120px auto;
 }
 
 @keyframes spin{
-    to{transform:rotate(360deg);}
+    to{
+        transform:rotate(360deg);
+    }
 }
 
 .error-message{
@@ -429,20 +402,29 @@ body{
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="profile-container" id="perfilContent">
+
     <div class="spinner"></div>
+
 </div>
 
 <script src="config.js"></script>
 
 <script>
 
+/* =========================================
+UTILIDADES
+========================================= */
+
 function escapeHtml(str){
+
     if(!str) return '';
+
     return String(str)
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
@@ -481,151 +463,295 @@ function calcularEdad(fechaNacimiento){
                 parseInt(partes[1]) - 1,
                 parseInt(partes[0])
             );
-
         }
-
     }
 
     if(isNaN(fecha.getTime())) return '--';
 
     let hoy = new Date();
 
-    let edad = hoy.getFullYear() - fecha.getFullYear();
+    let edad =
+    hoy.getFullYear() -
+    fecha.getFullYear();
 
-    let mes = hoy.getMonth() - fecha.getMonth();
+    let mes =
+    hoy.getMonth() -
+    fecha.getMonth();
 
-    if(mes < 0 || (mes === 0 && hoy.getDate() < fecha.getDate())){
+    if(
+        mes < 0 ||
+        (
+            mes === 0 &&
+            hoy.getDate() < fecha.getDate()
+        )
+    ){
         edad--;
     }
 
     return edad;
 }
 
-function renderProgressCircle(valor,color){
+/* =========================================
+VERIFICAR NOTICIAS
+========================================= */
 
-    let value = Math.min(10,Math.max(0,Number(valor)||0));
+async function verificarNoticiasPendientes(
+    cedula
+){
 
-    let radius = 40;
+    try{
 
-    let circumference = 2 * Math.PI * radius;
+        const response =
+        await fetch(
 
-    let percent = value / 10;
+            CONFIG.URL_GAS +
 
-    let dash = circumference - (percent * circumference);
+            '?accion=verificarNotificaciones&cedula=' +
 
-    return `
-    <div class="progress-circle">
+            encodeURIComponent(cedula)
 
-        <svg viewBox="0 0 100 100">
+        );
 
-            <circle
-                class="progress-bg"
-                cx="50"
-                cy="50"
-                r="40">
-            </circle>
+        const data =
+        await response.json();
 
-            <circle
-                class="progress-fill"
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="${color}"
-                stroke-dasharray="${circumference}"
-                stroke-dashoffset="${dash}">
-            </circle>
+        if(data.length > 0){
 
-        </svg>
+            mostrarPantallaNoticias(
+                data,
+                cedula
+            );
 
-        <div class="progress-text">${value}</div>
+        }else{
+
+            cargarPerfil(cedula);
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        cargarPerfil(cedula);
+    }
+}
+
+/* =========================================
+PANTALLA BLOQUEANTE
+========================================= */
+
+function mostrarPantallaNoticias(
+    noticias,
+    cedula
+){
+
+    const container =
+    document.getElementById(
+        'perfilContent'
+    );
+
+    let html = '';
+
+    noticias.forEach(item => {
+
+        html += `
+
+        <div style="
+            background:rgba(255,255,255,.05);
+            border-radius:20px;
+            padding:18px;
+            margin-bottom:18px;
+            border:1px solid rgba(255,255,255,.08);
+        ">
+
+            <div style="
+                color:var(--gold);
+                font-weight:900;
+                font-size:1rem;
+                margin-bottom:12px;
+            ">
+                📢 ${item.titulo}
+            </div>
+
+            <div style="
+                color:#e5e7eb;
+                line-height:1.6;
+                font-size:.9rem;
+            ">
+                ${item.mensaje}
+            </div>
+
+            <button
+                onclick="
+                    confirmarNoticiaBloqueante(
+                        '${item.id}',
+                        '${cedula}'
+                    )
+                "
+                style="
+                    width:100%;
+                    margin-top:18px;
+                    border:none;
+                    border-radius:16px;
+                    padding:16px;
+                    background:linear-gradient(
+                        135deg,
+                        #2ecc71,
+                        #27ae60
+                    );
+                    color:#fff;
+                    font-weight:900;
+                    cursor:pointer;
+                ">
+
+                ✅ CONFIRMAR Y CONTINUAR
+
+            </button>
+
+        </div>
+        `;
+    });
+
+    container.innerHTML = `
+
+    <div style="
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    ">
+
+        <div style="
+            width:100%;
+            max-width:500px;
+        ">
+
+            <div style="
+                text-align:center;
+                margin-bottom:25px;
+            ">
+
+                <div style="
+                    font-size:3rem;
+                    margin-bottom:10px;
+                ">
+                    ⚜️
+                </div>
+
+                <div style="
+                    font-size:1.3rem;
+                    font-weight:900;
+                    color:var(--gold);
+                ">
+                    Noticias del Club
+                </div>
+
+                <div style="
+                    color:var(--muted);
+                    margin-top:8px;
+                    font-size:.85rem;
+                ">
+                    Debes confirmar para continuar
+                </div>
+
+            </div>
+
+            ${html}
+
+        </div>
 
     </div>
     `;
 }
 
-async function cargarPerfil(cedula){
+/* =========================================
+CONFIRMAR
+========================================= */
 
-    const container = document.getElementById('perfilContent');
+async function confirmarNoticiaBloqueante(
+    idNotificacion,
+    cedula
+){
 
     try{
 
-        const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
+        await fetch(CONFIG.URL_GAS,{
 
-        const resp = await fetch(url);
+            method:'POST',
 
-        const data = await resp.json();
+            body:JSON.stringify({
+
+                accion:'confirmarNotificacion',
+
+                idNotificacion:idNotificacion,
+
+                cedula:cedula
+
+            })
+
+        });
+
+        verificarNoticiasPendientes(
+            cedula
+        );
+
+    }catch(error){
+
+        console.error(error);
+    }
+}
+
+/* =========================================
+CARGAR PERFIL
+========================================= */
+
+async function cargarPerfil(cedula){
+
+    const container =
+    document.getElementById(
+        'perfilContent'
+    );
+
+    try{
+
+        const url =
+
+        `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&t=${Date.now()}`;
+
+        const resp =
+        await fetch(url);
+
+        const data =
+        await resp.json();
 
         if(data.success && data.jugador){
 
-            const j = data.jugador;
+            const j =
+            data.jugador;
 
-            const sanitized = {
-
-                primerNombre:escapeHtml(j.primerNombre || ''),
-                segundoNombre:escapeHtml(j.segundoNombre || ''),
-                urlFotoRostro:sanitizeUrl(j.urlFotoRostro),
-
-                fechaNacimiento:j.fechaNacimiento || '',
-
-                nombreCamiseta:escapeHtml(j.nombreCamiseta || 'NAPOLES'),
-
-                dorsal:escapeHtml(j.dorsal || '00'),
-
-                tallaUni:escapeHtml(j.tallaUni || 'M'),
-
-                partidosJugados:Number(j.partidosJugados) || 0,
-                goles:Number(j.goles) || 0,
-                amarillas:Number(j.amarillas) || 0,
-                rojas:Number(j.rojas) || 0,
-
-                puntualidad:Number(j.puntualidad) || 0,
-                companerismo:Number(j.companerismo) || 0,
-                respeto:Number(j.respeto) || 0,
-                humildad:Number(j.humildad) || 0,
-
-                deudaVocalia:Number(j.deudaVocalia) || 0,
-
-                inscripEstado:escapeHtml(j.inscripEstado || 'PENDIENTE'),
-                unifEstado:escapeHtml(j.unifEstado || 'PENDIENTE'),
-                mediasEstado:escapeHtml(j.mediasEstado || 'PENDIENTE')
-
-            };
-
-            let edad = calcularEdad(sanitized.fechaNacimiento);
-
-            let promedio = Math.round(
-                (
-                    sanitized.puntualidad +
-                    sanitized.companerismo +
-                    sanitized.respeto +
-                    sanitized.humildad
-                ) / 4
+            const nombre =
+            escapeHtml(
+                j.primerNombre || ''
             );
 
-            let deudaInscripcion =
-                sanitized.inscripEstado.toUpperCase().includes('PENDIENTE')
-                ? 5 : 0;
+            const dorsal =
+            escapeHtml(
+                j.dorsal || '00'
+            );
 
-            let deudaUniforme =
-                sanitized.unifEstado.toUpperCase().includes('PENDIENTE')
-                ? 17 : 0;
-
-            let deudaMedias =
-                sanitized.mediasEstado.toUpperCase().includes('PENDIENTE')
-                ? 2 : 0;
-
-            let deudaVocalia = sanitized.deudaVocalia;
-
-            let totalAdmin =
-                deudaInscripcion +
-                deudaUniforme +
-                deudaMedias +
-                deudaVocalia;
+            const foto =
+            sanitizeUrl(
+                j.urlFotoRostro
+            );
 
             container.innerHTML = `
 
             <div class="profile-header">
-                <h1>⚜️ PANEL NÁPOLES ⚜️</h1>
+
+                <h1>
+                    ⚜️ PANEL NÁPOLES ⚜️
+                </h1>
+
             </div>
 
             <div class="cards-row">
@@ -633,23 +759,30 @@ async function cargarPerfil(cedula){
                 <div class="id-card-identity glass-card">
 
                     <img
-                        src="${sanitized.urlFotoRostro}"
+                        src="${foto}"
                         class="player-img"
                         onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
 
-                    <div style="font-weight:900;font-family:'Outfit';font-size:.9rem;text-transform:uppercase;">
-                        ${sanitized.primerNombre}
-                        ${sanitized.segundoNombre}
+                    <div style="
+                        font-weight:900;
+                        font-family:'Outfit';
+                        font-size:.9rem;
+                        text-transform:uppercase;
+                    ">
+
+                        ${nombre}
+
                     </div>
 
-                    <div style="font-size:.65rem;color:var(--muted);margin-top:4px;">
+                    <div style="
+                        font-size:.65rem;
+                        color:var(--muted);
+                        margin-top:4px;
+                    ">
+
                         <i class="fas fa-id-card"></i>
                         ${cedula}
-                    </div>
 
-                    <div style="margin-top:10px;background:rgba(212,175,55,.12);padding:6px 12px;border-radius:12px;font-size:.75rem;color:var(--gold);">
-                        <i class="fas fa-cake-candles"></i>
-                        ${edad} años
                     </div>
 
                 </div>
@@ -659,19 +792,27 @@ async function cargarPerfil(cedula){
                     <div class="jersey-card-inner">
 
                         <div class="face-front">
-                            <div class="jersey-name">${sanitized.nombreCamiseta}</div>
-                            <div class="jersey-number">${sanitized.dorsal}</div>
-                            <div style="font-size:.6rem;margin-top:5px;">
-                                Talla ${sanitized.tallaUni}
+
+                            <div class="jersey-name">
+                                NÁPOLES
                             </div>
+
+                            <div class="jersey-number">
+                                ${dorsal}
+                            </div>
+
                         </div>
 
                         <div class="face-back">
-                            <div class="jersey-name">NÁPOLES FC</div>
-                            <div class="jersey-number">${sanitized.dorsal}</div>
-                            <div style="font-size:.6rem;margin-top:5px;">
-                                Ecuador
+
+                            <div class="jersey-name">
+                                NÁPOLES FC
                             </div>
+
+                            <div class="jersey-number">
+                                ${dorsal}
+                            </div>
+
                         </div>
 
                     </div>
@@ -680,295 +821,40 @@ async function cargarPerfil(cedula){
 
             </div>
 
-            <button class="btn-sync" onclick="window.recargarPerfil()">
+            <button
+                class="btn-sync"
+                onclick="window.recargarPerfil()">
+
                 <i class="fas fa-sync-alt"></i>
+
                 ACTUALIZAR INFORMACIÓN
+
             </button>
 
-            <!-- ESTADISTICAS -->
+            <button
+                class="btn-logout"
+                onclick="window.cerrarSesion()">
 
-            <div class="stats-section">
-
-                <div class="stats-grid">
-
-                    <div class="stat-card">
-                        <div class="stat-icon" style="color:#3498db">
-                            <i class="fas fa-running"></i>
-                        </div>
-                        <div class="stat-value">${sanitized.partidosJugados}</div>
-                        <div class="stat-label">PARTIDOS</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon" style="color:#2ecc71">
-                            <i class="fas fa-futbol"></i>
-                        </div>
-                        <div class="stat-value">${sanitized.goles}</div>
-                        <div class="stat-label">GOLES</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon" style="color:#f39c12">
-                            <i class="fas fa-square"></i>
-                        </div>
-                        <div class="stat-value">${sanitized.amarillas}</div>
-                        <div class="stat-label">AMARILLAS</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon" style="color:#e74c3c">
-                            <i class="fas fa-square"></i>
-                        </div>
-                        <div class="stat-value">${sanitized.rojas}</div>
-                        <div class="stat-label">ROJAS</div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- RENDIMIENTO -->
-
-            <div class="performance-section">
-
-                <div class="section-title">
-                    <i class="fas fa-heart"></i>
-                    Rendimiento Humano
-                </div>
-
-                <div class="performance-grid">
-
-                    <div class="metric-card">
-                        ${renderProgressCircle(sanitized.puntualidad,'#3498db')}
-                        <div class="metric-title">PUNTUALIDAD</div>
-                    </div>
-
-                    <div class="metric-card">
-                        ${renderProgressCircle(sanitized.companerismo,'#2ecc71')}
-                        <div class="metric-title">COMPAÑERISMO</div>
-                    </div>
-
-                    <div class="metric-card">
-                        ${renderProgressCircle(sanitized.respeto,'#f39c12')}
-                        <div class="metric-title">RESPETO</div>
-                    </div>
-
-                    <div class="metric-card">
-                        ${renderProgressCircle(sanitized.humildad,'#9b59b6')}
-                        <div class="metric-title">HUMILDAD</div>
-                    </div>
-
-                </div>
-
-                <div class="average-box">
-
-                    <div style="font-size:.7rem;color:var(--muted);">
-                        PROMEDIO GENERAL
-                    </div>
-
-                    <div class="average-score">
-                        ${promedio}/10
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- ESTADO ADMINISTRATIVO -->
-
-            <div class="section-box">
-
-                <div class="section-title">
-                    <i class="fas fa-chart-line"></i>
-                    Estado Administrativo
-                </div>
-
-                <div class="admin-grid">
-
-                    ${deudaInscripcion > 0 ? `
-
-                    <div class="admin-card">
-
-                        <div class="admin-icon">
-                            <i class="fas fa-file-signature" style="color:#e74c3c;"></i>
-                        </div>
-
-                        <div class="admin-value" style="color:#e74c3c;">
-                            $5
-                        </div>
-
-                        <div class="admin-label">
-                            INSCRIPCIÓN
-                        </div>
-
-                        <div class="admin-status pending">
-                            PENDIENTE
-                        </div>
-
-                    </div>
-
-                    ` : ''}
-
-                    ${deudaUniforme > 0 ? `
-
-                    <div class="admin-card">
-
-                        <div class="admin-icon">
-                            <i class="fas fa-tshirt" style="color:#f39c12;"></i>
-                        </div>
-
-                        <div class="admin-value" style="color:#f39c12;">
-                            $17
-                        </div>
-
-                        <div class="admin-label">
-                            UNIFORME
-                        </div>
-
-                        <div class="admin-status warning">
-                            PENDIENTE
-                        </div>
-
-                    </div>
-
-                    ` : ''}
-
-                    ${deudaMedias > 0 ? `
-
-                    <div class="admin-card">
-
-                        <div class="admin-icon">
-                            <i class="fas fa-socks" style="color:#3498db;"></i>
-                        </div>
-
-                        <div class="admin-value" style="color:#3498db;">
-                            $2
-                        </div>
-
-                        <div class="admin-label">
-                            MEDIAS
-                        </div>
-
-                        <div class="admin-status info">
-                            PENDIENTE
-                        </div>
-
-                    </div>
-
-                    ` : ''}
-
-                    ${deudaVocalia > 0 ? `
-
-                    <div class="admin-card">
-
-                        <div class="admin-icon">
-                            <i class="fas fa-money-bill-wave" style="color:#9b59b6;"></i>
-                        </div>
-
-                        <div class="admin-value" style="color:#9b59b6;">
-                            $${deudaVocalia.toFixed(2)}
-                        </div>
-
-                        <div class="admin-label">
-                            VOCALÍA
-                        </div>
-
-                        <div class="admin-status vocalia">
-                            PENDIENTE
-                        </div>
-
-                    </div>
-
-                    ` : ''}
-
-                </div>
-
-                <div class="debt-box">
-
-                    <div class="debt-header">
-
-                        <span class="debt-label">
-                            <i class="fas fa-dollar-sign"></i>
-                            TOTAL PENDIENTE + VOCALÍA
-                        </span>
-
-                        <span
-                            class="debt-amount"
-                            style="color:${totalAdmin > 0 ? '#e74c3c' : '#2ecc71'}">
-
-                            $${totalAdmin.toFixed(2)}
-
-                        </span>
-
-                    </div>
-
-                    <div class="progress-bar">
-
-                        <div
-                            class="progress-fill-bar"
-                            style="width:${Math.min((totalAdmin / 30) * 100,100)}%">
-                        </div>
-
-                    </div>
-
-                    <div
-                        class="debt-message"
-                        style="
-                            background:${totalAdmin === 0
-                            ? 'rgba(46,204,113,.1)'
-                            : 'rgba(231,76,60,.1)'};
-                        ">
-
-                        ${
-                            totalAdmin === 0
-                            ? '✅ Jugador al día'
-                            : '⚠️ Existen valores pendientes'
-                        }
-
-                    </div>
-
-                </div>
-
-                <div class="admin-details">
-
-                    <div class="detail-item">
-                        <div class="detail-label">TALLA</div>
-                        <div class="detail-value">${sanitized.tallaUni}</div>
-                    </div>
-
-                    <div class="detail-item">
-                        <div class="detail-label">DORSAL</div>
-                        <div class="detail-value">${sanitized.dorsal}</div>
-                    </div>
-
-                    <div class="detail-item">
-                        <div class="detail-label">ACTUALIZADO</div>
-                        <div class="detail-value">
-                            ${new Date().toLocaleDateString()}
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button class="btn-logout" onclick="window.cerrarSesion()">
                 <i class="fas fa-sign-out-alt"></i>
+
                 CERRAR SESIÓN
+
             </button>
 
-            <div style="height:30px;"></div>
+            <div style="height:40px;"></div>
 
             `;
 
         }else{
 
             container.innerHTML = `
+
             <div class="error-message">
+
                 Jugador no encontrado
+
             </div>
             `;
-
         }
 
     }catch(e){
@@ -976,59 +862,88 @@ async function cargarPerfil(cedula){
         console.error(e);
 
         container.innerHTML = `
+
         <div class="error-message">
+
             Error de conexión
+
         </div>
         `;
-
     }
-
 }
+
+/* =========================================
+RECARGAR
+========================================= */
 
 window.recargarPerfil = async function(){
 
     const session =
-        JSON.parse(localStorage.getItem('jugador_actual'));
+    JSON.parse(
+        localStorage.getItem(
+            'jugador_actual'
+        )
+    );
 
     if(!session || !session.cedula){
 
-        window.location.href='login.html';
-        return;
+        window.location.href =
+        'login.html';
 
+        return;
     }
 
-    document.getElementById('perfilContent').innerHTML =
-        '<div class="spinner"></div>';
+    document.getElementById(
+        'perfilContent'
+    ).innerHTML =
+    '<div class="spinner"></div>';
 
-    cargarPerfil(session.cedula);
-
+    verificarNoticiasPendientes(
+        session.cedula
+    );
 };
+
+/* =========================================
+CERRAR SESION
+========================================= */
 
 window.cerrarSesion = function(){
 
     if(confirm('¿Cerrar sesión?')){
 
-        localStorage.removeItem('jugador_actual');
+        localStorage.removeItem(
+            'jugador_actual'
+        );
 
-        window.location.href='login.html';
-
+        window.location.href =
+        'login.html';
     }
-
 };
+
+/* =========================================
+INIT
+========================================= */
 
 (function(){
 
     const session =
-        JSON.parse(localStorage.getItem('jugador_actual'));
+    JSON.parse(
+        localStorage.getItem(
+            'jugador_actual'
+        )
+    );
 
     if(!session || !session.cedula){
 
-        window.location.href='login.html';
-        return;
+        window.location.href =
+        'login.html';
 
+        return;
     }
 
-    cargarPerfil(session.cedula);
+    verificarNoticiasPendientes(
+        session.cedula
+    );
 
 })();
 
