@@ -71,12 +71,12 @@ TOPBAR
 
     backdrop-filter:blur(18px);
 
-    background:rgba(15,23,42,.78);
+    background:rgba(15,23,42,.82);
 
     border-bottom:
     1px solid rgba(255,255,255,.06);
 
-    padding:18px;
+    padding:16px;
 }
 
 .top-content{
@@ -87,25 +87,23 @@ TOPBAR
 
     justify-content:space-between;
 
-    gap:12px;
+    gap:10px;
 }
 
 .top-left h1{
 
-    font-size:1.3rem;
+    font-size:1.25rem;
 
     font-weight:900;
-
-    letter-spacing:-.5px;
 }
 
 .top-left p{
 
+    font-size:.82rem;
+
     color:#94a3b8;
 
     margin-top:4px;
-
-    font-size:.85rem;
 }
 
 .top-actions{
@@ -119,8 +117,8 @@ TOPBAR
 
 .top-btn{
 
-    width:50px;
-    height:50px;
+    width:48px;
+    height:48px;
 
     border:none;
 
@@ -159,11 +157,11 @@ CARDS
     display:grid;
 
     grid-template-columns:
-    repeat(4,1fr);
+    repeat(4,minmax(0,1fr));
 
-    gap:12px;
+    gap:10px;
 
-    padding:18px;
+    padding:16px 14px 8px;
 }
 
 .stat-card{
@@ -172,27 +170,23 @@ CARDS
 
     overflow:hidden;
 
-    border-radius:28px;
+    border-radius:24px;
 
-    padding:18px;
+    padding:14px 10px;
+
+    min-height:95px;
 
     cursor:pointer;
 
-    transition:.3s;
+    transition:.25s;
 
-    background:
-    rgba(255,255,255,.08);
+    backdrop-filter:blur(14px);
 
     border:
     1px solid rgba(255,255,255,.08);
 
-    backdrop-filter:blur(14px);
-}
-
-.stat-card:hover{
-
-    transform:
-    translateY(-4px);
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.15);
 }
 
 .stat-card::before{
@@ -201,40 +195,46 @@ CARDS
 
     position:absolute;
 
-    width:120px;
-    height:120px;
-
-    background:
-    rgba(255,255,255,.08);
+    width:90px;
+    height:90px;
 
     border-radius:50%;
 
-    top:-40px;
-    right:-40px;
+    top:-30px;
+    right:-30px;
+
+    background:
+    rgba(255,255,255,.10);
 }
 
 .stat-card h3{
 
-    font-size:.82rem;
+    font-size:.72rem;
 
-    color:#cbd5e1;
+    font-weight:700;
 
-    margin-bottom:10px;
+    color:rgba(255,255,255,.78);
+
+    margin-bottom:8px;
 
     position:relative;
 
     z-index:2;
+
+    white-space:nowrap;
 }
 
 .stat-card p{
 
-    font-size:2rem;
+    font-size:1.6rem;
 
     font-weight:900;
 
     position:relative;
 
     z-index:2;
+
+    line-height:1;
 }
 
 .total{
@@ -279,12 +279,12 @@ SEARCH
 
 .search-box{
 
-    padding:0 18px 10px;
+    padding:10px 14px;
 }
 
 .search{
 
-    height:60px;
+    height:58px;
 
     border-radius:24px;
 
@@ -330,7 +330,7 @@ FILTERS
 
 .filters-bar{
 
-    padding:10px 18px 0;
+    padding:4px 14px 12px;
 
     display:flex;
 
@@ -347,7 +347,7 @@ FILTERS
 
     border-radius:18px;
 
-    padding:0 18px;
+    padding:0 16px;
 
     background:
     rgba(255,255,255,.08);
@@ -369,7 +369,7 @@ PLAYERS
 
 .players{
 
-    padding:18px 18px 120px;
+    padding:0 14px 120px;
 
     display:flex;
 
@@ -384,7 +384,7 @@ PLAYERS
 
     overflow:hidden;
 
-    border-radius:32px;
+    border-radius:30px;
 
     background:
     rgba(255,255,255,.08);
@@ -392,11 +392,14 @@ PLAYERS
     border:
     1px solid rgba(255,255,255,.08);
 
-    backdrop-filter:blur(18px);
+    backdrop-filter:blur(20px);
 
-    padding:18px;
+    padding:16px;
 
     transition:.3s;
+
+    box-shadow:
+    0 12px 30px rgba(0,0,0,.18);
 }
 
 .player-card:hover{
@@ -411,27 +414,27 @@ PLAYERS
 
     align-items:center;
 
-    justify-content:space-between;
-
-    margin-bottom:16px;
+    gap:16px;
 }
 
 /* ======================================
-CAMISETA
+JERSEY
 ====================================== */
 
 .jersey{
 
-    width:110px;
-    height:120px;
+    width:112px;
+    min-width:112px;
 
-    border-radius:26px;
+    height:126px;
+
+    border-radius:28px;
 
     background:
     linear-gradient(
     180deg,
     #2563eb,
-    #1e40af
+    #1e3a8a
     );
 
     position:relative;
@@ -440,14 +443,14 @@ CAMISETA
 
     display:flex;
 
+    flex-direction:column;
+
     align-items:center;
 
     justify-content:center;
 
-    flex-direction:column;
-
     box-shadow:
-    0 15px 40px rgba(37,99,235,.35);
+    0 16px 35px rgba(37,99,235,.35);
 }
 
 .jersey::before{
@@ -456,18 +459,22 @@ CAMISETA
 
     position:absolute;
 
-    top:-25px;
+    top:-22px;
     left:50%;
 
     transform:translateX(-50%);
 
-    width:52px;
-    height:40px;
+    width:56px;
+    height:38px;
+
+    border-radius:0 0 18px 18px;
 
     background:#0f172a;
-
-    border-radius:0 0 20px 20px;
 }
+
+/* ======================================
+AVATAR
+====================================== */
 
 .player-avatar{
 
@@ -481,9 +488,12 @@ CAMISETA
 
     border-radius:50%;
 
-    border:2px solid rgba(255,255,255,.3);
-
     overflow:hidden;
+
+    border:
+    2px solid rgba(255,255,255,.4);
+
+    background:#fff;
 }
 
 .player-avatar img{
@@ -500,20 +510,28 @@ CAMISETA
 
     font-weight:900;
 
-    margin-top:14px;
+    color:#fff;
+
+    margin-top:16px;
+
+    line-height:1;
 }
 
 .jersey-name{
 
-    font-size:.72rem;
+    margin-top:6px;
+
+    font-size:.7rem;
 
     font-weight:800;
 
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
     text-align:center;
 
-    padding:0 8px;
-
-    margin-top:2px;
+    padding:0 6px;
 }
 
 /* ======================================
@@ -524,25 +542,33 @@ INFO
 
     flex:1;
 
-    padding-left:18px;
+    min-width:0;
 }
 
 .player-info h2{
 
-    font-size:1.05rem;
+    font-size:1rem;
 
     font-weight:900;
 
-    margin-bottom:6px;
+    line-height:1.2;
+
+    margin-bottom:8px;
 }
 
 .player-info p{
 
+    font-size:.83rem;
+
     color:#cbd5e1;
 
-    font-size:.9rem;
+    margin-bottom:4px;
 
-    margin-bottom:5px;
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 }
 
 /* ======================================
@@ -557,19 +583,19 @@ ESTADO
 
     justify-content:center;
 
-    height:34px;
+    min-width:110px;
 
-    min-width:120px;
+    height:32px;
 
     border-radius:999px;
 
-    padding:0 16px;
+    padding:0 14px;
 
-    font-size:.75rem;
+    font-size:.72rem;
 
     font-weight:800;
 
-    margin-top:10px;
+    margin-top:8px;
 }
 
 .estado.aprobado{
@@ -594,35 +620,34 @@ ESTADO
 }
 
 /* ======================================
-ACTIONS
+BUTTONS
 ====================================== */
 
 .player-actions{
 
-    display:flex;
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
 
     gap:10px;
 
-    flex-wrap:wrap;
-
-    margin-top:18px;
+    margin-top:16px;
 }
 
 .action-btn{
 
-    flex:1;
-
-    min-width:90px;
-
-    height:50px;
+    height:48px;
 
     border:none;
 
     border-radius:18px;
 
-    font-weight:800;
-
     color:#fff;
+
+    font-size:.82rem;
+
+    font-weight:800;
 
     cursor:pointer;
 
@@ -632,21 +657,22 @@ ACTIONS
 
     justify-content:center;
 
-    gap:8px;
+    gap:6px;
 
     transition:.25s;
 }
 
-.action-btn:hover{
-    transform:translateY(-2px);
-}
+.action-btn:active{
 
-.edit{
-    background:#2563eb;
+    transform:scale(.96);
 }
 
 .whatsapp{
     background:#16a34a;
+}
+
+.edit{
+    background:#2563eb;
 }
 
 .approve{
@@ -658,27 +684,91 @@ ACTIONS
 }
 
 /* ======================================
-RESPONSIVE
+MOBILE
 ====================================== */
 
-@media(max-width:900px){
+@media(max-width:640px){
 
     .stats-grid{
 
         grid-template-columns:
-        repeat(2,1fr);
+        repeat(4,1fr);
+
+        gap:8px;
+
+        padding:14px 10px 6px;
+    }
+
+    .stat-card{
+
+        border-radius:22px;
+
+        padding:12px 8px;
+
+        min-height:82px;
+    }
+
+    .stat-card h3{
+
+        font-size:.60rem;
+    }
+
+    .stat-card p{
+
+        font-size:1.2rem;
+    }
+
+    .player-card{
+
+        padding:14px;
     }
 
     .player-top{
 
-        flex-direction:column;
-
         align-items:flex-start;
     }
 
-    .player-info{
-        padding-left:0;
-        padding-top:18px;
+    .jersey{
+
+        width:95px;
+        min-width:95px;
+
+        height:112px;
+
+        border-radius:24px;
+    }
+
+    .jersey-number{
+
+        font-size:1.7rem;
+    }
+
+    .jersey-name{
+
+        font-size:.62rem;
+    }
+
+    .player-avatar{
+
+        width:36px;
+        height:36px;
+    }
+
+    .player-info h2{
+
+        font-size:.93rem;
+    }
+
+    .player-info p{
+
+        font-size:.77rem;
+    }
+
+    .action-btn{
+
+        height:44px;
+
+        font-size:.72rem;
     }
 }
 
@@ -703,7 +793,7 @@ TOPBAR
             </h1>
 
             <p>
-                Panel administrativo Nápoles F.C.
+                Nápoles F.C.
             </p>
 
         </div>
@@ -737,7 +827,7 @@ TOPBAR
 </header>
 
 <!-- ======================================
-STATS
+CARDS
 ====================================== -->
 
 <section class="stats-grid">
@@ -898,19 +988,23 @@ let jugadoresGlobal = [];
 let estadoActual = 'TODOS';
 
 // ======================================
-// AVATARES FUTBOLISTAS
+// AVATARES
 // ======================================
 
 const avatars = [
 
-'https://randomuser.me/api/portraits/men/11.jpg',
-'https://randomuser.me/api/portraits/men/32.jpg',
-'https://randomuser.me/api/portraits/men/45.jpg',
-'https://randomuser.me/api/portraits/men/52.jpg',
-'https://randomuser.me/api/portraits/men/65.jpg',
-'https://randomuser.me/api/portraits/men/77.jpg',
-'https://randomuser.me/api/portraits/men/81.jpg',
-'https://randomuser.me/api/portraits/men/90.jpg'
+'https://i.pravatar.cc/300?img=12',
+'https://i.pravatar.cc/300?img=13',
+'https://i.pravatar.cc/300?img=14',
+'https://i.pravatar.cc/300?img=15',
+'https://i.pravatar.cc/300?img=16',
+'https://i.pravatar.cc/300?img=18',
+'https://i.pravatar.cc/300?img=19',
+'https://i.pravatar.cc/300?img=20',
+'https://i.pravatar.cc/300?img=21',
+'https://i.pravatar.cc/300?img=22',
+'https://i.pravatar.cc/300?img=24',
+'https://i.pravatar.cc/300?img=25'
 
 ];
 
@@ -931,9 +1025,10 @@ async function cargarJugadores(){
         await response.json();
 
         jugadoresGlobal =
+
         (data.jugadores || [])
 
-        .sort((a,b) =>
+        .sort((a,b)=>
 
             Number(b.dorsal || 0)
 
@@ -954,7 +1049,7 @@ async function cargarJugadores(){
 }
 
 // ======================================
-// STATS
+// CARDS
 // ======================================
 
 function actualizarCards(){
@@ -962,6 +1057,7 @@ function actualizarCards(){
     document.getElementById(
         'totalJugadores'
     ).innerText =
+
     jugadoresGlobal.length;
 
     document.getElementById(
@@ -1014,9 +1110,9 @@ function renderJugadores(lista){
         playersContainer.innerHTML =
         `
         <p style="
+        padding:30px;
         text-align:center;
-        color:#cbd5e1;
-        padding:40px;">
+        color:#cbd5e1;">
         No hay jugadores
         </p>
         `;
