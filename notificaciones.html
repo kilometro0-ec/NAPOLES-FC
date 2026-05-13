@@ -288,7 +288,7 @@ textarea{
 
         <button
         class="btn"
-        onclick="guardarNotificacion()">
+        id="btnPublicar">
 
             Publicar noticia
 
@@ -383,9 +383,13 @@ async function guardarNotificacion(){
             estado.className =
             'estado ok';
 
-            document.getElementById('titulo').value = '';
+            document
+            .getElementById('titulo')
+            .value = '';
 
-            document.getElementById('mensaje').value = '';
+            document
+            .getElementById('mensaje')
+            .value = '';
 
         }else{
 
@@ -409,11 +413,15 @@ async function guardarNotificacion(){
 }
 
 /* ====================================
-GLOBAL
+EVENTO BOTÓN
 ==================================== */
 
-window.guardarNotificacion =
-guardarNotificacion;
+document
+.getElementById('btnPublicar')
+.addEventListener(
+'click',
+guardarNotificacion
+);
 
 </script>
 
