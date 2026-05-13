@@ -3,21 +3,23 @@
 
 <head>
 
-<meta charset="UTF-8">
+<meta charset="UTF-8"/>
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 
-<title>Jugadores - Nápoles F.C.</title>
+<title>Jugadores | Nápoles F.C.</title>
 
-<link
-href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 
 <link
-href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-rel="stylesheet">
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+rel="stylesheet"/>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+rel="stylesheet"/>
 
 <style>
 
@@ -33,642 +35,619 @@ body{
     font-family:'Inter',sans-serif;
 
     background:
-    linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #faf7ff 45%,
-    #f5f3ff 100%
-    );
-
-    color:#111827;
+    radial-gradient(
+        circle at top left,
+        rgba(124,58,237,.15),
+        transparent 30%
+    ),
+    radial-gradient(
+        circle at bottom right,
+        rgba(59,130,246,.12),
+        transparent 30%
+    ),
+    #f5f7fb;
 
     min-height:100vh;
 
     overflow-x:hidden;
-
-    position:relative;
 }
 
-/* =========================================
-ONDAS
-========================================= */
+.glass{
 
-.wave-bg{
+    background:
+    rgba(255,255,255,.72);
 
-    position:fixed;
+    backdrop-filter:
+    blur(18px);
 
-    inset:0;
-
-    overflow:hidden;
-
-    z-index:-1;
-
-    pointer-events:none;
+    border:
+    1px solid rgba(255,255,255,.4);
 }
 
 .wave{
 
-    position:absolute;
+    position:fixed;
 
-    width:220%;
+    width:900px;
+    height:900px;
 
-    height:280px;
+    border-radius:999px;
 
-    left:-60%;
+    filter:blur(120px);
 
-    border-radius:45%;
+    z-index:-1;
 
-    opacity:.14;
-
-    filter:blur(8px);
+    animation:
+    floatWave 18s infinite linear;
 }
 
 .wave1{
 
+    top:-300px;
+    left:-300px;
+
     background:
-    linear-gradient(
-    90deg,
-    #a855f7,
-    #c084fc,
-    #f3e8ff
-    );
-
-    bottom:-140px;
-
-    animation:
-    waveMove 18s linear infinite;
+    rgba(124,58,237,.18);
 }
 
 .wave2{
 
+    bottom:-300px;
+    right:-300px;
+
     background:
-    linear-gradient(
-    90deg,
-    #7c3aed,
-    #d8b4fe,
-    #ffffff
-    );
+    rgba(59,130,246,.16);
 
-    bottom:-180px;
-
-    opacity:.08;
-
-    animation:
-    waveMoveReverse 28s linear infinite;
+    animation-duration:24s;
 }
 
-@keyframes waveMove{
+@keyframes floatWave{
 
     0%{
         transform:
-        translateX(0)
-        rotate(0deg);
+        rotate(0deg)
+        translateY(0px);
+    }
+
+    50%{
+        transform:
+        rotate(180deg)
+        translateY(30px);
     }
 
     100%{
         transform:
-        translateX(-12%)
-        rotate(360deg);
+        rotate(360deg)
+        translateY(0px);
     }
 }
 
-@keyframes waveMoveReverse{
-
-    0%{
-        transform:
-        translateX(0)
-        rotate(0deg);
-    }
-
-    100%{
-        transform:
-        translateX(12%)
-        rotate(-360deg);
-    }
-}
-
-/* =========================================
-HEADER
-========================================= */
-
-.topbar{
-
-    position:sticky;
-
-    top:0;
-
-    z-index:100;
-
-    background:rgba(255,255,255,.78);
-
-    backdrop-filter:blur(14px);
-
-    border-bottom:1px solid rgba(168,85,247,.08);
-
-    padding:16px 18px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-}
-
-.admin-info h1{
-
-    font-size:1.1rem;
-
-    font-weight:800;
-}
-
-.admin-info p{
-
-    font-size:.85rem;
-
-    color:#6b7280;
-
-    margin-top:2px;
-}
-
-.avatar{
-
-    width:46px;
-    height:46px;
-
-    border-radius:16px;
-
-    background:linear-gradient(
-    135deg,
-    #7c3aed,
-    #a855f7
-    );
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    color:#fff;
-
-    font-weight:800;
-
-    font-size:1rem;
-
-    box-shadow:
-    0 10px 25px rgba(124,58,237,.25);
-}
-
-/* =========================================
-SEARCH
-========================================= */
-
-.search-box{
-
-    padding:20px 18px 10px;
-}
-
-.search{
-
-    background:rgba(255,255,255,.85);
-
-    backdrop-filter:blur(12px);
-
-    border:1px solid rgba(168,85,247,.08);
-
-    border-radius:20px;
-
-    padding:14px 16px;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    box-shadow:
-    0 10px 30px rgba(15,23,42,.05);
-}
-
-.search input{
-
-    border:none;
-
-    outline:none;
-
-    width:100%;
-
-    background:none;
-
-    font-size:.95rem;
-
-    font-family:'Inter',sans-serif;
-}
-
-/* =========================================
-FILTROS
-========================================= */
-
-.filters{
-
-    padding:0 18px 10px;
-
-    display:flex;
-
-    gap:10px;
-
-    overflow:auto;
-}
-
-.filter-btn{
-
-    border:none;
-
-    min-width:120px;
-
-    height:44px;
-
-    border-radius:999px;
-
-    background:#fff;
-
-    color:#6b7280;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-    box-shadow:
-    0 8px 20px rgba(15,23,42,.05);
-}
-
-.filter-btn.active{
-
-    background:
-    linear-gradient(
-    135deg,
-    #7c3aed,
-    #a855f7
-    );
-
-    color:#fff;
-}
-
-/* =========================================
-PLAYERS
-========================================= */
-
-.players{
-
-    padding:14px 18px 120px;
+.material-symbols-outlined{
+
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 500,
+    'GRAD' 0,
+    'opsz' 24;
 }
 
 .player-card{
 
-    background:rgba(255,255,255,.88);
-
-    backdrop-filter:blur(12px);
-
-    border:1px solid rgba(168,85,247,.08);
-
-    border-radius:24px;
-
-    padding:18px;
-
-    margin-bottom:16px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    box-shadow:
-    0 10px 30px rgba(15,23,42,.05);
-
     transition:.25s;
 }
 
-.player-left{
+.player-card:hover{
 
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-}
-
-.player-avatar{
-
-    width:68px;
-    height:68px;
-
-    border-radius:22px;
-
-    background:
-    linear-gradient(
-    135deg,
-    #7c3aed,
-    #a855f7
-    );
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    overflow:hidden;
-
-    color:#fff;
-
-    font-weight:800;
-
-    font-size:1rem;
-
-    flex-shrink:0;
-}
-
-.player-avatar img{
-
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-}
-
-.player-info h3{
-
-    font-size:1rem;
-
-    font-weight:800;
-
-    margin-bottom:4px;
-}
-
-.player-info p{
-
-    color:#6b7280;
-
-    font-size:.88rem;
-
-    margin-bottom:8px;
-}
-
-/* =========================================
-ESTADOS
-========================================= */
-
-.estado{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    min-width:110px;
-
-    height:30px;
-
-    border-radius:999px;
-
-    padding:0 14px;
-
-    font-size:.75rem;
-
-    font-weight:800;
-}
-
-.aprobado{
-
-    background:#dcfce7;
-
-    color:#166534;
-}
-
-.pendiente{
-
-    background:#fef3c7;
-
-    color:#92400e;
-}
-
-.rechazado{
-
-    background:#fee2e2;
-
-    color:#991b1b;
-}
-
-/* =========================================
-BOTONES
-========================================= */
-
-.player-actions{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:10px;
-}
-
-.action-btn{
-
-    width:44px;
-    height:44px;
-
-    border:none;
-
-    border-radius:16px;
-
-    color:#fff;
-
-    cursor:pointer;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-}
-
-.approve{
-    background:#16a34a;
-}
-
-.reject{
-    background:#ef4444;
-}
-
-.edit{
-    background:#2563eb;
-}
-
-/* =========================================
-FAB
-========================================= */
-
-.fab{
-
-    position:fixed;
-
-    right:20px;
-    bottom:20px;
-
-    width:66px;
-    height:66px;
-
-    border:none;
-
-    border-radius:24px;
-
-    background:
-    linear-gradient(
-    135deg,
-    #7c3aed,
-    #a855f7
-    );
-
-    color:#fff;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    cursor:pointer;
+    transform:
+    translateY(-3px);
 
     box-shadow:
-    0 20px 40px rgba(124,58,237,.35);
-
-    z-index:99;
+    0 15px 35px rgba(15,23,42,.08);
 }
 
-.fab .material-symbols-outlined{
-    font-size:34px;
+.scroll-hidden::-webkit-scrollbar{
+    display:none;
 }
 
 </style>
 
 </head>
 
-<body>
+<body class="text-slate-800">
 
-<!-- ======================================
-ONDAS
-====================================== -->
+<!-- ===================================== -->
+<!-- WAVES -->
+<!-- ===================================== -->
 
-<div class="wave-bg">
+<div class="wave wave1"></div>
+<div class="wave wave2"></div>
 
-    <div class="wave wave1"></div>
+<!-- ===================================== -->
+<!-- SIDEBAR -->
+<!-- ===================================== -->
 
-    <div class="wave wave2"></div>
+<aside
+class="
+hidden lg:flex
+fixed
+left-0
+top-0
+h-screen
+w-[270px]
+glass
+border-r
+border-white/30
+flex-col
+z-40
+">
+
+<div class="p-7">
+
+    <h1
+    class="
+    text-2xl
+    font-black
+    text-violet-700
+    ">
+        NÁPOLES F.C.
+    </h1>
+
+    <p
+    class="
+    text-sm
+    text-slate-500
+    mt-1
+    ">
+        Panel Administrativo
+    </p>
 
 </div>
 
-<!-- ======================================
-HEADER
-====================================== -->
+<nav class="px-4 flex flex-col gap-2">
 
-<header class="topbar">
+    <a
+    class="
+    flex
+    items-center
+    gap-3
+    px-4
+    py-3
+    rounded-2xl
+    bg-violet-600
+    text-white
+    font-semibold
+    "
+    href="#">
 
-    <div class="admin-info">
+        <span class="material-symbols-outlined">
+            groups
+        </span>
 
-        <h1>Jugadores</h1>
+        Jugadores
 
-        <p>Nápoles F.C.</p>
+    </a>
+
+    <a
+    class="
+    flex
+    items-center
+    gap-3
+    px-4
+    py-3
+    rounded-2xl
+    hover:bg-white/60
+    transition
+    "
+    href="#">
+
+        <span class="material-symbols-outlined">
+            dashboard
+        </span>
+
+        Dashboard
+
+    </a>
+
+</nav>
+
+<div class="mt-auto p-6">
+
+    <div
+    class="
+    glass
+    rounded-3xl
+    p-4
+    flex
+    items-center
+    gap-3
+    ">
+
+        <div
+        class="
+        w-12
+        h-12
+        rounded-2xl
+        bg-gradient-to-br
+        from-violet-600
+        to-fuchsia-500
+        flex
+        items-center
+        justify-center
+        text-white
+        font-black
+        ">
+            A
+        </div>
+
+        <div>
+
+            <h3
+            class="
+            font-bold
+            text-sm
+            ">
+                Administrador
+            </h3>
+
+            <p
+            class="
+            text-xs
+            text-slate-500
+            ">
+                Nápoles F.C.
+            </p>
+
+        </div>
 
     </div>
 
-    <div class="avatar">
-        G
-    </div>
+</div>
+
+</aside>
+
+<!-- ===================================== -->
+<!-- MAIN -->
+<!-- ===================================== -->
+
+<main class="lg:ml-[270px] pb-40">
+
+<!-- ===================================== -->
+<!-- TOPBAR -->
+<!-- ===================================== -->
+
+<header
+class="
+sticky
+top-0
+z-30
+glass
+border-b
+border-white/30
+">
+
+<div
+class="
+px-5
+py-4
+flex
+items-center
+justify-between
+">
+
+<div>
+
+    <h2
+    class="
+    text-2xl
+    font-black
+    ">
+        Gestión de Jugadores
+    </h2>
+
+    <p
+    class="
+    text-sm
+    text-slate-500
+    ">
+        Administra registros del club
+    </p>
+
+</div>
+
+<div
+class="
+w-12
+h-12
+rounded-2xl
+bg-gradient-to-br
+from-violet-600
+to-fuchsia-500
+flex
+items-center
+justify-center
+text-white
+font-black
+shadow-lg
+">
+
+    G
+
+</div>
+
+</div>
 
 </header>
 
-<!-- ======================================
-SEARCH
-====================================== -->
-
-<section class="search-box">
-
-    <div class="search">
-
-        <span class="material-symbols-outlined">
-            search
-        </span>
-
-        <input
-        type="text"
-        id="searchInput"
-        placeholder="Buscar jugador...">
-
-    </div>
-
-</section>
-
-<!-- ======================================
-FILTROS
-====================================== -->
-
-<section class="filters">
-
-    <button
-    class="filter-btn active"
-    onclick="filtrarEstado('TODOS', this)">
-        Todos
-    </button>
-
-    <button
-    class="filter-btn"
-    onclick="filtrarEstado('PENDIENTE', this)">
-        Pendientes
-    </button>
-
-    <button
-    class="filter-btn"
-    onclick="filtrarEstado('APROBADO', this)">
-        Aprobados
-    </button>
-
-    <button
-    class="filter-btn"
-    onclick="filtrarEstado('RECHAZADO', this)">
-        Rechazados
-    </button>
-
-</section>
-
-<!-- ======================================
-PLAYERS
-====================================== -->
+<!-- ===================================== -->
+<!-- STATS -->
+<!-- ===================================== -->
 
 <section
-class="players"
-id="playersContainer">
+class="
+grid
+grid-cols-2
+lg:grid-cols-4
+gap-4
+p-5
+">
 
-    <p style="padding:20px">
-        Cargando jugadores...
+<div class="glass rounded-3xl p-5">
+
+    <p class="text-sm text-slate-500">
+        Total
     </p>
+
+    <h3
+    id="totalJugadores"
+    class="
+    text-3xl
+    font-black
+    mt-2
+    ">
+        0
+    </h3>
+
+</div>
+
+<div class="glass rounded-3xl p-5">
+
+    <p class="text-sm text-slate-500">
+        Pendientes
+    </p>
+
+    <h3
+    id="totalPendientes"
+    class="
+    text-3xl
+    font-black
+    text-amber-500
+    mt-2
+    ">
+        0
+    </h3>
+
+</div>
+
+<div class="glass rounded-3xl p-5">
+
+    <p class="text-sm text-slate-500">
+        Aprobados
+    </p>
+
+    <h3
+    id="totalAprobados"
+    class="
+    text-3xl
+    font-black
+    text-emerald-600
+    mt-2
+    ">
+        0
+    </h3>
+
+</div>
+
+<div class="glass rounded-3xl p-5">
+
+    <p class="text-sm text-slate-500">
+        Rechazados
+    </p>
+
+    <h3
+    id="totalRechazados"
+    class="
+    text-3xl
+    font-black
+    text-red-500
+    mt-2
+    ">
+        0
+    </h3>
+
+</div>
 
 </section>
 
-<!-- ======================================
-FAB
-====================================== -->
+<!-- ===================================== -->
+<!-- SEARCH -->
+<!-- ===================================== -->
+
+<section class="px-5">
+
+<div
+class="
+glass
+rounded-3xl
+p-4
+flex
+items-center
+gap-3
+">
+
+<span
+class="
+material-symbols-outlined
+text-slate-500
+">
+search
+</span>
+
+<input
+type="text"
+id="searchInput"
+placeholder="Buscar jugador..."
+class="
+bg-transparent
+outline-none
+w-full
+border-none
+text-sm
+"
+/>
+
+</div>
+
+</section>
+
+<!-- ===================================== -->
+<!-- FILTERS -->
+<!-- ===================================== -->
+
+<section
+class="
+px-5
+pt-5
+flex
+gap-3
+overflow-auto
+scroll-hidden
+">
 
 <button
-class="fab"
-onclick="window.location.href='nuevo-jugador.html'">
+class="
+filter-btn
+bg-violet-600
+text-white
+px-5
+h-12
+rounded-2xl
+font-bold
+whitespace-nowrap
+"
+data-estado="TODOS">
 
-    <span class="material-symbols-outlined">
-        add
-    </span>
+Todos
+
+</button>
+
+<button
+class="
+filter-btn
+glass
+px-5
+h-12
+rounded-2xl
+font-bold
+whitespace-nowrap
+"
+data-estado="PENDIENTE">
+
+Pendientes
+
+</button>
+
+<button
+class="
+filter-btn
+glass
+px-5
+h-12
+rounded-2xl
+font-bold
+whitespace-nowrap
+"
+data-estado="APROBADO">
+
+Aprobados
+
+</button>
+
+<button
+class="
+filter-btn
+glass
+px-5
+h-12
+rounded-2xl
+font-bold
+whitespace-nowrap
+"
+data-estado="RECHAZADO">
+
+Rechazados
+
+</button>
+
+</section>
+
+<!-- ===================================== -->
+<!-- PLAYERS -->
+<!-- ===================================== -->
+
+<section
+id="playersContainer"
+class="
+p-5
+grid
+grid-cols-1
+xl:grid-cols-2
+gap-5
+">
+
+<div
+class="
+glass
+rounded-3xl
+p-10
+text-center
+text-slate-500
+">
+
+Cargando jugadores...
+
+</div>
+
+</section>
+
+</main>
+
+<!-- ===================================== -->
+<!-- FAB -->
+<!-- ===================================== -->
+
+<button
+onclick="window.location.href='nuevo-jugador.html'"
+class="
+fixed
+bottom-6
+right-6
+w-16
+h-16
+rounded-3xl
+bg-gradient-to-br
+from-violet-600
+to-fuchsia-500
+text-white
+shadow-2xl
+flex
+items-center
+justify-center
+z-50
+">
+
+<span class="material-symbols-outlined text-[34px]">
+add
+</span>
 
 </button>
 
@@ -681,12 +660,17 @@ onclick="window.location.href='nuevo-jugador.html'">
 // =========================================
 
 if(
-    localStorage.getItem('admin_activo')
-    !== 'true'
+    localStorage.getItem(
+        'admin_activo'
+    ) !== 'true'
 ){
     window.location.href =
     './login.html';
 }
+
+// =========================================
+// VARIABLES
+// =========================================
 
 const playersContainer =
 document.getElementById(
@@ -698,10 +682,33 @@ document.getElementById(
     'searchInput'
 );
 
+const totalJugadores =
+document.getElementById(
+    'totalJugadores'
+);
+
+const totalPendientes =
+document.getElementById(
+    'totalPendientes'
+);
+
+const totalAprobados =
+document.getElementById(
+    'totalAprobados'
+);
+
+const totalRechazados =
+document.getElementById(
+    'totalRechazados'
+);
+
 let jugadoresGlobal = [];
 
+let estadoActivo =
+'TODOS';
+
 // =========================================
-// CARGAR
+// CARGAR JUGADORES
 // =========================================
 
 async function cargarJugadores(){
@@ -719,6 +726,8 @@ async function cargarJugadores(){
         jugadoresGlobal =
         data.jugadores || [];
 
+        actualizarCards();
+
         renderJugadores(
             jugadoresGlobal
         );
@@ -726,8 +735,58 @@ async function cargarJugadores(){
     }catch(err){
 
         playersContainer.innerHTML =
-        '<p>Error conexión</p>';
+        `
+        <div
+        class="
+        glass
+        rounded-3xl
+        p-10
+        text-center
+        text-red-500
+        ">
+
+            Error cargando jugadores
+
+        </div>
+        `;
     }
+}
+
+// =========================================
+// ACTUALIZAR CARDS
+// =========================================
+
+function actualizarCards(){
+
+    totalJugadores.innerText =
+    jugadoresGlobal.length;
+
+    totalPendientes.innerText =
+    jugadoresGlobal.filter(j =>
+
+        (j.estado || '')
+        .toUpperCase()
+        === 'PENDIENTE'
+
+    ).length;
+
+    totalAprobados.innerText =
+    jugadoresGlobal.filter(j =>
+
+        (j.estado || '')
+        .toUpperCase()
+        === 'APROBADO'
+
+    ).length;
+
+    totalRechazados.innerText =
+    jugadoresGlobal.filter(j =>
+
+        (j.estado || '')
+        .toUpperCase()
+        === 'RECHAZADO'
+
+    ).length;
 }
 
 // =========================================
@@ -741,12 +800,57 @@ function renderJugadores(lista){
     if(lista.length === 0){
 
         playersContainer.innerHTML =
-        '<p>No hay jugadores</p>';
+        `
+        <div
+        class="
+        glass
+        rounded-3xl
+        p-10
+        text-center
+        text-slate-500
+        col-span-full
+        ">
+
+            No hay jugadores
+
+        </div>
+        `;
 
         return;
     }
 
     lista.forEach(jugador => {
+
+        const estado =
+        (
+            jugador.estado ||
+            'PENDIENTE'
+        ).toUpperCase();
+
+        let badge = `
+        bg-amber-100
+        text-amber-700
+        `;
+
+        if(
+            estado === 'APROBADO'
+        ){
+
+            badge = `
+            bg-emerald-100
+            text-emerald-700
+            `;
+        }
+
+        if(
+            estado === 'RECHAZADO'
+        ){
+
+            badge = `
+            bg-red-100
+            text-red-700
+            `;
+        }
 
         const iniciales =
 
@@ -761,190 +865,290 @@ function renderJugadores(lista){
 
         ).toUpperCase();
 
-        let estadoClass =
-        'pendiente';
-
-        if(
-            jugador.estado ===
-            'APROBADO'
-        ){
-            estadoClass =
-            'aprobado';
-        }
-
-        if(
-            jugador.estado ===
-            'RECHAZADO'
-        ){
-            estadoClass =
-            'rechazado';
-        }
-
         const card =
         document.createElement('div');
 
         card.className =
-        'player-card';
+        `
+        player-card
+        glass
+        rounded-[32px]
+        p-5
+        `;
 
         card.innerHTML = `
 
-        <div class="player-left">
+        <div
+        class="
+        flex
+        items-start
+        justify-between
+        gap-4
+        ">
 
-            <div class="player-avatar">
-
-                ${
-                    jugador.foto
-                    ?
-                    `<img src="${jugador.foto}">`
-                    :
-                    iniciales
-                }
-
-            </div>
-
-            <div class="player-info">
-
-                <h3>
-                    ${jugador.primerNombre}
-                    ${jugador.apellidos}
-                </h3>
-
-                <p>
-                    ${jugador.cedula}
-                </p>
+            <div
+            class="
+            flex
+            gap-4
+            ">
 
                 <div
-                class="estado ${estadoClass}">
+                class="
+                w-20
+                h-20
+                rounded-[28px]
+                overflow-hidden
+                bg-gradient-to-br
+                from-violet-600
+                to-fuchsia-500
+                text-white
+                flex
+                items-center
+                justify-center
+                font-black
+                text-xl
+                shrink-0
+                ">
 
                     ${
-                        jugador.estado
-                        || 'PENDIENTE'
+                        jugador.foto
+                        ?
+
+                        `<img
+                        src="${jugador.foto}"
+                        class="
+                        w-full
+                        h-full
+                        object-cover
+                        ">`
+
+                        :
+
+                        iniciales
                     }
+
+                </div>
+
+                <div>
+
+                    <h3
+                    class="
+                    text-lg
+                    font-black
+                    leading-tight
+                    ">
+
+                        ${jugador.primerNombre}
+                        ${jugador.apellidos}
+
+                    </h3>
+
+                    <p
+                    class="
+                    text-sm
+                    text-slate-500
+                    mt-1
+                    ">
+
+                        ${jugador.cedula}
+
+                    </p>
+
+                    <div
+                    class="
+                    inline-flex
+                    items-center
+                    px-4
+                    h-9
+                    rounded-full
+                    text-xs
+                    font-black
+                    mt-3
+                    ${badge}
+                    ">
+
+                        ${estado}
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+            <div
+            class="
+            flex
+            flex-col
+            gap-3
+            ">
 
-        <div class="player-actions">
+                ${
+                    estado !==
+                    'APROBADO'
 
-            ${
-                jugador.estado !==
-                'APROBADO'
-                ?
-                `
-                <button
-                class="action-btn approve"
-                onclick="aprobarJugador('${jugador.cedula}')">
+                    ?
 
-                    <span class="material-symbols-outlined">
-                        check
-                    </span>
+                    `
+                    <button
+                    onclick="aprobarJugador('${jugador.cedula}')"
+                    class="
+                    w-12
+                    h-12
+                    rounded-2xl
+                    bg-emerald-500
+                    text-white
+                    flex
+                    items-center
+                    justify-center
+                    shadow-lg
+                    ">
 
-                </button>
-                `
-                :
-                ''
-            }
+                        <span class="material-symbols-outlined">
+                            check
+                        </span>
 
-            ${
-                jugador.estado !==
-                'RECHAZADO'
-                ?
-                `
-                <button
-                class="action-btn reject"
-                onclick="rechazarJugador('${jugador.cedula}')">
+                    </button>
+                    `
 
-                    <span class="material-symbols-outlined">
-                        close
-                    </span>
+                    :
 
-                </button>
-                `
-                :
-                ''
-            }
+                    ''
+                }
 
-            <button
-            class="action-btn edit"
-            onclick="editarJugador('${jugador.cedula}')">
+                ${
+                    estado !==
+                    'RECHAZADO'
 
-                <span class="material-symbols-outlined">
-                    edit
-                </span>
+                    ?
 
-            </button>
+                    `
+                    <button
+                    onclick="rechazarJugador('${jugador.cedula}')"
+                    class="
+                    w-12
+                    h-12
+                    rounded-2xl
+                    bg-red-500
+                    text-white
+                    flex
+                    items-center
+                    justify-center
+                    shadow-lg
+                    ">
+
+                        <span class="material-symbols-outlined">
+                            close
+                        </span>
+
+                    </button>
+                    `
+
+                    :
+
+                    ''
+                }
+
+            </div>
 
         </div>
         `;
 
-        playersContainer
-        .appendChild(card);
+        playersContainer.appendChild(
+            card
+        );
 
     });
 }
 
 // =========================================
-// FILTRO
+// FILTROS
 // =========================================
 
-function filtrarEstado(
-    estado,
-    btn
-){
+document
+.querySelectorAll('.filter-btn')
+.forEach(btn => {
 
-    document
-    .querySelectorAll('.filter-btn')
-    .forEach(b => {
+    btn.addEventListener(
+    'click',
+    () => {
 
-        b.classList.remove(
-            'active'
+        document
+        .querySelectorAll(
+            '.filter-btn'
+        )
+        .forEach(b => {
+
+            b.classList.remove(
+                'bg-violet-600',
+                'text-white'
+            );
+
+            b.classList.add(
+                'glass'
+            );
+        });
+
+        btn.classList.remove(
+            'glass'
         );
+
+        btn.classList.add(
+            'bg-violet-600',
+            'text-white'
+        );
+
+        estadoActivo =
+        btn.dataset.estado;
+
+        aplicarFiltros();
     });
 
-    btn.classList.add(
-        'active'
-    );
-
-    if(estado === 'TODOS'){
-
-        renderJugadores(
-            jugadoresGlobal
-        );
-
-        return;
-    }
-
-    const filtrados =
-    jugadoresGlobal.filter(j =>
-
-        (j.estado || '')
-        .toUpperCase()
-        === estado
-    );
-
-    renderJugadores(
-        filtrados
-    );
-}
+});
 
 // =========================================
-// BUSCAR
+// BUSCADOR
 // =========================================
 
 searchInput.addEventListener(
 'input',
-e => {
+aplicarFiltros
+);
+
+// =========================================
+// FILTROS
+// =========================================
+
+function aplicarFiltros(){
 
     const texto =
-    e.target.value
+
+    searchInput.value
     .toLowerCase()
     .trim();
 
-    const filtrados =
-    jugadoresGlobal.filter(j => {
+    let lista =
+    [...jugadoresGlobal];
+
+    if(
+        estadoActivo !==
+        'TODOS'
+    ){
+
+        lista =
+        lista.filter(j =>
+
+            (
+                j.estado ||
+                ''
+            )
+            .toUpperCase()
+
+            === estadoActivo
+        );
+    }
+
+    lista =
+    lista.filter(j => {
 
         return (
 
@@ -965,10 +1169,8 @@ e => {
         );
     });
 
-    renderJugadores(
-        filtrados
-    );
-});
+    renderJugadores(lista);
+}
 
 // =========================================
 // APROBAR
@@ -1001,7 +1203,7 @@ async function aprobarJugador(
 
             const mensaje =
 
-`🏆 *¡BIENVENIDO A NÁPOLES F.C.!* ⚽🔥
+`🏆 ¡BIENVENIDO A NÁPOLES F.C.! ⚽🔥
 
 Tu registro fue aprobado exitosamente 🙌
 
@@ -1010,20 +1212,47 @@ Ya eres parte oficial del club 💙
 📲 Ingresa ahora a tu panel de jugador:
 https://kilometro0-ec.github.io/NAPOLES-FC/login.html
 
-✅ Para entrar solo debes colocar tu número de cédula.
+✅ Para ingresar solo debes colocar tu número de cédula.
 
-⚽ Mira tus estadísticas
+⚽ Revisa tus estadísticas
 🏅 Mira tus partidos
-👕 Revisa tu perfil
+👕 Consulta tu perfil
 
 ¡Nos vemos en la cancha campeón! 💪🔥`;
 
+            let telefono =
+            String(
+                data.telefono || ''
+            )
+            .replace(/\D/g,'');
+
+            if(
+                telefono.startsWith('0')
+            ){
+                telefono =
+                telefono.substring(1);
+            }
+
+            if(
+                !telefono.startsWith('593')
+            ){
+                telefono =
+                '593' + telefono;
+            }
+
             window.open(
-`https://wa.me/593${data.telefono}?text=${encodeURIComponent(mensaje)}`,
+`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`,
 '_blank'
             );
 
             cargarJugadores();
+
+        }else{
+
+            alert(
+                data.error ||
+                'No se pudo aprobar'
+            );
         }
 
     }catch(err){
@@ -1064,6 +1293,13 @@ async function rechazarJugador(
         if(data.ok){
 
             cargarJugadores();
+
+        }else{
+
+            alert(
+                data.error ||
+                'No se pudo rechazar'
+            );
         }
 
     }catch(err){
@@ -1072,23 +1308,6 @@ async function rechazarJugador(
             'Error rechazando'
         );
     }
-}
-
-// =========================================
-// EDITAR
-// =========================================
-
-function editarJugador(
-    cedula
-){
-
-    localStorage.setItem(
-        'editCedula',
-        cedula
-    );
-
-    window.location.href =
-    './editar-jugador.html';
 }
 
 // =========================================
