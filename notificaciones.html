@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 
 <meta charset="UTF-8">
@@ -9,7 +8,7 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>Noticias - Nápoles F.C.</title>
+<title>Notificaciones - Nápoles F.C.</title>
 
 <link
 href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
@@ -32,18 +31,24 @@ body{
 
     font-family:'Inter',sans-serif;
 
-    background:#f3f6fb;
+    background:
+    linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f7f7ff 45%,
+    #f3f4f6 100%
+    );
 
     color:#111827;
 
     min-height:100vh;
 
-    overflow-x:hidden;
+    padding-bottom:120px;
 }
 
-/* =========================================
+/* ====================================
 HEADER
-========================================= */
+==================================== */
 
 .topbar{
 
@@ -53,13 +58,14 @@ HEADER
 
     z-index:100;
 
-    background:rgba(255,255,255,.92);
+    background:rgba(255,255,255,.85);
 
-    backdrop-filter:blur(14px);
+    backdrop-filter:blur(12px);
 
-    border-bottom:1px solid #e5e7eb;
+    padding:18px;
 
-    padding:16px 18px;
+    border-bottom:
+    1px solid rgba(0,0,0,.05);
 
     display:flex;
 
@@ -68,199 +74,23 @@ HEADER
     justify-content:space-between;
 }
 
-.top-left{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-}
-
-.admin-info h1{
+.topbar h1{
 
     font-size:1.1rem;
 
     font-weight:800;
 }
 
-.admin-info p{
-
-    font-size:.85rem;
-
-    color:#6b7280;
-
-    margin-top:2px;
-}
-
-.avatar{
-
-    width:46px;
-    height:46px;
-
-    border-radius:16px;
-
-    background:linear-gradient(
-    135deg,
-    #0891b2,
-    #22d3ee
-    );
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    color:#fff;
-
-    font-weight:800;
-
-    font-size:1rem;
-}
-
-/* =========================================
-NEWS
-========================================= */
-
-.news{
-
-    padding:20px 18px 40px;
-}
-
-.news-card{
-
-    background:#fff;
-
-    border-radius:28px;
-
-    overflow:hidden;
-
-    margin-bottom:20px;
-
-    box-shadow:
-    0 10px 30px rgba(15,23,42,.05);
-}
-
-.news-image{
-
-    width:100%;
-
-    height:180px;
-
-    background:linear-gradient(
-    135deg,
-    #0891b2,
-    #22d3ee
-    );
-
-    position:relative;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    color:#fff;
-}
-
-.news-image .material-symbols-outlined{
-
-    font-size:70px;
-
-    opacity:.9;
-}
-
-.news-content{
-
-    padding:20px;
-}
-
-.news-tag{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:6px;
-
-    background:#ecfeff;
-
-    color:#0891b2;
-
-    padding:8px 14px;
-
-    border-radius:999px;
-
-    font-size:.78rem;
-
-    font-weight:800;
-
-    margin-bottom:14px;
-}
-
-.news-content h2{
-
-    font-size:1.15rem;
-
-    font-weight:800;
-
-    line-height:1.4;
-
-    margin-bottom:12px;
-}
-
-.news-content p{
-
-    color:#6b7280;
-
-    line-height:1.6;
-
-    font-size:.92rem;
-
-    margin-bottom:18px;
-}
-
-.news-footer{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding-top:16px;
-
-    border-top:1px solid #e5e7eb;
-}
-
-.news-date{
-
-    color:#6b7280;
-
-    font-size:.82rem;
-
-    font-weight:600;
-}
-
-.actions{
-
-    display:flex;
-
-    gap:10px;
-}
-
-.action-btn{
+.back-btn{
 
     width:42px;
     height:42px;
 
-    border:none;
-
     border-radius:14px;
 
-    cursor:pointer;
+    border:none;
+
+    background:#eef2ff;
 
     display:flex;
 
@@ -268,69 +98,135 @@ NEWS
 
     justify-content:center;
 
-    color:#fff;
+    cursor:pointer;
 }
 
-.edit{
-    background:#2563eb;
+/* ====================================
+CONTENIDO
+==================================== */
+
+.container{
+
+    padding:18px;
 }
 
-.delete{
-    background:#ef4444;
+.card{
+
+    background:#fff;
+
+    border-radius:26px;
+
+    padding:20px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.05);
+
+    border:1px solid rgba(0,0,0,.04);
 }
 
-/* =========================================
-FAB
-========================================= */
+.card h2{
 
-.fab{
+    font-size:1.1rem;
 
-    position:fixed;
+    margin-bottom:18px;
 
-    right:20px;
-    bottom:20px;
+    font-weight:800;
+}
 
-    width:64px;
-    height:64px;
+.input-group{
+
+    margin-bottom:16px;
+}
+
+.input-group label{
+
+    display:block;
+
+    font-size:.88rem;
+
+    margin-bottom:8px;
+
+    color:#4b5563;
+
+    font-weight:600;
+}
+
+.input-group input,
+.input-group textarea{
+
+    width:100%;
 
     border:none;
 
-    border-radius:22px;
+    background:#f3f4f6;
 
-    background:linear-gradient(
+    border-radius:18px;
+
+    padding:16px;
+
+    font-size:.95rem;
+
+    font-family:'Inter',sans-serif;
+
+    outline:none;
+}
+
+textarea{
+
+    resize:none;
+
+    min-height:140px;
+}
+
+.btn{
+
+    width:100%;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    background:
+    linear-gradient(
     135deg,
     #0891b2,
-    #22d3ee
+    #06b6d4
     );
 
     color:#fff;
 
-    display:flex;
+    font-size:1rem;
 
-    align-items:center;
-
-    justify-content:center;
+    font-weight:800;
 
     cursor:pointer;
 
-    box-shadow:
-    0 15px 35px rgba(8,145,178,.35);
+    transition:.2s;
 }
 
-.fab .material-symbols-outlined{
-    font-size:34px;
+.btn:active{
+    transform:scale(.98);
 }
 
-/* =========================================
-RESPONSIVE
-========================================= */
+.estado{
 
-@media(min-width:700px){
+    margin-top:16px;
 
-    .news{
-        max-width:700px;
-        margin:auto;
-    }
+    text-align:center;
+
+    font-size:.92rem;
+
+    font-weight:700;
+}
+
+.ok{
+    color:#16a34a;
+}
+
+.error{
+    color:#dc2626;
 }
 
 </style>
@@ -339,259 +235,167 @@ RESPONSIVE
 
 <body>
 
-<!-- ======================================
-TOPBAR
-====================================== -->
-
 <header class="topbar">
 
-    <div class="top-left">
+    <button
+    class="back-btn"
+    onclick="history.back()">
 
-        <div class="admin-info">
+        <span class="material-symbols-outlined">
+            arrow_back
+        </span>
 
-            <h1>Noticias</h1>
+    </button>
 
-            <p>Nápoles F.C.</p>
+    <h1>Crear Notificación</h1>
 
-        </div>
-
-    </div>
-
-    <div class="avatar">
-        N
-    </div>
+    <div style="width:42px"></div>
 
 </header>
 
-<!-- ======================================
-NEWS
-====================================== -->
+<div class="container">
 
-<section class="news">
+    <div class="card">
 
-    <!-- NEWS -->
+        <h2>
+            Nueva noticia para jugadores
+        </h2>
 
-    <div class="news-card">
+        <div class="input-group">
 
-        <div class="news-image">
+            <label>
+                Título
+            </label>
 
-            <span class="material-symbols-outlined">
-                campaign
-            </span>
+            <input
+            type="text"
+            id="titulo"
+            placeholder="Ej: Entrenamiento viernes">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                Descripción
+            </label>
+
+            <textarea
+            id="mensaje"
+            placeholder="Escribe la noticia o anuncio..."></textarea>
 
         </div>
 
-        <div class="news-content">
+        <button
+        class="btn"
+        onclick="guardarNotificacion()">
 
-            <div class="news-tag">
+            Publicar noticia
 
-                <span class="material-symbols-outlined">
-                    notifications
-                </span>
+        </button>
 
-                Oficial
-
-            </div>
-
-            <h2>
-                Nápoles F.C. gana el clásico 3-1
-            </h2>
-
-            <p>
-                El equipo consiguió una importante victoria
-                este fin de semana con una gran actuación
-                colectiva y excelente rendimiento ofensivo.
-            </p>
-
-            <div class="news-footer">
-
-                <div class="news-date">
-                    12 Mayo 2026
-                </div>
-
-                <div class="actions">
-
-                    <button class="action-btn edit">
-
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-
-                    </button>
-
-                    <button class="action-btn delete">
-
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
+        <div
+        id="estado"
+        class="estado"></div>
 
     </div>
 
-    <!-- NEWS -->
-
-    <div class="news-card">
-
-        <div class="news-image">
-
-            <span class="material-symbols-outlined">
-                sports_soccer
-            </span>
-
-        </div>
-
-        <div class="news-content">
-
-            <div class="news-tag">
-
-                <span class="material-symbols-outlined">
-                    stadium
-                </span>
-
-                Partido
-
-            </div>
-
-            <h2>
-                Próximo encuentro este sábado
-            </h2>
-
-            <p>
-                El club enfrentará a Atléticos FC
-                en el Estadio Central a las 20:00.
-                Invitamos a toda la hinchada.
-            </p>
-
-            <div class="news-footer">
-
-                <div class="news-date">
-                    10 Mayo 2026
-                </div>
-
-                <div class="actions">
-
-                    <button class="action-btn edit">
-
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-
-                    </button>
-
-                    <button class="action-btn delete">
-
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- NEWS -->
-
-    <div class="news-card">
-
-        <div class="news-image">
-
-            <span class="material-symbols-outlined">
-                emoji_events
-            </span>
-
-        </div>
-
-        <div class="news-content">
-
-            <div class="news-tag">
-
-                <span class="material-symbols-outlined">
-                    star
-                </span>
-
-                Destacado
-
-            </div>
-
-            <h2>
-                Cristian Ruiz máximo goleador
-            </h2>
-
-            <p>
-                El delantero del club lidera
-                la tabla de goleadores con
-                12 anotaciones esta temporada.
-            </p>
-
-            <div class="news-footer">
-
-                <div class="news-date">
-                    07 Mayo 2026
-                </div>
-
-                <div class="actions">
-
-                    <button class="action-btn edit">
-
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-
-                    </button>
-
-                    <button class="action-btn delete">
-
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ======================================
-FAB
-====================================== -->
-
-<button class="fab">
-
-    <span class="material-symbols-outlined">
-        add
-    </span>
-
-</button>
+</div>
 
 <script>
 
-// =========================================
-// VALIDAR ADMIN
-// =========================================
+/* ====================================
+CONFIG
+==================================== */
 
-if(
-    localStorage.getItem('admin_activo')
-    !== 'true'
-){
-    window.location.href = './login.html';
+const SCRIPT_URL =
+'https://script.google.com/macros/s/TU_SCRIPT_ID/exec';
+
+/* ====================================
+GUARDAR
+==================================== */
+
+async function guardarNotificacion(){
+
+    const titulo =
+    document.getElementById('titulo').value.trim();
+
+    const mensaje =
+    document.getElementById('mensaje').value.trim();
+
+    const estado =
+    document.getElementById('estado');
+
+    if(!titulo || !mensaje){
+
+        estado.innerHTML =
+        'Completa todos los campos';
+
+        estado.className =
+        'estado error';
+
+        return;
+    }
+
+    estado.innerHTML =
+    'Publicando noticia...';
+
+    estado.className =
+    'estado';
+
+    try{
+
+        const response =
+        await fetch(SCRIPT_URL,{
+
+            method:'POST',
+
+            body:JSON.stringify({
+
+                accion:'crearNotificacion',
+
+                titulo:titulo,
+
+                mensaje:mensaje
+
+            })
+
+        });
+
+        const data =
+        await response.json();
+
+        if(data.success){
+
+            estado.innerHTML =
+            '✅ Notificación publicada';
+
+            estado.className =
+            'estado ok';
+
+            document.getElementById('titulo').value = '';
+
+            document.getElementById('mensaje').value = '';
+
+        }else{
+
+            estado.innerHTML =
+            'Error al guardar';
+
+            estado.className =
+            'estado error';
+        }
+
+    }catch(error){
+
+        estado.innerHTML =
+        'Error de conexión';
+
+        estado.className =
+        'estado error';
+
+        console.error(error);
+    }
 }
 
 </script>
