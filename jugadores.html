@@ -174,15 +174,6 @@ HEADER
     justify-content:space-between;
 }
 
-.top-left{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-}
-
 .admin-info h1{
 
     font-size:1.1rem;
@@ -208,8 +199,8 @@ HEADER
 
     background:linear-gradient(
     135deg,
-    #2563eb,
-    #60a5fa
+    #7c3aed,
+    #a855f7
     );
 
     display:flex;
@@ -225,7 +216,7 @@ HEADER
     font-size:1rem;
 
     box-shadow:
-    0 10px 25px rgba(37,99,235,.25);
+    0 10px 25px rgba(124,58,237,.25);
 }
 
 /* =========================================
@@ -274,9 +265,55 @@ SEARCH
     font-family:'Inter',sans-serif;
 }
 
-.search .material-symbols-outlined{
+/* =========================================
+FILTROS
+========================================= */
+
+.filters{
+
+    padding:0 18px 10px;
+
+    display:flex;
+
+    gap:10px;
+
+    overflow:auto;
+}
+
+.filter-btn{
+
+    border:none;
+
+    min-width:120px;
+
+    height:44px;
+
+    border-radius:999px;
+
+    background:#fff;
 
     color:#6b7280;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:
+    0 8px 20px rgba(15,23,42,.05);
+}
+
+.filter-btn.active{
+
+    background:
+    linear-gradient(
+    135deg,
+    #7c3aed,
+    #a855f7
+    );
+
+    color:#fff;
 }
 
 /* =========================================
@@ -290,7 +327,7 @@ PLAYERS
 
 .player-card{
 
-    background:rgba(255,255,255,.86);
+    background:rgba(255,255,255,.88);
 
     backdrop-filter:blur(12px);
 
@@ -314,15 +351,6 @@ PLAYERS
     transition:.25s;
 }
 
-.player-card:hover{
-
-    transform:
-    translateY(-2px);
-
-    box-shadow:
-    0 18px 35px rgba(124,58,237,.08);
-}
-
 .player-left{
 
     display:flex;
@@ -334,15 +362,16 @@ PLAYERS
 
 .player-avatar{
 
-    width:60px;
-    height:60px;
+    width:68px;
+    height:68px;
 
-    border-radius:18px;
+    border-radius:22px;
 
-    background:linear-gradient(
+    background:
+    linear-gradient(
     135deg,
-    #2563eb,
-    #60a5fa
+    #7c3aed,
+    #a855f7
     );
 
     display:flex;
@@ -351,13 +380,13 @@ PLAYERS
 
     justify-content:center;
 
-    color:#fff;
+    overflow:hidden;
 
-    font-size:1rem;
+    color:#fff;
 
     font-weight:800;
 
-    overflow:hidden;
+    font-size:1rem;
 
     flex-shrink:0;
 }
@@ -366,6 +395,7 @@ PLAYERS
 
     width:100%;
     height:100%;
+
     object-fit:cover;
 }
 
@@ -384,24 +414,78 @@ PLAYERS
 
     font-size:.88rem;
 
-    line-height:1.4;
+    margin-bottom:8px;
 }
+
+/* =========================================
+ESTADOS
+========================================= */
+
+.estado{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:110px;
+
+    height:30px;
+
+    border-radius:999px;
+
+    padding:0 14px;
+
+    font-size:.75rem;
+
+    font-weight:800;
+}
+
+.aprobado{
+
+    background:#dcfce7;
+
+    color:#166534;
+}
+
+.pendiente{
+
+    background:#fef3c7;
+
+    color:#92400e;
+}
+
+.rechazado{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+}
+
+/* =========================================
+BOTONES
+========================================= */
 
 .player-actions{
 
     display:flex;
+
+    flex-direction:column;
 
     gap:10px;
 }
 
 .action-btn{
 
-    width:42px;
-    height:42px;
+    width:44px;
+    height:44px;
 
     border:none;
 
-    border-radius:14px;
+    border-radius:16px;
+
+    color:#fff;
 
     cursor:pointer;
 
@@ -410,22 +494,18 @@ PLAYERS
     align-items:center;
 
     justify-content:center;
-
-    color:#fff;
-
-    transition:.2s;
 }
 
-.action-btn:active{
-    transform:scale(.95);
+.approve{
+    background:#16a34a;
+}
+
+.reject{
+    background:#ef4444;
 }
 
 .edit{
     background:#2563eb;
-}
-
-.delete{
-    background:#ef4444;
 }
 
 /* =========================================
@@ -439,14 +519,15 @@ FAB
     right:20px;
     bottom:20px;
 
-    width:64px;
-    height:64px;
+    width:66px;
+    height:66px;
 
     border:none;
 
-    border-radius:22px;
+    border-radius:24px;
 
-    background:linear-gradient(
+    background:
+    linear-gradient(
     135deg,
     #7c3aed,
     #a855f7
@@ -463,26 +544,13 @@ FAB
     cursor:pointer;
 
     box-shadow:
-    0 18px 40px rgba(124,58,237,.35);
+    0 20px 40px rgba(124,58,237,.35);
 
     z-index:99;
 }
 
 .fab .material-symbols-outlined{
     font-size:34px;
-}
-
-/* =========================================
-RESPONSIVE
-========================================= */
-
-@media(min-width:700px){
-
-    .players,
-    .search-box{
-        max-width:700px;
-        margin:auto;
-    }
 }
 
 </style>
@@ -504,25 +572,21 @@ ONDAS
 </div>
 
 <!-- ======================================
-TOPBAR
+HEADER
 ====================================== -->
 
 <header class="topbar">
 
-    <div class="top-left">
+    <div class="admin-info">
 
-        <div class="admin-info">
+        <h1>Jugadores</h1>
 
-            <h1>Jugadores</h1>
-
-            <p>Nápoles F.C.</p>
-
-        </div>
+        <p>Nápoles F.C.</p>
 
     </div>
 
     <div class="avatar">
-        J
+        G
     </div>
 
 </header>
@@ -545,6 +609,38 @@ SEARCH
         placeholder="Buscar jugador...">
 
     </div>
+
+</section>
+
+<!-- ======================================
+FILTROS
+====================================== -->
+
+<section class="filters">
+
+    <button
+    class="filter-btn active"
+    onclick="filtrarEstado('TODOS', this)">
+        Todos
+    </button>
+
+    <button
+    class="filter-btn"
+    onclick="filtrarEstado('PENDIENTE', this)">
+        Pendientes
+    </button>
+
+    <button
+    class="filter-btn"
+    onclick="filtrarEstado('APROBADO', this)">
+        Aprobados
+    </button>
+
+    <button
+    class="filter-btn"
+    onclick="filtrarEstado('RECHAZADO', this)">
+        Rechazados
+    </button>
 
 </section>
 
@@ -605,7 +701,7 @@ document.getElementById(
 let jugadoresGlobal = [];
 
 // =========================================
-// CARGAR JUGADORES
+// CARGAR
 // =========================================
 
 async function cargarJugadores(){
@@ -620,16 +716,8 @@ async function cargarJugadores(){
         const data =
         await response.json();
 
-        if(!data.ok){
-
-            playersContainer.innerHTML =
-            '<p>Error cargando jugadores</p>';
-
-            return;
-        }
-
         jugadoresGlobal =
-        data.jugadores;
+        data.jugadores || [];
 
         renderJugadores(
             jugadoresGlobal
@@ -639,8 +727,6 @@ async function cargarJugadores(){
 
         playersContainer.innerHTML =
         '<p>Error conexión</p>';
-
-        console.log(err);
     }
 }
 
@@ -663,13 +749,36 @@ function renderJugadores(lista){
     lista.forEach(jugador => {
 
         const iniciales =
+
         (
             (jugador.primerNombre || '')
-            .charAt(0) +
+            .charAt(0)
+
+            +
 
             (jugador.apellidos || '')
             .charAt(0)
+
         ).toUpperCase();
+
+        let estadoClass =
+        'pendiente';
+
+        if(
+            jugador.estado ===
+            'APROBADO'
+        ){
+            estadoClass =
+            'aprobado';
+        }
+
+        if(
+            jugador.estado ===
+            'RECHAZADO'
+        ){
+            estadoClass =
+            'rechazado';
+        }
 
         const card =
         document.createElement('div');
@@ -686,9 +795,7 @@ function renderJugadores(lista){
                 ${
                     jugador.foto
                     ?
-                    `<img
-                    src="${jugador.foto}"
-                    alt="foto">`
+                    `<img src="${jugador.foto}">`
                     :
                     iniciales
                 }
@@ -698,21 +805,67 @@ function renderJugadores(lista){
             <div class="player-info">
 
                 <h3>
-                ${jugador.primerNombre}
-                ${jugador.apellidos}
+                    ${jugador.primerNombre}
+                    ${jugador.apellidos}
                 </h3>
 
                 <p>
-                #${jugador.dorsal || '-'}
-                •
-                ${jugador.estado || 'PENDIENTE'}
+                    ${jugador.cedula}
                 </p>
+
+                <div
+                class="estado ${estadoClass}">
+
+                    ${
+                        jugador.estado
+                        || 'PENDIENTE'
+                    }
+
+                </div>
 
             </div>
 
         </div>
 
         <div class="player-actions">
+
+            ${
+                jugador.estado !==
+                'APROBADO'
+                ?
+                `
+                <button
+                class="action-btn approve"
+                onclick="aprobarJugador('${jugador.cedula}')">
+
+                    <span class="material-symbols-outlined">
+                        check
+                    </span>
+
+                </button>
+                `
+                :
+                ''
+            }
+
+            ${
+                jugador.estado !==
+                'RECHAZADO'
+                ?
+                `
+                <button
+                class="action-btn reject"
+                onclick="rechazarJugador('${jugador.cedula}')">
+
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+
+                </button>
+                `
+                :
+                ''
+            }
 
             <button
             class="action-btn edit"
@@ -724,28 +877,66 @@ function renderJugadores(lista){
 
             </button>
 
-            <button
-            class="action-btn delete"
-            onclick="eliminarJugador(${jugador.fila})">
-
-                <span class="material-symbols-outlined">
-                    delete
-                </span>
-
-            </button>
-
         </div>
         `;
 
-        playersContainer.appendChild(card);
+        playersContainer
+        .appendChild(card);
+
     });
 }
 
 // =========================================
-// BUSCADOR
+// FILTRO
 // =========================================
 
-searchInput.addEventListener('input', e => {
+function filtrarEstado(
+    estado,
+    btn
+){
+
+    document
+    .querySelectorAll('.filter-btn')
+    .forEach(b => {
+
+        b.classList.remove(
+            'active'
+        );
+    });
+
+    btn.classList.add(
+        'active'
+    );
+
+    if(estado === 'TODOS'){
+
+        renderJugadores(
+            jugadoresGlobal
+        );
+
+        return;
+    }
+
+    const filtrados =
+    jugadoresGlobal.filter(j =>
+
+        (j.estado || '')
+        .toUpperCase()
+        === estado
+    );
+
+    renderJugadores(
+        filtrados
+    );
+}
+
+// =========================================
+// BUSCAR
+// =========================================
+
+searchInput.addEventListener(
+'input',
+e => {
 
     const texto =
     e.target.value
@@ -780,14 +971,16 @@ searchInput.addEventListener('input', e => {
 });
 
 // =========================================
-// ELIMINAR
+// APROBAR
 // =========================================
 
-async function eliminarJugador(fila){
+async function aprobarJugador(
+    cedula
+){
 
     const ok =
     confirm(
-        '¿Eliminar jugador?'
+        '¿Aprobar jugador?'
     );
 
     if(!ok){
@@ -798,7 +991,71 @@ async function eliminarJugador(fila){
 
         const response =
         await fetch(
-`${CONFIG.URL_GAS}?action=eliminarJugador&fila=${fila}`
+`${CONFIG.URL_GAS}?action=aprobarJugador&cedula=${cedula}`
+        );
+
+        const data =
+        await response.json();
+
+        if(data.ok){
+
+            const mensaje =
+
+`🏆 *¡BIENVENIDO A NÁPOLES F.C.!* ⚽🔥
+
+Tu registro fue aprobado exitosamente 🙌
+
+Ya eres parte oficial del club 💙
+
+📲 Ingresa ahora a tu panel de jugador:
+https://kilometro0-ec.github.io/NAPOLES-FC/login.html
+
+✅ Para entrar solo debes colocar tu número de cédula.
+
+⚽ Mira tus estadísticas
+🏅 Mira tus partidos
+👕 Revisa tu perfil
+
+¡Nos vemos en la cancha campeón! 💪🔥`;
+
+            window.open(
+`https://wa.me/593${data.telefono}?text=${encodeURIComponent(mensaje)}`,
+'_blank'
+            );
+
+            cargarJugadores();
+        }
+
+    }catch(err){
+
+        alert(
+            'Error aprobando'
+        );
+    }
+}
+
+// =========================================
+// RECHAZAR
+// =========================================
+
+async function rechazarJugador(
+    cedula
+){
+
+    const ok =
+    confirm(
+        '¿Rechazar jugador?'
+    );
+
+    if(!ok){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(
+`${CONFIG.URL_GAS}?action=rechazarJugador&cedula=${cedula}`
         );
 
         const data =
@@ -807,18 +1064,12 @@ async function eliminarJugador(fila){
         if(data.ok){
 
             cargarJugadores();
-
-        }else{
-
-            alert(
-                data.error
-            );
         }
 
     }catch(err){
 
         alert(
-            'Error eliminando'
+            'Error rechazando'
         );
     }
 }
@@ -827,7 +1078,9 @@ async function eliminarJugador(fila){
 // EDITAR
 // =========================================
 
-function editarJugador(cedula){
+function editarJugador(
+    cedula
+){
 
     localStorage.setItem(
         'editCedula',
