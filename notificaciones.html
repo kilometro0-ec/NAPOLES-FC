@@ -302,34 +302,40 @@ textarea{
 
 </div>
 
-<script>
+<script type="module">
 
 /* ====================================
-CONFIG
+IMPORT CONFIG
 ==================================== */
 
-const SCRIPT_URL =
-'https://script.google.com/macros/s/TU_SCRIPT_ID/exec';
+import { SCRIPT_URL }
+from './config.js';
 
 /* ====================================
-GUARDAR
+GUARDAR NOTIFICACIÓN
 ==================================== */
 
 async function guardarNotificacion(){
 
     const titulo =
-    document.getElementById('titulo').value.trim();
+    document.getElementById('titulo')
+    .value
+    .trim();
 
     const mensaje =
-    document.getElementById('mensaje').value.trim();
+    document.getElementById('mensaje')
+    .value
+    .trim();
 
     const estado =
     document.getElementById('estado');
 
+    /* VALIDACIÓN */
+
     if(!titulo || !mensaje){
 
         estado.innerHTML =
-        'Completa todos los campos';
+        '⚠️ Completa todos los campos';
 
         estado.className =
         'estado error';
@@ -349,6 +355,10 @@ async function guardarNotificacion(){
         await fetch(SCRIPT_URL,{
 
             method:'POST',
+
+            headers:{
+                'Content-Type':'application/json'
+            },
 
             body:JSON.stringify({
 
@@ -380,7 +390,7 @@ async function guardarNotificacion(){
         }else{
 
             estado.innerHTML =
-            'Error al guardar';
+            data.error || 'Error al guardar';
 
             estado.className =
             'estado error';
@@ -388,15 +398,22 @@ async function guardarNotificacion(){
 
     }catch(error){
 
+        console.error(error);
+
         estado.innerHTML =
-        'Error de conexión';
+        '❌ Error de conexión';
 
         estado.className =
         'estado error';
-
-        console.error(error);
     }
 }
+
+/* ====================================
+GLOBAL
+==================================== */
+
+window.guardarNotificacion =
+guardarNotificacion;
 
 </script>
 
