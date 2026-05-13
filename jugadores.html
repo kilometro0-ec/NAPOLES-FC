@@ -35,31 +35,126 @@ body{
     font-family:'Inter',sans-serif;
 
     background:
-    radial-gradient(circle at top,#312e81 0%,#111827 45%,#020617 100%);
+    linear-gradient(
+    180deg,
+    #f5f3ff 0%,
+    #ffffff 35%,
+    #f8fafc 100%
+    );
 
     min-height:100vh;
-
-    color:#fff;
 
     overflow-x:hidden;
 }
 
-/* ======================================
+/* =====================================
 SCROLL
-====================================== */
+===================================== */
 
 ::-webkit-scrollbar{
-    width:6px;
+    width:0;
+    height:0;
 }
 
-::-webkit-scrollbar-thumb{
-    background:#7c3aed;
-    border-radius:20px;
+/* =====================================
+WAVES
+===================================== */
+
+.wave-bg{
+
+    position:fixed;
+
+    inset:0;
+
+    overflow:hidden;
+
+    z-index:-1;
+
+    pointer-events:none;
 }
 
-/* ======================================
+.wave{
+
+    position:absolute;
+
+    width:220%;
+
+    height:280px;
+
+    left:-60%;
+
+    border-radius:45%;
+
+    opacity:.10;
+
+    filter:blur(10px);
+}
+
+.wave1{
+
+    background:
+    linear-gradient(
+    90deg,
+    #7c3aed,
+    #a855f7,
+    #d8b4fe
+    );
+
+    bottom:-140px;
+
+    animation:
+    waveMove 18s linear infinite;
+}
+
+.wave2{
+
+    background:
+    linear-gradient(
+    90deg,
+    #2563eb,
+    #7c3aed,
+    #ffffff
+    );
+
+    bottom:-180px;
+
+    animation:
+    waveMoveReverse 28s linear infinite;
+}
+
+@keyframes waveMove{
+
+    0%{
+        transform:
+        translateX(0)
+        rotate(0deg);
+    }
+
+    100%{
+        transform:
+        translateX(-12%)
+        rotate(360deg);
+    }
+}
+
+@keyframes waveMoveReverse{
+
+    0%{
+        transform:
+        translateX(0)
+        rotate(0deg);
+    }
+
+    100%{
+        transform:
+        translateX(12%)
+        rotate(-360deg);
+    }
+}
+
+/* =====================================
 TOPBAR
-====================================== */
+===================================== */
 
 .topbar{
 
@@ -71,39 +166,74 @@ TOPBAR
 
     backdrop-filter:blur(18px);
 
-    background:rgba(15,23,42,.82);
+    background:
+    rgba(255,255,255,.78);
 
     border-bottom:
-    1px solid rgba(255,255,255,.06);
+    1px solid rgba(124,58,237,.08);
 
     padding:16px;
-}
-
-.top-content{
 
     display:flex;
 
     align-items:center;
 
     justify-content:space-between;
-
-    gap:10px;
 }
 
-.top-left h1{
+.logo-box{
 
-    font-size:1.25rem;
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.logo{
+
+    width:52px;
+    height:52px;
+
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #7c3aed,
+    #a855f7
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:1.2rem;
 
     font-weight:900;
+
+    box-shadow:
+    0 15px 35px rgba(124,58,237,.30);
 }
 
-.top-left p{
+.top-info h1{
 
-    font-size:.82rem;
+    font-size:1.1rem;
 
-    color:#94a3b8;
+    font-weight:900;
 
-    margin-top:4px;
+    color:#111827;
+}
+
+.top-info p{
+
+    font-size:.84rem;
+
+    color:#6b7280;
 }
 
 .top-actions{
@@ -117,19 +247,14 @@ TOPBAR
 
 .top-btn{
 
-    width:48px;
-    height:48px;
+    width:46px;
+    height:46px;
 
     border:none;
 
-    border-radius:18px;
+    border-radius:16px;
 
-    background:
-    rgba(255,255,255,.08);
-
-    color:#fff;
-
-    cursor:pointer;
+    background:#fff;
 
     display:flex;
 
@@ -137,156 +262,96 @@ TOPBAR
 
     justify-content:center;
 
-    transition:.25s;
+    cursor:pointer;
+
+    box-shadow:
+    0 10px 25px rgba(15,23,42,.06);
 }
 
-.top-btn:hover{
+/* =====================================
+CARDS TOP
+===================================== */
 
-    transform:translateY(-2px);
+.stats-wrapper{
 
-    background:
-    rgba(124,58,237,.35);
+    padding:16px;
+
+    overflow-x:auto;
 }
 
-/* ======================================
-CARDS
-====================================== */
+.stats-row{
 
-.stats-grid{
+    display:flex;
 
-    display:grid;
+    gap:12px;
 
-    grid-template-columns:
-    repeat(4,minmax(0,1fr));
-
-    gap:10px;
-
-    padding:16px 14px 8px;
+    min-width:max-content;
 }
 
 .stat-card{
 
-    position:relative;
+    min-width:145px;
 
-    overflow:hidden;
+    background:
+    rgba(255,255,255,.82);
+
+    backdrop-filter:blur(12px);
+
+    border:
+    1px solid rgba(124,58,237,.08);
 
     border-radius:24px;
 
-    padding:14px 10px;
-
-    min-height:95px;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-    backdrop-filter:blur(14px);
-
-    border:
-    1px solid rgba(255,255,255,.08);
+    padding:18px;
 
     box-shadow:
-    0 10px 25px rgba(0,0,0,.15);
-}
-
-.stat-card::before{
-
-    content:'';
-
-    position:absolute;
-
-    width:90px;
-    height:90px;
-
-    border-radius:50%;
-
-    top:-30px;
-    right:-30px;
-
-    background:
-    rgba(255,255,255,.10);
+    0 10px 30px rgba(15,23,42,.05);
 }
 
 .stat-card h3{
 
-    font-size:.72rem;
+    font-size:1.8rem;
 
-    font-weight:700;
+    font-weight:900;
 
-    color:rgba(255,255,255,.78);
+    margin-bottom:4px;
 
-    margin-bottom:8px;
-
-    position:relative;
-
-    z-index:2;
-
-    white-space:nowrap;
+    color:#111827;
 }
 
 .stat-card p{
 
-    font-size:1.6rem;
+    font-size:.8rem;
 
-    font-weight:900;
+    color:#6b7280;
 
-    position:relative;
-
-    z-index:2;
-
-    line-height:1;
+    font-weight:700;
 }
 
-.total{
-    background:
-    linear-gradient(
-    135deg,
-    #2563eb,
-    #1d4ed8
-    );
-}
-
-.aprobados{
-    background:
-    linear-gradient(
-    135deg,
-    #059669,
-    #10b981
-    );
-}
-
-.pendientes{
-    background:
-    linear-gradient(
-    135deg,
-    #d97706,
-    #f59e0b
-    );
-}
-
-.rechazados{
-    background:
-    linear-gradient(
-    135deg,
-    #dc2626,
-    #ef4444
-    );
-}
-
-/* ======================================
+/* =====================================
 SEARCH
-====================================== */
+===================================== */
+
+.search-area{
+
+    padding:0 16px 16px;
+}
 
 .search-box{
 
-    padding:10px 14px;
-}
+    width:100%;
 
-.search{
+    background:
+    rgba(255,255,255,.84);
 
-    height:58px;
+    backdrop-filter:blur(14px);
 
-    border-radius:24px;
+    border:
+    1px solid rgba(124,58,237,.08);
+
+    border-radius:22px;
+
+    padding:15px 16px;
 
     display:flex;
 
@@ -294,18 +359,11 @@ SEARCH
 
     gap:12px;
 
-    padding:0 18px;
-
-    background:
-    rgba(255,255,255,.08);
-
-    border:
-    1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(14px);
+    box-shadow:
+    0 10px 30px rgba(15,23,42,.05);
 }
 
-.search input{
+.search-box input{
 
     width:100%;
 
@@ -315,185 +373,117 @@ SEARCH
 
     background:none;
 
-    color:#fff;
+    font-size:.95rem;
 
-    font-size:1rem;
+    font-family:'Inter';
 }
 
-.search input::placeholder{
-    color:#94a3b8;
-}
+/* =====================================
+FILTER
+===================================== */
 
-/* ======================================
-FILTERS
-====================================== */
+.filter-area{
 
-.filters-bar{
-
-    padding:4px 14px 12px;
+    padding:0 16px 10px;
 
     display:flex;
 
     justify-content:flex-end;
 }
 
-.filter-select{
+.filter-btn{
 
-    height:48px;
+    width:54px;
+    height:54px;
 
     border:none;
 
-    outline:none;
-
-    border-radius:18px;
-
-    padding:0 16px;
-
-    background:
-    rgba(255,255,255,.08);
-
-    color:#fff;
-
-    font-weight:700;
-
-    backdrop-filter:blur(12px);
-}
-
-.filter-select option{
-    color:#000;
-}
-
-/* ======================================
-PLAYERS
-====================================== */
-
-.players{
-
-    padding:0 14px 120px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:18px;
-}
-
-.player-card{
-
-    position:relative;
-
-    overflow:hidden;
-
-    border-radius:30px;
-
-    background:
-    rgba(255,255,255,.08);
-
-    border:
-    1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(20px);
-
-    padding:16px;
-
-    transition:.3s;
-
-    box-shadow:
-    0 12px 30px rgba(0,0,0,.18);
-}
-
-.player-card:hover{
-
-    transform:
-    translateY(-4px);
-}
-
-.player-top{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:16px;
-}
-
-/* ======================================
-JERSEY
-====================================== */
-
-.jersey{
-
-    width:112px;
-    min-width:112px;
-
-    height:126px;
-
-    border-radius:28px;
+    border-radius:20px;
 
     background:
     linear-gradient(
-    180deg,
-    #2563eb,
-    #1e3a8a
+    135deg,
+    #7c3aed,
+    #a855f7
     );
 
-    position:relative;
-
-    overflow:hidden;
+    color:#fff;
 
     display:flex;
-
-    flex-direction:column;
 
     align-items:center;
 
     justify-content:center;
 
+    cursor:pointer;
+
     box-shadow:
-    0 16px 35px rgba(37,99,235,.35);
+    0 15px 35px rgba(124,58,237,.30);
 }
 
-.jersey::before{
+/* =====================================
+PLAYERS
+===================================== */
 
-    content:'';
+.players{
 
-    position:absolute;
-
-    top:-22px;
-    left:50%;
-
-    transform:translateX(-50%);
-
-    width:56px;
-    height:38px;
-
-    border-radius:0 0 18px 18px;
-
-    background:#0f172a;
+    padding:10px 16px 120px;
 }
 
-/* ======================================
-AVATAR
-====================================== */
+.player-card{
+
+    background:
+    rgba(255,255,255,.88);
+
+    backdrop-filter:blur(12px);
+
+    border:
+    1px solid rgba(124,58,237,.08);
+
+    border-radius:28px;
+
+    padding:18px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+    0 12px 30px rgba(15,23,42,.05);
+}
+
+/* =====================================
+TOP PLAYER
+===================================== */
+
+.player-top{
+
+    display:flex;
+
+    gap:14px;
+
+    align-items:center;
+
+    margin-bottom:16px;
+}
+
+/* =====================================
+ANIMATED AVATAR
+===================================== */
 
 .player-avatar{
 
-    position:absolute;
+    width:92px;
+    height:92px;
 
-    top:8px;
-    right:8px;
-
-    width:42px;
-    height:42px;
-
-    border-radius:50%;
+    border-radius:26px;
 
     overflow:hidden;
 
-    border:
-    2px solid rgba(255,255,255,.4);
+    flex-shrink:0;
 
-    background:#fff;
+    border:4px solid #fff;
+
+    box-shadow:
+    0 12px 28px rgba(124,58,237,.18);
 }
 
 .player-avatar img{
@@ -504,140 +494,163 @@ AVATAR
     object-fit:cover;
 }
 
-.jersey-number{
+/* =====================================
+JERSEY CARD
+===================================== */
 
-    font-size:2rem;
-
-    font-weight:900;
-
-    color:#fff;
-
-    margin-top:16px;
-
-    line-height:1;
-}
-
-.jersey-name{
-
-    margin-top:6px;
-
-    font-size:.7rem;
-
-    font-weight:800;
-
-    text-transform:uppercase;
-
-    letter-spacing:.5px;
-
-    text-align:center;
-
-    padding:0 6px;
-}
-
-/* ======================================
-INFO
-====================================== */
-
-.player-info{
+.jersey-card{
 
     flex:1;
 
-    min-width:0;
+    background:
+    linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+    );
+
+    border-radius:24px;
+
+    padding:18px;
+
+    color:#fff;
+
+    position:relative;
+
+    overflow:hidden;
 }
 
-.player-info h2{
+.jersey-card::before{
+
+    content:'';
+
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border-radius:50%;
+
+    top:-30px;
+    right:-20px;
+}
+
+.jersey-name{
 
     font-size:1rem;
 
     font-weight:900;
 
-    line-height:1.2;
+    letter-spacing:1px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.jersey-number{
+
+    font-size:2.8rem;
+
+    font-weight:900;
+
+    line-height:1;
+
+    margin-top:8px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+/* =====================================
+INFO
+===================================== */
+
+.player-name{
+
+    font-size:1rem;
+
+    font-weight:900;
+
+    color:#111827;
 
     margin-bottom:8px;
 }
 
-.player-info p{
+.player-meta{
 
-    font-size:.83rem;
+    display:flex;
 
-    color:#cbd5e1;
+    flex-wrap:wrap;
 
-    margin-bottom:4px;
+    gap:8px;
 
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
+    margin-bottom:14px;
 }
 
-/* ======================================
-ESTADO
-====================================== */
+.meta-badge{
 
-.estado{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    min-width:110px;
-
-    height:32px;
+    padding:8px 14px;
 
     border-radius:999px;
-
-    padding:0 14px;
 
     font-size:.72rem;
 
     font-weight:800;
-
-    margin-top:8px;
 }
 
-.estado.aprobado{
+.estado-aprobado{
 
     background:#dcfce7;
 
     color:#166534;
 }
 
-.estado.pendiente{
+.estado-pendiente{
 
     background:#fef3c7;
 
     color:#92400e;
 }
 
-.estado.rechazado{
+.estado-rechazado{
 
     background:#fee2e2;
 
     color:#991b1b;
 }
 
-/* ======================================
-BUTTONS
-====================================== */
+.meta-default{
 
-.player-actions{
+    background:#eef2ff;
 
-    display:grid;
+    color:#3730a3;
+}
 
-    grid-template-columns:
-    repeat(2,1fr);
+/* =====================================
+ACTIONS
+===================================== */
+
+.actions{
+
+    display:flex;
 
     gap:10px;
 
-    margin-top:16px;
+    flex-wrap:wrap;
 }
 
 .action-btn{
 
-    height:48px;
+    flex:1;
+
+    min-width:64px;
+
+    height:46px;
 
     border:none;
 
@@ -645,11 +658,59 @@ BUTTONS
 
     color:#fff;
 
-    font-size:.82rem;
+    display:flex;
 
-    font-weight:800;
+    align-items:center;
+
+    justify-content:center;
 
     cursor:pointer;
+
+    font-weight:700;
+}
+
+.approve{
+    background:#16a34a;
+}
+
+.reject{
+    background:#ef4444;
+}
+
+.edit{
+    background:#2563eb;
+}
+
+.whatsapp{
+    background:#22c55e;
+}
+
+/* =====================================
+FAB
+===================================== */
+
+.fab{
+
+    position:fixed;
+
+    right:22px;
+    bottom:22px;
+
+    width:68px;
+    height:68px;
+
+    border:none;
+
+    border-radius:26px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #7c3aed,
+    #a855f7
+    );
+
+    color:#fff;
 
     display:flex;
 
@@ -657,119 +718,14 @@ BUTTONS
 
     justify-content:center;
 
-    gap:6px;
+    box-shadow:
+    0 20px 40px rgba(124,58,237,.35);
 
-    transition:.25s;
+    cursor:pointer;
 }
 
-.action-btn:active{
-
-    transform:scale(.96);
-}
-
-.whatsapp{
-    background:#16a34a;
-}
-
-.edit{
-    background:#2563eb;
-}
-
-.approve{
-    background:#059669;
-}
-
-.reject{
-    background:#dc2626;
-}
-
-/* ======================================
-MOBILE
-====================================== */
-
-@media(max-width:640px){
-
-    .stats-grid{
-
-        grid-template-columns:
-        repeat(4,1fr);
-
-        gap:8px;
-
-        padding:14px 10px 6px;
-    }
-
-    .stat-card{
-
-        border-radius:22px;
-
-        padding:12px 8px;
-
-        min-height:82px;
-    }
-
-    .stat-card h3{
-
-        font-size:.60rem;
-    }
-
-    .stat-card p{
-
-        font-size:1.2rem;
-    }
-
-    .player-card{
-
-        padding:14px;
-    }
-
-    .player-top{
-
-        align-items:flex-start;
-    }
-
-    .jersey{
-
-        width:95px;
-        min-width:95px;
-
-        height:112px;
-
-        border-radius:24px;
-    }
-
-    .jersey-number{
-
-        font-size:1.7rem;
-    }
-
-    .jersey-name{
-
-        font-size:.62rem;
-    }
-
-    .player-avatar{
-
-        width:36px;
-        height:36px;
-    }
-
-    .player-info h2{
-
-        font-size:.93rem;
-    }
-
-    .player-info p{
-
-        font-size:.77rem;
-    }
-
-    .action-btn{
-
-        height:44px;
-
-        font-size:.72rem;
-    }
+.fab .material-symbols-outlined{
+    font-size:36px;
 }
 
 </style>
@@ -778,117 +734,117 @@ MOBILE
 
 <body>
 
-<!-- ======================================
-TOPBAR
-====================================== -->
+<!-- WAVES -->
+
+<div class="wave-bg">
+
+    <div class="wave wave1"></div>
+
+    <div class="wave wave2"></div>
+
+</div>
+
+<!-- TOPBAR -->
 
 <header class="topbar">
 
-    <div class="top-content">
+    <div class="logo-box">
 
-        <div class="top-left">
+        <div class="logo">
+            N
+        </div>
 
-            <h1>
-                ⚽ Jugadores
-            </h1>
+        <div class="top-info">
 
-            <p>
-                Nápoles F.C.
-            </p>
+            <h1>Nápoles F.C.</h1>
+
+            <p>Panel Administrativo</p>
 
         </div>
 
-        <div class="top-actions">
+    </div>
 
-            <button
-            class="top-btn"
-            onclick="descargarPDF()">
+    <div class="top-actions">
 
-                <span class="material-symbols-outlined">
-                    picture_as_pdf
-                </span>
+        <button
+        class="top-btn"
+        onclick="descargarPDF()">
 
-            </button>
+            <span class="material-symbols-outlined">
+                picture_as_pdf
+            </span>
 
-            <button
-            class="top-btn"
-            onclick="cerrarSesion()">
+        </button>
 
-                <span class="material-symbols-outlined">
-                    logout
-                </span>
+        <button
+        class="top-btn"
+        onclick="cerrarSesion()">
 
-            </button>
+            <span class="material-symbols-outlined">
+                logout
+            </span>
 
-        </div>
+        </button>
 
     </div>
 
 </header>
 
-<!-- ======================================
-CARDS
-====================================== -->
+<!-- STATS -->
 
-<section class="stats-grid">
+<section class="stats-wrapper">
 
-    <div
-    class="stat-card total"
-    onclick="filtrarEstado('TODOS')">
+    <div class="stats-row">
 
-        <h3>Total</h3>
+        <div class="stat-card">
 
-        <p id="totalJugadores">
-            0
-        </p>
+            <h3 id="totalJugadores">
+                0
+            </h3>
 
-    </div>
+            <p>TOTAL</p>
 
-    <div
-    class="stat-card aprobados"
-    onclick="filtrarEstado('APROBADO')">
+        </div>
 
-        <h3>Aprobados</h3>
+        <div class="stat-card">
 
-        <p id="totalAprobados">
-            0
-        </p>
+            <h3 id="aprobados">
+                0
+            </h3>
 
-    </div>
+            <p>APROBADOS</p>
 
-    <div
-    class="stat-card pendientes"
-    onclick="filtrarEstado('PENDIENTE')">
+        </div>
 
-        <h3>Pendientes</h3>
+        <div class="stat-card">
 
-        <p id="totalPendientes">
-            0
-        </p>
+            <h3 id="pendientes">
+                0
+            </h3>
 
-    </div>
+            <p>PENDIENTES</p>
 
-    <div
-    class="stat-card rechazados"
-    onclick="filtrarEstado('RECHAZADO')">
+        </div>
 
-        <h3>Rechazados</h3>
+        <div class="stat-card">
 
-        <p id="totalRechazados">
-            0
-        </p>
+            <h3 id="rechazados">
+                0
+            </h3>
+
+            <p>RECHAZADOS</p>
+
+        </div>
 
     </div>
 
 </section>
 
-<!-- ======================================
-SEARCH
-====================================== -->
+<!-- SEARCH -->
 
-<section class="search-box">
+<section class="search-area">
 
-    <div class="search">
+    <div class="search-box">
 
         <span class="material-symbols-outlined">
             search
@@ -903,70 +859,61 @@ SEARCH
 
 </section>
 
-<!-- ======================================
-FILTER
-====================================== -->
+<!-- FILTER -->
 
-<section class="filters-bar">
+<section class="filter-area">
 
-    <select
-    id="filterSelect"
-    class="filter-select">
+    <button
+    class="filter-btn"
+    onclick="mostrarFiltros()">
 
-        <option value="TODOS">
-            Todos
-        </option>
+        <span class="material-symbols-outlined">
+            tune
+        </span>
 
-        <option value="APROBADO">
-            Aprobados
-        </option>
-
-        <option value="PENDIENTE">
-            Pendientes
-        </option>
-
-        <option value="RECHAZADO">
-            Rechazados
-        </option>
-
-    </select>
+    </button>
 
 </section>
 
-<!-- ======================================
-PLAYERS
-====================================== -->
+<!-- PLAYERS -->
 
 <section
 class="players"
 id="playersContainer">
 
-    <p>
+    <p style="padding:20px">
         Cargando jugadores...
     </p>
 
 </section>
 
+<!-- FAB -->
+
+<button
+class="fab"
+onclick="window.location.href='nuevo-jugador.html'">
+
+    <span class="material-symbols-outlined">
+        add
+    </span>
+
+</button>
+
 <script src="./config.js"></script>
 
 <script>
 
-// ======================================
+// =========================================
 // VALIDAR ADMIN
-// ======================================
+// =========================================
 
 if(
-    localStorage.getItem(
-        'admin_activo'
-    ) !== 'true'
+    localStorage.getItem('admin_activo')
+    !== 'true'
 ){
     window.location.href =
     './login.html';
 }
-
-// ======================================
-// VARIABLES
-// ======================================
 
 const playersContainer =
 document.getElementById(
@@ -978,39 +925,30 @@ document.getElementById(
     'searchInput'
 );
 
-const filterSelect =
-document.getElementById(
-    'filterSelect'
-);
-
 let jugadoresGlobal = [];
 
-let estadoActual = 'TODOS';
+let filtroActual = 'TODOS';
 
-// ======================================
-// AVATARES
-// ======================================
+// =========================================
+// AVATARES HOMBRES ANIMADOS
+// =========================================
 
 const avatars = [
 
-'https://i.pravatar.cc/300?img=12',
-'https://i.pravatar.cc/300?img=13',
-'https://i.pravatar.cc/300?img=14',
-'https://i.pravatar.cc/300?img=15',
-'https://i.pravatar.cc/300?img=16',
-'https://i.pravatar.cc/300?img=18',
-'https://i.pravatar.cc/300?img=19',
-'https://i.pravatar.cc/300?img=20',
-'https://i.pravatar.cc/300?img=21',
-'https://i.pravatar.cc/300?img=22',
-'https://i.pravatar.cc/300?img=24',
-'https://i.pravatar.cc/300?img=25'
+'https://api.dicebear.com/7.x/adventurer/svg?seed=Carlos&gender=male',
+'https://api.dicebear.com/7.x/adventurer/svg?seed=Luis&gender=male',
+'https://api.dicebear.com/7.x/adventurer/svg?seed=Pedro&gender=male',
+'https://api.dicebear.com/7.x/adventurer/svg?seed=Andres&gender=male',
+'https://api.dicebear.com/7.x/adventurer/svg?seed=Jhon&gender=male',
+'https://api.dicebear.com/7.x/adventurer/svg?seed=Marco&gender=male',
+'https://api.dicebear.com/7.x/adventurer/svg?seed=David&gender=male',
+'https://api.dicebear.com/7.x/adventurer/svg?seed=Kevin&gender=male'
 
 ];
 
-// ======================================
-// CARGAR
-// ======================================
+// =========================================
+// CARGAR JUGADORES
+// =========================================
 
 async function cargarJugadores(){
 
@@ -1025,45 +963,44 @@ async function cargarJugadores(){
         await response.json();
 
         jugadoresGlobal =
+        data.jugadores || [];
 
-        (data.jugadores || [])
+        // =====================================
+        // ORDENAR POR DORSAL
+        // =====================================
 
-        .sort((a,b)=>
+        jugadoresGlobal.sort((a,b)=>{
 
-            Number(b.dorsal || 0)
+            return (
+                Number(a.dorsal || 0)
+                -
+                Number(b.dorsal || 0)
+            );
+        });
 
-            -
+        actualizarStats();
 
-            Number(a.dorsal || 0)
+        renderJugadores(
+            jugadoresGlobal
         );
-
-        actualizarCards();
-
-        aplicarFiltros();
 
     }catch(err){
 
         playersContainer.innerHTML =
-        '<p>Error conexión</p>';
+        '<p>Error cargando jugadores</p>';
     }
 }
 
-// ======================================
-// CARDS
-// ======================================
+// =========================================
+// STATS
+// =========================================
 
-function actualizarCards(){
+function actualizarStats(){
 
-    document.getElementById(
-        'totalJugadores'
-    ).innerText =
-
+    const total =
     jugadoresGlobal.length;
 
-    document.getElementById(
-        'totalAprobados'
-    ).innerText =
-
+    const aprobados =
     jugadoresGlobal.filter(j =>
 
         (j.estado || '')
@@ -1072,11 +1009,10 @@ function actualizarCards(){
 
     ).length;
 
-    document.getElementById(
-        'totalPendientes'
-    ).innerText =
-
+    const pendientes =
     jugadoresGlobal.filter(j =>
+
+        !j.estado ||
 
         (j.estado || '')
         .toUpperCase()
@@ -1084,10 +1020,7 @@ function actualizarCards(){
 
     ).length;
 
-    document.getElementById(
-        'totalRechazados'
-    ).innerText =
-
+    const rechazados =
     jugadoresGlobal.filter(j =>
 
         (j.estado || '')
@@ -1095,11 +1028,27 @@ function actualizarCards(){
         === 'RECHAZADO'
 
     ).length;
+
+    document.getElementById(
+        'totalJugadores'
+    ).innerText = total;
+
+    document.getElementById(
+        'aprobados'
+    ).innerText = aprobados;
+
+    document.getElementById(
+        'pendientes'
+    ).innerText = pendientes;
+
+    document.getElementById(
+        'rechazados'
+    ).innerText = rechazados;
 }
 
-// ======================================
+// =========================================
 // RENDER
-// ======================================
+// =========================================
 
 function renderJugadores(lista){
 
@@ -1108,29 +1057,29 @@ function renderJugadores(lista){
     if(lista.length === 0){
 
         playersContainer.innerHTML =
-        `
-        <p style="
-        padding:30px;
-        text-align:center;
-        color:#cbd5e1;">
-        No hay jugadores
-        </p>
-        `;
+        '<p>No hay jugadores</p>';
 
         return;
     }
 
     lista.forEach((jugador,index) => {
 
+        const avatar =
+        jugador.foto
+        ||
+        avatars[
+            index % avatars.length
+        ];
+
         let estadoClass =
-        'pendiente';
+        'estado-pendiente';
 
         if(
             jugador.estado ===
             'APROBADO'
         ){
             estadoClass =
-            'aprobado';
+            'estado-aprobado';
         }
 
         if(
@@ -1138,13 +1087,8 @@ function renderJugadores(lista){
             'RECHAZADO'
         ){
             estadoClass =
-            'rechazado';
+            'estado-rechazado';
         }
-
-        const avatar =
-        avatars[
-            index % avatars.length
-        ];
 
         const card =
         document.createElement('div');
@@ -1156,76 +1100,83 @@ function renderJugadores(lista){
 
         <div class="player-top">
 
-            <div class="jersey">
+            <div class="player-avatar">
 
-                <div class="player-avatar">
+                <img src="${avatar}">
 
-                    <img src="${avatar}">
+            </div>
 
-                </div>
-
-                <div class="jersey-number">
-
-                    ${jugador.dorsal || '--'}
-
-                </div>
+            <div class="jersey-card">
 
                 <div class="jersey-name">
-
                     ${
                         jugador.nombreCamiseta
                         || 'NAPOLES'
                     }
-
                 </div>
 
-            </div>
-
-            <div class="player-info">
-
-                <h2>
-                    ${jugador.primerNombre || ''}
-                    ${jugador.segundoNombre || ''}
-                    ${jugador.apellidos || ''}
-                </h2>
-
-                <p>
-                    🪪 ${jugador.cedula || '-'}
-                </p>
-
-                <p>
-                    📞 ${jugador.telefono || '-'}
-                </p>
-
-                <p>
-                    🎂 ${jugador.edad || '-'} años
-                </p>
-
-                <div
-                class="estado ${estadoClass}">
-
-                    ${
-                        jugador.estado
-                        || 'PENDIENTE'
+                <div class="jersey-number">
+                    #${
+                        jugador.dorsal
+                        || '-'
                     }
-
                 </div>
 
             </div>
 
         </div>
 
-        <div class="player-actions">
+        <div class="player-name">
+
+            ${jugador.primerNombre}
+            ${jugador.apellidos}
+
+        </div>
+
+        <div class="player-meta">
+
+            <div class="meta-badge ${estadoClass}">
+
+                ${
+                    jugador.estado
+                    || 'PENDIENTE'
+                }
+
+            </div>
+
+            <div class="meta-badge meta-default">
+
+                ${jugador.cedula}
+
+            </div>
+
+            <div class="meta-badge meta-default">
+
+                ${jugador.telefono || 'Sin teléfono'}
+
+            </div>
+
+        </div>
+
+        <div class="actions">
 
             <button
-            class="action-btn whatsapp"
-            onclick="enviarWhatsapp('${jugador.telefono}')">
+            class="action-btn approve"
+            onclick="aprobarJugador('${jugador.cedula}')">
 
                 <span class="material-symbols-outlined">
-                    chat
+                    check
                 </span>
 
-                WhatsApp
+            </button>
+
+            <button
+            class="action-btn reject"
+            onclick="rechazarJugador('${jugador.cedula}')">
+
+                <span class="material-symbols-outlined">
+                    close
+                </span>
 
             </button>
 
@@ -1237,85 +1188,55 @@ function renderJugadores(lista){
                     edit
                 </span>
 
-                Editar
-
             </button>
 
-            ${
-                jugador.estado !==
-                'APROBADO'
-                ?
-                `
-                <button
-                class="action-btn approve"
-                onclick="aprobarJugador('${jugador.cedula}')">
+            <button
+            class="action-btn whatsapp"
+            onclick="enviarWhatsapp('${jugador.telefono}')">
 
-                    <span class="material-symbols-outlined">
-                        check
-                    </span>
+                <span class="material-symbols-outlined">
+                    chat
+                </span>
 
-                    Aprobar
-
-                </button>
-                `
-                :
-                ''
-            }
-
-            ${
-                jugador.estado !==
-                'RECHAZADO'
-                ?
-                `
-                <button
-                class="action-btn reject"
-                onclick="rechazarJugador('${jugador.cedula}')">
-
-                    <span class="material-symbols-outlined">
-                        close
-                    </span>
-
-                    Rechazar
-
-                </button>
-                `
-                :
-                ''
-            }
+            </button>
 
         </div>
         `;
 
         playersContainer.appendChild(card);
-
     });
 }
 
-// ======================================
-// FILTROS
-// ======================================
+// =========================================
+// BUSCADOR
+// =========================================
 
-function aplicarFiltros(){
+searchInput.addEventListener(
+'input',
+e => {
 
-    const texto =
-    searchInput.value
-    .toLowerCase()
+    buscarJugadores(
+        e.target.value
+    );
+});
+
+function buscarJugadores(texto){
+
+    texto =
+    texto.toLowerCase()
     .trim();
 
     let lista =
-    [...jugadoresGlobal];
+    jugadoresGlobal;
 
-    if(estadoActual !== 'TODOS'){
+    if(filtroActual !== 'TODOS'){
 
         lista =
         lista.filter(j =>
 
             (j.estado || '')
             .toUpperCase()
-
-            ===
-
-            estadoActual
+            === filtroActual
         );
     }
 
@@ -1342,48 +1263,54 @@ function aplicarFiltros(){
 
             ||
 
-            (j.cedula || '')
+            String(j.dorsal || '')
             .includes(texto)
-
-            ||
-
-            String(
-                j.dorsal || ''
-            ).includes(texto)
         );
     });
 
     renderJugadores(lista);
 }
 
-function filtrarEstado(estado){
+// =========================================
+// FILTROS
+// =========================================
 
-    estadoActual = estado;
+function mostrarFiltros(){
 
-    filterSelect.value =
-    estado;
+    const opcion =
+    prompt(
+`FILTRAR:
 
-    aplicarFiltros();
+1 = APROBADOS
+2 = PENDIENTES
+3 = RECHAZADOS
+4 = TODOS`
+    );
+
+    if(opcion === '1'){
+        filtroActual = 'APROBADO';
+    }
+
+    else if(opcion === '2'){
+        filtroActual = 'PENDIENTE';
+    }
+
+    else if(opcion === '3'){
+        filtroActual = 'RECHAZADO';
+    }
+
+    else{
+        filtroActual = 'TODOS';
+    }
+
+    buscarJugadores(
+        searchInput.value
+    );
 }
 
-filterSelect.addEventListener(
-'change',
-e => {
-
-    estadoActual =
-    e.target.value;
-
-    aplicarFiltros();
-});
-
-searchInput.addEventListener(
-'input',
-aplicarFiltros
-);
-
-// ======================================
+// =========================================
 // APROBAR
-// ======================================
+// =========================================
 
 async function aprobarJugador(
     cedula
@@ -1423,9 +1350,9 @@ https://kilometro0-ec.github.io/NAPOLES-FC/login.html
 
 ✅ Solo debes ingresar tu número de cédula.
 
-⚽ Mira tus estadísticas
-🏅 Consulta tus partidos
-👕 Revisa tu perfil
+⚽ Revisa tu perfil
+🏅 Mira tus estadísticas
+👕 Mira tus partidos
 
 ¡Nos vemos en la cancha campeón! 💪🔥`;
 
@@ -1445,9 +1372,9 @@ https://kilometro0-ec.github.io/NAPOLES-FC/login.html
     }
 }
 
-// ======================================
+// =========================================
 // RECHAZAR
-// ======================================
+// =========================================
 
 async function rechazarJugador(
     cedula
@@ -1485,9 +1412,9 @@ async function rechazarJugador(
     }
 }
 
-// ======================================
+// =========================================
 // EDITAR
-// ======================================
+// =========================================
 
 function editarJugador(
     cedula
@@ -1502,15 +1429,20 @@ function editarJugador(
     './editar-jugador.html';
 }
 
-// ======================================
+// =========================================
 // WHATSAPP
-// ======================================
+// =========================================
 
 function enviarWhatsapp(
     telefono
 ){
 
     if(!telefono){
+
+        alert(
+            'Jugador sin teléfono'
+        );
+
         return;
     }
 
@@ -1523,18 +1455,18 @@ function enviarWhatsapp(
     );
 }
 
-// ======================================
+// =========================================
 // PDF
-// ======================================
+// =========================================
 
 function descargarPDF(){
 
     window.print();
 }
 
-// ======================================
+// =========================================
 // LOGOUT
-// ======================================
+// =========================================
 
 function cerrarSesion(){
 
@@ -1546,14 +1478,13 @@ function cerrarSesion(){
     './login.html';
 }
 
-// ======================================
+// =========================================
 // INIT
-// ======================================
+// =========================================
 
 cargarJugadores();
 
 </script>
 
 </body>
-
 </html>
