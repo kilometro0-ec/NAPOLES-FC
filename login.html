@@ -1,430 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<title>Nápoles F.C. - Acceso</title>
-
-<link rel="manifest" href="./manifest.json">
-
-<meta name="theme-color" content="#020c1a">
-
-<link rel="icon" href="data:,">
-
-<link
-href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
-rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Admin</title>
 
 <style>
-
-:root{
-    --primary:#00d2ff;
-    --primary-dark:#008f9b;
-    --accent:#FFD700;
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    height:100%;
-}
-
 body{
-
-    font-family:'Plus Jakarta Sans',sans-serif;
-
-    background:#020c1a;
-
-    min-height:100dvh;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:20px;
-
-    color:#fff;
-
-    overflow-x:hidden;
-    overflow-y:auto;
-
-    position:relative;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
 
-/* FONDO */
-
-body::before,
-body::after{
-
-    content:'';
-
-    position:absolute;
-
-    width:950px;
-    height:950px;
-
-    border-radius:50%;
-
-    filter:blur(130px);
-
-    opacity:.85;
-
-    z-index:0;
-
-    animation:moveGlow 14s infinite ease-in-out;
-}
-
-body::before{
-
-    background:
-    radial-gradient(circle,
-    rgba(0,210,255,.95) 0%,
-    rgba(0,140,255,.55) 40%,
-    transparent 75%);
-
-    top:-340px;
-    left:-260px;
-}
-
-body::after{
-
-    background:
-    radial-gradient(circle,
-    rgba(111,0,255,.95) 0%,
-    rgba(168,85,247,.55) 40%,
-    transparent 75%);
-
-    bottom:-340px;
-    right:-260px;
-
-    animation-delay:7s;
-}
-
-@keyframes moveGlow{
-
-    0%{
-        transform:translate(0,0) scale(1);
-    }
-
-    25%{
-        transform:translate(120px,60px) scale(1.15);
-    }
-
-    50%{
-        transform:translate(-90px,120px) scale(.9);
-    }
-
-    75%{
-        transform:translate(80px,-90px) scale(1.08);
-    }
-
-    100%{
-        transform:translate(0,0) scale(1);
-    }
-}
-
-/* CARD */
-
-.login-card{
-
-    width:100%;
-    max-width:430px;
-
-    background:rgba(10,18,35,.76);
-
-    backdrop-filter:blur(24px);
-
-    border:1px solid rgba(0,210,255,.45);
-
-    border-radius:34px;
-
-    padding:42px 30px;
-
-    box-shadow:
-    0 0 35px rgba(0,210,255,.22),
-    0 18px 45px rgba(0,0,0,.65);
-
-    position:relative;
-
-    z-index:2;
-
-    transition:.45s;
-}
-
-/* MODO ADMIN */
-
-.login-card.admin-mode{
-
-    background:rgba(38,16,60,.84);
-
-    border:1px solid rgba(168,85,247,.95);
-
-    box-shadow:
-    0 0 45px rgba(168,85,247,.55),
-    0 18px 45px rgba(0,0,0,.75);
-}
-
-.login-card.admin-mode h1{
-
-    background:
-    linear-gradient(
-    to right,
-    #ffffff,
-    #d8b4fe,
-    #a855f7
-    );
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.logo-area{
-    text-align:center;
-    margin-bottom:38px;
-}
-
-.logo-area h1{
-
-    font-size:2rem;
-
-    font-weight:800;
-
-    background:
-    linear-gradient(
-    to right,
-    #fff,
-    var(--primary)
-    );
-
-    -webkit-background-clip:text;
-
-    -webkit-text-fill-color:transparent;
-
-    margin-bottom:10px;
-}
-
-.logo-area p{
-
-    font-size:1rem;
-
-    font-weight:700;
-
-    color:#d7f7ff;
-}
-
-.input-group{
-    margin-bottom:28px;
-}
-
-.input-group label{
-
-    display:block;
-
-    margin-bottom:12px;
-
-    color:var(--primary);
-
-    font-size:.82rem;
-
-    font-weight:700;
-
-    letter-spacing:1.6px;
-
-    text-transform:uppercase;
+.box{
+  background:#111827;
+  padding:30px;
+  border-radius:20px;
+  width:300px;
 }
 
 input{
-
-    width:100%;
-
-    min-height:62px;
-
-    border-radius:18px;
-
-    border:2px solid rgba(255,255,255,.06);
-
-    background:rgba(15,23,42,.7);
-
-    color:#fff;
-
-    font-size:1.05rem;
-
-    font-weight:700;
-
-    padding:0 18px;
-
-    text-align:center;
-
-    outline:none;
-
-    transition:.35s;
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  border:none;
 }
 
-.btn-submit{
-
-    width:100%;
-
-    height:58px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:
-    linear-gradient(
-        135deg,
-        var(--primary-dark),
-        var(--primary)
-    );
-
-    color:#fff;
-
-    font-size:1rem;
-
-    font-weight:800;
-
-    cursor:pointer;
-
-    margin-top:12px;
+button{
+  width:100%;
+  margin-top:15px;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.error-message{
-
-    display:none;
-
-    margin-top:20px;
-
-    padding:14px;
-
-    border-radius:14px;
-
-    background:rgba(239,68,68,.16);
-
-    border:1px solid rgba(239,68,68,.35);
-
-    color:#fecaca;
-
-    text-align:center;
+.error{
+  color:red;
+  margin-top:10px;
+  font-size:14px;
 }
-
-.footer-links{
-    margin-top:34px;
-    text-align:center;
-}
-
-.footer-links a{
-    color:#FFD700;
-    font-weight:800;
-    text-decoration:none;
-}
-
-#manualDownloadBtn{
-
-    margin-top:24px;
-
-    padding:14px 24px;
-
-    border-radius:999px;
-
-    border:none;
-
-    background:
-    linear-gradient(
-    135deg,
-    #00d2ff,
-    #008f9b
-    );
-
-    color:#fff;
-
-    font-weight:800;
-
-    cursor:pointer;
-}
-
 </style>
-
 </head>
 
 <body>
 
-<div
-class="login-card"
-id="loginCard">
+<div class="box">
 
-    <div class="logo-area">
+<h2>Login Admin</h2>
 
-        <h1>NÁPOLES F.C.</h1>
+<input type="password" id="clave" placeholder="Ingrese clave">
 
-        <p>Acceso de Jugadores PRO</p>
+<button onclick="login()">Ingresar</button>
 
-    </div>
-
-    <form id="formLogin">
-
-        <div class="input-group">
-
-            <label>
-                Ingresa tus credenciales
-            </label>
-
-            <input
-                type="text"
-                id="loginCedula"
-                placeholder="Cédula o clave"
-                autocomplete="off"
-                required
-            >
-
-        </div>
-
-        <button
-            type="submit"
-            id="btnLogin"
-            class="btn-submit"
-            disabled
-        >
-            Ingresa al Vestuario
-        </button>
-
-    </form>
-
-    <div
-    id="errorMsg"
-    class="error-message"></div>
-
-    <div class="footer-links">
-
-        <p style="margin-bottom:20px;">
-
-            ¿No tienes cuenta?
-
-            <a href="./index.html">
-                REGÍSTRATE ✨
-            </a>
-
-        </p>
-
-        <button
-            id="manualDownloadBtn"
-            type="button"
-        >
-            📲 INSTALAR APP
-        </button>
-
-    </div>
+<div id="msg" class="error"></div>
 
 </div>
 
@@ -432,183 +69,39 @@ id="loginCard">
 
 <script>
 
-const formLogin =
-document.getElementById('formLogin');
+async function login(){
 
-const cedulaInput =
-document.getElementById('loginCedula');
+  const clave = document.getElementById('clave').value;
+  const msg = document.getElementById('msg');
 
-const btnLogin =
-document.getElementById('btnLogin');
+  if(!clave){
+    msg.innerText = "Ingrese clave";
+    return;
+  }
 
-const errorDiv =
-document.getElementById('errorMsg');
+  try{
 
-const loginCard =
-document.getElementById('loginCard');
+    const res = await fetch(`${CONFIG.URL_GAS}?action=loginAdmin&clave=${encodeURIComponent(clave)}`);
+    const data = await res.json();
 
-// INPUT
+    console.log(data);
 
-cedulaInput.addEventListener('input', () => {
+    if(data.ok && data.acceso){
 
-    const val =
-    cedulaInput.value.trim();
+      localStorage.setItem('admin_activo','true');
 
-    btnLogin.disabled =
-    !val;
-
-    if(val.includes('Gata')){
-
-        loginCard.classList.add(
-            'admin-mode'
-        );
+      window.location.href = "./jugadores.html";
 
     }else{
 
-        loginCard.classList.remove(
-            'admin-mode'
-        );
+      msg.innerText = "Clave incorrecta";
     }
-});
 
-// ERROR
+  }catch(err){
 
-function mostrarError(msj){
-
-    errorDiv.textContent = msj;
-
-    errorDiv.style.display = 'block';
-
-    setTimeout(() => {
-
-        errorDiv.style.display = 'none';
-
-    }, 5000);
+    msg.innerText = "Error de conexión";
+  }
 }
-
-// LOGIN
-
-formLogin.addEventListener('submit', async (e) => {
-
-    e.preventDefault();
-
-    const valor =
-    cedulaInput.value.trim();
-
-    btnLogin.disabled = true;
-
-    btnLogin.textContent =
-    'CONECTANDO...';
-
-    try{
-
-        // ADMIN
-
-        const urlAdmin =
-        `${CONFIG.URL_GAS}?action=loginAdmin&clave=${encodeURIComponent(valor)}`;
-
-        const responseAdmin =
-        await fetch(urlAdmin);
-
-        const dataAdmin =
-        await responseAdmin.json();
-
-        if(
-            dataAdmin.ok === true &&
-            dataAdmin.acceso === true
-        ){
-
-            localStorage.setItem(
-                'admin_activo',
-                'true'
-            );
-
-            window.location.href =
-            './admin.html';
-
-            return;
-        }
-
-        // JUGADOR
-
-        if(!/^\d{10}$/.test(valor)){
-
-            mostrarError(
-                '❌ Ingresa una cédula válida'
-            );
-
-            return;
-        }
-
-        const url =
-        `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}`;
-
-        const response =
-        await fetch(url);
-
-        const data =
-        await response.json();
-
-        if(
-            data.ok === true &&
-            data.cedulaExiste === true &&
-            data.estado === 'APROBADO'
-        ){
-
-            localStorage.setItem(
-                'jugador_actual',
-                JSON.stringify(data.datosJugador)
-            );
-
-            localStorage.setItem(
-                'userCedula',
-                valor
-            );
-
-            window.location.href =
-            './perfil.html';
-
-            return;
-        }
-
-        mostrarError(
-            '❌ Acceso no válido'
-        );
-
-    }catch(error){
-
-        mostrarError(
-            '🔌 Error de conexión'
-        );
-
-    }finally{
-
-        btnLogin.disabled = false;
-
-        btnLogin.textContent =
-        'Ingresa al Vestuario';
-    }
-
-});
-
-// INSTALAR APP
-
-document
-.getElementById('manualDownloadBtn')
-.addEventListener('click', () => {
-
-    alert(
-`📲 INSTALAR APP
-
-1. Abrir menú del navegador
-
-2. Presionar:
-"Instalar aplicación"
-
-3. Agregar a pantalla principal`
-    );
-
-});
 
 </script>
 
