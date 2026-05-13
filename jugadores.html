@@ -1,132 +1,1460 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Jugadores | Nápoles FC</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Jugadores | Nápoles F.C.</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 
-body{
+*{
 margin:0;
-font-family:Arial;
-background:#0f172a;
-color:white;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
 }
 
-header{
-padding:15px;
-background:#111827;
+body{
+
+font-family:'Inter',sans-serif;
+
+background:
+linear-gradient(
+180deg,
+#050816 0%,
+#0b1023 40%,
+#111827 100%
+);
+
+min-height:100vh;
+
+color:#fff;
+
+overflow-x:hidden;
+}
+
+/* =========================================
+FONDO
+========================================= */
+
+.bg-blur{
+
+position:fixed;
+inset:0;
+overflow:hidden;
+z-index:-1;
+}
+
+.blur{
+
+position:absolute;
+border-radius:999px;
+filter:blur(120px);
+opacity:.35;
+}
+
+.blur1{
+
+width:350px;
+height:350px;
+
+background:#7c3aed;
+
+top:-100px;
+left:-100px;
+}
+
+.blur2{
+
+width:350px;
+height:350px;
+
+background:#2563eb;
+
+bottom:-120px;
+right:-100px;
+}
+
+/* =========================================
+TOPBAR
+========================================= */
+
+.topbar{
+
+position:sticky;
+top:0;
+z-index:999;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
+
+padding:18px;
+
+backdrop-filter:blur(18px);
+
+background:rgba(15,23,42,.72);
+
+border-bottom:
+1px solid rgba(255,255,255,.06);
 }
 
-button{
-cursor:pointer;
+.logo h1{
+
+font-size:1.2rem;
+font-weight:900;
 }
 
-.container{
-padding:15px;
+.logo p{
+
+font-size:.8rem;
+opacity:.7;
+margin-top:2px;
 }
 
-.card{
-background:#1f2937;
-padding:15px;
-border-radius:12px;
-margin-bottom:10px;
+.top-actions{
+
+display:flex;
+align-items:center;
+gap:12px;
 }
 
-.btn{
-padding:8px 12px;
+.icon-btn{
+
+width:46px;
+height:46px;
+
 border:none;
-border-radius:8px;
-margin:3px;
+cursor:pointer;
+
+border-radius:16px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:
+rgba(255,255,255,.08);
+
+color:#fff;
+
+backdrop-filter:blur(10px);
+
+transition:.25s;
 }
 
-.apr{background:#16a34a;color:white;}
-.rec{background:#dc2626;color:white;}
-.edi{background:#2563eb;color:white;}
+.icon-btn:hover{
+
+transform:scale(1.05);
+}
+
+/* =========================================
+IDCARDS
+========================================= */
+
+.stats{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:10px;
+
+padding:16px;
+}
+
+.stat-card{
+
+background:
+rgba(255,255,255,.08);
+
+backdrop-filter:blur(16px);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:22px;
+
+padding:14px 10px;
+
+text-align:center;
+
+cursor:pointer;
+
+transition:.25s;
+}
+
+.stat-card:hover{
+
+transform:translateY(-2px);
+}
+
+.stat-card.active{
+
+background:
+linear-gradient(
+135deg,
+#7c3aed,
+#2563eb
+);
+}
+
+.stat-card h2{
+
+font-size:1.25rem;
+font-weight:900;
+}
+
+.stat-card p{
+
+font-size:.7rem;
+margin-top:4px;
+opacity:.8;
+font-weight:700;
+}
+
+/* =========================================
+TOOLS
+========================================= */
+
+.tools{
+
+display:flex;
+align-items:center;
+gap:12px;
+
+padding:0 16px 16px;
+}
+
+.search{
+
+flex:1;
+
+height:54px;
+
+border-radius:20px;
+
+display:flex;
+align-items:center;
+gap:10px;
+
+padding:0 16px;
+
+background:
+rgba(255,255,255,.08);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(14px);
+}
+
+.search input{
+
+width:100%;
+
+background:none;
+border:none;
+outline:none;
+
+color:#fff;
+
+font-size:.95rem;
+}
+
+.search input::placeholder{
+
+color:#cbd5e1;
+}
+
+.select-filter{
+
+height:54px;
+
+border:none;
+outline:none;
+
+padding:0 14px;
+
+border-radius:18px;
+
+background:
+rgba(255,255,255,.08);
+
+color:#fff;
+
+font-weight:700;
+
+backdrop-filter:blur(10px);
+}
+
+/* =========================================
+LISTA
+========================================= */
+
+.players{
+
+padding:0 16px 120px;
+}
+
+.player-card{
+
+background:
+rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:28px;
+
+padding:16px;
+
+margin-bottom:16px;
+
+transition:.25s;
+}
+
+.player-top{
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+}
+
+.player-left{
+
+display:flex;
+gap:14px;
+align-items:center;
+}
+
+/* =========================================
+AVATAR ANIMADO
+========================================= */
+
+.avatar{
+
+width:82px;
+height:82px;
+
+border-radius:26px;
+
+overflow:hidden;
+
+flex-shrink:0;
+
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#7c3aed
+);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:2.6rem;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.35);
+}
+
+.player-info h3{
+
+font-size:1rem;
+font-weight:900;
+}
+
+.player-info p{
+
+font-size:.8rem;
+opacity:.7;
+margin-top:4px;
+}
+
+.estado{
+
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+height:30px;
+
+padding:0 14px;
+
+border-radius:999px;
+
+font-size:.7rem;
+font-weight:800;
+
+margin-top:10px;
+}
+
+.aprobado{
+
+background:#16a34a;
+color:#fff;
+}
+
+.pendiente{
+
+background:#f59e0b;
+color:#fff;
+}
+
+.rechazado{
+
+background:#dc2626;
+color:#fff;
+}
+
+/* =========================================
+CAMISETA
+========================================= */
+
+.shirt{
+
+margin-top:16px;
+
+border-radius:24px;
+
+padding:18px;
+
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#7c3aed
+);
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.shirt small{
+
+display:block;
+opacity:.8;
+font-size:.7rem;
+margin-bottom:4px;
+}
+
+.shirt h2{
+
+font-size:1.3rem;
+font-weight:900;
+}
+
+.dorsal{
+
+width:72px;
+height:72px;
+
+border-radius:24px;
+
+background:
+rgba(255,255,255,.14);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:2rem;
+font-weight:900;
+}
+
+/* =========================================
+ACCIONES
+========================================= */
+
+.actions{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:10px;
+
+margin-top:18px;
+}
+
+.action-btn{
+
+height:52px;
+
+border:none;
+cursor:pointer;
+
+border-radius:18px;
+
+font-weight:800;
+
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+
+color:#fff;
+
+transition:.25s;
+}
+
+.action-btn:hover{
+
+transform:translateY(-2px);
+}
+
+.btn-approve{
+
+background:#16a34a;
+}
+
+.btn-reject{
+
+background:#dc2626;
+}
+
+.btn-edit{
+
+background:#2563eb;
+}
+
+.btn-wa{
+
+background:#0ea5e9;
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(max-width:768px){
+
+.stats{
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:8px;
+}
+
+.stat-card{
+
+padding:12px 6px;
+}
+
+.stat-card h2{
+
+font-size:1rem;
+}
+
+.stat-card p{
+
+font-size:.6rem;
+}
+
+.actions{
+
+grid-template-columns:
+repeat(2,1fr);
+}
+}
 
 </style>
-
-<script src="./config.js"></script>
 
 </head>
 
 <body>
 
-<header>
-<h2>Jugadores</h2>
-<button onclick="logout()">Salir</button>
+<div class="bg-blur">
+
+<div class="blur blur1"></div>
+
+<div class="blur blur2"></div>
+
+</div>
+
+<!-- =========================================
+TOPBAR
+========================================= -->
+
+<header class="topbar">
+
+<div class="logo">
+
+<h1>NÁPOLES F.C.</h1>
+
+<p>Panel de jugadores</p>
+
+</div>
+
+<div class="top-actions">
+
+<button
+class="icon-btn"
+onclick="descargarPDF()">
+
+<span class="material-symbols-outlined">
+picture_as_pdf
+</span>
+
+</button>
+
+<button
+class="icon-btn"
+onclick="configurarWhatsapp()">
+
+<span class="material-symbols-outlined">
+settings
+</span>
+
+</button>
+
+<button
+class="icon-btn"
+onclick="cerrarSesion()">
+
+<span class="material-symbols-outlined">
+logout
+</span>
+
+</button>
+
+</div>
+
 </header>
 
-<div class="container" id="lista"></div>
+<!-- =========================================
+CARDS FILTRO
+========================================= -->
+
+<section class="stats">
+
+<div
+class="stat-card active"
+onclick="filtrarPorEstado('TODOS',this)">
+
+<h2 id="totalJugadores">0</h2>
+
+<p>TOTAL</p>
+
+</div>
+
+<div
+class="stat-card"
+onclick="filtrarPorEstado('APROBADO',this)">
+
+<h2 id="totalAprobados">0</h2>
+
+<p>APROBADOS</p>
+
+</div>
+
+<div
+class="stat-card"
+onclick="filtrarPorEstado('PENDIENTE',this)">
+
+<h2 id="totalPendientes">0</h2>
+
+<p>PENDIENTES</p>
+
+</div>
+
+<div
+class="stat-card"
+onclick="filtrarPorEstado('RECHAZADO',this)">
+
+<h2 id="totalRechazados">0</h2>
+
+<p>RECHAZADOS</p>
+
+</div>
+
+</section>
+
+<!-- =========================================
+TOOLS
+========================================= -->
+
+<section class="tools">
+
+<div class="search">
+
+<span class="material-symbols-outlined">
+search
+</span>
+
+<input
+type="text"
+id="searchInput"
+placeholder="Buscar jugador...">
+
+</div>
+
+<select
+id="filtroSelect"
+class="select-filter">
+
+<option value="dorsal">
+Dorsal
+</option>
+
+<option value="nombre">
+Nombre
+</option>
+
+<option value="cedula">
+Cédula
+</option>
+
+<option value="estado">
+Estado
+</option>
+
+</select>
+
+</section>
+
+<!-- =========================================
+PLAYERS
+========================================= -->
+
+<section
+class="players"
+id="playersContainer">
+
+</section>
+
+<script src="./config.js"></script>
 
 <script>
 
-// =========================
-// LOGIN PROTECT
-// =========================
-if(localStorage.getItem('admin_activo') !== 'true'){
-  window.location.href = './login.html';
+// =========================================
+// VALIDAR LOGIN
+// =========================================
+
+if(
+localStorage.getItem(
+'admin_activo'
+) !== 'true'
+){
+
+window.location.href =
+'./login.html';
 }
 
-// =========================
+// =========================================
+// VARIABLES
+// =========================================
+
+const playersContainer =
+document.getElementById(
+'playersContainer'
+);
+
+const searchInput =
+document.getElementById(
+'searchInput'
+);
+
+const filtroSelect =
+document.getElementById(
+'filtroSelect'
+);
+
+let jugadoresGlobal = [];
+
+let filtroEstadoActivo =
+'TODOS';
+
+// =========================================
+// AVATARES
+// =========================================
+
+const avatars = [
+
+'⚽',
+'🥷',
+'🧔🏻',
+'👨🏻',
+'🧑🏻',
+'👨🏽',
+'🦸🏻‍♂️',
+'🤵🏻',
+'👨🏾',
+'🧑🏽'
+];
+
+// =========================================
+// WHATSAPP CONFIG
+// =========================================
+
+if(
+!localStorage.getItem(
+'tipo_whatsapp'
+)
+){
+
+localStorage.setItem(
+'tipo_whatsapp',
+'normal'
+);
+}
+
+// =========================================
+// CONFIGURAR
+// =========================================
+
+function configurarWhatsapp(){
+
+const tipo =
+prompt(
+'Escribe:\nnormal\nbusiness',
+localStorage.getItem(
+'tipo_whatsapp'
+)
+);
+
+if(tipo){
+
+localStorage.setItem(
+'tipo_whatsapp',
+tipo.toLowerCase()
+);
+
+alert(
+'WhatsApp configurado'
+);
+}
+}
+
+// =========================================
 // CARGAR
-// =========================
-async function cargar(){
+// =========================================
 
-const res = await fetch(CONFIG.URL_GAS + '?action=getJugadores');
-const data = await res.json();
+async function cargarJugadores(){
 
-const cont = document.getElementById('lista');
-cont.innerHTML = '';
+try{
 
-data.jugadores.forEach(j=>{
+const response =
+await fetch(
+`${CONFIG.URL_GAS}?action=getJugadores&t=${Date.now()}`
+);
 
-cont.innerHTML += `
-<div class="card">
-  <h3>${j.primerNombre} ${j.apellidos}</h3>
-  <p>${j.cedula}</p>
-  <p>Estado: ${j.estado || 'PENDIENTE'}</p>
+const data =
+await response.json();
 
-  <button class="btn apr" onclick="aprobar('${j.cedula}')">Aprobar</button>
-  <button class="btn rec" onclick="rechazar('${j.cedula}')">Rechazar</button>
+jugadoresGlobal =
+(data.jugadores || [])
+
+.sort((a,b)=>
+
+Number(a.dorsal || 0)
+-
+Number(b.dorsal || 0)
+);
+
+actualizarCards();
+
+renderJugadores(
+jugadoresGlobal
+);
+
+}catch(err){
+
+playersContainer.innerHTML =
+'<p>Error conexión</p>';
+}
+}
+
+// =========================================
+// ACTUALIZAR CARDS
+// =========================================
+
+function actualizarCards(){
+
+document.getElementById(
+'totalJugadores'
+).innerText =
+jugadoresGlobal.length;
+
+document.getElementById(
+'totalAprobados'
+).innerText =
+
+jugadoresGlobal.filter(j=>
+
+(j.estado || '')
+.toUpperCase()
+=== 'APROBADO'
+
+).length;
+
+document.getElementById(
+'totalPendientes'
+).innerText =
+
+jugadoresGlobal.filter(j=>
+
+!j.estado ||
+
+(j.estado || '')
+.toUpperCase()
+=== 'PENDIENTE'
+
+).length;
+
+document.getElementById(
+'totalRechazados'
+).innerText =
+
+jugadoresGlobal.filter(j=>
+
+(j.estado || '')
+.toUpperCase()
+=== 'RECHAZADO'
+
+).length;
+}
+
+// =========================================
+// RENDER
+// =========================================
+
+function renderJugadores(lista){
+
+playersContainer.innerHTML =
+'';
+
+if(lista.length === 0){
+
+playersContainer.innerHTML =
+'<p>No hay jugadores</p>';
+
+return;
+}
+
+lista.forEach((jugador,index)=>{
+
+let estado =
+(
+jugador.estado ||
+'PENDIENTE'
+).toUpperCase();
+
+let estadoClass =
+'pendiente';
+
+if(estado === 'APROBADO'){
+
+estadoClass =
+'aprobado';
+}
+
+if(estado === 'RECHAZADO'){
+
+estadoClass =
+'rechazado';
+}
+
+const avatar =
+avatars[
+index % avatars.length
+];
+
+const card =
+document.createElement('div');
+
+card.className =
+'player-card';
+
+card.innerHTML = `
+
+<div class="player-top">
+
+<div class="player-left">
+
+<div class="avatar">
+
+${avatar}
+
+</div>
+
+<div class="player-info">
+
+<h3>
+${jugador.primerNombre || ''}
+${jugador.segundoNombre || ''}
+${jugador.apellidos || ''}
+</h3>
+
+<p>
+${jugador.cedula}
+</p>
+
+<div class="estado ${estadoClass}">
+${estado}
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="shirt">
+
+<div>
+
+<small>
+NOMBRE CAMISETA
+</small>
+
+<h2>
+${jugador.nombreCamiseta || 'SIN NOMBRE'}
+</h2>
+
+</div>
+
+<div class="dorsal">
+${jugador.dorsal || 0}
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="action-btn btn-approve"
+onclick="aprobarJugador('${jugador.cedula}')">
+
+<span class="material-symbols-outlined">
+check
+</span>
+
+</button>
+
+<button
+class="action-btn btn-reject"
+onclick="rechazarJugador('${jugador.cedula}')">
+
+<span class="material-symbols-outlined">
+close
+</span>
+
+</button>
+
+<button
+class="action-btn btn-edit"
+onclick="editarJugador('${jugador.cedula}')">
+
+<span class="material-symbols-outlined">
+edit
+</span>
+
+</button>
+
+<button
+class="action-btn btn-wa"
+onclick="enviarWhatsapp('${jugador.telefono}','${jugador.primerNombre}')">
+
+<span class="material-symbols-outlined">
+chat
+</span>
+
+</button>
+
 </div>
 `;
 
+playersContainer
+.appendChild(card);
+
+});
+}
+
+// =========================================
+// FILTRO CARD
+// =========================================
+
+function filtrarPorEstado(
+estado,
+element
+){
+
+document
+.querySelectorAll('.stat-card')
+.forEach(c=>{
+
+c.classList.remove(
+'active'
+);
 });
 
+element.classList.add(
+'active'
+);
+
+filtroEstadoActivo =
+estado;
+
+if(estado === 'TODOS'){
+
+renderJugadores(
+jugadoresGlobal
+);
+
+return;
 }
 
-// =========================
-// ACCIONES
-// =========================
-async function aprobar(c){
+const filtrados =
+jugadoresGlobal.filter(j=>
 
-await fetch(CONFIG.URL_GAS + '?action=aprobarJugador&cedula=' + c);
-cargar();
+(j.estado || 'PENDIENTE')
+.toUpperCase()
+=== estado
+);
 
+renderJugadores(
+filtrados
+);
 }
 
-async function rechazar(c){
+// =========================================
+// BUSCAR
+// =========================================
 
-await fetch(CONFIG.URL_GAS + '?action=rechazarJugador&cedula=' + c);
-cargar();
+searchInput.addEventListener(
+'input',
+buscarJugadores
+);
 
+filtroSelect.addEventListener(
+'change',
+buscarJugadores
+);
+
+function buscarJugadores(){
+
+const texto =
+searchInput.value
+.toLowerCase()
+.trim();
+
+const filtro =
+filtroSelect.value;
+
+let lista =
+[...jugadoresGlobal];
+
+if(
+filtroEstadoActivo !==
+'TODOS'
+){
+
+lista =
+lista.filter(j=>
+
+(j.estado || 'PENDIENTE')
+.toUpperCase()
+=== filtroEstadoActivo
+);
 }
 
-// =========================
+lista =
+lista.filter(j=>{
+
+if(filtro === 'nombre'){
+
+return `
+${j.primerNombre}
+${j.apellidos}
+`
+.toLowerCase()
+.includes(texto);
+}
+
+if(filtro === 'cedula'){
+
+return (j.cedula || '')
+.includes(texto);
+}
+
+if(filtro === 'estado'){
+
+return (j.estado || '')
+.toLowerCase()
+.includes(texto);
+}
+
+if(filtro === 'dorsal'){
+
+return String(
+j.dorsal || ''
+).includes(texto);
+}
+
+return true;
+});
+
+renderJugadores(lista);
+}
+
+// =========================================
+// APROBAR
+// =========================================
+
+async function aprobarJugador(
+cedula
+){
+
+const ok =
+confirm(
+'¿Aprobar jugador?'
+);
+
+if(!ok){
+return;
+}
+
+try{
+
+const response =
+await fetch(
+`${CONFIG.URL_GAS}?action=aprobarJugador&cedula=${cedula}`
+);
+
+const data =
+await response.json();
+
+if(data.ok){
+
+const mensaje =
+
+`🏆 *NÁPOLES F.C.* ⚽🔥
+
+Hola campeón 🙌
+
+Tu registro fue *APROBADO* exitosamente.
+
+✅ Ya eres jugador oficial del club.
+
+📲 Ingresa aquí:
+https://kilometro0-ec.github.io/NAPOLES-FC/login.html
+
+🔹 Usa tu cédula para entrar.
+
+Podrás ver:
+
+⚽ Estadísticas
+🏅 Partidos
+👕 Perfil
+💳 Estado de pagos
+
+🔥 Bienvenido al club.`;
+
+
+let url = '';
+
+const tipo =
+localStorage.getItem(
+'tipo_whatsapp'
+);
+
+if(tipo === 'business'){
+
+url =
+`https://wa.me/593${data.telefono}?text=${encodeURIComponent(mensaje)}`;
+}else{
+
+url =
+`https://api.whatsapp.com/send?phone=593${data.telefono}&text=${encodeURIComponent(mensaje)}`;
+}
+
+window.open(
+url,
+'_blank'
+);
+
+cargarJugadores();
+}
+
+}catch(err){
+
+alert(
+'Error aprobando'
+);
+}
+}
+
+// =========================================
+// RECHAZAR
+// =========================================
+
+async function rechazarJugador(
+cedula
+){
+
+const ok =
+confirm(
+'¿Rechazar jugador?'
+);
+
+if(!ok){
+return;
+}
+
+try{
+
+const response =
+await fetch(
+`${CONFIG.URL_GAS}?action=rechazarJugador&cedula=${cedula}`
+);
+
+const data =
+await response.json();
+
+if(data.ok){
+
+cargarJugadores();
+}
+
+}catch(err){
+
+alert(
+'Error rechazando'
+);
+}
+}
+
+// =========================================
+// WHATSAPP
+// =========================================
+
+function enviarWhatsapp(
+telefono,
+nombre
+){
+
+const mensaje =
+
+`Hola ${nombre} 👋⚽`;
+
+window.open(
+`https://wa.me/593${telefono}?text=${encodeURIComponent(mensaje)}`,
+'_blank'
+);
+}
+
+// =========================================
+// EDITAR
+// =========================================
+
+function editarJugador(
+cedula
+){
+
+localStorage.setItem(
+'editCedula',
+cedula
+);
+
+window.location.href =
+'./editar-jugador.html';
+}
+
+// =========================================
+// PDF
+// =========================================
+
+function descargarPDF(){
+
+const {
+jsPDF
+} = window.jspdf;
+
+const doc =
+new jsPDF();
+
+doc.setFontSize(18);
+
+doc.text(
+'Jugadores Nápoles FC',
+20,
+20
+);
+
+let y = 40;
+
+jugadoresGlobal.forEach(j=>{
+
+doc.setFontSize(12);
+
+doc.text(
+`${j.dorsal || 0} - ${j.nombreCamiseta || ''} - ${j.primerNombre || ''} ${j.apellidos || ''}`,
+20,
+y
+);
+
+y += 10;
+
+if(y > 270){
+
+doc.addPage();
+
+y = 20;
+}
+});
+
+doc.save(
+'jugadores.pdf'
+);
+}
+
+// =========================================
 // LOGOUT
-// =========================
-function logout(){
-localStorage.removeItem('admin_activo');
-window.location.href = './login.html';
+// =========================================
+
+function cerrarSesion(){
+
+localStorage.removeItem(
+'admin_activo'
+);
+
+window.location.href =
+'./login.html';
 }
 
-cargar();
+// =========================================
+// INIT
+// =========================================
+
+cargarJugadores();
 
 </script>
 
