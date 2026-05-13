@@ -2,1191 +2,328 @@
 <html lang="es">
 
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<title>Jugadores - Nápoles F.C.</title>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-rel="stylesheet">
-
-<link
-href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-rel="stylesheet">
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-body{
-
-    font-family:'Inter',sans-serif;
-
-    background:
-    linear-gradient(
-    180deg,
-    #050816 0%,
-    #0f172a 40%,
-    #111827 100%
-    );
-
-    color:#fff;
-
-    overflow-x:hidden;
-}
-
-/* =========================================
-BACKGROUND
-========================================= */
-
-.bg-animation{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:-1;
-
-    overflow:hidden;
-}
-
-.ball{
-
-    position:absolute;
-
-    border-radius:999px;
-
-    filter:blur(90px);
-
-    opacity:.18;
-
-    animation:float 10s infinite ease-in-out;
-}
-
-.ball1{
-
-    width:300px;
-    height:300px;
-
-    background:#7c3aed;
-
-    top:-80px;
-    left:-80px;
-}
-
-.ball2{
-
-    width:240px;
-    height:240px;
-
-    background:#2563eb;
-
-    bottom:-80px;
-    right:-80px;
-}
-
-@keyframes float{
-
-    0%{
-        transform:translateY(0px);
-    }
-
-    50%{
-        transform:translateY(-30px);
-    }
-
-    100%{
-        transform:translateY(0px);
-    }
-}
-
-/* =========================================
-HEADER
-========================================= */
-
-.topbar{
-
-    position:sticky;
-
-    top:0;
-
-    z-index:100;
-
-    padding:18px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    backdrop-filter:blur(20px);
-
-    background:rgba(15,23,42,.6);
-
-    border-bottom:1px solid rgba(255,255,255,.05);
-}
-
-.logo h1{
-
-    font-size:1.2rem;
-
-    font-weight:900;
-}
-
-.logo p{
-
-    color:#94a3b8;
-
-    font-size:.82rem;
-
-    margin-top:2px;
-}
-
-.top-actions{
-
-    display:flex;
-
-    gap:12px;
-}
-
-.icon-btn{
-
-    width:48px;
-    height:48px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:rgba(255,255,255,.06);
-
-    color:#fff;
-
-    cursor:pointer;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    backdrop-filter:blur(10px);
-}
-
-/* =========================================
-CARDS TOP
-========================================= */
-
-.stats-grid{
-
-    padding:18px;
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
-    gap:12px;
-
-    overflow:auto;
-}
-
-.stat-card{
-
-    min-width:100px;
-
-    background:rgba(255,255,255,.06);
-
-    border:1px solid rgba(255,255,255,.06);
-
-    border-radius:24px;
-
-    padding:18px 12px;
-
-    backdrop-filter:blur(14px);
-
-    text-align:center;
-
-    cursor:pointer;
-
-    transition:.25s;
-}
-
-.stat-card.active{
-
-    background:
-    linear-gradient(
-    135deg,
-    #7c3aed,
-    #2563eb
-    );
-}
-
-.stat-card h2{
-
-    font-size:1.7rem;
-
-    font-weight:900;
-}
-
-.stat-card p{
-
-    font-size:.78rem;
-
-    margin-top:6px;
-
-    color:#cbd5e1;
-
-    font-weight:700;
-}
-
-/* =========================================
-SEARCH
-========================================= */
-
-.search-area{
-
-    padding:0 18px 18px;
-}
-
-.search-box{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    background:rgba(255,255,255,.06);
-
-    border-radius:22px;
-
-    padding:15px 16px;
-
-    backdrop-filter:blur(14px);
-}
-
-.search-box input{
-
-    width:100%;
-
-    background:none;
-
-    border:none;
-
-    outline:none;
-
-    color:#fff;
-
-    font-size:.95rem;
-}
-
-/* =========================================
-PLAYERS
-========================================= */
-
-.players{
-
-    padding:0 18px 120px;
-}
-
-.player-card{
-
-    background:rgba(255,255,255,.06);
-
-    border:1px solid rgba(255,255,255,.05);
-
-    border-radius:28px;
-
-    padding:18px;
-
-    margin-bottom:16px;
-
-    backdrop-filter:blur(18px);
-}
-
-.player-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-}
-
-.player-left{
-
-    display:flex;
-
-    gap:14px;
-
-    align-items:center;
-}
-
-.avatar{
-
-    width:74px;
-    height:74px;
-
-    border-radius:22px;
-
-    overflow:hidden;
-
-    border:2px solid rgba(255,255,255,.08);
-
-    flex-shrink:0;
-}
-
-.avatar img{
-
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-}
-
-.player-info h3{
-
-    font-size:1rem;
-
-    font-weight:900;
-}
-
-.player-info p{
-
-    color:#94a3b8;
-
-    margin-top:4px;
-
-    font-size:.85rem;
-}
-
-.cam-card{
-
-    margin-top:14px;
-
-    background:
-    linear-gradient(
-    135deg,
-    #2563eb,
-    #7c3aed
-    );
-
-    border-radius:22px;
-
-    padding:16px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-}
-
-.cam-name{
-
-    font-size:1rem;
-
-    font-weight:800;
-}
-
-.cam-dorsal{
-
-    width:58px;
-    height:58px;
-
-    border-radius:18px;
-
-    background:rgba(255,255,255,.18);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:1.4rem;
-
-    font-weight:900;
-}
-
-/* =========================================
-STATUS
-========================================= */
-
-.estado{
-
-    margin-top:14px;
-
-    display:inline-flex;
-
-    padding:8px 16px;
-
-    border-radius:999px;
-
-    font-size:.75rem;
-
-    font-weight:800;
-}
-
-.aprobado{
-
-    background:#166534;
-
-    color:#dcfce7;
-}
-
-.pendiente{
-
-    background:#854d0e;
-
-    color:#fef3c7;
-}
-
-.rechazado{
-
-    background:#991b1b;
-
-    color:#fee2e2;
-}
-
-/* =========================================
-ACTIONS
-========================================= */
-
-.actions{
-
-    margin-top:18px;
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
-    gap:12px;
-}
-
-.action-btn{
-
-    height:52px;
-
-    border:none;
-
-    border-radius:18px;
-
-    color:#fff;
-
-    font-weight:700;
-
-    cursor:pointer;
-}
-
-.approve{
-    background:#16a34a;
-}
-
-.reject{
-    background:#dc2626;
-}
-
-.edit{
-    background:#2563eb;
-}
-
-.whatsapp{
-    background:#22c55e;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Jugadores - Nápoles F.C.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #050816 0%, #0f172a 40%, #111827 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND ANIMATION */
+        .bg-animation {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .ball {
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(90px);
+            opacity: .18;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .ball1 { width: 300px; height: 300px; background: #7c3aed; top: -80px; left: -80px; }
+        .ball2 { width: 240px; height: 240px; background: #2563eb; bottom: -80px; right: -80px; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-30px); }
+        }
+
+        /* HEADER */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, .6);
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
+        }
+
+        .logo h1 { font-size: 1.2rem; font-weight: 900; }
+        .logo p { color: #94a3b8; font-size: .82rem; margin-top: 2px; }
+
+        .top-actions { display: flex; gap: 12px; }
+        .icon-btn {
+            width: 48px; height: 48px; border: none; border-radius: 18px;
+            background: rgba(255, 255, 255, .06); color: #fff; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);
+        }
+
+        /* STATS */
+        .stats-grid { padding: 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; overflow: auto; }
+        .stat-card {
+            min-width: 100px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: 24px; padding: 18px 12px; backdrop-filter: blur(14px); text-align: center; cursor: pointer; transition: .25s;
+        }
+        .stat-card.active { background: linear-gradient(135deg, #7c3aed, #2563eb); }
+        .stat-card h2 { font-size: 1.7rem; font-weight: 900; }
+        .stat-card p { font-size: .78rem; margin-top: 6px; color: #cbd5e1; font-weight: 700; }
+
+        /* SEARCH */
+        .search-area { padding: 0 18px 18px; }
+        .search-box {
+            display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, .06);
+            border-radius: 22px; padding: 15px 16px; backdrop-filter: blur(14px);
+        }
+        .search-box input { width: 100%; background: none; border: none; outline: none; color: #fff; font-size: .95rem; }
+
+        /* PLAYERS */
+        .players { padding: 0 18px 120px; }
+        .player-card {
+            background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .05);
+            border-radius: 28px; padding: 18px; margin-bottom: 16px; backdrop-filter: blur(18px);
+        }
+        .player-top { display: flex; justify-content: space-between; align-items: center; }
+        .player-left { display: flex; gap: 14px; align-items: center; }
+        .avatar { width: 74px; height: 74px; border-radius: 22px; overflow: hidden; border: 2px solid rgba(255, 255, 255, .08); flex-shrink: 0; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .player-info h3 { font-size: 1rem; font-weight: 900; }
+        .player-info p { color: #94a3b8; margin-top: 4px; font-size: .85rem; }
+
+        .cam-card {
+            margin-top: 14px; background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 22px; padding: 16px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .cam-name { font-size: 1rem; font-weight: 800; }
+        .cam-dorsal {
+            width: 58px; height: 58px; border-radius: 18px; background: rgba(255, 255, 255, .18);
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;
+        }
+
+        .estado { margin-top: 14px; display: inline-flex; padding: 8px 16px; border-radius: 999px; font-size: .75rem; font-weight: 800; }
+        .aprobado { background: #166534; color: #dcfce7; }
+        .pendiente { background: #854d0e; color: #fef3c7; }
+        .rechazado { background: #991b1b; color: #fee2e2; }
+
+        .actions { margin-top: 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .action-btn { height: 52px; border: none; border-radius: 18px; color: #fff; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .approve { background: #16a34a; }
+        .reject { background: #dc2626; }
+        .edit { background: #2563eb; }
+        .whatsapp { background: #22c55e; }
+    </style>
 </head>
 
 <body>
-
-<!-- =========================================
-BACKGROUND
-========================================= -->
-
-<div class="bg-animation">
-
-    <div class="ball ball1"></div>
-
-    <div class="ball ball2"></div>
-
-</div>
-
-<!-- =========================================
-HEADER
-========================================= -->
-
-<header class="topbar">
-
-    <div class="logo">
-
-        <h1>Nápoles F.C.</h1>
-
-        <p>Panel jugadores</p>
-
+    <div class="bg-animation">
+        <div class="ball ball1"></div>
+        <div class="ball ball2"></div>
     </div>
 
-    <div class="top-actions">
-
-        <button
-        class="icon-btn"
-        onclick="seleccionarWhatsApp()">
-
-            <span class="material-symbols-outlined">
-                chat
-            </span>
-
-        </button>
-
-        <button
-        class="icon-btn"
-        onclick="descargarPDF()">
-
-            <span class="material-symbols-outlined">
-                picture_as_pdf
-            </span>
-
-        </button>
-
-        <button
-        class="icon-btn"
-        onclick="cerrarSesion()">
-
-            <span class="material-symbols-outlined">
-                logout
-            </span>
-
-        </button>
-
-    </div>
-
-</header>
-
-<!-- =========================================
-TOP CARDS
-========================================= -->
-
-<section class="stats-grid">
-
-    <div
-    class="stat-card active"
-    onclick="filtrarEstado('TODOS',this)">
-
-        <h2 id="totalJugadores">0</h2>
-
-        <p>TOTAL</p>
-
-    </div>
-
-    <div
-    class="stat-card"
-    onclick="filtrarEstado('APROBADO',this)">
-
-        <h2 id="aprobados">0</h2>
-
-        <p>APROBADOS</p>
-
-    </div>
-
-    <div
-    class="stat-card"
-    onclick="filtrarEstado('PENDIENTE',this)">
-
-        <h2 id="pendientes">0</h2>
-
-        <p>PENDIENTES</p>
-
-    </div>
-
-    <div
-    class="stat-card"
-    onclick="filtrarEstado('RECHAZADO',this)">
-
-        <h2 id="rechazados">0</h2>
-
-        <p>RECHAZADOS</p>
-
-    </div>
-
-</section>
-
-<!-- =========================================
-SEARCH
-========================================= -->
-
-<section class="search-area">
-
-    <div class="search-box">
-
-        <span class="material-symbols-outlined">
-            search
-        </span>
-
-        <input
-        type="text"
-        id="searchInput"
-        placeholder="Buscar jugador...">
-
-    </div>
-
-</section>
-
-<!-- =========================================
-PLAYERS
-========================================= -->
-
-<section
-class="players"
-id="playersContainer">
-
-</section>
-
-<script src="./config.js"></script>
-
-<script>
-
-// =========================================
-// LOGIN
-// =========================================
-
-if(
-localStorage.getItem(
-'admin_activo'
-)!=='true'
-){
-    location.href='./login.html'
-}
-
-// =========================================
-// GLOBAL
-// =========================================
-
-const playersContainer =
-document.getElementById(
-'playersContainer'
-)
-
-let jugadoresGlobal=[]
-
-// =========================================
-// AVATARES HOMBRE
-// =========================================
-
-const avatars=[
-
-'https://api.dicebear.com/7.x/adventurer/svg?seed=spiderman',
-'https://api.dicebear.com/7.x/adventurer/svg?seed=batman',
-'https://api.dicebear.com/7.x/adventurer/svg?seed=thor',
-'https://api.dicebear.com/7.x/adventurer/svg?seed=superman',
-'https://api.dicebear.com/7.x/adventurer/svg?seed=ironman',
-'https://api.dicebear.com/7.x/adventurer/svg?seed=hulk',
-'https://api.dicebear.com/7.x/adventurer/svg?seed=marcelo',
-'https://api.dicebear.com/7.x/adventurer/svg?seed=darwin'
-]
-
-// =========================================
-// LOAD
-// =========================================
-
-async function cargarJugadores(){
-
-    try{
-
-        const response =
-        await fetch(
-`${CONFIG.URL_GAS}?action=getJugadores&t=${Date.now()}`
-        )
-
-        const data =
-        await response.json()
-
-        jugadoresGlobal =
-        (data.jugadores || [])
-
-        jugadoresGlobal.sort((a,b)=>{
-
-            return Number(a.dorsal||0)
-            -
-            Number(b.dorsal||0)
-        })
-
-        actualizarCards()
-
-        renderJugadores(
-            jugadoresGlobal
-        )
-
-    }catch(err){
-
-        playersContainer.innerHTML=
-        'Error conexión'
-    }
-}
-
-// =========================================
-// CARDS
-// =========================================
-
-function actualizarCards(){
-
-    document.getElementById(
-    'totalJugadores'
-    ).innerText=
-    jugadoresGlobal.length
-
-    document.getElementById(
-    'aprobados'
-    ).innerText=
-    jugadoresGlobal.filter(j=>
-    j.estado==='APROBADO'
-    ).length
-
-    document.getElementById(
-    'pendientes'
-    ).innerText=
-    jugadoresGlobal.filter(j=>
-    !j.estado ||
-    j.estado==='PENDIENTE'
-    ).length
-
-    document.getElementById(
-    'rechazados'
-    ).innerText=
-    jugadoresGlobal.filter(j=>
-    j.estado==='RECHAZADO'
-    ).length
-}
-
-// =========================================
-// RENDER
-// =========================================
-
-function renderJugadores(lista){
-
-    playersContainer.innerHTML=''
-
-    lista.forEach((jugador,index)=>{
-
-        let estadoClass='pendiente'
-
-        if(jugador.estado==='APROBADO'){
-            estadoClass='aprobado'
+    <header class="topbar">
+        <div class="logo">
+            <h1>Nápoles F.C.</h1>
+            <p>Panel jugadores</p>
+        </div>
+        <div class="top-actions">
+            <button class="icon-btn" onclick="seleccionarWhatsApp()">
+                <span class="material-symbols-outlined">chat</span>
+            </button>
+            <button class="icon-btn" onclick="descargarPDF()">
+                <span class="material-symbols-outlined">picture_as_pdf</span>
+            </button>
+            <button class="icon-btn" onclick="cerrarSesion()">
+                <span class="material-symbols-outlined">logout</span>
+            </button>
+        </div>
+    </header>
+
+    <section class="stats-grid">
+        <div class="stat-card active" onclick="filtrarEstado('TODOS',this)">
+            <h2 id="totalJugadores">0</h2>
+            <p>TOTAL</p>
+        </div>
+        <div class="stat-card" onclick="filtrarEstado('APROBADO',this)">
+            <h2 id="aprobados">0</h2>
+            <p>APROBADOS</p>
+        </div>
+        <div class="stat-card" onclick="filtrarEstado('PENDIENTE',this)">
+            <h2 id="pendientes">0</h2>
+            <p>PENDIENTES</p>
+        </div>
+        <div class="stat-card" onclick="filtrarEstado('RECHAZADO',this)">
+            <h2 id="rechazados">0</h2>
+            <p>RECHAZADOS</p>
+        </div>
+    </section>
+
+    <section class="search-area">
+        <div class="search-box">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" id="searchInput" placeholder="Buscar jugador...">
+        </div>
+    </section>
+
+    <section class="players" id="playersContainer"></section>
+
+    <script src="./config.js"></script>
+    <script>
+        // SEGURIDAD LOGIN
+        if (localStorage.getItem('admin_activo') !== 'true') {
+            location.href = './login.html';
         }
 
-        if(jugador.estado==='RECHAZADO'){
-            estadoClass='rechazado'
+        const playersContainer = document.getElementById('playersContainer');
+        let jugadoresGlobal = [];
+
+        const avatars = [
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=spiderman',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=batman',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=thor',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=superman',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=ironman',
+            'https://api.dicebear.com/7.x/adventurer/svg?seed=hulk'
+        ];
+
+        async function cargarJugadores() {
+            try {
+                const response = await fetch(`${CONFIG.URL_GAS}?action=getJugadores&t=${Date.now()}`);
+                const data = await response.json();
+                jugadoresGlobal = data.jugadores || [];
+                jugadoresGlobal.sort((a, b) => Number(a.dorsal || 0) - Number(b.dorsal || 0));
+                actualizarCards();
+                renderJugadores(jugadoresGlobal);
+            } catch (err) {
+                playersContainer.innerHTML = 'Error conexión';
+            }
         }
 
-        const card=
-        document.createElement('div')
-
-        card.className=
-        'player-card'
-
-        const avatar =
-        avatars[
-        index % avatars.length
-        ]
-
-        card.innerHTML=`
-
-        <div class="player-top">
-
-            <div class="player-left">
-
-                <div class="avatar">
-
-                    <img src="${avatar}">
-
-                </div>
-
-                <div class="player-info">
-
-                    <h3>
-                        ${jugador.primerNombre}
-                        ${jugador.apellidos}
-                    </h3>
-
-                    <p>
-                        ${jugador.cedula}
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="cam-card">
-
-            <div>
-
-                <div class="cam-name">
-
-                    ${jugador.nombreCamiseta || 'SIN NOMBRE'}
-
-                </div>
-
-            </div>
-
-            <div class="cam-dorsal">
-
-                ${jugador.dorsal || 0}
-
-            </div>
-
-        </div>
-
-        <div class="estado ${estadoClass}">
-
-            ${jugador.estado || 'PENDIENTE'}
-
-        </div>
-
-        <div class="actions">
-
-            <button
-            class="action-btn approve"
-            onclick="aprobarJugador('${jugador.cedula}')">
-
-                ✔
-
-            </button>
-
-            <button
-            class="action-btn reject"
-            onclick="rechazarJugador('${jugador.cedula}')">
-
-                ✖
-
-            </button>
-
-            <button
-            class="action-btn edit"
-            onclick="editarJugador('${jugador.cedula}')">
-
-                ✎
-
-            </button>
-
-            <button
-            class="action-btn whatsapp"
-            onclick="enviarWhatsApp('${jugador.telefono}')">
-
-                ☎
-
-            </button>
-
-        </div>
-        `
-
-        playersContainer.appendChild(
-        card
-        )
-    })
-}
-
-// =========================================
-// FILTRO
-// =========================================
-
-function filtrarEstado(
-estado,
-btn
-){
-
-    document
-    .querySelectorAll('.stat-card')
-    .forEach(c=>{
-
-        c.classList.remove(
-        'active'
-        )
-    })
-
-    btn.classList.add(
-    'active'
-    )
-
-    if(estado==='TODOS'){
-
-        renderJugadores(
-        jugadoresGlobal
-        )
-
-        return
-    }
-
-    const filtrados=
-    jugadoresGlobal.filter(j=>
-
-        (j.estado || 'PENDIENTE')
-        === estado
-    )
-
-    renderJugadores(
-    filtrados
-    )
-}
-
-// =========================================
-// SEARCH
-// =========================================
-
-document.getElementById(
-'searchInput'
-)
-.addEventListener(
-'input',
-e=>{
-
-    const texto=
-    e.target.value
-    .toLowerCase()
-
-    const filtrados=
-    jugadoresGlobal.filter(j=>{
-
-        return (
-
-            (j.primerNombre||'')
-            .toLowerCase()
-            .includes(texto)
-
-            ||
-
-            (j.apellidos||'')
-            .toLowerCase()
-            .includes(texto)
-
-            ||
-
-            (j.nombreCamiseta||'')
-            .toLowerCase()
-            .includes(texto)
-
-            ||
-
-            (j.dorsal||'')
-            .toString()
-            .includes(texto)
-        )
-    })
-
-    renderJugadores(
-    filtrados
-    )
-})
-
-// =========================================
-// CONFIG WHATSAPP
-// =========================================
-
-function seleccionarWhatsApp(){
-
-    const tipo=
-    confirm(
-`ACEPTAR = WHATSAPP NORMAL
-
-CANCELAR = WHATSAPP BUSINESS`
-    )
-
-    if(tipo){
-
-        localStorage.setItem(
-        'tipo_whatsapp',
-        'normal'
-        )
-
-        alert(
-        'WhatsApp NORMAL configurado'
-        )
-
-    }else{
-
-        localStorage.setItem(
-        'tipo_whatsapp',
-        'business'
-        )
-
-        alert(
-        'WhatsApp BUSINESS configurado'
-        )
-    }
-}
-
-// =========================================
-// OPEN WHATSAPP
-// =========================================
-
-function abrirWhatsApp(
-telefono,
-mensaje
-){
-
-    const tipo=
-    localStorage.getItem(
-    'tipo_whatsapp'
-    ) || 'normal'
-
-    const texto=
-    encodeURIComponent(
-    mensaje
-    )
-
-    let url=''
-
-    if(tipo==='normal'){
-
-        url=
-`intent://send?phone=${telefono}&text=${texto}#Intent;scheme=smsto;package=com.whatsapp;end`
-
-    }else{
-
-        url=
-`intent://send?phone=${telefono}&text=${texto}#Intent;scheme=smsto;package=com.whatsapp.w4b;end`
-    }
-
-    location.href=url
-}
-
-// =========================================
-// APROBAR
-// =========================================
-
-async function aprobarJugador(
-cedula
-){
-
-    const response=
-    await fetch(
-`${CONFIG.URL_GAS}?action=aprobarJugador&cedula=${cedula}`
-    )
-
-    const data=
-    await response.json()
-
-    if(data.ok){
-
-        const mensaje=
-`🏆 ¡BIENVENIDO A NÁPOLES F.C.! ⚽🔥
-
-Tu registro fue aprobado exitosamente 🙌
-
-📲 Ingresa ahora:
-https://kilometro0-ec.github.io/NAPOLES-FC/login.html
-
-✅ Usa tu número de cédula
-
-⚽ Ya puedes:
-• Ver estadísticas
-• Revisar partidos
-• Ver perfil
-• Revisar pagos
-
-💙 Bienvenido campeón.`
-
-        abrirWhatsApp(
-        '593'+data.telefono,
-        mensaje
-        )
-
-        cargarJugadores()
-    }
-}
-
-// =========================================
-// RECHAZAR
-// =========================================
-
-async function rechazarJugador(
-cedula
-){
-
-    await fetch(
-`${CONFIG.URL_GAS}?action=rechazarJugador&cedula=${cedula}`
-    )
-
-    cargarJugadores()
-}
-
-// =========================================
-// EDITAR
-// =========================================
-
-function editarJugador(
-cedula
-){
-
-    localStorage.setItem(
-    'editCedula',
-    cedula
-    )
-
-    location.href=
-    './editar-jugador.html'
-}
-
-// =========================================
-// PDF
-// =========================================
-
-function descargarPDF(){
-
-    window.print()
-}
-
-// =========================================
-// CERRAR
-// =========================================
-
-function cerrarSesion(){
-
-    localStorage.removeItem(
-    'admin_activo'
-    )
-
-    location.href=
-    './login.html'
-}
-
-// =========================================
-// DIRECTO WHATSAPP
-// =========================================
-
-function enviarWhatsApp(
-telefono
-){
-
-    abrirWhatsApp(
-    '593'+telefono,
-    'Hola jugador ⚽'
-    )
-}
-
-// =========================================
-// INIT
-// =========================================
-
-cargarJugadores()
-
-</script>
-
+        function actualizarCards() {
+            document.getElementById('totalJugadores').innerText = jugadoresGlobal.length;
+            document.getElementById('aprobados').innerText = jugadoresGlobal.filter(j => j.estado === 'APROBADO').length;
+            document.getElementById('pendientes').innerText = jugadoresGlobal.filter(j => !j.estado || j.estado === 'PENDIENTE').length;
+            document.getElementById('rechazados').innerText = jugadoresGlobal.filter(j => j.estado === 'RECHAZADO').length;
+        }
+
+        function renderJugadores(lista) {
+            playersContainer.innerHTML = '';
+            lista.forEach((jugador, index) => {
+                let estadoClass = 'pendiente';
+                if (jugador.estado === 'APROBADO') estadoClass = 'aprobado';
+                if (jugador.estado === 'RECHAZADO') estadoClass = 'rechazado';
+
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                const avatar = avatars[index % avatars.length];
+
+                card.innerHTML = `
+                    <div class="player-top">
+                        <div class="player-left">
+                            <div class="avatar"><img src="${avatar}"></div>
+                            <div class="player-info">
+                                <h3>${jugador.primerNombre} ${jugador.apellidos}</h3>
+                                <p>${jugador.cedula}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cam-card">
+                        <div class="cam-name">${jugador.nombreCamiseta || 'SIN NOMBRE'}</div>
+                        <div class="cam-dorsal">${jugador.dorsal || 0}</div>
+                    </div>
+                    <div class="estado ${estadoClass}">${jugador.estado || 'PENDIENTE'}</div>
+                    <div class="actions">
+                        <button class="action-btn approve" onclick="aprobarJugador('${jugador.cedula}')"><span class="material-symbols-outlined">check</span></button>
+                        <button class="action-btn reject" onclick="rechazarJugador('${jugador.cedula}')"><span class="material-symbols-outlined">close</span></button>
+                        <button class="action-btn edit" onclick="editarJugador('${jugador.cedula}')"><span class="material-symbols-outlined">edit</span></button>
+                        <button class="action-btn whatsapp" onclick="abrirWhatsApp('${jugador.telefono}', 'Hola ${jugador.primerNombre} ⚽')"><span class="material-symbols-outlined">chat</span></button>
+                    </div>
+                `;
+                playersContainer.appendChild(card);
+            });
+        }
+
+        // WHATSAPP CONFIG & OPEN
+        function seleccionarWhatsApp() {
+            const esNormal = confirm("ACEPTAR = WhatsApp Normal\nCANCELAR = WhatsApp Business");
+            localStorage.setItem('tipo_whatsapp', esNormal ? 'normal' : 'business');
+            alert(`Configurado como: ${esNormal ? 'NORMAL' : 'BUSINESS'}`);
+        }
+
+        function abrirWhatsApp(telefono, mensaje) {
+            const tipo = localStorage.getItem('tipo_whatsapp') || 'normal';
+            if(!telefono) return alert("No hay teléfono registrado");
+            
+            // Limpieza y formato de número para Ecuador
+            let num = telefono.toString().replace(/\D/g, '');
+            if (!num.startsWith('593')) num = '593' + (num.startsWith('0') ? num.substring(1) : num);
+            
+            const url = tipo === 'normal' 
+                ? `https://api.whatsapp.com/send?phone=${num}&text=${encodeURIComponent(mensaje)}`
+                : `https://wa.me/${num}?text=${encodeURIComponent(mensaje)}`;
+            
+            window.open(url, '_blank');
+        }
+
+        async function aprobarJugador(cedula) {
+            if (!confirm("¿Aprobar jugador?")) return;
+            try {
+                const response = await fetch(`${CONFIG.URL_GAS}?action=aprobarJugador&cedula=${cedula}`);
+                const data = await response.json();
+                if (data.ok) {
+                    const msg = `🏆 ¡BIENVENIDO A NÁPOLES F.C.! ⚽🔥\n\nTu registro fue aprobado exitosamente 🙌\n\n📲 Ingresa con tu cédula:\nhttps://kilometro0-ec.github.io/NAPOLES-FC/login.html\n\n¡Bienvenido campeón!`;
+                    abrirWhatsApp(data.telefono, msg);
+                    cargarJugadores();
+                }
+            } catch (e) { alert("Error al aprobar"); }
+        }
+
+        async function rechazarJugador(cedula) {
+            if (!confirm("¿Rechazar jugador?")) return;
+            await fetch(`${CONFIG.URL_GAS}?action=rechazarJugador&cedula=${cedula}`);
+            cargarJugadores();
+        }
+
+        function editarJugador(cedula) {
+            localStorage.setItem('editCedula', cedula);
+            location.href = './editar-jugador.html';
+        }
+
+        // BUSCADOR
+        document.getElementById('searchInput').addEventListener('input', e => {
+            const texto = e.target.value.toLowerCase();
+            const filtrados = jugadoresGlobal.filter(j => 
+                `${j.primerNombre} ${j.apellidos} ${j.nombreCamiseta} ${j.dorsal}`.toLowerCase().includes(texto)
+            );
+            renderJugadores(filtrados);
+        });
+
+        function filtrarEstado(estado, btn) {
+            document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            renderJugadores(estado === 'TODOS' ? jugadoresGlobal : jugadoresGlobal.filter(j => (j.estado || 'PENDIENTE') === estado));
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('admin_activo');
+            location.href = './login.html';
+        }
+
+        function descargarPDF() { window.print(); }
+
+        cargarJugadores();
+    </script>
 </body>
 </html>
