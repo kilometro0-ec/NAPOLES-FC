@@ -447,7 +447,9 @@ document.getElementById('errorMsg');
 const loginCard =
 document.getElementById('loginCard');
 
+// ======================================================
 // INPUT
+// ======================================================
 
 cedulaInput.addEventListener('input', () => {
 
@@ -457,7 +459,12 @@ cedulaInput.addEventListener('input', () => {
     btnLogin.disabled =
     !val;
 
-    if(val.includes('Gata')){
+    // ADMIN MODE
+
+    if(
+        val.includes('Gata') ||
+        val.includes('gata')
+    ){
 
         loginCard.classList.add(
             'admin-mode'
@@ -471,24 +478,35 @@ cedulaInput.addEventListener('input', () => {
     }
 });
 
+// ======================================================
 // ERROR
+// ======================================================
 
 function mostrarError(msj){
 
-    errorDiv.textContent = msj;
+    errorDiv.textContent =
+    msj;
 
-    errorDiv.style.display = 'block';
+    errorDiv.style.display =
+    'block';
 
     setTimeout(() => {
 
-        errorDiv.style.display = 'none';
+        errorDiv.style.display =
+        'none';
 
     }, 5000);
 }
 
+// ======================================================
 // LOGIN
+// ======================================================
 
-formLogin.addEventListener('submit', async (e) => {
+formLogin.addEventListener(
+
+'submit',
+
+async (e) => {
 
     e.preventDefault();
 
@@ -502,34 +520,83 @@ formLogin.addEventListener('submit', async (e) => {
 
     try{
 
-        // ADMIN
-
-        const urlAdmin =
-        `${CONFIG.URL_GAS}?action=loginAdmin&clave=${encodeURIComponent(valor)}`;
-
-        const responseAdmin =
-        await fetch(urlAdmin);
-
-        const dataAdmin =
-        await responseAdmin.json();
+        // ==================================================
+        // LOGIN ADMIN
+        // ==================================================
 
         if(
-            dataAdmin.ok === true &&
-            dataAdmin.acceso === true
+            valor === 'GataFiera54321'
         ){
 
-            localStorage.setItem(
-                'admin_activo',
-                'true'
+            const cedula =
+            prompt(
+            'Ingrese la cédula del administrador'
             );
 
-            window.location.href =
-            './admin.html';
+            if(!cedula){
+
+                mostrarError(
+                '❌ Debe ingresar la cédula'
+                );
+
+                return;
+            }
+
+            const urlAdmin =
+
+            `${CONFIG.URL_GAS}?action=loginAdmin&clave=${encodeURIComponent(valor)}&cedula=${encodeURIComponent(cedula)}`;
+
+            const responseAdmin =
+            await fetch(urlAdmin);
+
+            const dataAdmin =
+            await responseAdmin.json();
+
+            if(
+                dataAdmin.success === true &&
+                dataAdmin.acceso === true
+            ){
+
+                // ======================================
+                // TOKEN
+                // ======================================
+
+                localStorage.setItem(
+                    'tokenAdmin',
+                    dataAdmin.token
+                );
+
+                localStorage.setItem(
+                    'admin_activo',
+                    'true'
+                );
+
+                localStorage.setItem(
+                    'adminCedula',
+                    cedula
+                );
+
+                // ======================================
+                // REDIRECT
+                // ======================================
+
+                window.location.href =
+                './admin.html';
+
+                return;
+            }
+
+            mostrarError(
+                dataAdmin.error ||
+                '❌ Acceso administrador inválido'
+            );
 
             return;
         }
 
-        // JUGADOR
+        // ==================================================
+        // LOGIN JUGADOR
+        // ==================================================
 
         if(!/^\d{10}$/.test(valor)){
 
@@ -541,7 +608,8 @@ formLogin.addEventListener('submit', async (e) => {
         }
 
         const url =
-        `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}`;
+
+        `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(valor)}`;
 
         const response =
         await fetch(url);
@@ -550,14 +618,16 @@ formLogin.addEventListener('submit', async (e) => {
         await response.json();
 
         if(
-            data.ok === true &&
+            data.success === true &&
             data.cedulaExiste === true &&
             data.estado === 'APROBADO'
         ){
 
             localStorage.setItem(
                 'jugador_actual',
-                JSON.stringify(data.datosJugador)
+                JSON.stringify(
+                    data.datosJugador
+                )
             );
 
             localStorage.setItem(
@@ -577,6 +647,8 @@ formLogin.addEventListener('submit', async (e) => {
 
     }catch(error){
 
+        console.error(error);
+
         mostrarError(
             '🔌 Error de conexión'
         );
@@ -591,7 +663,9 @@ formLogin.addEventListener('submit', async (e) => {
 
 });
 
+// ======================================================
 // INSTALAR APP
+// ======================================================
 
 document
 .getElementById('manualDownloadBtn')
