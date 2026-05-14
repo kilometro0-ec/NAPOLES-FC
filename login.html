@@ -4,192 +4,540 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>Nápoles F.C. - Acceso</title>
 
 <link rel="manifest" href="./manifest.json">
+
 <meta name="theme-color" content="#020c1a">
 
 <link rel="icon" href="data:,">
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link
+href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
+rel="stylesheet">
 
 <style>
-
-/* =========================
-   BASE ORIGINAL
-========================= */
 
 :root{
     --primary:#00d2ff;
     --primary-dark:#008f9b;
     --accent:#FFD700;
+    --bg-dark:#020c1a;
+    --glass:rgba(12,25,45,.72);
+}
+
+html,
+body{
+    height:100%;
 }
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
 body{
+
     font-family:'Plus Jakarta Sans',sans-serif;
+
     background:#020c1a;
-    min-height:100dvh;
+
+    min-height:100vh;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     padding:20px;
+
     color:#fff;
+
     position:relative;
-    overflow:hidden;
+
+    overflow-x:hidden;
+    overflow-y:auto;
 }
 
-/* GLOW BACKGROUND */
+/* =====================================================
+   FONDO HOLOGRÁFICO
+===================================================== */
+
 body::before,
 body::after{
+
     content:'';
-    position:absolute;
-    width:900px;
-    height:900px;
+
+    position:fixed;
+
+    width:950px;
+    height:950px;
+
     border-radius:50%;
+
     filter:blur(130px);
+
     opacity:.85;
+
     z-index:0;
+
     animation:moveGlow 14s infinite ease-in-out;
+
+    pointer-events:none;
 }
 
 body::before{
-    background:radial-gradient(circle, rgba(0,210,255,.95), transparent);
+
+    background:
+    radial-gradient(circle,
+    rgba(0,210,255,.95) 0%,
+    rgba(0,140,255,.55) 40%,
+    transparent 75%);
+
     top:-340px;
     left:-260px;
 }
 
 body::after{
-    background:radial-gradient(circle, rgba(111,0,255,.95), transparent);
+
+    background:
+    radial-gradient(circle,
+    rgba(111,0,255,.95) 0%,
+    rgba(168,85,247,.55) 40%,
+    transparent 75%);
+
     bottom:-340px;
     right:-260px;
+
     animation-delay:7s;
 }
 
 @keyframes moveGlow{
-    0%{transform:translate(0,0) scale(1);}
-    50%{transform:translate(-90px,120px) scale(.9);}
-    100%{transform:translate(0,0) scale(1);}
+
+    0%{
+        transform:
+        translate(0,0)
+        scale(1)
+        rotate(0deg);
+    }
+
+    25%{
+        transform:
+        translate(120px,60px)
+        scale(1.15)
+        rotate(90deg);
+    }
+
+    50%{
+        transform:
+        translate(-90px,120px)
+        scale(.9)
+        rotate(180deg);
+    }
+
+    75%{
+        transform:
+        translate(80px,-90px)
+        scale(1.08)
+        rotate(270deg);
+    }
+
+    100%{
+        transform:
+        translate(0,0)
+        scale(1)
+        rotate(360deg);
+    }
 }
 
-/* =========================
+/* =====================================================
    CARD
-========================= */
+===================================================== */
 
 .login-card{
+
     width:100%;
     max-width:430px;
+
     background:rgba(10,18,35,.76);
-    backdrop-filter:blur(24px);
+
+    backdrop-filter:blur(24px) saturate(180%);
+
     border:1px solid rgba(0,210,255,.45);
+
     border-radius:34px;
+
     padding:42px 30px;
+
+    box-shadow:
+    0 0 35px rgba(0,210,255,.22),
+    0 18px 45px rgba(0,0,0,.65);
+
     position:relative;
+
     z-index:2;
-    transition:.4s;
+
+    transition:.45s;
 }
 
-/* 🔥 GATA MODE (PULSO REAL) */
+/* =====================================================
+   MODO ADMIN MORADO
+===================================================== */
+
 .login-card.admin-mode{
+
+    background:rgba(38,16,60,.84);
+
     border:1px solid rgba(168,85,247,.95);
-    animation:glowPulse 1.1s infinite ease-in-out;
+
+    box-shadow:
+    0 0 45px rgba(168,85,247,.55),
+    0 18px 45px rgba(0,0,0,.75);
 }
 
-@keyframes glowPulse{
-    0%{
-        box-shadow:0 0 10px rgba(168,85,247,.25);
-    }
-    50%{
-        box-shadow:0 0 45px rgba(168,85,247,.85);
-    }
-    100%{
-        box-shadow:0 0 10px rgba(168,85,247,.25);
-    }
+.login-card.admin-mode .logo-area h1{
+
+    background:
+    linear-gradient(
+    to right,
+    #ffffff,
+    #d8b4fe,
+    #a855f7
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-/* BOTÓN MORADO EN GATA */
+.login-card.admin-mode .logo-area p{
+    color:#f3e8ff;
+}
+
+.login-card.admin-mode label{
+    color:#d8b4fe;
+}
+
+.login-card.admin-mode input{
+
+    border:2px solid rgba(168,85,247,.4);
+
+    background:
+    rgba(55,25,80,.78);
+
+    box-shadow:
+    0 0 18px rgba(168,85,247,.2);
+}
+
+.login-card.admin-mode input:focus{
+
+    border-color:#c084fc;
+
+    box-shadow:
+    0 0 25px rgba(168,85,247,.45);
+}
+
 .login-card.admin-mode .btn-submit{
-    background:linear-gradient(135deg,#6d28d9,#a855f7);
+
+    background:
+    linear-gradient(
+        135deg,
+        #6d28d9,
+        #a855f7
+    );
+
+    box-shadow:
+    0 10px 25px rgba(168,85,247,.35);
 }
 
-/* =========================
-   INPUT
-========================= */
+.login-card.admin-mode #manualDownloadBtn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #7c3aed,
+        #a855f7
+    );
+
+    box-shadow:
+    0 10px 25px rgba(168,85,247,.35);
+}
+
+.login-card.admin-mode a{
+    color:#f3e8ff;
+}
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo-area{
+    text-align:center;
+    margin-bottom:38px;
+}
+
+.logo-area h1{
+
+    font-size:2rem;
+
+    font-weight:800;
+
+    background:
+    linear-gradient(
+    to right,
+    #fff,
+    var(--primary)
+    );
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    margin-bottom:10px;
+}
+
+.logo-area p{
+
+    opacity:.92;
+
+    font-size:1rem;
+
+    font-weight:700;
+
+    color:#d7f7ff;
+
+    letter-spacing:1px;
+}
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+.input-group{
+    margin-bottom:28px;
+}
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:12px;
+
+    color:var(--primary);
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    letter-spacing:1.6px;
+
+    text-transform:uppercase;
+
+    transition:.35s;
+}
 
 input{
+
     width:100%;
+
     min-height:62px;
+
     border-radius:18px;
+
     border:2px solid rgba(255,255,255,.06);
+
     background:rgba(15,23,42,.7);
+
     color:#fff;
-    font-size:1rem;
+
+    font-size:1.05rem;
+
     font-weight:700;
+
+    padding:0 18px;
+
     text-align:center;
+
+    outline:none;
+
+    transition:.35s;
 }
 
-/* =========================
+input:focus{
+
+    border-color:var(--primary);
+
+    background:rgba(15,23,42,.92);
+
+    box-shadow:
+    0 0 18px rgba(0,210,255,.35);
+}
+
+/* =====================================================
    BOTÓN
-========================= */
+===================================================== */
 
 .btn-submit{
+
     width:100%;
+
     height:58px;
+
     border:none;
+
     border-radius:18px;
-    background:linear-gradient(135deg,#008f9b,#00d2ff);
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary-dark),
+        var(--primary)
+    );
+
     color:#fff;
+
+    font-size:1rem;
+
     font-weight:800;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
     cursor:pointer;
-    margin-top:18px;
+
+    transition:.35s;
+
+    margin-top:12px;
 }
 
-/* =========================
+.btn-submit:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 10px 25px rgba(0,210,255,.35);
+}
+
+.btn-submit:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+/* =====================================================
    ERROR
-========================= */
+===================================================== */
 
 .error-message{
+
     display:none;
-    margin-top:18px;
+
+    margin-top:20px;
+
     padding:14px;
+
     border-radius:14px;
+
     background:rgba(239,68,68,.16);
+
     border:1px solid rgba(239,68,68,.35);
+
     color:#fecaca;
+
     text-align:center;
+
+    font-size:.88rem;
+
+    font-weight:600;
 }
 
-/* =========================
-   REGÍSTRATE
-========================= */
+/* =====================================================
+   FOOTER
+===================================================== */
 
-.gold-link{
+.footer-links{
+    width:100%;
+    margin-top:34px;
+}
+
+.footer-links a{
+
     color:#FFD700;
+
     font-weight:800;
+
     text-decoration:none;
 }
 
-/* =========================
-   BOTÓN APP
-========================= */
+.footer-links a:hover{
+    opacity:.9;
+}
 
-.install-btn{
-    margin-top:22px;
-    width:100%;
-    padding:14px;
+#manualDownloadBtn{
+
+    padding:14px 24px;
+
     border-radius:999px;
+
     border:none;
-    background:linear-gradient(135deg,#00d2ff,#008f9b);
+
+    background:
+    linear-gradient(
+    135deg,
+    #00d2ff,
+    #008f9b
+    );
+
     color:#fff;
+
     font-weight:800;
+
+    font-size:.95rem;
+
     cursor:pointer;
+
+    transition:.35s;
+
+    box-shadow:
+    0 10px 25px rgba(0,210,255,.25);
+}
+
+#manualDownloadBtn:hover{
+    transform:translateY(-2px);
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:480px){
+
+    body{
+        padding:16px;
+    }
+
+    .login-card{
+        padding:32px 22px;
+    }
+
+    .logo-area h1{
+        font-size:1.7rem;
+    }
+
+    input{
+        min-height:56px;
+    }
+
+    .btn-submit{
+        height:54px;
+    }
 }
 
 </style>
@@ -198,135 +546,357 @@ input{
 
 <body>
 
-<div class="login-card" id="loginCard">
+<div
+class="login-card"
+id="loginCard">
 
-    <h2 style="text-align:center;">NÁPOLES F.C.</h2>
-   
-    <p style="text-align:center;opacity:.7;">Acceso PRO</p>
+    <div class="logo-area">
 
-    <input id="input" placeholder="Cédula o clave admin">
+        <h1>NÁPOLES F.C.</h1>
 
-    <button class="btn-submit" id="btn" disabled>INGRESAR</button>
+        <p>Acceso de Jugadores PRO</p>
 
-    <div class="error-message" id="error"></div>
+    </div>
 
-    <!-- 🔥 BOTÓN QUE FALTABA -->
-    <button class="install-btn" id="installBtn">
-        📲 DESCARGAR APP
-    </button>
+    <form id="formLogin">
 
-    <p style="text-align:center;margin-top:18px;">
-        ¿No tienes cuenta?
-        <a class="gold-link" href="./index.html">REGÍSTRATE ✨</a>
-    </p>
+        <div class="input-group">
+
+            <label>
+                Ingresa tus credenciales
+            </label>
+
+            <input
+                type="text"
+                id="loginCedula"
+                placeholder="Cédula o clave"
+                autocomplete="off"
+                required
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            id="btnLogin"
+            class="btn-submit"
+            disabled
+        >
+            Ingresa al Vestuario
+        </button>
+
+    </form>
+
+    <div
+    id="errorMsg"
+    class="error-message"></div>
+
+    <div class="footer-links">
+
+        <p
+        style="
+        margin-top:30px;
+        margin-bottom:24px;
+        text-align:center;
+        line-height:1.8;
+        ">
+
+            ¿No tienes cuenta?
+
+            <a href="./index.html">
+                REGÍSTRATE ✨
+            </a>
+
+        </p>
+
+        <div
+        style="
+        display:flex;
+        justify-content:center;
+        ">
+
+            <button
+                id="manualDownloadBtn"
+                type="button"
+            >
+                📲 INSTALAR APP
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
-<!-- 🔊 SONIDO -->
-<audio id="sound">
-    <source src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav">
-</audio>
+<script src="./config.js"></script>
 
 <script>
 
-const input = document.getElementById("input");
-const btn = document.getElementById("btn");
-const card = document.getElementById("loginCard");
-const error = document.getElementById("error");
-const sound = document.getElementById("sound");
+const formLogin =
+document.getElementById('formLogin');
 
-let gataActive = false;
+const cedulaInput =
+document.getElementById('loginCedula');
 
-// =========================
-// INPUT (GATA DETECTOR)
-// =========================
+const btnLogin =
+document.getElementById('btnLogin');
 
-input.addEventListener("input", () => {
+const errorDiv =
+document.getElementById('errorMsg');
 
-    const val = input.value.trim();
+const loginCard =
+document.getElementById('loginCard');
 
-    btn.disabled = !val;
+// =====================================================
+// ERROR
+// =====================================================
 
-    if(val.includes("Gata")){
+function mostrarError(msj){
 
-        card.classList.add("admin-mode");
+    errorDiv.textContent = msj;
 
-        if(!gataActive){
-            sound.currentTime = 0;
-            sound.play();
-            gataActive = true;
-        }
+    errorDiv.style.display = 'block';
+
+    setTimeout(() => {
+
+        errorDiv.style.display = 'none';
+
+    }, 5000);
+}
+
+// =====================================================
+// INPUT
+// =====================================================
+
+cedulaInput.addEventListener('input', () => {
+
+    const val =
+    cedulaInput.value.trim();
+
+    btnLogin.disabled =
+    !val;
+
+    // EFECTO ADMIN MORADO
+
+    if(val.includes('Gata')){
+
+        loginCard.classList.add(
+            'admin-mode'
+        );
 
     }else{
 
-        card.classList.remove("admin-mode");
-        gataActive = false;
+        loginCard.classList.remove(
+            'admin-mode'
+        );
     }
 
 });
 
-// =========================
+// =====================================================
 // LOGIN
-// =========================
+// =====================================================
 
-btn.addEventListener("click", async () => {
+formLogin.addEventListener('submit', async (e) => {
 
-    const val = input.value.trim();
+    e.preventDefault();
 
-    btn.textContent = "CONECTANDO...";
+    const valor =
+    cedulaInput.value.trim();
+
+    if(!navigator.onLine){
+
+        mostrarError(
+            '📡 Sin conexión a internet'
+        );
+
+        return;
+    }
+
+    if(typeof CONFIG === 'undefined'){
+
+        mostrarError(
+            '❌ No se cargó config.js'
+        );
+
+        return;
+    }
+
+    if(!CONFIG.URL_GAS){
+
+        mostrarError(
+            '❌ URL_GAS no existe'
+        );
+
+        return;
+    }
+
+    btnLogin.disabled = true;
+
+    btnLogin.textContent =
+    'CONECTANDO...';
 
     try{
 
-        if(val === "GataFiera54321"){
+        // LOGIN ADMIN
 
-            localStorage.setItem("admin","true");
+        if(valor === 'GataFiera54321'){
 
-            setTimeout(()=>{
-                window.location.href="admin.html";
-            },500);
+            const urlAdmin =
+            `${CONFIG.URL_GAS}?action=loginAdmin&clave=${encodeURIComponent(valor)}&t=${Date.now()}`;
+
+            const responseAdmin =
+            await fetch(urlAdmin);
+
+            const dataAdmin =
+            await responseAdmin.json();
+
+            if(
+                dataAdmin.ok === true &&
+                dataAdmin.acceso === true
+            ){
+
+                localStorage.setItem(
+                    'admin_activo',
+                    'true'
+                );
+
+                window.location.assign(
+                    './admin.html'
+                );
+
+                return;
+            }
+
+            mostrarError(
+                '❌ Clave admin incorrecta'
+            );
 
             return;
         }
 
-        if(!/^\d{10}$/.test(val)){
-            throw "Cédula inválida";
-        }
+        // LOGIN JUGADOR
 
-        const res = await fetch("YOUR_GAS_URL?action=validarRegistro&cedula="+val);
-        const data = await res.json();
+        if(!/^\d{10}$/.test(valor)){
 
-        if(data.success && data.cedulaExiste && data.estado==="APROBADO"){
+            mostrarError(
+                '❌ Ingresa una cédula válida o clave admin'
+            );
 
-            localStorage.setItem("jugador", JSON.stringify(data.datosJugador));
-            window.location.href="perfil.html";
             return;
         }
 
-        throw "Acceso no válido";
+        const url =
+        `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${valor}&t=${Date.now()}`;
 
-    }catch(e){
+        const response =
+        await fetch(url);
 
-        error.style.display="block";
-        error.textContent=e;
+        if(!response.ok){
+
+            throw new Error(
+                'Servidor no disponible'
+            );
+        }
+
+        const data =
+        await response.json();
+
+        // APROBADO
+
+        if(
+            data.ok === true &&
+            data.cedulaExiste === true &&
+            data.estado === 'APROBADO'
+        ){
+
+            localStorage.setItem(
+                'jugador_actual',
+                JSON.stringify(data.datosJugador)
+            );
+
+            localStorage.setItem(
+                'userCedula',
+                valor
+            );
+
+            window.location.assign(
+                './perfil.html'
+            );
+
+            return;
+        }
+
+        // PENDIENTE
+
+        if(
+            data.ok === true &&
+            data.cedulaExiste === true
+        ){
+
+            mostrarError(
+                `⏳ Estado actual: ${data.estado}`
+            );
+
+            return;
+        }
+
+        // NO EXISTE
+
+        if(
+            data.ok === true &&
+            data.cedulaExiste === false
+        ){
+
+            mostrarError(
+                '❌ Jugador no encontrado'
+            );
+
+            return;
+        }
+
+        mostrarError(
+            data.error ||
+            '⚠️ Error inesperado'
+        );
+
+    }catch(error){
+
+        mostrarError(
+            error.message ||
+            '🔌 Error de conexión'
+        );
 
     }finally{
 
-        btn.textContent="INGRESAR";
+        btnLogin.disabled = false;
+
+        btnLogin.textContent =
+        'Ingresa al Vestuario';
     }
 
 });
 
-// =========================
-// BOTÓN DESCARGA APP
-// =========================
+// =====================================================
+// INSTALAR APP
+// =====================================================
 
-document.getElementById("installBtn").addEventListener("click", () => {
+const manualDownloadBtn =
+document.getElementById('manualDownloadBtn');
 
-    alert(`📲 INSTALAR APP
+manualDownloadBtn.addEventListener('click', () => {
 
-1. Menú del navegador
-2. "Instalar aplicación"
-3. Agregar a inicio`);
+    alert(
+`📲 INSTALAR APP
+
+1. Abre el menú del navegador
+
+2. Presiona:
+"Instalar aplicación"
+
+3. Agregar a pantalla principal`
+    );
+
 });
 
 </script>
