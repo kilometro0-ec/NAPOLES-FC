@@ -2,24 +2,23 @@
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Finanzas - Nápoles F.C.</title>
 
-<link
-href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-rel="stylesheet">
-
-<link
-href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
+:root {
+    --amber-dark: #b45309;
+    --amber-light: #facc15;
+    --success: #16a34a;
+    --danger: #ef4444;
+    --slate-dark: #0f172a;
+    --muted: #6b7280;
+    --bg: #f3f6fb;
+}
 
 *{
     margin:0;
@@ -29,569 +28,360 @@ rel="stylesheet">
 }
 
 body{
-
     font-family:'Inter',sans-serif;
-
-    background:#f3f6fb;
-
+    background:var(--bg);
     color:#111827;
-
     min-height:100vh;
-
     overflow-x:hidden;
 }
 
 /* =========================================
 HEADER
 ========================================= */
-
 .topbar{
-
     position:sticky;
-
     top:0;
-
     z-index:100;
-
     background:rgba(255,255,255,.92);
-
     backdrop-filter:blur(14px);
-
     border-bottom:1px solid #e5e7eb;
-
     padding:16px 18px;
-
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 }
 
 .top-left{
-
     display:flex;
-
     align-items:center;
-
     gap:14px;
 }
 
 .admin-info h1{
-
-    font-size:1.1rem;
-
-    font-weight:800;
+    font-family: 'Outfit', sans-serif;
+    font-size:1.2rem;
+    font-weight:900;
 }
 
 .admin-info p{
-
     font-size:.85rem;
-
-    color:#6b7280;
-
+    color:var(--muted);
     margin-top:2px;
+    font-weight: 600;
 }
 
 .avatar{
-
-    width:46px;
-    height:46px;
-
-    border-radius:16px;
-
-    background:linear-gradient(
-    135deg,
-    #d97706,
-    #facc15
-    );
-
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    background:linear-gradient(135deg, var(--amber-dark), var(--amber-light));
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     color:#fff;
-
     font-weight:800;
-
-    font-size:1rem;
+    font-size:1.1rem;
+    box-shadow: 0 4px 12px rgba(217,119,6,0.2);
 }
 
 /* =========================================
-SUMMARY
+SUMMARY CARD
 ========================================= */
-
 .summary{
-
     padding:20px 18px 10px;
 }
 
 .summary-card{
-
-    background:linear-gradient(
-    135deg,
-    #d97706,
-    #facc15
-    );
-
+    background:linear-gradient(135deg, var(--slate-dark), #1e293b);
     border-radius:28px;
-
     padding:24px;
-
     color:#fff;
-
     position:relative;
-
     overflow:hidden;
+    box-shadow: 0 12px 30px rgba(15,23,42,0.15);
 }
 
 .summary-card::before{
-
     content:'';
-
     position:absolute;
-
-    width:220px;
-    height:220px;
-
+    width:200px;
+    height:200px;
     border-radius:50%;
-
-    background:rgba(255,255,255,.12);
-
-    right:-60px;
-    top:-60px;
+    background: rgba(250, 204, 21, 0.08);
+    right:-50px;
+    top:-50px;
 }
 
 .summary-card h2{
-
-    font-size:1rem;
-
-    margin-bottom:10px;
-
-    position:relative;
-
-    z-index:2;
+    font-family: 'Outfit', sans-serif;
+    font-size:.95rem;
+    margin-bottom:6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--amber-light);
 }
 
 .balance{
-
-    font-size:2rem;
-
-    font-weight:900;
-
-    margin-bottom:18px;
-
-    position:relative;
-
-    z-index:2;
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom:20px;
 }
 
 .summary-stats{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    position:relative;
-
-    z-index:2;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 16px;
 }
 
 .summary-item h3{
-
-    font-size:1rem;
-
-    font-weight:800;
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 2px;
 }
+.summary-item.cobrar h3 { color: #38bdf8; }
+.summary-item.vocalia h3 { color: #f87171; }
 
 .summary-item p{
-
-    font-size:.82rem;
-
-    opacity:.9;
-
-    margin-top:4px;
+    font-size:.78rem;
+    color: #94a3b8;
+    font-weight: 600;
 }
 
 /* =========================================
-MOVEMENTS
+MOVEMENTS LIST
 ========================================= */
+.movements-title {
+    padding: 14px 20px 4px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--slate-dark);
+}
 
 .movements{
-
-    padding:14px 18px 40px;
+    padding:0 18px 80px;
 }
 
 .movement-card{
-
     background:#fff;
-
-    border-radius:24px;
-
-    padding:18px;
-
-    margin-bottom:16px;
-
+    border-radius:20px;
+    padding:16px;
+    margin-top:12px;
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
-    box-shadow:
-    0 10px 30px rgba(15,23,42,.05);
+    box-shadow: 0 6px 18px rgba(15,23,42,.03);
+    border: 1px solid rgba(0,0,0,0.01);
 }
 
 .movement-left{
-
     display:flex;
-
     align-items:center;
-
     gap:14px;
 }
 
 .movement-icon{
-
-    width:58px;
-    height:58px;
-
-    border-radius:18px;
-
+    width:48px;
+    height:48px;
+    border-radius:15px;
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     color:#fff;
+    font-size: 1.2rem;
 }
 
-.income{
-    background:linear-gradient(
-    135deg,
-    #16a34a,
-    #4ade80
-    );
-}
-
-.expense{
-    background:linear-gradient(
-    135deg,
-    #ef4444,
-    #f87171
-    );
-}
+.income{ background: rgba(22,163,74,0.12); color: var(--success); }
+.expense{ background: rgba(239,68,68,0.12); color: var(--danger); }
 
 .movement-info h3{
-
-    font-size:1rem;
-
+    font-size:.92rem;
     font-weight:800;
-
-    margin-bottom:4px;
+    margin-bottom:2px;
+    color: var(--slate-dark);
 }
 
 .movement-info p{
-
-    color:#6b7280;
-
-    font-size:.85rem;
+    color:var(--muted);
+    font-size:.8rem;
 }
 
 .amount{
-
-    font-size:1rem;
-
-    font-weight:800;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
 }
 
-.positive{
-    color:#16a34a;
+.positive{ color: var(--success); }
+.negative{ color: var(--danger); }
+
+/* =========================================
+LOADING SPINNER
+========================================= */
+.loading-box {
+    text-align: center;
+    padding: 70px 20px;
 }
 
-.negative{
-    color:#ef4444;
+.spinner-icon {
+    font-size: 3rem;
+    color: var(--amber-dark);
+    animation: rotar 1s linear infinite;
+}
+
+.loading-text {
+    margin-top: 14px;
+    font-family: 'Outfit', sans-serif;
+    color: var(--amber-dark);
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+@keyframes rotar {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* =========================================
-FAB
+FAB INTERFACES
 ========================================= */
-
 .fab{
-
     position:fixed;
-
     right:20px;
     bottom:20px;
-
-    width:64px;
-    height:64px;
-
+    width:60px;
+    height:60px;
     border:none;
-
-    border-radius:22px;
-
-    background:linear-gradient(
-    135deg,
-    #d97706,
-    #facc15
-    );
-
+    border-radius:20px;
+    background:linear-gradient(135deg, var(--amber-dark), var(--amber-light));
     color:#fff;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     cursor:pointer;
-
-    box-shadow:
-    0 15px 35px rgba(217,119,6,.35);
+    box-shadow: 0 8px 22px rgba(217,119,6,.35);
+    font-size: 1.4rem;
 }
-
-.fab .material-symbols-outlined{
-    font-size:34px;
-}
-
-/* =========================================
-RESPONSIVE
-========================================= */
 
 @media(min-width:700px){
-
-    .summary,
-    .movements{
-        max-width:700px;
-        margin:auto;
-    }
+    .summary, .movements, .movements-title{ max-width:700px; margin:auto; }
 }
-
 </style>
-
 </head>
 
 <body>
 
-<!-- ======================================
-TOPBAR
-====================================== -->
-
+<!-- TOPBAR -->
 <header class="topbar">
-
     <div class="top-left">
-
         <div class="admin-info">
-
             <h1>Finanzas</h1>
-
-            <p>Nápoles F.C.</p>
-
+            <p>Nápoles F.C. • Auditoría</p>
         </div>
-
     </div>
-
-    <div class="avatar">
-        $
-    </div>
-
+    <div class="avatar"><i class="fa-solid fa-dollar-sign"></i></div>
 </header>
 
-<!-- ======================================
-SUMMARY
-====================================== -->
-
-<section class="summary">
-
-    <div class="summary-card">
-
-        <h2>Balance General</h2>
-
-        <div class="balance">
-            $4,850
-        </div>
-
-        <div class="summary-stats">
-
-            <div class="summary-item">
-
-                <h3>$7,200</h3>
-
-                <p>Ingresos</p>
-
-            </div>
-
-            <div class="summary-item">
-
-                <h3>$2,350</h3>
-
-                <p>Gastos</p>
-
-            </div>
-
-        </div>
-
+<!-- CONTENEDOR PRINCIPAL -->
+<main id="financialApp">
+    <div class="loading-box">
+        <div class="spinner-icon"><i class="fa-solid fa-circle-notch"></i></div>
+        <div class="loading-text">Calculando Balances de Caja...</div>
     </div>
+</main>
 
-</section>
-
-<!-- ======================================
-MOVEMENTS
-====================================== -->
-
-<section class="movements">
-
-    <!-- MOVEMENT -->
-
-    <div class="movement-card">
-
-        <div class="movement-left">
-
-            <div class="movement-icon income">
-
-                <span class="material-symbols-outlined">
-                    payments
-                </span>
-
-            </div>
-
-            <div class="movement-info">
-
-                <h3>Pago de Inscripción</h3>
-
-                <p>12 Mayo 2026</p>
-
-            </div>
-
-        </div>
-
-        <div class="amount positive">
-            + $250
-        </div>
-
-    </div>
-
-    <!-- MOVEMENT -->
-
-    <div class="movement-card">
-
-        <div class="movement-left">
-
-            <div class="movement-icon expense">
-
-                <span class="material-symbols-outlined">
-                    shopping_bag
-                </span>
-
-            </div>
-
-            <div class="movement-info">
-
-                <h3>Compra de Uniformes</h3>
-
-                <p>10 Mayo 2026</p>
-
-            </div>
-
-        </div>
-
-        <div class="amount negative">
-            - $480
-        </div>
-
-    </div>
-
-    <!-- MOVEMENT -->
-
-    <div class="movement-card">
-
-        <div class="movement-left">
-
-            <div class="movement-icon income">
-
-                <span class="material-symbols-outlined">
-                    volunteer_activism
-                </span>
-
-            </div>
-
-            <div class="movement-info">
-
-                <h3>Patrocinador Oficial</h3>
-
-                <p>08 Mayo 2026</p>
-
-            </div>
-
-        </div>
-
-        <div class="amount positive">
-            + $1,000
-        </div>
-
-    </div>
-
-    <!-- MOVEMENT -->
-
-    <div class="movement-card">
-
-        <div class="movement-left">
-
-            <div class="movement-icon expense">
-
-                <span class="material-symbols-outlined">
-                    sports_soccer
-                </span>
-
-            </div>
-
-            <div class="movement-info">
-
-                <h3>Alquiler de Cancha</h3>
-
-                <p>05 Mayo 2026</p>
-
-            </div>
-
-        </div>
-
-        <div class="amount negative">
-            - $120
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ======================================
-ADD BUTTON
-====================================== -->
-
-<button class="fab">
-
-    <span class="material-symbols-outlined">
-        add
-    </span>
-
+<!-- REFRESCAR CONTABILIDAD -->
+<button class="fab" onclick="cargarContabilidad()" title="Refrescar Caja">
+    <i class="fa-solid fa-arrows-rotate"></i>
 </button>
 
+<script src="config.js"></script>
 <script>
-
-// =========================================
-// VALIDAR ADMIN
-// =========================================
-
-if(
-    localStorage.getItem('admin_activo')
-    !== 'true'
-){
+// Forzar control de acceso administrativo
+if(localStorage.getItem('admin_activo') !== 'true'){
     window.location.href = './login.html';
 }
 
+// Formateador de moneda internacional
+const formatearMoneda = (valor) => {
+    return new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(valor);
+};
+
+async function cargarContabilidad() {
+    const contenedor = document.getElementById('financialApp');
+    try {
+        const url = `${CONFIG.URL_GAS}?action=getFinanzasData&nocache=${Date.now()}`;
+        const respuesta = await fetch(url);
+        const data = await respuesta.json();
+
+        if (data.success) {
+            renderizarFinanzas(data.resumen, data.movements);
+        } else {
+            contenedor.innerHTML = `<div style="text-align:center; padding:40px; color:var(--danger); font-weight:700;">Error contable: ${data.message}</div>`;
+        }
+    } catch (error) {
+        contenedor.innerHTML = `<div style="text-align:center; padding:40px; color:var(--danger); font-weight:700;">❌ No se pudo sincronizar la caja financiera de Google Sheets.</div>`;
+    }
+}
+
+function renderizarFinanzas(resumen, movimientos) {
+    const contenedor = document.getElementById('financialApp');
+    
+    // Generación dinámica del historial contable obtenido de las columnas S, T y O
+    let htmlMovimientos = movimientos.map(mov => `
+        <div class="movement-card">
+            <div class="movement-left">
+                <div class="movement-icon ${mov.tipo === 'ingreso' ? 'income' : 'expense'}">
+                    <i class="fa-solid ${mov.tipo === 'ingreso' ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down'}"></i>
+                </div>
+                <div class="movement-info">
+                    <h3>${mov.concepto}</h3>
+                    <p>${mov.fecha}</p>
+                </div>
+            </div>
+            <div class="amount ${mov.tipo === 'ingreso' ? 'positive' : 'negative'}">
+                ${mov.tipo === 'ingreso' ? '+' : '-'} ${formatearMoneda(mov.monto)}
+            </div>
+        </div>
+    `).join('');
+
+    if(movimientos.length === 0) {
+        htmlMovimientos = `<div style="text-align:center; padding:30px; color:var(--muted); font-size:0.85rem;">No se registran recaudaciones procesadas aún.</div>`;
+    }
+
+    contenedor.innerHTML = `
+        <section class="summary">
+            <div class="summary-card">
+                <h2>Recaudación Real en Caja</h2>
+                <div class="balance">${formatearMoneda(resumen.balanceReal)}</div>
+                
+                <div class="summary-stats">
+                    <div class="summary-item cobrar">
+                        <h3>${formatearMoneda(resumen.porCobrar)}</h3>
+                        <p>Cuentas por Cobrar</p>
+                    </div>
+                    <div class="summary-item vocalia">
+                        <h3>${formatearMoneda(resumen.deudaVocalia)}</h3>
+                        <p>Vocalías Pendientes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <h2 class="movements-title">Historial de Recaudación Activa</h2>
+        <section class="movements">
+            ${htmlMovimientos}
+        </section>
+    `;
+}
+
+// Inicialización automática de la app al entrar
+cargarContabilidad();
 </script>
 
 </body>
