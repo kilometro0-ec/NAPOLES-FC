@@ -80,7 +80,7 @@ body{
     justify-content:center;
 }
 
-/* AVATAR DE ICONO REEMPLAZANDO LA FOTO DE ROSTRO */
+/* CONTENEDOR DEL AVATAR REPARADO */
 .avatar-icon-box{
     width:75px;
     height:75px;
@@ -270,6 +270,14 @@ body{
     font-weight:900;
     color:var(--gold);
     font-family:'Outfit';
+}
+
+/* SISTEMA DE ESTRELLAS DE RENDIMIENTO */
+.stars-container{
+    color: var(--gold);
+    font-size: 1.1rem;
+    margin-top: 5px;
+    letter-spacing: 2px;
 }
 
 .admin-grid{
@@ -500,6 +508,25 @@ function calcularEdad(fechaNacimiento){
     return edad;
 }
 
+// CONVERSOR DINÁMICO DE NOTA A ESTRELLAS (Ej: 8.5 -> ⭐⭐⭐⭐⭐⭐⭐⭐🌓)
+function generarEstrellas(nota) {
+    let puntuacion = Math.min(10, Math.max(0, parseFloat(nota) || 0));
+    // Escalar de base 10 a base 5 estrellas
+    let estrellasActivas = puntuacion / 2; 
+    let htmlEstrellas = '';
+    
+    for (let i = 1; i <= 5; i++) {
+        if (estrellasActivas >= i) {
+            htmlEstrellas += '<i class="fa-solid fa-star"></i>'; // Estrella llena
+        } else if (estrellasActivas >= i - 0.5) {
+            htmlEstrellas += '<i class="fa-solid fa-star-half-stroke"></i>'; // Media estrella
+        } else {
+            htmlEstrellas += '<i class="fa-regular fa-star" style="opacity:0.3;"></i>'; // Estrella vacía
+        }
+    }
+    return htmlEstrellas;
+}
+
 function renderProgressCircle(valor, color){
     let value = Math.min(10, Math.max(0, parseFloat(valor) || 0));
     let radius = 40;
@@ -536,25 +563,22 @@ async function cargarPerfil(cedula, categoria){
                 primerNombre: escapeHtml(j['primer nombre'] || ''),
                 segundoNombre: escapeHtml(j['segundo nombre'] || ''),
                 apellidos: escapeHtml(j['apellidos'] || ''),
-                fechaNacimiento: j['fecha de nacimiento'] || j['fecha nacimiento'] || '',
+                fechaNacimiento: j['fecha de nacimiento'] || '',
                 nombreCamiseta: escapeHtml(j['nombre en camiseta'] || 'NÁPOLES'),
                 dorsal: escapeHtml(j['número de dorsal'] || '00'),
                 tallaUni: escapeHtml(j['talla uni.'] || 'M'),
 
-                // Estadísticas Acumuladas calculadas
                 partidosJugados: Number(j['partidos jugados']) || 0, 
                 goles: Number(j['goles']) || 0,
                 amarillas: Number(j['amarillas']) || 0,
                 rojas: Number(j['rojas']) || 0,
 
-                // Rendimiento Humano desde partidos
                 puntualidad: parseFloat(j['puntualidad']) || 0,
                 companerismo: parseFloat(j['compañerismo']) || 0,
                 respeto: parseFloat(j['respeto']) || 0,
                 humildad: parseFloat(j['humildad']) || 0,
 
-                // Estados Financieros
-                deudaVocalia: Number(j['deuda vocalia'] || j['vocalías pendientes']) || 0,
+                deudaVocalia: Number(j['deuda vocalia']) || 0,
                 inscripEstado: escapeHtml(j['inscrip_estado'] || 'PENDIENTE'),
                 unifEstado: escapeHtml(j['unif_estado'] || 'PENDIENTE'),
                 mediasEstado: escapeHtml(j['medias_estado'] || 'PENDIENTE')
@@ -562,7 +586,6 @@ async function cargarPerfil(cedula, categoria){
 
             let edad = calcularEdad(sanitized.fechaNacimiento);
 
-            // Promedio General Humano
             let sumaMetricas = sanitized.puntualidad + sanitized.companerismo + sanitized.respeto + sanitized.humildad;
             let promedio = sumaMetricas > 0 ? parseFloat((sumaMetricas / 4).toFixed(1)) : 0;
 
@@ -583,18 +606,18 @@ async function cargarPerfil(cedula, categoria){
 
             <div class="cards-row">
                 <div class="id-card-identity glass-card">
-                    <!-- AVATAR DE ICONO PREMIUM -->
+                    <!-- AVATAR CORREGIDO CON CLASES SÓLIDAS DE FA v6 -->
                     <div class="avatar-icon-box">
-                        <i class="fas fa-user-running"></i>
+                        <i class="fa-solid fa-user-ninja"></i>
                     </div>
                     <div style="font-weight:900;font-family:'Outfit';font-size:.9rem;text-transform:uppercase; line-height:1.2;">
                         ${sanitized.primerNombre}<br>${sanitized.apellidos}
                     </div>
                     <div style="font-size:.65rem;color:var(--muted);margin-top:6px;">
-                        <i class="fas fa-id-card"></i> ${cedula}
+                        <i class="fa-solid fa-id-card"></i> ${cedula}
                     </div>
                     <div style="margin-top:10px;background:rgba(212,175,55,.12);padding:6px 12px;border-radius:12px;font-size:.75rem;color:var(--gold);">
-                        <i class="fas fa-cake-candles"></i> ${edad} años
+                        <i class="fa-solid fa-cake-candles"></i> ${edad} años
                     </div>
                 </div>
 
@@ -615,39 +638,37 @@ async function cargarPerfil(cedula, categoria){
             </div>
 
             <button class="btn-sync" onclick="window.recargarPerfil()">
-                <i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN
+                <i class="fa-solid fa-rotate"></i> ACTUALIZAR INFORMACIÓN
             </button>
 
-            <!-- SECCIÓN ESTADÍSTICAS -->
             <div class="stats-section">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon" style="color:#3498db"><i class="fas fa-running"></i></div>
+                        <div class="stat-icon" style="color:#3498db"><i class="fa-solid fa-shirt"></i></div>
                         <div class="stat-value">${sanitized.partidosJugados}</div>
                         <div class="stat-label">PARTIDOS</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon" style="color:#2ecc71"><i class="fas fa-futbol"></i></div>
+                        <div class="stat-icon" style="color:#2ecc71"><i class="fa-solid fa-futbol"></i></div>
                         <div class="stat-value">${sanitized.goles}</div>
                         <div class="stat-label">GOLES</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon" style="color:#f39c12"><i class="fas fa-square"></i></div>
+                        <div class="stat-icon" style="color:#f39c12"><i class="fa-solid fa-square"></i></div>
                         <div class="stat-value">${sanitized.amarillas}</div>
                         <div class="stat-label">AMARILLAS</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon" style="color:#e74c3c"><i class="fas fa-square"></i></div>
+                        <div class="stat-icon" style="color:#e74c3c"><i class="fa-solid fa-square"></i></div>
                         <div class="stat-value">${sanitized.rojas}</div>
                         <div class="stat-label">ROJAS</div>
                     </div>
                 </div>
             </div>
 
-            <!-- SECCIÓN RENDIMIENTO HUMANO -->
             <div class="performance-section">
                 <div class="section-title">
-                    <i class="fas fa-heart"></i> Rendimiento Humano (Promedio)
+                    <i class="fa-solid fa-heart"></i> Rendimiento Humano (Promedio)
                 </div>
                 <div class="performance-grid">
                     <div class="metric-card">
@@ -670,18 +691,21 @@ async function cargarPerfil(cedula, categoria){
                 <div class="average-box">
                     <div style="font-size:.7rem;color:var(--muted); letter-spacing: 1px;">PROMEDIO GENERAL</div>
                     <div class="average-score">${promedio}/10</div>
+                    <!-- CONTENEDOR DE ESTRELLAS DINÁMICAS ADICIONADO -->
+                    <div class="stars-container">
+                        ${generarEstrellas(promedio)}
+                    </div>
                 </div>
             </div>
 
-            <!-- SECCIÓN ADMINISTRATIVA -->
             <div class="section-box">
                 <div class="section-title">
-                    <i class="fas fa-chart-line"></i> Estado Administrativo
+                    <i class="fa-solid fa-chart-line"></i> Estado Administrativo
                 </div>
                 <div class="admin-grid">
                     ${deudaInscripcion > 0 ? `
                     <div class="admin-card">
-                        <div class="admin-icon"><i class="fas fa-file-signature" style="color:#e74c3c;"></i></div>
+                        <div class="admin-icon"><i class="fa-solid fa-file-signature" style="color:#e74c3c;"></i></div>
                         <div class="admin-value" style="color:#e74c3c;">$5</div>
                         <div class="admin-label">INSCRIPCIÓN</div>
                         <div class="admin-status pending">PENDIENTE</div>
@@ -689,7 +713,7 @@ async function cargarPerfil(cedula, categoria){
 
                     ${deudaUniforme > 0 ? `
                     <div class="admin-card">
-                        <div class="admin-icon"><i class="fas fa-tshirt" style="color:#f39c12;"></i></div>
+                        <div class="admin-icon"><i class="fa-solid fa-tshirt" style="color:#f39c12;"></i></div>
                         <div class="admin-value" style="color:#f39c12;">$17</div>
                         <div class="admin-label">UNIFORME</div>
                         <div class="admin-status warning">PENDIENTE</div>
@@ -697,7 +721,7 @@ async function cargarPerfil(cedula, categoria){
 
                     ${deudaMedias > 0 ? `
                     <div class="admin-card">
-                        <div class="admin-icon"><i class="fas fa-socks" style="color:#3498db;"></i></div>
+                        <div class="admin-icon"><i class="fa-solid fa-socks" style="color:#3498db;"></i></div>
                         <div class="admin-value" style="color:#3498db;">$2</div>
                         <div class="admin-label">MEDIAS</div>
                         <div class="admin-status info">PENDIENTE</div>
@@ -705,7 +729,7 @@ async function cargarPerfil(cedula, categoria){
 
                     ${deudaVocalia > 0 ? `
                     <div class="admin-card">
-                        <div class="admin-icon"><i class="fas fa-money-bill-wave" style="color:#9b59b6;"></i></div>
+                        <div class="admin-icon"><i class="fa-solid fa-money-bill-wave" style="color:#9b59b6;"></i></div>
                         <div class="admin-value" style="color:#9b59b6;">$${deudaVocalia.toFixed(2)}</div>
                         <div class="admin-label">VOCALÍA</div>
                         <div class="admin-status vocalia">PENDIENTE</div>
@@ -714,7 +738,7 @@ async function cargarPerfil(cedula, categoria){
 
                 <div class="debt-box">
                     <div class="debt-header">
-                        <span class="debt-label"><i class="fas fa-dollar-sign"></i> TOTAL VALORES PENDIENTES</span>
+                        <span class="debt-label"><i class="fa-solid fa-dollar-sign"></i> TOTAL VALORES PENDIENTES</span>
                         <span class="debt-amount" style="color:${totalAdmin > 0 ? '#e74c3c' : '#2ecc71'}">
                             $${totalAdmin.toFixed(2)}
                         </span>
@@ -744,7 +768,7 @@ async function cargarPerfil(cedula, categoria){
             </div>
 
             <button class="btn-logout" onclick="window.cerrarSesion()">
-                <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
+                <i class="fa-solid fa-right-from-bracket"></i> CERRAR SESIÓN
             </button>
             <div style="height:30px;"></div>
             `;
