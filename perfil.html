@@ -74,16 +74,26 @@ body{
 .id-card-identity{
     padding:15px;
     text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 }
 
-.player-img{
-    width:80px;
-    height:80px;
+/* AVATAR DE ICONO REEMPLAZANDO LA FOTO DE ROSTRO */
+.avatar-icon-box{
+    width:75px;
+    height:75px;
     border-radius:50%;
     border:3px solid var(--gold);
-    object-fit:cover;
+    background:radial-gradient(circle, #1a2a4a 0%, #0a1428 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
     margin-bottom:10px;
-    background:#000;
+    color:var(--gold);
+    font-size:2.2rem;
+    box-shadow:0 4px 15px rgba(0,0,0,0.5);
 }
 
 .id-card-jersey-wrap{
@@ -467,15 +477,6 @@ function escapeHtml(str){
     .replace(/'/g,'&#39;');
 }
 
-function sanitizeUrl(url){
-    if(!url) return CONFIG.DEFAULT_AVATAR;
-    let clean = String(url).trim();
-    if(clean.startsWith('javascript:')){
-        return CONFIG.DEFAULT_AVATAR;
-    }
-    return clean;
-}
-
 function calcularEdad(fechaNacimiento){
     if(!fechaNacimiento) return '--';
     let fecha = new Date(fechaNacimiento);
@@ -500,7 +501,6 @@ function calcularEdad(fechaNacimiento){
 }
 
 function renderProgressCircle(valor, color){
-    // Permite números flotantes (ej: 8.5) y limita estrictamente entre 0 y 10
     let value = Math.min(10, Math.max(0, parseFloat(valor) || 0));
     let radius = 40;
     let circumference = 2 * Math.PI * radius;
@@ -532,30 +532,28 @@ async function cargarPerfil(cedula, categoria){
         if(data.success && data.jugador){
             const j = data.jugador;
 
-            // Mapeo dinámico y seguro de las propiedades del Backend
             const sanitized = {
                 primerNombre: escapeHtml(j['primer nombre'] || ''),
                 segundoNombre: escapeHtml(j['segundo nombre'] || ''),
                 apellidos: escapeHtml(j['apellidos'] || ''),
-                urlFotoRostro: sanitizeUrl(j['url foto rostro']),
                 fechaNacimiento: j['fecha de nacimiento'] || j['fecha nacimiento'] || '',
                 nombreCamiseta: escapeHtml(j['nombre en camiseta'] || 'NÁPOLES'),
                 dorsal: escapeHtml(j['número de dorsal'] || '00'),
                 tallaUni: escapeHtml(j['talla uni.'] || 'M'),
 
-                // Estadísticas Acumuladas
+                // Estadísticas Acumuladas calculadas
                 partidosJugados: Number(j['partidos jugados']) || 0, 
                 goles: Number(j['goles']) || 0,
                 amarillas: Number(j['amarillas']) || 0,
                 rojas: Number(j['rojas']) || 0,
 
-                // Rendimiento Humano (Cargados dinámicamente desde promedios de partidos)
+                // Rendimiento Humano desde partidos
                 puntualidad: parseFloat(j['puntualidad']) || 0,
                 companerismo: parseFloat(j['compañerismo']) || 0,
                 respeto: parseFloat(j['respeto']) || 0,
                 humildad: parseFloat(j['humildad']) || 0,
 
-                // Estado Financiero y Administrativo
+                // Estados Financieros
                 deudaVocalia: Number(j['deuda vocalia'] || j['vocalías pendientes']) || 0,
                 inscripEstado: escapeHtml(j['inscrip_estado'] || 'PENDIENTE'),
                 unifEstado: escapeHtml(j['unif_estado'] || 'PENDIENTE'),
@@ -564,11 +562,10 @@ async function cargarPerfil(cedula, categoria){
 
             let edad = calcularEdad(sanitized.fechaNacimiento);
 
-            // Calcular el promedio de rendimiento general del jugador
+            // Promedio General Humano
             let sumaMetricas = sanitized.puntualidad + sanitized.companerismo + sanitized.respeto + sanitized.humildad;
             let promedio = sumaMetricas > 0 ? parseFloat((sumaMetricas / 4).toFixed(1)) : 0;
 
-            // Valores fijos del club para deudas administrativas de inscripción/uniforme
             let deudaInscripcion = sanitized.inscripEstado.toUpperCase().includes('PENDIENTE') ? 5 : 0;
             let deudaUniforme = sanitized.unifEstado.toUpperCase().includes('PENDIENTE') ? 17 : 0;
             let deudaMedias = sanitized.mediasEstado.toUpperCase().includes('PENDIENTE') ? 2 : 0;
@@ -586,7 +583,10 @@ async function cargarPerfil(cedula, categoria){
 
             <div class="cards-row">
                 <div class="id-card-identity glass-card">
-                    <img src="${sanitized.urlFotoRostro}" class="player-img" onerror="this.src='${CONFIG.DEFAULT_AVATAR}'">
+                    <!-- AVATAR DE ICONO PREMIUM -->
+                    <div class="avatar-icon-box">
+                        <i class="fas fa-user-running"></i>
+                    </div>
                     <div style="font-weight:900;font-family:'Outfit';font-size:.9rem;text-transform:uppercase; line-height:1.2;">
                         ${sanitized.primerNombre}<br>${sanitized.apellidos}
                     </div>
