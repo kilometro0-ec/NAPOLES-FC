@@ -407,7 +407,6 @@ body{
     overflow-y: auto;
 }
 
-/* Animación del Trofeo de la cabecera */
 @keyframes pulseTrofeo {
     0% { transform: scale(1); }
     50% { transform: scale(1.15); filter: drop-shadow(0 0 10px var(--gold)); }
@@ -418,7 +417,6 @@ body{
     animation: pulseTrofeo 2s infinite ease-in-out;
 }
 
-/* Caja contenedora estilo Notificación Importante */
 .terms-announcement{
     background: linear-gradient(135deg, rgba(212,175,55,0.04) 0%, rgba(255,255,255,0.01) 100%);
     border: 1px solid rgba(212,175,55,0.25);
@@ -439,7 +437,6 @@ body{
     100% { border-color: rgba(212,175,55,0.25); box-shadow: 0 0 0px rgba(212,175,55,0); }
 }
 
-/* Tarjetas para las opciones */
 .terms-option-card {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.07);
@@ -463,22 +460,25 @@ body{
     border-color: rgba(212,175,55,0.3);
 }
 
-/* Estado seleccionado común */
 .terms-option-card.selected {
     border-color: var(--gold);
     background: rgba(212,175,55,0.08);
 }
 
-/* ANIMACIÓN EXCLUSIVA CUANDO SE SELECCIONA EL BOTÓN DE ASISTIR (OPCIÓN 1) */
-@keyframes pulseAsistire {
-    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); border-color: var(--success); }
-    70% { box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); border-color: var(--success); }
-    100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); border-color: var(--success); }
+/* ANIMACIÓN DE PULSO EXCLUSIVA Y CONSTANTE PARA LA OPCIÓN DE ASISTIR (OPCIÓN 1) */
+@keyframes pulsoAsistireEfecto {
+    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.5); border-color: #2ecc71; }
+    70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); border-color: #2ecc71; }
+    100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); border-color: #2ecc71; }
+}
+.pulse-asistire-siempre {
+    animation: pulsoAsistireEfecto 2s infinite ease-in-out;
+    background: rgba(46, 204, 113, 0.04);
+    border-color: rgba(46, 204, 113, 0.3);
 }
 .terms-option-card.selected.asistire-active {
-    background: rgba(46, 204, 113, 0.08) !important;
-    border-color: var(--success) !important;
-    animation: pulseAsistire 1.8s infinite ease-in-out;
+    background: rgba(46, 204, 113, 0.15) !important;
+    border-color: #2ecc71 !important;
 }
 
 .btn-modal-send {
@@ -517,8 +517,8 @@ body{
             <h2 style="font-family:'Outfit'; color:var(--gold); margin-top:8px; font-size:1.4rem; letter-spacing:1px; font-weight:900;">GRAN INAUGURACIÓN</h2>
         </div>
         
-        <!-- CUERPO DE LA NOTIFICACIÓN IMPORTANTE -->
-        <div class="terms-announcement" id="anuncioTexto">⚽ ATENCIÓN JUGADORES Y REPRESENTANTES ⚽
+        <!-- CUERPO DE LA NOTIFICACIÓN IMPORTANTE SIN LA PALABRA REPRESENTANTES EN EL TÍTULO -->
+        <div class="terms-announcement" id="anuncioTexto">⚽ ATENCIÓN JUGADORES ⚽
 Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día:
 📅 17 de mayo
 
@@ -540,16 +540,16 @@ Agradecemos su compromiso, puntualidad y responsabilidad.
 
         <div style="font-weight:800; font-size:0.75rem; color:var(--gold); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Tu confirmación oficial:</div>
         
-        <!-- OPCIÓN 1 (CON ID ASISTIRE PARA ANIMACIÓN DINÁMICA) -->
-        <div class="terms-option-card" id="cardOpt1" onclick="selectRadio(1)">
+        <!-- OPCIÓN 1 CON ANIMACIÓN DE PULSO CONSTANTE -->
+        <div class="terms-option-card pulse-asistire-siempre" id="cardOpt1" onclick="selectRadio(1)">
             <input type="radio" name="termOption" id="opt1" value="1">
             <label for="opt1" style="font-size:0.88rem; font-weight:700; cursor:pointer; color:#fff;">1️⃣ Asistiré, ahí estaré puntual</label>
         </div>
 
-        <!-- OPCIÓN 2 -->
+        <!-- OPCIÓN 2 CORRECTA -->
         <div class="terms-option-card" id="cardOpt2" onclick="selectRadio(2)">
             <input type="radio" name="termOption" id="opt2" value="2">
-            <label for="opt2" style="font-size:0.88rem; font-weight:700; cursor:pointer; color:#fff;">2️⃣ No podré asistir, enviaré representante</label>
+            <label for="opt2" style="font-size:0.88rem; font-weight:700; cursor:pointer; color:#fff;">2️⃣ Enviaré a mi representante</label>
         </div>
 
         <button class="btn-modal-send" id="btnFirmar" disabled onclick="enviarFirmaTerminos()">
@@ -618,11 +618,9 @@ function renderProgressCircle(valor, color){
     </div>`;
 }
 
-// Manejador del cambio de estado y animaciones en los inputs de opción
 function selectRadio(num) {
     document.getElementById('opt' + num).checked = true;
     
-    // Limpiar clases previas
     document.querySelectorAll('.terms-option-card').forEach(c => {
         c.classList.remove('selected', 'asistire-active');
     });
@@ -630,7 +628,6 @@ function selectRadio(num) {
     const cardSeleccionada = document.getElementById('opt' + num).parentElement;
     cardSeleccionada.classList.add('selected');
     
-    // Si elige la opción 1, se le inyecta la animación de pulso llamativo
     if(num === 1) {
         cardSeleccionada.classList.add('asistire-active');
     }
@@ -675,7 +672,6 @@ async function cargarPerfil(cedula, categoria){
         if(data.success && data.jugador){
             const j = data.jugador;
 
-            // Despliegue inteligente del modal según los datos de la base de datos
             if (!j.terminos_aceptados) {
                 document.getElementById('modalTerms').style.display = 'flex';
             } else {
