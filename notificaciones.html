@@ -218,7 +218,7 @@
 
         /* ANIMACIÓN DE CARGA */
         .loading-box {
-            display: block; /* Visible al inicio mientras carga */
+            display: block;
             text-align: center;
             padding: 20px;
             color: var(--primary-color);
@@ -303,7 +303,6 @@
             font-weight: 700;
         }
 
-        /* MANTENER EN UNA SOLA FILA PARA DISPOSITIVOS MÓVILES (ESTRICTO) */
         @media (max-width: 600px) {
             .resumen-asistencias { 
                 grid-template-columns: repeat(3, 1fr);
@@ -315,7 +314,7 @@
 
             th, td {
                 padding: 8px 4px;
-                white-space: nowrap; /* Fuerza a que todo se quede en una única línea */
+                white-space: nowrap;
             }
 
             .table-responsive {
@@ -346,7 +345,7 @@
                 <i class="fa-solid fa-bullhorn"></i>
             </div>
             <div class="noticias-content">
-                <h4>⚽ GRAN INAUGURACIÓN - ATENCIÓN JUGADORES ⚽</h4>
+                <h4 id="lblTituloAlerta">⚽ GRAN INAUGURACIÓN - ATENCIÓN JUGADORES ⚽</h4>
                 <div class="convocatoria-texto" id="txtConvocatoria">
                     Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día:
                     📅 17 de mayo
@@ -361,7 +360,7 @@
             </div>
         </div>
 
-        <!-- FORMULARIO MINIMIZADO PARA CREAR NUEVAS NOTIFICACIONES (COLUMNA P) -->
+        <!-- FORMULARIO MINIMIZADO PARA CREAR NUEVAS NOTIFICACIONES -->
         <div class="admin-action-zone">
             <button class="btn-toggle-form" onclick="toggleFormNotificacion()">
                 <i class="fa-solid fa-plus"></i> Nueva Notificación
@@ -377,13 +376,13 @@
                     <label for="cuerpoNoticia">Contenido / Mensaje:</label>
                     <textarea id="cuerpoNoticia" class="form-control" placeholder="Escriba los detalles aquí..."></textarea>
                 </div>
-                <button class="btn-submit" onclick="enviarNotificacion()">
+                <button class="btn-submit" id="btnPublicar" onclick="enviarNotificacion()">
                     <i class="fa-solid fa-paper-plane"></i> Publicar Notificación
                 </button>
             </div>
         </div>
 
-        <!-- PANEL DE CARGA INTERMITE UNIDO AL PROCESAMIENTO -->
+        <!-- PANEL DE CARGA -->
         <div class="loading-box" id="loader">
             <div class="spinner"></div>
             <p>Conectando y extrayendo asistencias desde Google Sheets...</p>
@@ -393,7 +392,6 @@
         <div class="card" id="vistaConfirmados">
             <h2><i class="fa-solid fa-users-check"></i> Confirmados Inauguración</h2>
             
-            <!-- Contadores dinámicos -->
             <div class="resumen-asistencias">
                 <div class="resumen-box">
                     <span id="numTotal">0</span>
@@ -409,7 +407,7 @@
                 </div>
             </div>
 
-            <!-- CUADRO DE MULTA DINÁMICA MENCIONADO -->
+            <!-- CUADRO DE MULTA DINÁMICA -->
             <div class="multa-live-box">
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 <p>Multa actual aprox. por inasistencia: <span id="valMulta">$190.00</span></p>
@@ -425,7 +423,7 @@
                         </tr>
                     </thead>
                     <tbody id="tablaConfirmadosBody">
-                        <!-- Se llena dinámicamente desde el motor de abajo o tu config.js -->
+                        <!-- Inyección dinámica -->
                     </tbody>
                 </table>
             </div>
@@ -433,51 +431,62 @@
 
     </div>
 
-    <!-- PROCESAMIENTO DE GOOGLE SHEETS DIRECTO INTEGRADO -->
+    <!-- SCRIPT DE SINCRONIZACIÓN Y PARSEO (JSONP COMPATIBLE) -->
     <script>
-        // Control visual del formulario minimizado
+        // URL de Implementación de tu Macro unificada de Google Apps Script
+        const URL_BACKEND = "https://script.google.com/macros/s/AKfycbwPzNIsrL3f82VvOymS8kFvE-y2G_u2r4bM1M9l_r3n6Yy6p7fLg/exec"; 
+
         function toggleFormNotificacion() {
             var form = document.getElementById('formNotificacion');
             form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
         }
 
-        function enviarNotificacion() {
-            var titulo = document.getElementById('tituloNoticia').value;
-            var cuerpo = document.getElementById('cuerpoNoticia').value;
-            if(!titulo || !cuerpo){
-                alert("Por favor llena todos los campos de la notificación.");
-                return;
-            }
-            // Aquí puedes enlazar tu lógica en config.js para empujar este texto a la Columna P
-            console.log("Nueva notificación para Columna P:", titulo, cuerpo);
-            
-            document.getElementById('tituloNoticia').value = "";
-            document.getElementById('cuerpoNoticia').value = "";
-            toggleFormNotificacion();
-            alert("Notificación guardada exitosamente en el sistema.");
+        // Ejecución Automática al inicializar el panel
+        window.onload = function() {
+            solicitarDatosAsistencias();
+        };
+
+        // 1. OBTENER JUGADORES DESDE EL BACKEND (JSONP)
+        function solicitarDatosAsistencias() {
+            document.getElementById('loader').style.display = 'block';
+            const callbackName = "cbProcesarDatos";
+
+            window[callbackName] = function(response) {
+                if (response && response.success) {
+                    actualizarDatosDesdeSheet(response.datos);
+                } else {
+                    alert("Error al cargar los datos del servidor.");
+                    document.getElementById('loader').style.display = 'none';
+                }
+                document.getElementById("script_jsonp_get")?.remove();
+            };
+
+            const script = document.createElement("script");
+            script.id = "script_jsonp_get";
+            script.src = `${URL_BACKEND}?action=getJugadoresRaw&callback=${callbackName}`;
+            document.body.appendChild(script);
         }
 
-        /**
-         * ESTA FUNCIÓN PROCESA LAS FILAS DE LA HOJA "JUGADORES"
-         * Lee la Columna B (Nombre), Columna D (Apellidos), Columna R (Dorsal) y la Columna AD (Inauguración)
-         */
+        // 2. RENDERIZADO Y PROCESAMIENTO DINÁMICO DE FILAS
         function actualizarDatosDesdeSheet(filas) {
             let respuestas = 0;
             let asistiran = 0;
             let representantes = 0;
             let tablaHTML = "";
 
+            if (!filas || filas.length === 0) {
+                document.getElementById('tablaConfirmadosBody').innerHTML = "<tr><td colspan='3'>No hay registros.</td></tr>";
+                document.getElementById('loader').style.display = 'none';
+                return;
+            }
+
             filas.forEach(fila => {
-                // Índices basados en 0 de tu estructura:
-                // B = 1 (Primer Nombre), D = 3 (Apellidos)
-                // R = 17 (Número de Dorsal)
-                // AD = 29 (Confirmación de Inauguración)
-                
+                // Mapeo estricto del Array de Apps Script (Base 0):
+                // B = Index 1 (Nombres), D = Index 3 (Apellidos), R = Index 17 (Dorsal), AD = Index 29 (Inauguración)
                 let nombreCompleto = (fila[1] || '') + " " + (fila[3] || '');
                 let dorsal = fila[17] || "S/N";
                 let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
 
-                // Si la celda AD contiene respuesta, procesamos
                 if (celdaInauguracion !== "") {
                     respuestas++;
                     let emojiEstado = "❓ Sin definir";
@@ -490,7 +499,6 @@
                         emojiEstado = "👤 Representante";
                     }
 
-                    // Fila construida de forma compacta (ideal para vista móvil en una sola línea)
                     tablaHTML += `
                         <tr>
                             <td><strong>${nombreCompleto.trim()}</strong></td>
@@ -501,28 +509,62 @@
                 }
             });
 
-            // Inyección de contadores en las tarjetas
             document.getElementById('numTotal').innerText = respuestas;
             document.getElementById('numAsistiran').innerText = asistiran;
             document.getElementById('numRepresentante').innerText = representantes;
             document.getElementById('tablaConfirmadosBody').innerHTML = tablaHTML;
 
-            // CÁCULO DE LA MULTA DINÁMICA: $190 base menos $2 por cada persona confirmada
+            // Algoritmo de Multa Dinámica
             let totalConfirmados = asistiran + representantes;
             let multaBase = 190;
             let descuento = totalConfirmados * 2;
-            let multaFinal = multaBase - descuento;
-            
-            if (multaFinal < 0) multaFinal = 0; // Seguridad de quiebre
+            let multaFinal = Math.max(0, multaBase - descuento);
 
             document.getElementById('valMulta').innerText = "$" + multaFinal.toFixed(2);
-            
-            // Ocultar cargador una vez que todo esté listo
             document.getElementById('loader').style.display = 'none';
         }
-    </script>
 
-    <!-- LLAMADA A TU CONFIG.JS EN LA RAÍZ -->
-    <script src="config.js"></script>
+        // 3. ENVIAR NUEVA NOTIFICACIÓN POR CANAL JSONP COMPATIBLE CON GET/ROUTER
+        function enviarNotificacion() {
+            var titulo = document.getElementById('tituloNoticia').value.trim();
+            var cuerpo = document.getElementById('cuerpoNoticia').value.trim();
+            
+            if(!titulo || !cuerpo){
+                alert("Por favor llena todos los campos de la notificación.");
+                return;
+            }
+
+            const btn = document.getElementById('btnPublicar');
+            btn.disabled = true;
+            btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Publicando...";
+
+            const callbackPost = "cbNotificacionPost";
+
+            window[callbackPost] = function(res) {
+                btn.disabled = false;
+                btn.innerHTML = "<i class='fa-solid fa-paper-plane'></i> Publicar Notificación";
+
+                if (res && res.success) {
+                    // Reflejar cambio visual inmediato en el banner superior sin recargar la página entera
+                    document.getElementById('lblTituloAlerta').innerText = `📢 ${titulo.toUpperCase()}`;
+                    document.getElementById('txtConvocatoria').innerText = cuerpo;
+
+                    document.getElementById('tituloNoticia').value = "";
+                    document.getElementById('cuerpoNoticia').value = "";
+                    toggleFormNotificacion();
+                    alert("¡Notificación guardada e inyectada con éxito en la Columna P!");
+                } else {
+                    alert("Error: " + (res.message || "No se pudo publicar."));
+                }
+                document.getElementById("script_jsonp_post")?.remove();
+            };
+
+            // Se envía como query params vía script tag para saltarse las restricciones CORS de GitHub Pages de forma limpia
+            const script = document.createElement("script");
+            script.id = "script_jsonp_post";
+            script.src = `${URL_BACKEND}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}&callback=${callbackPost}`;
+            document.body.appendChild(script);
+        }
+    </script>
 </body>
 </html>
