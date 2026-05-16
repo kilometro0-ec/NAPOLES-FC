@@ -2,24 +2,25 @@
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Uniformes y Control - Nápoles F.C.</title>
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<title>Uniformes - Nápoles F.C.</title>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-rel="stylesheet">
-
-<link
-href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
+:root{
+    --gold:#D4AF37;
+    --purple:#7c3aed;
+    --purple-light:#c084fc;
+    --bg:#f3f6fb;
+    --card:#fff;
+    --text:#111827;
+    --muted:#6b7280;
+    --success:#2ecc71;
+    --danger:#e74c3c;
+}
 
 *{
     margin:0;
@@ -29,549 +30,583 @@ rel="stylesheet">
 }
 
 body{
-
     font-family:'Inter',sans-serif;
-
-    background:#f3f6fb;
-
-    color:#111827;
-
+    background:var(--bg);
+    color:var(--text);
     min-height:100vh;
-
     overflow-x:hidden;
 }
 
 /* =========================================
-HEADER
+HEADER & TOPBAR
 ========================================= */
-
 .topbar{
-
     position:sticky;
-
     top:0;
-
     z-index:100;
-
     background:rgba(255,255,255,.92);
-
     backdrop-filter:blur(14px);
-
     border-bottom:1px solid #e5e7eb;
-
     padding:16px 18px;
-
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 }
 
 .top-left{
-
     display:flex;
-
     align-items:center;
-
     gap:14px;
 }
 
 .admin-info h1{
-
-    font-size:1.1rem;
-
-    font-weight:800;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #0f172a;
 }
 
 .admin-info p{
-
     font-size:.85rem;
-
-    color:#6b7280;
-
+    color:var(--muted);
     margin-top:2px;
+    font-weight: 600;
 }
 
 .avatar{
-
-    width:46px;
-    height:46px;
-
-    border-radius:16px;
-
-    background:linear-gradient(
-    135deg,
-    #7c3aed,
-    #c084fc
-    );
-
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    background:linear-gradient(135deg, var(--purple), var(--purple-light));
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     color:#fff;
-
     font-weight:800;
-
     font-size:1rem;
+    box-shadow: 0 4px 10px rgba(124,58,237,0.2);
 }
 
 /* =========================================
-STATS
+DASHBOARD STATS
 ========================================= */
-
 .stats{
-
     padding:20px 18px 10px;
-
     display:grid;
-
     grid-template-columns:1fr 1fr;
-
     gap:14px;
 }
 
 .stat-card{
-
     background:#fff;
-
     border-radius:24px;
-
     padding:20px;
-
-    box-shadow:
-    0 10px 30px rgba(15,23,42,.05);
+    box-shadow: 0 10px 25px rgba(15,23,42,.04);
+    border: 1px solid rgba(0,0,0,0.02);
 }
 
 .stat-card h3{
-
-    font-size:1.6rem;
-
-    font-weight:900;
-
-    margin-bottom:6px;
-
-    color:#7c3aed;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom:4px;
 }
 
+.stat-card.total h3 { color: var(--purple); }
+.stat-card.pending h3 { color: var(--danger); }
+
 .stat-card p{
-
-    color:#6b7280;
-
-    font-size:.9rem;
+    color:var(--muted);
+    font-size:.85rem;
+    font-weight: 600;
 }
 
 /* =========================================
-UNIFORMS
+CARDS UNIFORMES
 ========================================= */
-
 .uniforms{
-
-    padding:14px 18px 40px;
+    padding:14px 18px 80px;
 }
 
 .uniform-card{
-
     background:#fff;
-
     border-radius:26px;
-
-    padding:18px;
-
+    padding:20px;
     margin-bottom:16px;
-
-    box-shadow:
-    0 10px 30px rgba(15,23,42,.05);
+    box-shadow: 0 10px 25px rgba(15,23,42,.04);
+    border: 1px solid rgba(0,0,0,0.02);
 }
 
 .uniform-top{
-
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
     margin-bottom:18px;
 }
 
 .uniform-left{
-
     display:flex;
-
     align-items:center;
-
     gap:14px;
 }
 
 .uniform-icon{
-
-    width:64px;
-    height:64px;
-
-    border-radius:20px;
-
-    background:linear-gradient(
-    135deg,
-    #7c3aed,
-    #c084fc
-    );
-
+    width:58px;
+    height:58px;
+    border-radius:18px;
+    background:linear-gradient(135deg, #0f172a, #1e293b);
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
-    color:#fff;
-}
-
-.uniform-icon .material-symbols-outlined{
-    font-size:34px;
+    color:var(--gold);
+    font-size: 1.6rem;
 }
 
 .uniform-info h3{
-
-    font-size:1rem;
-
-    font-weight:800;
-
-    margin-bottom:4px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #0f172a;
 }
 
 .uniform-info p{
-
-    color:#6b7280;
-
-    font-size:.86rem;
+    color:var(--muted);
+    font-size:.85rem;
 }
 
 .stock{
-
     background:#ede9fe;
-
-    color:#7c3aed;
-
+    color:var(--purple);
     padding:8px 14px;
-
     border-radius:999px;
-
-    font-size:.82rem;
-
+    font-size:.8rem;
     font-weight:800;
 }
 
 .sizes{
-
     display:flex;
-
     gap:10px;
-
     flex-wrap:wrap;
-
     padding-top:14px;
-
     border-top:1px solid #e5e7eb;
 }
 
 .size{
-
     background:#f3f4f6;
-
     padding:8px 14px;
-
     border-radius:12px;
-
-    font-size:.82rem;
-
+    font-size:.8rem;
     font-weight:700;
-
     color:#374151;
 }
 
 /* =========================================
-FAB
+FÚTBOL SPINNER LOADER
 ========================================= */
-
-.fab{
-
-    position:fixed;
-
-    right:20px;
-    bottom:20px;
-
-    width:64px;
-    height:64px;
-
-    border:none;
-
-    border-radius:22px;
-
-    background:linear-gradient(
-    135deg,
-    #7c3aed,
-    #c084fc
-    );
-
-    color:#fff;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    cursor:pointer;
-
-    box-shadow:
-    0 15px 35px rgba(124,58,237,.35);
+.soccer-loading-container {
+    text-align: center;
+    padding: 80px 20px;
 }
 
-.fab .material-symbols-outlined{
-    font-size:34px;
+.soccer-spinner {
+    font-size: 3.5rem;
+    color: var(--purple);
+    display: inline-block;
+    animation: spinSoccer 1.2s linear infinite;
+}
+
+.soccer-loading-text {
+    margin-top: 16px;
+    font-family: 'Outfit', sans-serif;
+    color: var(--purple);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: pulseText 1.5s infinite ease-in-out;
+}
+
+@keyframes spinSoccer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseText {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 /* =========================================
-RESPONSIVE
+BOTÓN FLOTANTE (FAB)
 ========================================= */
-
-@media(min-width:700px){
-
-    .stats,
-    .uniforms{
-        max-width:700px;
-        margin:auto;
-    }
+.fab{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(135deg, var(--purple), var(--purple-light));
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow: 0 10px 25px rgba(124,58,237,.4);
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+    z-index: 999;
 }
 
-</style>
+.fab:active {
+    transform: scale(0.92);
+}
 
+/* =========================================
+MODAL DE GESTIÓN Y CAMBIO DE ESTADOS
+========================================= */
+.modal-backdrop {
+    position: fixed;
+    top:0; left:0; width:100vw; height:100vh;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.modal-box {
+    background: #fff;
+    border-radius: 28px;
+    width: 100%;
+    max-width: 440px;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.modal-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+.btn-close-modal {
+    background: #f3f4f6;
+    border: none;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: var(--muted);
+}
+
+.search-box-wrap {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.search-box-wrap i {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--muted);
+}
+
+.search-input {
+    width: 100%; padding: 12px 12px 12px 40px;
+    border: 1px solid #e5e7eb; border-radius: 14px;
+    font-family: inherit; font-size: 0.95rem; outline: none;
+    background: #f9fafb;
+}
+
+.search-input:focus {
+    border-color: var(--purple);
+    background: #fff;
+}
+
+.players-list {
+    overflow-y: auto;
+    flex: 1;
+    max-height: 320px;
+}
+
+.player-item-card {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.player-name {
+    font-weight: 700; font-size: 0.95rem; color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.player-meta {
+    font-size: 0.8rem; color: var(--muted); margin-bottom: 12px;
+}
+
+.toggle-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 8px; border-top: 1px dashed #e2e8f0; margin-top: 8px;
+}
+
+.toggle-label {
+    font-size: 0.82rem; font-weight: 700; color: #475569;
+}
+
+.status-badge {
+    padding: 6px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 800;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    transition: all 0.2s;
+}
+
+.badge-pagado { background: rgba(46,204,113,0.15); color: var(--success); border: 1px solid rgba(46,204,113,0.25); }
+.badge-pendiente { background: rgba(231,76,60,0.12); color: var(--danger); border: 1px solid rgba(231,76,60,0.2); }
+
+@media(min-width:700px){
+    .stats, .uniforms{ max-width:700px; margin:auto; }
+}
+</style>
 </head>
 
 <body>
 
-<!-- ======================================
-TOPBAR
-====================================== -->
-
+<!-- TOPBAR -->
 <header class="topbar">
-
     <div class="top-left">
-
         <div class="admin-info">
-
-            <h1>Uniformes</h1>
-
-            <p>Nápoles F.C.</p>
-
+            <h1>Gestión de Uniformes</h1>
+            <p>Nápoles F.C. • Panel Central</p>
         </div>
-
     </div>
-
-    <div class="avatar">
-        U
-    </div>
-
+    <div class="avatar" id="avatarLetra">A</div>
 </header>
 
-<!-- ======================================
-STATS
-====================================== -->
-
-<section class="stats">
-
-    <div class="stat-card">
-
-        <h3>94</h3>
-
-        <p>Uniformes Totales</p>
-
+<!-- CONTENEDOR CENTRAL DINÁMICO -->
+<main id="mainContainer">
+    <div class="soccer-loading-container">
+        <div class="soccer-spinner"><i class="fa-solid fa-futbol"></i></div>
+        <div class="soccer-loading-text">Descargando datos del Club...</div>
     </div>
-
-    <div class="stat-card">
-
-        <h3>18</h3>
-
-        <p>Entregas Pendientes</p>
-
-    </div>
-
-</section>
-
-<!-- ======================================
-UNIFORMS
-====================================== -->
-
-<section class="uniforms">
-
-    <!-- UNIFORM -->
-
-    <div class="uniform-card">
-
-        <div class="uniform-top">
-
-            <div class="uniform-left">
-
-                <div class="uniform-icon">
-
-                    <span class="material-symbols-outlined">
-                        checkroom
-                    </span>
-
-                </div>
-
-                <div class="uniform-info">
-
-                    <h3>Uniforme Local</h3>
-
-                    <p>Temporada 2026</p>
-
-                </div>
-
-            </div>
-
-            <div class="stock">
-                Stock: 32
-            </div>
-
-        </div>
-
-        <div class="sizes">
-
-            <div class="size">S • 6</div>
-
-            <div class="size">M • 10</div>
-
-            <div class="size">L • 9</div>
-
-            <div class="size">XL • 7</div>
-
-        </div>
-
-    </div>
-
-    <!-- UNIFORM -->
-
-    <div class="uniform-card">
-
-        <div class="uniform-top">
-
-            <div class="uniform-left">
-
-                <div class="uniform-icon">
-
-                    <span class="material-symbols-outlined">
-                        sports
-                    </span>
-
-                </div>
-
-                <div class="uniform-info">
-
-                    <h3>Uniforme Visitante</h3>
-
-                    <p>Temporada 2026</p>
-
-                </div>
-
-            </div>
-
-            <div class="stock">
-                Stock: 24
-            </div>
-
-        </div>
-
-        <div class="sizes">
-
-            <div class="size">S • 5</div>
-
-            <div class="size">M • 8</div>
-
-            <div class="size">L • 6</div>
-
-            <div class="size">XL • 5</div>
-
-        </div>
-
-    </div>
-
-    <!-- UNIFORM -->
-
-    <div class="uniform-card">
-
-        <div class="uniform-top">
-
-            <div class="uniform-left">
-
-                <div class="uniform-icon">
-
-                    <span class="material-symbols-outlined">
-                        shield
-                    </span>
-
-                </div>
-
-                <div class="uniform-info">
-
-                    <h3>Uniforme Entrenamiento</h3>
-
-                    <p>Temporada 2026</p>
-
-                </div>
-
-            </div>
-
-            <div class="stock">
-                Stock: 38
-            </div>
-
-        </div>
-
-        <div class="sizes">
-
-            <div class="size">S • 8</div>
-
-            <div class="size">M • 12</div>
-
-            <div class="size">L • 10</div>
-
-            <div class="size">XL • 8</div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ======================================
-ADD BUTTON
-====================================== -->
-
-<button class="fab">
-
-    <span class="material-symbols-outlined">
-        add
-    </span>
-
+</main>
+
+<!-- BOTÓN ACCIÓN FLOTANTE (ABRIR COBRANZAS) -->
+<button class="fab" onclick="abrirModalGestion()" title="Actualizar Estados de Pago">
+    <i class="fa-solid fa-cash-register"></i>
 </button>
 
+<!-- MODAL DE CAMBIO DE ESTADOS (INSCRIPCIÓN Y UNIFORME) -->
+<div class="modal-backdrop" id="modalGestion">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2>Actualizar Caja / Estados</h2>
+            <button class="btn-close-modal" onclick="cerrarModalGestion()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="search-box-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="search-input" id="inputBuscar" placeholder="Buscar jugador por nombre o cédula..." oninput="filtrarJugadores()">
+        </div>
+
+        <div class="players-list" id="listaJugadoresModal">
+            <!-- Cargados Dinámicamente -->
+        </div>
+    </div>
+</div>
+
+<script src="config.js"></script>
 <script>
-
-// =========================================
-// VALIDAR ADMIN
-// =========================================
-
-if(
-    localStorage.getItem('admin_activo')
-    !== 'true'
-){
+// Validar sesión administrativa activa
+if(localStorage.getItem('admin_activo') !== 'true'){
     window.location.href = './login.html';
 }
 
+let BD_JUGADORES = [];
+
+// Carga de Datos desde la Google Sheet vinculada
+async function inicializarModulo() {
+    const mainContainer = document.getElementById('mainContainer');
+    try {
+        const url = `${CONFIG.URL_GAS}?action=getUniformesData&t=${Date.now()}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if(data.success) {
+            BD_JUGADORES = data.jugadores;
+            procesarYRenderizar(BD_JUGADORES);
+        } else {
+            mainContainer.innerHTML = `<div style="text-align:center; padding:50px; color:var(--danger); font-weight:700;">Error en la respuesta del Servidor.</div>`;
+        }
+    } catch (error) {
+        mainContainer.innerHTML = `<div style="text-align:center; padding:50px; color:var(--danger); font-weight:700;">❌ Error crítico de enlace con Google Sheets.</div>`;
+    }
+}
+
+function procesarYRenderizar(jugadores) {
+    // Conteos Inteligentes Automatizados basados en columna Y (Unif_Estado)
+    let entregasPendientes = jugadores.filter(j => j.unif_estado.toUpperCase().includes('PENDIENTE')).length;
+    let totalUniformesValidos = jugadores.length;
+
+    // Distribución Automática por Tallas (Columna AA)
+    let stockTallas = { S: 0, M: 0, L: 0, XL: 0, SinTalla: 0 };
+    jugadores.forEach(j => {
+        let t = String(j.talla).toUpperCase().trim();
+        if(t.includes('S') && t.length === 1) stockTallas.S++;
+        else if(t.includes('M')) stockTallas.M++;
+        else if(t.includes('L') && t.length === 1) stockTallas.L++;
+        else if(t.includes('XL')) stockTallas.XL++;
+        else stockTallas.SinTalla++;
+    });
+
+    const mainContainer = document.getElementById('mainContainer');
+    mainContainer.innerHTML = `
+        <section class="stats">
+            <div class="stat-card total">
+                <h3>${totalUniformesValidos}</h3>
+                <p>Uniformes Planificados</p>
+            </div>
+            <div class="stat-card pending">
+                <h3>${entregasPendientes}</h3>
+                <p>Pendientes de Pago</p>
+            </div>
+        </section>
+
+        <section class="uniforms">
+            <!-- CATEGORÍA LOCAL -->
+            <div class="uniform-card">
+                <div class="uniform-top">
+                    <div class="uniform-left">
+                        <div class="uniform-icon"><i class="fa-solid fa-shirt"></i></div>
+                        <div class="uniform-info">
+                            <h3>Kits Asignados</h3>
+                            <p>Temporada Activa 2026</p>
+                        </div>
+                    </div>
+                    <div class="stock">Fichados: ${totalUniformesValidos}</div>
+                </div>
+                <div class="sizes">
+                    <div class="size">S • ${stockTallas.S} Jugadores</div>
+                    <div class="size">M • ${stockTallas.M} Jugadores</div>
+                    <div class="size">L • ${stockTallas.L} Jugadores</div>
+                    <div class="size">XL • ${stockTallas.XL} Jugadores</div>
+                    ${stockTallas.SinTalla > 0 ? `<div class="size">Por Definir • ${stockTallas.SinTalla}</div>` : ''}
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+// Controladores del Modal
+function abrirModalGestion() {
+    document.getElementById('modalGestion').style.display = 'flex';
+    document.getElementById('inputBuscar').value = '';
+    renderListaJugadoresModal(BD_JUGADORES);
+}
+
+function cerrarModalGestion() {
+    document.getElementById('modalGestion').style.display = 'none';
+}
+
+function renderListaJugadoresModal(lista) {
+    const contenedor = document.getElementById('listaJugadoresModal');
+    if(lista.length === 0) {
+        contenedor.innerHTML = `<div style="text-align:center; color:var(--muted); font-size:0.85rem; padding:20px;">No se encontraron coincidencias.</div>`;
+        return;
+    }
+
+    contenedor.innerHTML = lista.map(j => {
+        const inscripEsPagado = j.inscrip_estado.toUpperCase() === 'PAGADO';
+        const unifEsPagado = j.unif_estado.toUpperCase() === 'PAGADO';
+
+        return `
+            <div class="player-item-card">
+                <div class="player-name">${j.nombre}</div>
+                <div class="player-meta"><i class="fa-solid fa-address-card"></i> C.I: ${j.cedula} | Talla: ${j.talla || 'N/A'}</div>
+                
+                <!-- CONTROL COLUMNA X: INSCRIP_ESTADO -->
+                <div class="toggle-row">
+                    <span class="toggle-label">1. Inscripción (Col. X)</span>
+                    <span class="status-badge ${inscripEsPagado ? 'badge-pagado' : 'badge-pendiente'}" 
+                          onclick="alternarEstado('${j.cedula}', 'inscrip', '${j.inscrip_estado}')">
+                        <i class="fa-solid ${inscripEsPagado ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i>
+                        ${j.inscrip_estado || 'PENDIENTE'}
+                    </span>
+                </div>
+
+                <!-- CONTROL COLUMNA Y: UNIF_ESTADO -->
+                <div class="toggle-row">
+                    <span class="toggle-label">2. Uniforme (Col. Y)</span>
+                    <span class="status-badge ${unifEsPagado ? 'badge-pagado' : 'badge-pendiente'}" 
+                          onclick="alternarEstado('${j.cedula}', 'unif', '${j.unif_estado}')">
+                        <i class="fa-solid ${unifEsPagado ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i>
+                        ${j.unif_estado || 'PENDIENTE'}
+                    </span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function filtrarJugadores() {
+    const query = document.getElementById('inputBuscar').value.toLowerCase().trim();
+    const filtrados = BD_JUGADORES.filter(j => 
+        j.nombre.toLowerCase().includes(query) || 
+        j.cedula.toString().includes(query)
+    );
+    renderListaJugadoresModal(filtrados);
+}
+
+// Guardado Remoto inmediato en Google Sheets al hacer clic sobre el Estado
+async function alternarEstado(cedula, campo, estadoActual) {
+    const jugador = BD_JUGADORES.find(j => j.cedula === cedula);
+    if(!jugador) return;
+
+    let nuevoEstado = estadoActual.toUpperCase() === 'PAGADO' ? 'PENDIENTE' : 'PAGADO';
+    
+    let inscripEnvio = campo === 'inscrip' ? nuevoEstado : jugador.inscrip_estado;
+    let unifEnvio = campo === 'unif' ? nuevoEstado : jugador.unif_estado;
+
+    // Bloqueo estético de espera
+    document.getElementById('listaJugadoresModal').style.opacity = "0.4";
+
+    try {
+        const url = `${CONFIG.URL_GAS}?action=updateEstados&cedula=${encodeURIComponent(cedula)}&inscrip=${encodeURIComponent(inscripEnvio)}&unif=${encodeURIComponent(unifEnvio)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if(data.success) {
+            // Sincronizar memoria interna local
+            jugador.inscrip_estado = inscripEnvio;
+            jugador.unif_estado = unifEnvio;
+            
+            // Re-renderizar ambas vistas
+            procesarYRenderizar(BD_JUGADORES);
+            filtrarJugadores();
+        } else {
+            alert('No se pudo actualizar en la hoja de cálculo.');
+        }
+    } catch (e) {
+        alert('Error de red al conectar con la base de datos.');
+    } finally {
+        document.getElementById('listaJugadoresModal').style.opacity = "1";
+    }
+}
+
+// Inicialización de la aplicación
+inicializarModulo();
 </script>
 
 </body>
