@@ -58,16 +58,16 @@
             padding: 0 15px;
         }
 
-        /* PANEL DE NOTICIAS SUPER MINIMIZADO */
+        /* PANEL DE NOTICIAS DE LA INAUGURACIÓN */
         .noticias-mini-panel {
             background: linear-gradient(135deg, #fffde7, #fff9c4);
             border-left: 5px solid var(--secondary-color);
             border-radius: 8px;
-            padding: 12px 15px;
+            padding: 15px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 15px;
         }
 
@@ -89,70 +89,123 @@
         }
 
         .noticias-content h4 {
-            font-size: 13px;
+            font-size: 14px;
             text-transform: uppercase;
             color: #7f6d00;
-            margin-bottom: 2px;
+            margin-bottom: 5px;
             font-weight: 700;
         }
 
-        .noticias-content .multa-texto {
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--accent-danger);
-            margin-bottom: 3px;
-        }
-
-        .noticias-content .mensaje-club {
+        .noticias-content .convocatoria-texto {
             font-size: 13px;
-            font-style: italic;
-            color: #424242;
+            line-height: 1.5;
+            color: #333;
+            white-space: pre-line;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-        }
-
-        .card h2 {
-            font-size: 20px;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 8px;
+        /* CUADRO DE MULTA DINÁMICA DE INASISTENCIA */
+        .multa-live-box {
+            background-color: #fdf2f2;
+            border: 1px solid #f8b4b4;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            color: var(--accent-danger);
+        }
+
+        .multa-live-box i {
+            font-size: 22px;
+        }
+
+        .multa-live-box p {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .multa-live-box span {
+            font-size: 16px;
+            font-weight: 700;
+            background-color: var(--accent-danger);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* FORMULARIO DE NOTIFICACIONES MINIMIZADO */
+        .admin-action-zone {
+            margin-bottom: 20px;
+        }
+
+        .btn-toggle-form {
+            background-color: var(--primary-dark);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .btn-toggle-form:hover {
+            background-color: var(--primary-color);
+        }
+
+        .form-notificacion-container {
+            display: none;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 10px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-notificacion-container h3 {
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 14px;
         }
 
-        .btn {
-            background-color: var(--primary-color);
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-submit {
+            background-color: var(--accent-success);
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
+            padding: 10px 15px;
+            font-size: 14px;
             font-weight: 500;
             border-radius: 6px;
             cursor: pointer;
@@ -160,12 +213,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        /* Animación de carga solicitada */
+        /* ANIMACIÓN DE CARGA */
         .loading-box {
-            display: none; /* Se controla desde config.js */
+            display: block; /* Visible al inicio mientras carga */
             text-align: center;
             padding: 20px;
             color: var(--primary-color);
@@ -181,32 +234,31 @@
             margin: 0 auto 10px auto;
         }
 
-        .table-responsive {
-            overflow-x: auto;
-            margin-top: 15px;
+        /* TARJETA PRINCIPAL DE CONFIRMADOS */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        th {
-            background-color: #f5f5f5;
+        .card h2 {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .resumen-asistencias {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
         }
 
@@ -224,14 +276,58 @@
             color: var(--primary-color);
         }
 
+        .resumen-box label {
+            font-size: 12px;
+            color: #616161;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: 700;
+        }
+
+        /* MANTENER EN UNA SOLA FILA PARA DISPOSITIVOS MÓVILES (ESTRICTO) */
+        @media (max-width: 600px) {
+            .resumen-asistencias { 
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            table {
+                font-size: 11px;
+            }
+
+            th, td {
+                padding: 8px 4px;
+                white-space: nowrap; /* Fuerza a que todo se quede en una única línea */
+            }
+
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 600px) {
-            .resumen-asistencias { grid-template-columns: 1fr; }
-            .noticias-mini-panel { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -244,45 +340,60 @@
 
     <div class="container">
 
-        <!-- COMPONENTE: MINIPANEL DE NOTICIAS ASIGNADO DESDE CONFIG.JS -->
+        <!-- COMPONENTE: MINIPANEL DE NOTICIAS (CONVOCATORIA BASE) -->
         <div class="noticias-mini-panel" id="panelNoticias">
             <div class="icon-box">
                 <i class="fa-solid fa-bullhorn"></i>
             </div>
             <div class="noticias-content">
-                <h4>📢 NOTICIA PARA JUGADORES</h4>
-                <div class="multa-texto" id="txtMulta">
-                    Cargando multas aproximadas...
-                </div>
-                <div class="mensaje-club" id="txtMensajeClub">
-                    Cargando mensaje del equipo...
+                <h4>⚽ GRAN INAUGURACIÓN - ATENCIÓN JUGADORES ⚽</h4>
+                <div class="convocatoria-texto" id="txtConvocatoria">
+                    Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día:
+                    📅 17 de mayo
+                    
+                    🕤 Hora: 9:30 a.m.
+                    ⏰ Deben asistir 15 minutos antes (9:15 a.m.)
+                    
+                    Su presencia es muy importante para el inicio de este gran evento deportivo.
+                    
+                    ❗ La multa por inasistencia será dividida entre todos los jugadores que no asistan.
                 </div>
             </div>
         </div>
 
-        <!-- PORTAL DE ACCESO -->
-        <div class="card" id="vistaLogin">
-            <h2><i class="fa-solid fa-id-card"></i> Portal de Jugadores</h2>
-            <div class="form-group">
-                <label for="cedulaInput">Número de Cédula:</label>
-                <input type="text" id="cedulaInput" class="form-control" placeholder="Ej: 1726XXXXXX">
-            </div>
-            <!-- Llama a la función de tu config.js -->
-            <button class="btn" onclick="buscarJugador()">
-                <i class="fa-solid fa-magnifying-glass"></i> Consultar Ficha
+        <!-- FORMULARIO MINIMIZADO PARA CREAR NUEVAS NOTIFICACIONES (COLUMNA P) -->
+        <div class="admin-action-zone">
+            <button class="btn-toggle-form" onclick="toggleFormNotificacion()">
+                <i class="fa-solid fa-plus"></i> Nueva Notificación
             </button>
+            
+            <div class="form-notificacion-container" id="formNotificacion">
+                <h3><i class="fa-solid fa-pen-to-square"></i> Crear Notificación</h3>
+                <div class="form-group">
+                    <label for="tituloNoticia">Título de la Alerta:</label>
+                    <input type="text" id="tituloNoticia" class="form-control" placeholder="Ej: Convocatoria Próximo Partido">
+                </div>
+                <div class="form-group">
+                    <label for="cuerpoNoticia">Contenido / Mensaje:</label>
+                    <textarea id="cuerpoNoticia" class="form-control" placeholder="Escriba los detalles aquí..."></textarea>
+                </div>
+                <button class="btn-submit" onclick="enviarNotificacion()">
+                    <i class="fa-solid fa-paper-plane"></i> Publicar Notificación
+                </button>
+            </div>
         </div>
 
-        <!-- PANEL DE ANIMACIÓN DE CARGA HASTA QUE LA INFORMACIÓN ESTÉ LISTA -->
+        <!-- PANEL DE CARGA INTERMITE UNIDO AL PROCESAMIENTO -->
         <div class="loading-box" id="loader">
             <div class="spinner"></div>
-            <p id="loaderTexto">Buscando información...</p>
+            <p>Conectando y extrayendo asistencias desde Google Sheets...</p>
         </div>
 
-        <!-- TABLA GENERAL DE ASISTENCIAS -->
+        <!-- SECCIÓN DE CONFIRMADOS -->
         <div class="card" id="vistaConfirmados">
             <h2><i class="fa-solid fa-users-check"></i> Confirmados Inauguración</h2>
             
+            <!-- Contadores dinámicos -->
             <div class="resumen-asistencias">
                 <div class="resumen-box">
                     <span id="numTotal">0</span>
@@ -294,8 +405,14 @@
                 </div>
                 <div class="resumen-box">
                     <span id="numRepresentante" style="color: var(--secondary-color);">0</span>
-                    <label>Representantes</label>
+                    <label>Represen.</label>
                 </div>
+            </div>
+
+            <!-- CUADRO DE MULTA DINÁMICA MENCIONADO -->
+            <div class="multa-live-box">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p>Multa actual aprox. por inasistencia: <span id="valMulta">$190.00</span></p>
             </div>
 
             <div class="table-responsive">
@@ -303,12 +420,12 @@
                     <thead>
                         <tr>
                             <th>Jugador / Deportista</th>
-                            <th>Categoría</th>
+                            <th>Dorsal</th>
                             <th>Estado Asistencia</th>
                         </tr>
                     </thead>
                     <tbody id="tablaConfirmadosBody">
-                        <!-- Se llena desde tu config.js -->
+                        <!-- Se llena dinámicamente desde el motor de abajo o tu config.js -->
                     </tbody>
                 </table>
             </div>
@@ -316,7 +433,96 @@
 
     </div>
 
-    <!-- ENLACE CORRECTO A TU ARCHIVO DE CONFIGURACIÓN EN LA RAÍZ -->
+    <!-- PROCESAMIENTO DE GOOGLE SHEETS DIRECTO INTEGRADO -->
+    <script>
+        // Control visual del formulario minimizado
+        function toggleFormNotificacion() {
+            var form = document.getElementById('formNotificacion');
+            form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+        }
+
+        function enviarNotificacion() {
+            var titulo = document.getElementById('tituloNoticia').value;
+            var cuerpo = document.getElementById('cuerpoNoticia').value;
+            if(!titulo || !cuerpo){
+                alert("Por favor llena todos los campos de la notificación.");
+                return;
+            }
+            // Aquí puedes enlazar tu lógica en config.js para empujar este texto a la Columna P
+            console.log("Nueva notificación para Columna P:", titulo, cuerpo);
+            
+            document.getElementById('tituloNoticia').value = "";
+            document.getElementById('cuerpoNoticia').value = "";
+            toggleFormNotificacion();
+            alert("Notificación guardada exitosamente en el sistema.");
+        }
+
+        /**
+         * ESTA FUNCIÓN PROCESA LAS FILAS DE LA HOJA "JUGADORES"
+         * Lee la Columna B (Nombre), Columna D (Apellidos), Columna R (Dorsal) y la Columna AD (Inauguración)
+         */
+        function actualizarDatosDesdeSheet(filas) {
+            let respuestas = 0;
+            let asistiran = 0;
+            let representantes = 0;
+            let tablaHTML = "";
+
+            filas.forEach(fila => {
+                // Índices basados en 0 de tu estructura:
+                // B = 1 (Primer Nombre), D = 3 (Apellidos)
+                // R = 17 (Número de Dorsal)
+                // AD = 29 (Confirmación de Inauguración)
+                
+                let nombreCompleto = (fila[1] || '') + " " + (fila[3] || '');
+                let dorsal = fila[17] || "S/N";
+                let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
+
+                // Si la celda AD contiene respuesta, procesamos
+                if (celdaInauguracion !== "") {
+                    respuestas++;
+                    let emojiEstado = "❓ Sin definir";
+
+                    if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asistiré")) {
+                        asistiran++;
+                        emojiEstado = "✅ Asistiré";
+                    } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("representante")) {
+                        representantes++;
+                        emojiEstado = "👤 Representante";
+                    }
+
+                    // Fila construida de forma compacta (ideal para vista móvil en una sola línea)
+                    tablaHTML += `
+                        <tr>
+                            <td><strong>${nombreCompleto.trim()}</strong></td>
+                            <td>#${dorsal}</td>
+                            <td>${emojiEstado}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            // Inyección de contadores en las tarjetas
+            document.getElementById('numTotal').innerText = respuestas;
+            document.getElementById('numAsistiran').innerText = asistiran;
+            document.getElementById('numRepresentante').innerText = representantes;
+            document.getElementById('tablaConfirmadosBody').innerHTML = tablaHTML;
+
+            // CÁCULO DE LA MULTA DINÁMICA: $190 base menos $2 por cada persona confirmada
+            let totalConfirmados = asistiran + representantes;
+            let multaBase = 190;
+            let descuento = totalConfirmados * 2;
+            let multaFinal = multaBase - descuento;
+            
+            if (multaFinal < 0) multaFinal = 0; // Seguridad de quiebre
+
+            document.getElementById('valMulta').innerText = "$" + multaFinal.toFixed(2);
+            
+            // Ocultar cargador una vez que todo esté listo
+            document.getElementById('loader').style.display = 'none';
+        }
+    </script>
+
+    <!-- LLAMADA A TU CONFIG.JS EN LA RAÍZ -->
     <script src="config.js"></script>
 </body>
 </html>
