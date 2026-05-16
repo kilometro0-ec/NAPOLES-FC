@@ -13,123 +13,126 @@
 :root {
     --amber-dark: #b45309;
     --amber-light: #facc15;
-    --success: #16a34a;
+    --success: #10b981;
     --danger: #ef4444;
     --slate-dark: #0f172a;
     --muted: #6b7280;
-    --bg: #f3f6fb;
+    --bg: #f8fafc;
 }
 
-*{
-    margin:0; padding:0; box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-body{
-    font-family:'Inter',sans-serif; background:var(--bg);
-    color:#111827; min-height:100vh; overflow-x:hidden;
-}
+*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-height:100vh; padding-bottom: 60px; }
 
 .topbar{
-    position:sticky; top:0; z-index:100;
-    background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
-    border-bottom:1px solid #e5e7eb; padding:16px 18px;
-    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:100; background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
+    border-bottom:1px solid #e2e8f0; padding:16px 18px; display:flex; align-items:center; justify-content:space-between;
 }
-
-.admin-info h1{ font-family: 'Outfit', sans-serif; font-size:1.2rem; font-weight:900; }
-.admin-info p{ font-size:.85rem; color:var(--muted); margin-top:2px; font-weight: 600; }
+.admin-info h1{ font-family: 'Outfit', sans-serif; font-size:1.25rem; font-weight:900; color: var(--slate-dark); }
+.admin-info p{ font-size:.8rem; color:var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
 .avatar{
-    width:44px; height:44px; border-radius:14px;
-    background:linear-gradient(135deg, var(--amber-dark), var(--amber-light));
-    display:flex; align-items:center; justify-content:center;
-    color:#fff; font-weight:800; font-size:1.1rem;
+    width:42px; height:42px; border-radius:12px; background: #f1f5f9;
+    display:flex; align-items:center; justify-content:center; color:var(--slate-dark); font-size:1.1rem;
 }
 
-/* CARDS DE RESUMEN */
-.summary{ padding:20px 18px 10px; }
-.summary-card{
-    background:linear-gradient(135deg, var(--slate-dark), #1e293b);
-    border-radius:24px; padding:22px; color:#fff; position:relative; overflow:hidden;
-    box-shadow: 0 10px 25px rgba(15,23,42,0.15);
-}
-.summary-card h2{ font-family: 'Outfit', sans-serif; font-size:.9rem; margin-bottom:4px; color: var(--amber-light); text-transform: uppercase;}
-.balance{ font-family: 'Outfit', sans-serif; font-size: 2.3rem; font-weight: 900; margin-bottom:15px; }
+/* CARDS DE BALANCE */
+.summary{ padding:20px 18px 5px; }
+.summary-card{ background:linear-gradient(135deg, #1e293b, var(--slate-dark)); border-radius:24px; padding:24px; color:#fff; box-shadow: 0 10px 30px rgba(15,23,42,0.08); }
+.balance-label { font-size: .75rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; font-weight: 700; }
+.balance{ font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 900; margin: 4px 0 20px 0; color: #fff; }
 
-.summary-stats{
-    display:grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-bottom: 10px;
-}
-.summary-item h3{ font-size: 1.05rem; font-weight: 800; }
-.summary-item p{ font-size:.75rem; color: #94a3b8; }
+.summary-stats{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; }
+.summary-item p{ font-size:.72rem; color: #94a3b8; text-transform: uppercase; font-weight: 600; }
+.summary-item h3{ font-size: 1.15rem; font-weight: 800; font-family: 'Outfit', sans-serif; margin-top: 2px; }
 
-.sub-metrics {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 14px;
+/* PANEL ALERT DE CUENTAS POR COBRAR ANIMADO */
+.por-cobrar-alert-box {
+    margin: 12px 18px 5px; padding: 16px; border-radius: 18px;
+    background: #fff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.3s ease;
 }
-.sub-metrics div p { font-size: 0.7rem; color: #cbd5e1; }
-.sub-metrics div h4 { font-size: 0.95rem; font-weight: 700; color: #fff; }
+.por-cobrar-alert-box.tiene-deuda {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border: 1px solid #fca5a5;
+    color: var(--danger);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    animation: pulsarAlerta 2s infinite ease-in-out;
+}
+@keyframes pulsarAlerta {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.2); }
+    50% { transform: scale(1.01); box-shadow: 0 4px 15px 5px rgba(239, 68, 68, 0.1); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+.alert-left { display: flex; align-items: center; gap: 12px; }
+.alert-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(239,68,68,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--danger); }
+.alert-text h4 { font-size: .75rem; text-transform: uppercase; color: #7f1d1d; letter-spacing: 0.5px; font-weight: 700; }
+.alert-text p { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 900; color: #991b1b; }
 
-/* SECCIONES FORMULARIOS */
-.gestion-container {
-    background: #fff; margin: 15px 18px; padding: 18px; border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #e5e7eb;
+/* SELECTOR ESTÉTICO DE ACCIONES (TABS) */
+.tab-selector-wrapper { padding: 15px 18px 5px; }
+.tab-selector { display: flex; background: #e2e8f0; padding: 5px; border-radius: 14px; gap: 4px; }
+.tab-btn {
+    flex: 1; border: none; padding: 10px 4px; border-radius: 10px; font-size: 0.76rem;
+    font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; color: #475569;
+    background: transparent; transition: all 0.25s ease; text-align: center;
 }
-.gestion-container h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.form-group { margin-bottom: 12px; }
-.form-group label { display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 4px; color: var(--slate-dark); }
-.form-control {
-    width: 100%; padding: 10px 12px; font-size: 0.88rem; border: 1px solid #cbd5e1;
-    border-radius: 10px; font-family: inherit; outline: none;
-}
-.btn-submit {
-    width: 100%; background: var(--slate-dark); color: white; border: none;
-    padding: 12px; border-radius: 12px; font-family: 'Outfit', sans-serif;
-    font-weight: 700; cursor: pointer;
-}
-.btn-submit.ingreso { background: var(--success); }
+.tab-btn.active { background: #fff; color: var(--slate-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-/* BUSCADOR RESULTADO JUGADOR */
-.jugador-buscado-card {
-    background: #f8fafc; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 12px; margin-top: 10px; display: none;
+/* CONTENEDORES DE FORMULARIO DINÁMICOS */
+.form-card {
+    background: #fff; margin: 12px 18px; padding: 20px; border-radius: 22px;
+    box-shadow: 0 4px 16px rgba(15,23,42,0.02); border: 1px solid #e2e8f0; display: none;
 }
-.jugador-buscado-card p { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
-.btn-cobro {
-    padding: 6px 12px; border: none; border-radius: 8px; color: white; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-right: 5px;
-}
+.form-card.active { display: block; animation: desplegar 0.3s ease-out; }
+@keyframes desplegar { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* MOVEMENTS */
-.movements-title { padding: 16px 20px 2px; font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; }
-.movements{ padding:0 18px 100px; }
-.movement-card{
-    background:#fff; border-radius:16px; padding:14px; margin-top:10px;
-    display:flex; align-items:center; justify-content:space-between;
-    box-shadow: 0 4px 12px rgba(15,23,42,.02);
+.form-card h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 16px; color: var(--slate-dark); display: flex; align-items: center; gap: 8px; }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; color: #475569; text-transform: uppercase; }
+.form-control { width: 100%; padding: 11px 14px; font-size: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; outline: none; font-family: inherit; color: var(--slate-dark); transition: border 0.2s; }
+.form-control:focus { border-color: var(--slate-dark); }
+
+.btn-action { width: 100%; color: white; border: none; padding: 13px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; }
+.btn-green { background: var(--success); }
+.btn-green:hover { background: #059669; }
+.btn-red { background: var(--danger); }
+.btn-red:hover { background: #dc2626; }
+.btn-blue { background: #2563eb; }
+
+/* TARJETA INTERACTIVA DE COBRO A JUGADOR */
+.jugador-buscado-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 16px; border-radius: 16px; margin-top: 14px; display: none; }
+.jugador-buscado-card p { font-size: 0.9rem; font-weight: 700; color: var(--slate-dark); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
+.grid-cobros { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.btn-cobro-opcion {
+    display: flex; align-items: center; justify-content: space-between; padding: 11px 14px;
+    border: 1px solid #cbd5e1; border-radius: 10px; background: white; font-size: 0.82rem;
+    font-weight: 700; cursor: pointer; text-align: left; color: var(--slate-dark); transition: all 0.2s;
 }
+.btn-cobro-opcion:hover { border-color: var(--success); background: #f0fdf4; }
+.btn-cobro-opcion span.badge-precio { background: #e2e8f0; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; color: var(--slate-dark); }
+.btn-cobro-opcion.pay-active { border-color: var(--success); color: var(--success); }
+.btn-cobro-opcion.pay-active span.badge-precio { background: var(--success); color: white; }
+
+/* HISTORIAL / AUDITORÍA */
+.movements-title { padding: 16px 20px 2px; font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--slate-dark); }
+.movements{ padding:0 18px 40px; }
+.movement-card{ background:#fff; border-radius:16px; padding:14px; margin-top:10px; display:flex; align-items:center; justify-content:space-between; border: 1px solid #edf2f7; }
 .movement-left{ display:flex; align-items:center; gap:12px; }
-.movement-icon{
-    width:42px; height:42px; border-radius:12px;
-    display:flex; align-items:center; justify-content:center; font-size: 1rem;
-}
-.income{ background: rgba(22,163,74,0.1); color: var(--success); }
-.expense{ background: rgba(239,68,68,0.1); color: var(--danger); }
-.movement-info h3{ font-size:.88rem; font-weight:800; color: var(--slate-dark); }
-.movement-info p{ color:var(--muted); font-size:.78rem; }
-.amount{ font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 800; }
-.positive{ color: var(--success); }
-.negative{ color: var(--danger); }
+.movement-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size: 0.95rem; }
+.income{ background: #ecfdf5; color: var(--success); }
+.expense{ background: #fef2f2; color: var(--danger); }
+.movement-info h3{ font-size:.85rem; font-weight:700; color: var(--slate-dark); }
+.movement-info p{ color:var(--muted); font-size:.75rem; margin-top: 1px; }
+.amount{ font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800; }
+.positive { color: var(--success); }
+.negative { color: var(--danger); }
 
-.loading-box { text-align: center; padding: 60px 20px; }
-.spinner-icon { font-size: 2.5rem; color: var(--amber-dark); animation: rotar 1s linear infinite; }
+.fab { position: fixed; bottom: 18px; right: 18px; width: 50px; height: 50px; border: none; border-radius: 14px; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(15,23,42,0.15); background: var(--slate-dark); cursor: pointer; z-index: 100; }
+.loading-box { text-align: center; padding: 50px 20px; color: var(--muted); font-size: 0.85rem; }
+.spinner-icon { font-size: 2rem; color: #cbd5e1; animation: rotar 1s linear infinite; margin-bottom: 8px; }
 @keyframes rotar { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-.actions-nav { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 200; }
-.fab { width: 54px; height: 54px; border: none; border-radius: 16px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15); background: linear-gradient(135deg, var(--amber-dark), var(--amber-light)); }
-
-@media(min-width:700px){
-    .summary, .movements, .movements-title, .gestion-container{ max-width:700px; margin:auto; }
-}
+@media(min-width:700px){ .summary, .movements, .movements-title, .form-card, .tab-selector-wrapper, .por-cobrar-alert-box { max-width:650px; margin-left:auto; margin-right:auto; } }
 </style>
 </head>
 
@@ -139,74 +142,130 @@ body{
     <div class="top-left">
         <div class="admin-info">
             <h1>Finanzas Club</h1>
-            <p>Nápoles F.C. • Panel de Control Global</p>
+            <p>Nápoles F.C. • Panel Contable</p>
         </div>
     </div>
-    <div class="avatar"><i class="fa-solid fa-building-columns"></i></div>
+    <div class="avatar"><i class="fa-solid fa-chart-pie"></i></div>
 </header>
 
-<!-- SECCIÓN 1: REGISTRAR INGRESOS (COBROS) -->
-<section class="gestion-container">
-    <h2><i class="fa-solid fa-money-bill-wave" style="color: var(--success)"></i> Registrar Ingreso (Cobro a Jugador)</h2>
-    <div class="form-group">
-        <label>Escriba la Cédula del Jugador</label>
-        <div style="display: flex; gap: 8px;">
-            <input type="text" id="buscarCedula" class="form-control" placeholder="Ej. 1726354120">
-            <button onclick="buscarJugadorParaCobro()" class="btn-submit" style="width: auto; padding: 0 20px;">Buscar</button>
-        </div>
-    </div>
-    
-    <!-- Resultado del buscador oculto inicialmente -->
-    <div id="resultadoJugadorCard" class="jugador-buscado-card">
-        <p id="lblNombreJugador">Jugador: -</p>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-            <button id="btnCobrarInscrip" class="btn-cobro" style="background: var(--success);" onclick="procesarCobro('inscripcion')">Cobrar Inscripción ($5)</button>
-            <button id="btnCobrarUnif" class="btn-cobro" style="background: #0284c7;" onclick="procesarCobro('uniforme')">Cobrar Uniforme ($17)</button>
-        </div>
-    </div>
-</section>
-
-<!-- SECCIÓN 2: REGISTRAR GASTOS -->
-<section class="gestion-container">
-    <h2><i class="fa-solid fa-money-bill-transfer" style="color: var(--danger)"></i> Registrar Salida de Dinero (Gasto)</h2>
-    <form id="gastoForm" onsubmit="enviarGasto(event)">
-        <div class="form-group">
-            <label>Concepto / Descripción del Gasto</label>
-            <input type="text" id="gastoConcepto" class="form-control" placeholder="Ej. Alquiler de Cancha, Arbitraje, Agua..." required>
-        </div>
-        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div>
-                <label>Categoría</label>
-                <select id="gastoCategoria" class="form-control">
-                    <option value="Canchas">Canchas</option>
-                    <option value="Arbitraje">Arbitraje</option>
-                    <option value="Implementos">Implementos</option>
-                    <option value="Logística">Logística</option>
-                    <option value="Otros">Otros</option>
-                </select>
-            </div>
-            <div>
-                <label>Monto de Egreso (USD)</label>
-                <input type="number" id="gastoMonto" step="0.01" class="form-control" placeholder="0.00" required>
-            </div>
-        </div>
-        <button type="submit" class="btn-submit">Procesar y Descontar de Caja</button>
-    </form>
-</section>
-
-<!-- CONTENEDOR FINANCIERO -->
+<!-- CUADRO CONTABLE PRINCIPAL DE TOTALES -->
 <main id="financialApp">
     <div class="loading-box">
         <div class="spinner-icon"><i class="fa-solid fa-circle-notch"></i></div>
-        <div class="loading-text">Sincronizando balances...</div>
+        <p>Sincronizando caja real con Google Sheets...</p>
     </div>
 </main>
 
-<div class="actions-nav">
-    <button class="fab" onclick="cargarContabilidad()" title="Refrescar">
-        <i class="fa-solid fa-arrows-rotate"></i>
-    </button>
+<!-- PANEL ALERT DE CUENTAS POR COBRAR EXTRAÍDO -->
+<section id="porCobrarWidget" class="por-cobrar-alert-box">
+    <div class="alert-left">
+        <div class="alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="alert-text">
+            <h4>Cuentas Pendientes por Cobrar</h4>
+            <p id="lblPorCobrarDinámico">$0.00</p>
+        </div>
+    </div>
+</section>
+
+<!-- SELECTOR TABS ESTÉTICO -->
+<div class="tab-selector-wrapper">
+    <div class="tab-selector">
+        <button class="tab-btn active" onclick="switchForm('jugadorTab', this)">Cobro Jugador</button>
+        <button class="tab-btn" onclick="switchForm('extraTab', this)">Ingreso Extra</button>
+        <button class="tab-btn" onclick="switchForm('gastoTab', this)">Registrar Gasto</button>
+    </div>
 </div>
+
+<!-- FORMULARIO 1: COBRO A JUGADORES -->
+<section id="jugadorTab" class="form-card active">
+    <h2><i class="fa-solid fa-id-card" style="color: #2563eb"></i> Buscar Jugador Registrado</h2>
+    <div class="form-group">
+        <label>Número de Cédula</label>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="buscarCedula" class="form-control" placeholder="Ej. 1725341290">
+            <button onclick="buscarJugadorParaCobro()" class="btn-action btn-blue" style="width: auto; padding: 0 18px;"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </div>
+    
+    <!-- Fila desplegable del Jugador -->
+    <div id="resultadoJugadorCard" class="jugador-buscado-card">
+        <p id="lblNombreJugador">Cargando...</p>
+        <div class="grid-cobros">
+            <button id="btnCobrarInscrip" class="btn-cobro-opcion" onclick="procesarCobro('inscripcion')">
+                <span><i class="fa-solid fa-file-invoice-dollar" style="color: var(--success); margin-right:6px;"></i> Liquidar Inscripción</span>
+                <span class="badge-precio">$5.00</span>
+            </button>
+            <button id="btnCobrarUnif" class="btn-cobro-opcion" onclick="procesarCobro('uniforme')">
+                <span><i class="fa-solid fa-shirt" style="color: #0284c7; margin-right:6px;"></i> Liquidar Uniforme Oficial</span>
+                <span class="badge-precio">$17.00</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- FORMULARIO 2: OTROS INGRESOS EXTRAS -->
+<section id="extraTab" class="form-card">
+    <h2><i class="fa-solid fa-coins" style="color: var(--success)"></i> Registrar Ingreso Externo / Extras</h2>
+    <form id="ingresoExtraForm" onsubmit="enviarIngresoExtra(event)">
+        <div class="form-group">
+            <label>Concepto del Ingreso</label>
+            <input type="text" id="extraConcepto" class="form-control" placeholder="Ej. Auspicio de marca, Medias Extras, Mascotas..." required>
+        </div>
+        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+                <label>Categoría</label>
+                <select id="extraCategoria" class="form-control">
+                    <option value="Auspicios">Auspicios</option>
+                    <option value="Mascotas">Mascotas</option>
+                    <option value="Rifas">Rifas / Eventos</option>
+                    <option value="Medias Extras">Medias Extras</option>
+                    <option value="Otros">Otros Ingresos</option>
+                </select>
+            </div>
+            <div>
+                <label>Monto Recaudado ($)</label>
+                <input type="number" id="extraMonto" step="0.01" class="form-control" placeholder="0.00" required>
+            </div>
+        </div>
+        <button type="submit" class="btn-action btn-green">Procesar Ingreso de Caja</button>
+    </form>
+</section>
+
+<!-- FORMULARIO 3: GASTOS -->
+<section id="gastoTab" class="form-card">
+    <h2><i class="fa-solid fa-money-bill-transfer" style="color: var(--danger)"></i> Registrar Salida / Gasto Directo</h2>
+    <form id="gastoForm" onsubmit="enviarGasto(event)">
+        <div class="form-group">
+            <label>Concepto o Motivo del Gasto</label>
+            <input type="text" id="gastoConcepto" class="form-control" placeholder="Ej. Pago de Arbitraje fecha 3, Alquiler de Cancha..." required>
+        </div>
+        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+                <label>Categoría Egreso</label>
+                <select id="gastoCategoria" class="form-control">
+                    <option value="Canchas">Canchas</option>
+                    <option value="Arbitraje">Arbitraje</option>
+                    <option value="Logística">Logística</option>
+                    <option value="Implementos">Implementos</option>
+                    <option value="Otros">Otros Gastos</option>
+                </select>
+            </div>
+            <div>
+                <label>Monto del Gasto ($)</label>
+                <input type="number" id="gastoMonto" step="0.01" class="form-control" placeholder="0.00" required>
+            </div>
+        </div>
+        <button type="submit" class="btn-action btn-red">Descontar Salida de Caja</button>
+    </form>
+</section>
+
+<!-- MOVIMIENTOS RECIENTES -->
+<h2 class="movements-title">Auditoría General de Caja</h2>
+<section id="contenedorMovimientos" class="movements">
+    <div style="text-align: center; padding: 20px; color: var(--muted); font-size: 0.85rem;">Esperando datos contables...</div>
+</section>
+
+<button class="fab" onclick="cargarContabilidad()" title="Refrescar Balances"><i class="fa-solid fa-arrows-rotate"></i></button>
 
 <script src="config.js"></script>
 <script>
@@ -215,20 +274,52 @@ if(localStorage.getItem('admin_activo') !== 'true') window.location.href = './lo
 const formatearMoneda = (v) => new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(v);
 let jugadorSeleccionadoCedula = "";
 
+// INTERRUPTOR VISUAL DE FORMULARIOS (TABS)
+function switchForm(tabId, el) {
+    document.querySelectorAll('.form-card').forEach(card => card.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(tabId).classList.add('active');
+    el.classList.add('active');
+}
+
 async function cargarContabilidad() {
-    const app = document.getElementById('financialApp');
     try {
         const res = await fetch(`${CONFIG.URL_GAS}?action=getFinanzasData&nocache=${Date.now()}`);
         const data = await res.json();
         if (data.success) renderizarApp(data.resumen, data.movements);
     } catch (e) {
-        app.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger);font-weight:700;">Error de red con Google Sheets.</div>`;
+        console.error(e);
     }
 }
 
 function renderizarApp(resumen, movimientos) {
-    const app = document.getElementById('financialApp');
-    
+    // 1. Renderizar Bloque Superior de Caja Real
+    document.getElementById('financialApp').innerHTML = `
+        <section class="summary">
+            <div class="summary-card">
+                <p class="balance-label">Caja Real Disponible</p>
+                <div class="balance">${formatearMoneda(resumen.balanceReal)}</div>
+                <div class="summary-stats">
+                    <div class="summary-item"><p>Total Ingresos</p><h3 style="color:#34d399">+ ${formatearMoneda(resumen.ingresosTotales)}</h3></div>
+                    <div class="summary-item"><p>Total Gastos</p><h3 style="color:#f87171">- ${formatearMoneda(resumen.gastosTotales)}</h3></div>
+                </div>
+            </div>
+        </section>
+    `;
+
+    // 2. Controlar Alerta Dinámica de Cuentas por Cobrar
+    const widgetCobrar = document.getElementById('porCobrarWidget');
+    const lblCobrar = document.getElementById('lblPorCobrarDinámico');
+    lblCobrar.innerText = formatearMoneda(resumen.porCobrar);
+
+    if (resumen.porCobrar > 0) {
+        widgetCobrar.classList.add('tiene-deuda');
+    } else {
+        widgetCobrar.classList.remove('tiene-deuda');
+    }
+
+    // 3. Renderizar Auditoría en Tiempo Real
     let htmlMovs = movimientos.map(m => `
         <div class="movement-card">
             <div class="movement-left">
@@ -246,147 +337,103 @@ function renderizarApp(resumen, movimientos) {
         </div>
     `).join('');
 
-    app.innerHTML = `
-        <section class="summary">
-            <div class="summary-card">
-                <h2>Caja Real Disponible</h2>
-                <div class="balance">${formatearMoneda(resumen.balanceReal)}</div>
-                
-                <div class="summary-stats">
-                    <div class="summary-item">
-                        <p>Total Ingresos</p>
-                        <h3 style="color:#4ade80">+ ${formatearMoneda(resumen.ingresosTotales)}</h3>
-                    </div>
-                    <div class="summary-item">
-                        <p>Total Gastos</p>
-                        <h3 style="color:#f87171">- ${formatearMoneda(resumen.gastosTotales)}</h3>
-                    </div>
-                </div>
-
-                <div class="sub-metrics">
-                    <div>
-                        <p><i class="fa-solid fa-clock"></i> Inscrip/Unif Pendientes</p>
-                        <h4 style="color: #38bdf8">${formatearMoneda(resumen.porCobrar)}</h4>
-                    </div>
-                    <div>
-                        <p><i class="fa-solid fa-triangle-exclamation"></i> Deuda Vocalías</p>
-                        <h4 style="color: #fb923c">${formatearMoneda(resumen.deudaVocalia)}</h4>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <h2 class="movements-title">Auditoría de Movimientos</h2>
-        <section class="movements">${htmlMovs || '<p style="text-align:center;color:var(--muted);padding:20px;">Sin transacciones.</p>'}</section>
-    `;
+    document.getElementById('contenedorMovimientos').innerHTML = htmlMovs || '<p style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem;">Sin transacciones asentadas.</p>';
 }
 
-// BUSCADOR CONTRA LA HOJA DE EXCEL
 async function buscarJugadorParaCobro() {
     const cedula = document.getElementById('buscarCedula').value.trim();
-    if(!cedula) return alert("Por favor inserte una cédula válida.");
+    if(!cedula) return alert("Inserte una cédula.");
     
-    try {
-        const res = await fetch(`${CONFIG.URL_GAS}?action=getPerfil&cedula=${cedula}`);
-        const data = await res.json();
+    document.getElementById('lblNombreJugador').innerText = "Buscando en Google Sheets...";
+    document.getElementById('resultadoJugadorCard').style.display = 'block';
+
+    const res = await fetch(`${CONFIG.URL_GAS}?action=getPerfil&cedula=${cedula}`);
+    const data = await res.json();
+    
+    if(data.success) {
+        jugadorSeleccionadoCedula = cedula;
+        document.getElementById('lblNombreJugador').innerHTML = `<i class="fa-solid fa-user"></i> ${data.jugador['primer nombre']} ${data.jugador['apellidos']}`;
         
-        if(data.success) {
-            jugadorSeleccionadoCedula = cedula;
-            document.getElementById('lblNombreJugador').innerHTML = `<strong>Jugador:</strong> ${data.jugador['primer nombre']} ${data.jugador['apellidos']}`;
-            
-            // Evaluar visibilidad de botones según lo que deba
-            document.getElementById('btnCobrarInscrip').style.display = (data.jugador['inscrip_estado'] !== 'PAGADO') ? 'inline-block' : 'none';
-            document.getElementById('btnCobrarUnif').style.display = (data.jugador['unif_estado'] !== 'PAGADO') ? 'inline-block' : 'none';
-            
-            if(data.jugador['inscrip_estado'] === 'PAGADO' && data.jugador['unif_estado'] === 'PAGADO') {
-                alert("Este jugador ya se encuentra al día en Inscripción y Uniforme.");
-                document.getElementById('resultadoJugadorCard').style.display = 'none';
-            } else {
-                document.getElementById('resultadoJugadorCard').style.display = 'block';
-            }
+        // Manejo estético de deudas
+        const btnInsc = document.getElementById('btnCobrarInscrip');
+        const btnUnif = document.getElementById('btnCobrarUnif');
+
+        if(data.jugador['inscrip_estado'] === 'PAGADO') {
+            btnInsc.disabled = true;
+            btnInsc.classList.add('pay-active');
+            btnInsc.innerHTML = `<span><i class="fa-solid fa-circle-check"></i> Inscripción (PAGADA)</span>`;
         } else {
-            alert("No se encontró ningún jugador con esa cédula.");
-            document.getElementById('resultadoJugadorCard').style.display = 'none';
+            btnInsc.disabled = false;
+            btnInsc.classList.remove('pay-active');
+            btnInsc.innerHTML = `<span><i class="fa-solid fa-file-invoice-dollar" style="color:var(--success)"></i> Liquidar Inscripción</span><span class="badge-precio">$5.00</span>`;
         }
-    } catch(e) {
-        alert("Error al conectar con la base de datos.");
+
+        if(data.jugador['unif_estado'] === 'PAGADO') {
+            btnUnif.disabled = true;
+            btnUnif.classList.add('pay-active');
+            btnUnif.innerHTML = `<span><i class="fa-solid fa-circle-check"></i> Uniforme (PAGADO)</span>`;
+        } else {
+            btnUnif.disabled = false;
+            btnUnif.classList.remove('pay-active');
+            btnUnif.innerHTML = `<span><i class="fa-solid fa-shirt" style="color:#0284c7"></i> Liquidar Uniforme Oficial</span><span class="badge-precio">$17.00</span>`;
+        }
+    } else {
+        alert("El número de cédula no coincide con ningún miembro activo.");
+        document.getElementById('resultadoJugadorCard').style.display = 'none';
     }
 }
 
-// ASENTAR EL INGRESO CAMBIANDO EL ESTADO EN GOOGLE SHEETS
 async function procesarCobro(tipo) {
-    if(!confirm(`¿Desea registrar este cobro de ${tipo} de forma definitiva?`)) return;
+    if(!confirm("¿Confirmar el recaudo manual de este valor?")) return;
     
-    try {
-        const url = `${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}&inscrip=${tipo === 'inscripcion' ? 'PAGADO' : 'PENDIENTE'}&unif=${tipo === 'uniforme' ? 'PAGADO' : 'PENDIENTE'}`;
-        // Nota: El backend original de updateEstados sobrescribe ambos campos, por ende el botón procesará el cambio directo de la acción elegida.
-        
-        // Optimizamos el query llamando directamente al receptor de pagos manuales que se incluyó en la API del script anterior
-        const urlPagoDirecto = `${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}`;
-        
-        // Usamos la pasarela nativa para no dañar estados cruzados
-        let parametroExtra = (tipo === 'inscripcion') ? `inscrip=PAGADO&unif=PAGADO` : `inscrip=PAGADO&unif=PAGADO`;
-        
-        // Para estar 100% seguros de no alterar el otro estado, usamos el procesador inteligente que agregamos previamente:
-        const respuestaSencilla = await fetch(`${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}&inscrip=${tipo==='inscripcion'?'PAGADO':'PENDIENTE'}&unif=${tipo==='uniforme'?'PAGADO':'PENDIENTE'}`);
-        
-        // Para evitar alterar estados cruzados de forma errónea, llamamos al endpoint especializado:
-        // Pero dado que updateEstados requiere ambos parámetros, haremos una actualización limpia llamando a los estados correctos:
-        
-        // Cargamos de nuevo el perfil para ver qué tenía antes y solo cambiar el seleccionado
-        const check = await fetch(`${CONFIG.URL_GAS}?action=getPerfil&cedula=${jugadorSeleccionadoCedula}`);
-        const currentData = await check.json();
-        
-        let estInscrip = currentData.jugador['inscrip_estado'];
-        let estUnif = currentData.jugador['unif_estado'];
-        
-        if(tipo === 'inscripcion') estInscrip = "PAGADO";
-        if(tipo === 'uniforme') estUnif = "PAGADO";
+    const check = await fetch(`${CONFIG.URL_GAS}?action=getPerfil&cedula=${jugadorSeleccionadoCedula}`);
+    const currentData = await check.json();
+    let estInscrip = currentData.jugador['inscrip_estado'];
+    let estUnif = currentData.jugador['unif_estado'];
+    
+    if(tipo === 'inscripcion') estInscrip = "PAGADO";
+    if(tipo === 'uniforme') estUnif = "PAGADO";
 
-        const ejecutado = await fetch(`${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}&inscrip=${estInscrip}&unif=${estUnif}`);
-        const resFinal = await ejecutado.json();
-        
-        if(resFinal.success) {
-            alert("¡Ingreso registrado! Dinero sumado a caja.");
-            document.getElementById('resultadoJugadorCard').style.display = 'none';
-            document.getElementById('buscarCedula').value = "";
-            cargarContabilidad();
-        } else {
-            alert("Error: " + resFinal.message);
-        }
-    } catch(e) {
-        alert("Error procesando la transacción.");
+    const ejecutado = await fetch(`${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}&inscrip=${estInscrip}&unif=${estUnif}`);
+    const res = await ejecutado.json();
+    
+    if(res.success) {
+        alert("¡Cobro guardado! Transacción reflejada.");
+        document.getElementById('resultadoJugadorCard').style.display = 'none';
+        document.getElementById('buscarCedula').value = "";
+        cargarContabilidad();
     }
 }
 
-// ENVIAR GASTOS
+async function enviarIngresoExtra(e) {
+    e.preventDefault();
+    const concepto = document.getElementById('extraConcepto').value;
+    const categoria = document.getElementById('extraCategoria').value;
+    const monto = document.getElementById('extraMonto').value;
+    
+    const url = `${CONFIG.URL_GAS}?action=registrarOtrosIngresos&concepto=${encodeURIComponent(concepto)}&categoria=${encodeURIComponent(categoria)}&monto=${monto}`;
+    const res = await fetch(url, { method: 'POST' });
+    const data = await res.json();
+    if(data.success) {
+        alert("Ingreso extra asentado.");
+        document.getElementById('ingresoExtraForm').reset();
+        cargarContabilidad();
+    }
+}
+
 async function enviarGasto(e) {
     e.preventDefault();
     const concepto = document.getElementById('gastoConcepto').value;
     const categoria = document.getElementById('gastoCategoria').value;
     const monto = document.getElementById('gastoMonto').value;
     
-    const btn = document.querySelector('#gastoForm .btn-submit');
-    btn.disabled = true;
-    btn.innerText = "Registrando Egreso...";
-
-    try {
-        const url = `${CONFIG.URL_GAS}?action=registrarGasto&concepto=${encodeURIComponent(concepto)}&categoria=${encodeURIComponent(categoria)}&monto=${monto}`;
-        const res = await fetch(url, { method: 'POST' });
-        const data = await res.json();
-        
-        if(data.success) {
-            alert("Gasto asentado correctamente en Google Sheets.");
-            document.getElementById('gastoForm').reset();
-            cargarContabilidad();
-        } else {
-            alert("Error: " + data.message);
-        }
-    } catch(err) {
-        alert("Error de conexión.");
-    } finally {
-        btn.disabled = false;
-        btn.innerText = "Procesar y Descontar de Caja";
+    const url = `${CONFIG.URL_GAS}?action=registrarGasto&concepto=${encodeURIComponent(concepto)}&categoria=${encodeURIComponent(categoria)}&monto=${monto}`;
+    const res = await fetch(url, { method: 'POST' });
+    const data = await res.json();
+    if(data.success) {
+        alert("Egreso registrado con éxito.");
+        document.getElementById('gastoForm').reset();
+        cargarContabilidad();
     }
 }
 
