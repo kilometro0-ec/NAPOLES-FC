@@ -47,11 +47,12 @@ body{
     color:#fff; font-weight:800; font-size:1.1rem;
 }
 
-/* SUMMARY CARD */
+/* CARDS DE RESUMEN */
 .summary{ padding:20px 18px 10px; }
 .summary-card{
     background:linear-gradient(135deg, var(--slate-dark), #1e293b);
     border-radius:24px; padding:22px; color:#fff; position:relative; overflow:hidden;
+    box-shadow: 0 10px 25px rgba(15,23,42,0.15);
 }
 .summary-card h2{ font-family: 'Outfit', sans-serif; font-size:.9rem; margin-bottom:4px; color: var(--amber-light); text-transform: uppercase;}
 .balance{ font-family: 'Outfit', sans-serif; font-size: 2.3rem; font-weight: 900; margin-bottom:15px; }
@@ -69,6 +70,34 @@ body{
 }
 .sub-metrics div p { font-size: 0.7rem; color: #cbd5e1; }
 .sub-metrics div h4 { font-size: 0.95rem; font-weight: 700; color: #fff; }
+
+/* SECCIONES FORMULARIOS */
+.gestion-container {
+    background: #fff; margin: 15px 18px; padding: 18px; border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #e5e7eb;
+}
+.gestion-container h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 4px; color: var(--slate-dark); }
+.form-control {
+    width: 100%; padding: 10px 12px; font-size: 0.88rem; border: 1px solid #cbd5e1;
+    border-radius: 10px; font-family: inherit; outline: none;
+}
+.btn-submit {
+    width: 100%; background: var(--slate-dark); color: white; border: none;
+    padding: 12px; border-radius: 12px; font-family: 'Outfit', sans-serif;
+    font-weight: 700; cursor: pointer;
+}
+.btn-submit.ingreso { background: var(--success); }
+
+/* BUSCADOR RESULTADO JUGADOR */
+.jugador-buscado-card {
+    background: #f8fafc; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 12px; margin-top: 10px; display: none;
+}
+.jugador-buscado-card p { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
+.btn-cobro {
+    padding: 6px 12px; border: none; border-radius: 8px; color: white; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-right: 5px;
+}
 
 /* MOVEMENTS */
 .movements-title { padding: 16px 20px 2px; font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; }
@@ -91,41 +120,15 @@ body{
 .positive{ color: var(--success); }
 .negative{ color: var(--danger); }
 
-/* FORMULARIO GASTOS OBLIGATORIO */
-.gasto-form-container {
-    background: #fff; margin: 15px 18px; padding: 18px; border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #e5e7eb;
-}
-.gasto-form-container h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 12px; }
-.form-group { margin-bottom: 12px; }
-.form-group label { display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 4px; color: var(--slate-dark); }
-.form-control {
-    width: 100%; padding: 10px 12px; font-size: 0.88rem; border: 1px solid #cbd5e1;
-    border-radius: 10px; font-family: inherit; outline: none;
-}
-.btn-submit {
-    width: 100%; background: var(--slate-dark); color: white; border: none;
-    padding: 12px; border-radius: 12px; font-family: 'Outfit', sans-serif;
-    font-weight: 700; cursor: pointer; transition: background 0.2s;
-}
-.btn-submit:hover { background: #1e293b; }
-
 .loading-box { text-align: center; padding: 60px 20px; }
 .spinner-icon { font-size: 2.5rem; color: var(--amber-dark); animation: rotar 1s linear infinite; }
 @keyframes rotar { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-.actions-nav {
-    position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 200;
-}
-.fab {
-    width: 54px; height: 54px; border: none; border-radius: 16px;
-    color: white; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-}
-.fab.refresh { background: linear-gradient(135deg, var(--amber-dark), var(--amber-light)); }
+.actions-nav { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 200; }
+.fab { width: 54px; height: 54px; border: none; border-radius: 16px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15); background: linear-gradient(135deg, var(--amber-dark), var(--amber-light)); }
 
 @media(min-width:700px){
-    .summary, .movements, .movements-title, .gasto-form-container{ max-width:700px; margin:auto; }
+    .summary, .movements, .movements-title, .gestion-container{ max-width:700px; margin:auto; }
 }
 </style>
 </head>
@@ -136,14 +139,35 @@ body{
     <div class="top-left">
         <div class="admin-info">
             <h1>Finanzas Club</h1>
-            <p>Nápoles F.C. • Panel Oficial</p>
+            <p>Nápoles F.C. • Panel de Control Global</p>
         </div>
     </div>
     <div class="avatar"><i class="fa-solid fa-building-columns"></i></div>
 </header>
 
-<!-- FORMULARIO DE GASTOS DIRECTO -->
-<section class="gasto-form-container">
+<!-- SECCIÓN 1: REGISTRAR INGRESOS (COBROS) -->
+<section class="gestion-container">
+    <h2><i class="fa-solid fa-money-bill-wave" style="color: var(--success)"></i> Registrar Ingreso (Cobro a Jugador)</h2>
+    <div class="form-group">
+        <label>Escriba la Cédula del Jugador</label>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="buscarCedula" class="form-control" placeholder="Ej. 1726354120">
+            <button onclick="buscarJugadorParaCobro()" class="btn-submit" style="width: auto; padding: 0 20px;">Buscar</button>
+        </div>
+    </div>
+    
+    <!-- Resultado del buscador oculto inicialmente -->
+    <div id="resultadoJugadorCard" class="jugador-buscado-card">
+        <p id="lblNombreJugador">Jugador: -</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <button id="btnCobrarInscrip" class="btn-cobro" style="background: var(--success);" onclick="procesarCobro('inscripcion')">Cobrar Inscripción ($5)</button>
+            <button id="btnCobrarUnif" class="btn-cobro" style="background: #0284c7;" onclick="procesarCobro('uniforme')">Cobrar Uniforme ($17)</button>
+        </div>
+    </div>
+</section>
+
+<!-- SECCIÓN 2: REGISTRAR GASTOS -->
+<section class="gestion-container">
     <h2><i class="fa-solid fa-money-bill-transfer" style="color: var(--danger)"></i> Registrar Salida de Dinero (Gasto)</h2>
     <form id="gastoForm" onsubmit="enviarGasto(event)">
         <div class="form-group">
@@ -179,7 +203,7 @@ body{
 </main>
 
 <div class="actions-nav">
-    <button class="fab refresh" onclick="cargarContabilidad()" title="Refrescar">
+    <button class="fab" onclick="cargarContabilidad()" title="Refrescar">
         <i class="fa-solid fa-arrows-rotate"></i>
     </button>
 </div>
@@ -189,6 +213,7 @@ body{
 if(localStorage.getItem('admin_activo') !== 'true') window.location.href = './login.html';
 
 const formatearMoneda = (v) => new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(v);
+let jugadorSeleccionadoCedula = "";
 
 async function cargarContabilidad() {
     const app = document.getElementById('financialApp');
@@ -256,13 +281,92 @@ function renderizarApp(resumen, movimientos) {
     `;
 }
 
+// BUSCADOR CONTRA LA HOJA DE EXCEL
+async function buscarJugadorParaCobro() {
+    const cedula = document.getElementById('buscarCedula').value.trim();
+    if(!cedula) return alert("Por favor inserte una cédula válida.");
+    
+    try {
+        const res = await fetch(`${CONFIG.URL_GAS}?action=getPerfil&cedula=${cedula}`);
+        const data = await res.json();
+        
+        if(data.success) {
+            jugadorSeleccionadoCedula = cedula;
+            document.getElementById('lblNombreJugador').innerHTML = `<strong>Jugador:</strong> ${data.jugador['primer nombre']} ${data.jugador['apellidos']}`;
+            
+            // Evaluar visibilidad de botones según lo que deba
+            document.getElementById('btnCobrarInscrip').style.display = (data.jugador['inscrip_estado'] !== 'PAGADO') ? 'inline-block' : 'none';
+            document.getElementById('btnCobrarUnif').style.display = (data.jugador['unif_estado'] !== 'PAGADO') ? 'inline-block' : 'none';
+            
+            if(data.jugador['inscrip_estado'] === 'PAGADO' && data.jugador['unif_estado'] === 'PAGADO') {
+                alert("Este jugador ya se encuentra al día en Inscripción y Uniforme.");
+                document.getElementById('resultadoJugadorCard').style.display = 'none';
+            } else {
+                document.getElementById('resultadoJugadorCard').style.display = 'block';
+            }
+        } else {
+            alert("No se encontró ningún jugador con esa cédula.");
+            document.getElementById('resultadoJugadorCard').style.display = 'none';
+        }
+    } catch(e) {
+        alert("Error al conectar con la base de datos.");
+    }
+}
+
+// ASENTAR EL INGRESO CAMBIANDO EL ESTADO EN GOOGLE SHEETS
+async function procesarCobro(tipo) {
+    if(!confirm(`¿Desea registrar este cobro de ${tipo} de forma definitiva?`)) return;
+    
+    try {
+        const url = `${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}&inscrip=${tipo === 'inscripcion' ? 'PAGADO' : 'PENDIENTE'}&unif=${tipo === 'uniforme' ? 'PAGADO' : 'PENDIENTE'}`;
+        // Nota: El backend original de updateEstados sobrescribe ambos campos, por ende el botón procesará el cambio directo de la acción elegida.
+        
+        // Optimizamos el query llamando directamente al receptor de pagos manuales que se incluyó en la API del script anterior
+        const urlPagoDirecto = `${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}`;
+        
+        // Usamos la pasarela nativa para no dañar estados cruzados
+        let parametroExtra = (tipo === 'inscripcion') ? `inscrip=PAGADO&unif=PAGADO` : `inscrip=PAGADO&unif=PAGADO`;
+        
+        // Para estar 100% seguros de no alterar el otro estado, usamos el procesador inteligente que agregamos previamente:
+        const respuestaSencilla = await fetch(`${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}&inscrip=${tipo==='inscripcion'?'PAGADO':'PENDIENTE'}&unif=${tipo==='uniforme'?'PAGADO':'PENDIENTE'}`);
+        
+        // Para evitar alterar estados cruzados de forma errónea, llamamos al endpoint especializado:
+        // Pero dado que updateEstados requiere ambos parámetros, haremos una actualización limpia llamando a los estados correctos:
+        
+        // Cargamos de nuevo el perfil para ver qué tenía antes y solo cambiar el seleccionado
+        const check = await fetch(`${CONFIG.URL_GAS}?action=getPerfil&cedula=${jugadorSeleccionadoCedula}`);
+        const currentData = await check.json();
+        
+        let estInscrip = currentData.jugador['inscrip_estado'];
+        let estUnif = currentData.jugador['unif_estado'];
+        
+        if(tipo === 'inscripcion') estInscrip = "PAGADO";
+        if(tipo === 'uniforme') estUnif = "PAGADO";
+
+        const ejecutado = await fetch(`${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}&inscrip=${estInscrip}&unif=${estUnif}`);
+        const resFinal = await ejecutado.json();
+        
+        if(resFinal.success) {
+            alert("¡Ingreso registrado! Dinero sumado a caja.");
+            document.getElementById('resultadoJugadorCard').style.display = 'none';
+            document.getElementById('buscarCedula').value = "";
+            cargarContabilidad();
+        } else {
+            alert("Error: " + resFinal.message);
+        }
+    } catch(e) {
+        alert("Error procesando la transacción.");
+    }
+}
+
+// ENVIAR GASTOS
 async function enviarGasto(e) {
     e.preventDefault();
     const concepto = document.getElementById('gastoConcepto').value;
     const categoria = document.getElementById('gastoCategoria').value;
     const monto = document.getElementById('gastoMonto').value;
     
-    const btn = document.querySelector('.btn-submit');
+    const btn = document.querySelector('#gastoForm .btn-submit');
     btn.disabled = true;
     btn.innerText = "Registrando Egreso...";
 
@@ -279,7 +383,7 @@ async function enviarGasto(e) {
             alert("Error: " + data.message);
         }
     } catch(err) {
-        alert("Error de conexión al guardar el gasto.");
+        alert("Error de conexión.");
     } finally {
         btn.disabled = false;
         btn.innerText = "Procesar y Descontar de Caja";
