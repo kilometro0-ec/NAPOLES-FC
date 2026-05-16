@@ -226,6 +226,7 @@ body{
     stroke-width:8;
     fill:none;
     stroke-linecap:round;
+    transition:stroke-dashoffset 0.4s ease;
 }
 
 .progress-text{
@@ -233,14 +234,16 @@ body{
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    font-size:1.3rem;
+    font-size:1.2rem;
     font-weight:900;
+    font-family:'Outfit';
 }
 
 .metric-title{
     margin-top:10px;
     font-size:.7rem;
     font-weight:700;
+    letter-spacing:1px;
 }
 
 .average-box{
@@ -393,6 +396,12 @@ body{
     padding:14px;
     font-weight:800;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-size:0.9rem;
+    transition:background 0.2s;
 }
 
 .btn-sync{
@@ -402,9 +411,18 @@ body{
     margin-bottom:15px;
 }
 
+.btn-sync:active{
+    background:rgba(212,175,55,.25);
+}
+
 .btn-logout{
     background:rgba(231,76,60,.12);
     color:#e74c3c;
+    border:1px solid rgba(231,76,60,.2);
+}
+
+.btn-logout:active{
+    background:rgba(231,76,60,.25);
 }
 
 .spinner{
@@ -425,6 +443,7 @@ body{
     text-align:center;
     padding:60px 20px;
     color:#e74c3c;
+    font-weight:700;
 }
 </style>
 </head>
@@ -480,8 +499,9 @@ function calcularEdad(fechaNacimiento){
     return edad;
 }
 
-function renderProgressCircle(valor,color){
-    let value = Math.min(10,Math.max(0,Number(valor)||0));
+function renderProgressCircle(valor, color){
+    // Permite números flotantes (ej: 8.5) y limita estrictamente entre 0 y 10
+    let value = Math.min(10, Math.max(0, parseFloat(valor) || 0));
     let radius = 40;
     let circumference = 2 * Math.PI * radius;
     let percent = value / 10;
@@ -505,7 +525,6 @@ function renderProgressCircle(valor,color){
 async function cargarPerfil(cedula, categoria){
     const container = document.getElementById('perfilContent');
     try{
-        // Añadimos de manera estricta el parámetro '&categoria=' que requiere el nuevo backend unificado
         const url = `${CONFIG.URL_GAS}?action=getPerfil&cedula=${encodeURIComponent(cedula)}&categoria=${encodeURIComponent(categoria)}&t=${Date.now()}`;
         const resp = await fetch(url);
         const data = await resp.json();
@@ -513,31 +532,31 @@ async function cargarPerfil(cedula, categoria){
         if(data.success && data.jugador){
             const j = data.jugador;
 
-            // MAPEO ESTRICTO DE PROPIEDADES EN MINÚSCULAS PROVENIENTES DEL EXCEL
+            // Mapeo dinámico y seguro de las propiedades del Backend
             const sanitized = {
                 primerNombre: escapeHtml(j['primer nombre'] || ''),
                 segundoNombre: escapeHtml(j['segundo nombre'] || ''),
                 apellidos: escapeHtml(j['apellidos'] || ''),
                 urlFotoRostro: sanitizeUrl(j['url foto rostro']),
                 fechaNacimiento: j['fecha de nacimiento'] || j['fecha nacimiento'] || '',
-                nombreCamiseta: escapeHtml(j['nombre en camiseta'] || 'NAPOLES'),
+                nombreCamiseta: escapeHtml(j['nombre en camiseta'] || 'NÁPOLES'),
                 dorsal: escapeHtml(j['número de dorsal'] || '00'),
                 tallaUni: escapeHtml(j['talla uni.'] || 'M'),
 
-                // Estadísticas
+                // Estadísticas Acumuladas
                 partidosJugados: Number(j['partidos jugados']) || 0, 
                 goles: Number(j['goles']) || 0,
                 amarillas: Number(j['amarillas']) || 0,
                 rojas: Number(j['rojas']) || 0,
 
-                // Rendimiento Humano (desde hoja "Partidos Hombres" o métricas normalizadas)
-                puntualidad: Number(j['puntualidad']) || 0,
-                companerismo: Number(j['compañerismo']) || 0,
-                respeto: Number(j['respeto']) || 0,
-                humildad: Number(j['humildad']) || 0,
+                // Rendimiento Humano (Cargados dinámicamente desde promedios de partidos)
+                puntualidad: parseFloat(j['puntualidad']) || 0,
+                companerismo: parseFloat(j['compañerismo']) || 0,
+                respeto: parseFloat(j['respeto']) || 0,
+                humildad: parseFloat(j['humildad']) || 0,
 
-                // Financiero
-                deudaVocalia: Number(j['deuda vocalia']) || 0,
+                // Estado Financiero y Administrativo
+                deudaVocalia: Number(j['deuda vocalia'] || j['vocalías pendientes']) || 0,
                 inscripEstado: escapeHtml(j['inscrip_estado'] || 'PENDIENTE'),
                 unifEstado: escapeHtml(j['unif_estado'] || 'PENDIENTE'),
                 mediasEstado: escapeHtml(j['medias_estado'] || 'PENDIENTE')
@@ -545,15 +564,11 @@ async function cargarPerfil(cedula, categoria){
 
             let edad = calcularEdad(sanitized.fechaNacimiento);
 
-            let promedio = Math.round(
-                (
-                    sanitized.puntualidad +
-                    sanitized.companerismo +
-                    sanitized.respeto +
-                    sanitized.humildad
-                ) / 4
-            ) || 0;
+            // Calcular el promedio de rendimiento general del jugador
+            let sumaMetricas = sanitized.puntualidad + sanitized.companerismo + sanitized.respeto + sanitized.humildad;
+            let promedio = sumaMetricas > 0 ? parseFloat((sumaMetricas / 4).toFixed(1)) : 0;
 
+            // Valores fijos del club para deudas administrativas de inscripción/uniforme
             let deudaInscripcion = sanitized.inscripEstado.toUpperCase().includes('PENDIENTE') ? 5 : 0;
             let deudaUniforme = sanitized.unifEstado.toUpperCase().includes('PENDIENTE') ? 17 : 0;
             let deudaMedias = sanitized.mediasEstado.toUpperCase().includes('PENDIENTE') ? 2 : 0;
@@ -603,7 +618,7 @@ async function cargarPerfil(cedula, categoria){
                 <i class="fas fa-sync-alt"></i> ACTUALIZAR INFORMACIÓN
             </button>
 
-            <!-- ESTADISTICAS -->
+            <!-- SECCIÓN ESTADÍSTICAS -->
             <div class="stats-section">
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -629,10 +644,10 @@ async function cargarPerfil(cedula, categoria){
                 </div>
             </div>
 
-            <!-- RENDIMIENTO -->
+            <!-- SECCIÓN RENDIMIENTO HUMANO -->
             <div class="performance-section">
                 <div class="section-title">
-                    <i class="fas fa-heart"></i> Rendimiento Humano
+                    <i class="fas fa-heart"></i> Rendimiento Humano (Promedio)
                 </div>
                 <div class="performance-grid">
                     <div class="metric-card">
@@ -653,12 +668,12 @@ async function cargarPerfil(cedula, categoria){
                     </div>
                 </div>
                 <div class="average-box">
-                    <div style="font-size:.7rem;color:var(--muted);">PROMEDIO GENERAL</div>
+                    <div style="font-size:.7rem;color:var(--muted); letter-spacing: 1px;">PROMEDIO GENERAL</div>
                     <div class="average-score">${promedio}/10</div>
                 </div>
             </div>
 
-            <!-- ESTADO ADMINISTRATIVO -->
+            <!-- SECCIÓN ADMINISTRATIVA -->
             <div class="section-box">
                 <div class="section-title">
                     <i class="fas fa-chart-line"></i> Estado Administrativo
@@ -699,7 +714,7 @@ async function cargarPerfil(cedula, categoria){
 
                 <div class="debt-box">
                     <div class="debt-header">
-                        <span class="debt-label"><i class="fas fa-dollar-sign"></i> TOTAL PENDIENTE + VOCALÍA</span>
+                        <span class="debt-label"><i class="fas fa-dollar-sign"></i> TOTAL VALORES PENDIENTES</span>
                         <span class="debt-amount" style="color:${totalAdmin > 0 ? '#e74c3c' : '#2ecc71'}">
                             $${totalAdmin.toFixed(2)}
                         </span>
@@ -708,7 +723,7 @@ async function cargarPerfil(cedula, categoria){
                         <div class="progress-fill-bar" style="width:${Math.min((totalAdmin / 30) * 100,100)}%"></div>
                     </div>
                     <div class="debt-message" style="background:${totalAdmin === 0 ? 'rgba(46,204,113,.1)' : 'rgba(231,76,60,.1)'};">
-                        ${totalAdmin === 0 ? '✅ Jugador al día' : '⚠️ Existen valores pendientes'}
+                        ${totalAdmin === 0 ? '✅ ¡Estás al día con el club!' : '⚠️ Recuerda regularizar tus valores pendientes'}
                     </div>
                 </div>
 
@@ -734,11 +749,11 @@ async function cargarPerfil(cedula, categoria){
             <div style="height:30px;"></div>
             `;
         } else {
-            container.innerHTML = `<div class="error-message">Jugador no encontrado en la base de datos</div>`;
+            container.innerHTML = `<div class="error-message">${data.message || 'Jugador no encontrado en la base de datos'}</div>`;
         }
     } catch(e) {
         console.error(e);
-        container.innerHTML = `<div class="error-message">Error crítico de conexión con el club</div>`;
+        container.innerHTML = `<div class="error-message">❌ Error crítico de conexión con el club</div>`;
     }
 }
 
@@ -753,7 +768,7 @@ window.recargarPerfil = async function(){
 };
 
 window.cerrarSesion = function(){
-    if(confirm('¿Deseas cerrar sesión?')){
+    if(confirm('¿Deseas cerrar la sesión actual?')){
         localStorage.removeItem('jugador_actual');
         window.location.href='login.html';
     }
@@ -765,7 +780,6 @@ window.cerrarSesion = function(){
         window.location.href='login.html';
         return;
     }
-    // Ejecuta la carga enviando de forma transparente la cédula y si pertenece a hombres o mujeres
     cargarPerfil(session.cedula, session.categoria || 'hombres');
 })();
 </script>
