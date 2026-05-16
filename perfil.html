@@ -380,12 +380,14 @@ body{
 }
 .btn-logout{ background:rgba(231,76,60,.12); color:#e74c3c; border:1px solid rgba(231,76,60,.2); }
 
-/* ESTILOS DEL MODAL DE TÉRMINOS Y ANUNCIO */
+/* =====================================================
+   ESTILOS DE LA NOTIFICACIÓN DE LA GRAN INAUGURACIÓN
+   ===================================================== */
 .terms-backdrop{
     position: fixed;
     top:0; left:0; width:100vw; height:100vh;
-    background: rgba(3,5,10,0.96);
-    backdrop-filter: blur(15px);
+    background: rgba(3,5,10,0.97);
+    backdrop-filter: blur(20px);
     z-index: 10000;
     display: none;
     align-items: center;
@@ -394,64 +396,103 @@ body{
 }
 
 .terms-box{
-    background: linear-gradient(145deg, #0e172a, #070d19);
+    background: linear-gradient(145deg, #091022, #040812);
     border: 2px solid var(--gold);
     border-radius: 24px;
     width: 100%;
     max-width: 430px;
-    padding: 22px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-    max-height: 90vh;
+    padding: 24px;
+    box-shadow: 0 0 35px rgba(212,175,55,0.25);
+    max-height: 92vh;
     overflow-y: auto;
 }
 
-.terms-announcement{
-    background: rgba(255,255,255,0.03);
-    border-left: 4px solid var(--gold);
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 0.88rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    white-space: pre-line; /* Mantiene saltos de línea del anuncio */
-    color: #e2e8f0;
+/* Animación del Trofeo de la cabecera */
+@keyframes pulseTrofeo {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); filter: drop-shadow(0 0 10px var(--gold)); }
+    100% { transform: scale(1); }
+}
+.icon-header-animated {
+    display: inline-block;
+    animation: pulseTrofeo 2s infinite ease-in-out;
 }
 
+/* Caja contenedora estilo Notificación Importante */
+.terms-announcement{
+    background: linear-gradient(135deg, rgba(212,175,55,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(212,175,55,0.25);
+    border-left: 5px solid var(--gold);
+    padding: 18px;
+    border-radius: 14px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-bottom: 22px;
+    white-space: pre-line;
+    color: #f1f5f9;
+    animation: pulseBorder 3s infinite ease-in-out;
+}
+
+@keyframes pulseBorder {
+    0% { border-color: rgba(212,175,55,0.25); box-shadow: 0 0 0px rgba(212,175,55,0); }
+    50% { border-color: rgba(212,175,55,0.6); box-shadow: 0 0 15px rgba(212,175,55,0.15); }
+    100% { border-color: rgba(212,175,55,0.25); box-shadow: 0 0 0px rgba(212,175,55,0); }
+}
+
+/* Tarjetas para las opciones */
 .terms-option-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 16px;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .terms-option-card input[type="radio"] {
     accent-color: var(--gold);
-    transform: scale(1.2);
+    transform: scale(1.3);
 }
 
 .terms-option-card:hover {
-    background: rgba(212,175,55,0.05);
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(212,175,55,0.3);
 }
 
+/* Estado seleccionado común */
 .terms-option-card.selected {
     border-color: var(--gold);
-    background: rgba(212,175,55,0.1);
+    background: rgba(212,175,55,0.08);
+}
+
+/* ANIMACIÓN EXCLUSIVA CUANDO SE SELECCIONA EL BOTÓN DE ASISTIR (OPCIÓN 1) */
+@keyframes pulseAsistire {
+    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); border-color: var(--success); }
+    70% { box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); border-color: var(--success); }
+    100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); border-color: var(--success); }
+}
+.terms-option-card.selected.asistire-active {
+    background: rgba(46, 204, 113, 0.08) !important;
+    border-color: var(--success) !important;
+    animation: pulseAsistire 1.8s infinite ease-in-out;
 }
 
 .btn-modal-send {
-    background: var(--gold);
+    background: linear-gradient(90deg, #D4AF37 0%, #F3E5AB 100%);
     color: #000;
-    margin-top: 15px;
+    margin-top: 18px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(212,175,55,0.3);
 }
 .btn-modal-send:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .spinner{
@@ -466,16 +507,18 @@ body{
 
 <body>
 
-<!-- CONTENEDOR DEL MODAL DE CONTROL -->
+<!-- CONTENEDOR DEL MODAL DE CONTROL DE LA GRAN INAUGURACIÓN -->
 <div class="terms-backdrop" id="modalTerms">
     <div class="terms-box">
-        <div style="text-align:center; margin-bottom:15px;">
-            <i class="fa-solid fa-gavel" style="color:var(--gold); font-size:2rem;"></i>
-            <h2 style="font-family:'Outfit'; color:var(--gold); margin-top:8px; font-size:1.3rem;">TÉRMINOS Y CONDICIONES</h2>
+        <div style="text-align:center; margin-bottom:18px;">
+            <div class="icon-header-animated">
+                <i class="fa-solid fa-trophy" style="color:var(--gold); font-size:2.4rem;"></i>
+            </div>
+            <h2 style="font-family:'Outfit'; color:var(--gold); margin-top:8px; font-size:1.4rem; letter-spacing:1px; font-weight:900;">GRAN INAUGURACIÓN</h2>
         </div>
         
-        <!-- CUERPO DEL ANUNCIO SOLICITADO -->
-        <div class="terms-announcement" id="anuncioTexto">⚽ ATENCIÓN JUGADORES ⚽
+        <!-- CUERPO DE LA NOTIFICACIÓN IMPORTANTE -->
+        <div class="terms-announcement" id="anuncioTexto">⚽ ATENCIÓN JUGADORES Y REPRESENTANTES ⚽
 Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día:
 📅 17 de mayo
 
@@ -495,21 +538,22 @@ El hecho de NO seleccionar una opción se tomará como que NO desea asistir.
 Agradecemos su compromiso, puntualidad y responsabilidad.
 🏆 ¡Hagamos de esta inauguración un evento inolvidable!</div>
 
-        <!-- FORMULARIO DE RECOPILACIÓN -->
-        <div style="font-weight:700; font-size:0.8rem; color:var(--gold); margin-bottom:10px; text-transform:uppercase;">Tu declaración:</div>
+        <div style="font-weight:800; font-size:0.75rem; color:var(--gold); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Tu confirmación oficial:</div>
         
-        <div class="terms-option-card" onclick="selectRadio(1)">
+        <!-- OPCIÓN 1 (CON ID ASISTIRE PARA ANIMACIÓN DINÁMICA) -->
+        <div class="terms-option-card" id="cardOpt1" onclick="selectRadio(1)">
             <input type="radio" name="termOption" id="opt1" value="1">
-            <label for="opt1" style="font-size:0.85rem; font-weight:700; cursor:pointer;">1️⃣ Asistiré, ahí estaré puntual</label>
+            <label for="opt1" style="font-size:0.88rem; font-weight:700; cursor:pointer; color:#fff;">1️⃣ Asistiré, ahí estaré puntual</label>
         </div>
 
-        <div class="terms-option-card" onclick="selectRadio(2)">
+        <!-- OPCIÓN 2 -->
+        <div class="terms-option-card" id="cardOpt2" onclick="selectRadio(2)">
             <input type="radio" name="termOption" id="opt2" value="2">
-            <label for="opt2" style="font-size:0.85rem; font-weight:700; cursor:pointer;">2️⃣ No podré asistir, enviaré representante</label>
+            <label for="opt2" style="font-size:0.88rem; font-weight:700; cursor:pointer; color:#fff;">2️⃣ No podré asistir, enviaré representante</label>
         </div>
 
         <button class="btn-modal-send" id="btnFirmar" disabled onclick="enviarFirmaTerminos()">
-            <i class="fa-solid fa-file-signature"></i> ACEPTAR Y GUARDAR REGISTRO
+            <i class="fa-solid fa-circle-check"></i> CONFIRMAR MI ASISTENCIA
         </button>
     </div>
 </div>
@@ -574,11 +618,23 @@ function renderProgressCircle(valor, color){
     </div>`;
 }
 
-// Control interactivo de selección de tarjetas de radiofrecuencia
+// Manejador del cambio de estado y animaciones en los inputs de opción
 function selectRadio(num) {
     document.getElementById('opt' + num).checked = true;
-    document.querySelectorAll('.terms-option-card').forEach(c => c.classList.remove('selected'));
-    document.getElementById('opt' + num).parentElement.classList.add('selected');
+    
+    // Limpiar clases previas
+    document.querySelectorAll('.terms-option-card').forEach(c => {
+        c.classList.remove('selected', 'asistire-active');
+    });
+    
+    const cardSeleccionada = document.getElementById('opt' + num).parentElement;
+    cardSeleccionada.classList.add('selected');
+    
+    // Si elige la opción 1, se le inyecta la animación de pulso llamativo
+    if(num === 1) {
+        cardSeleccionada.classList.add('asistire-active');
+    }
+    
     document.getElementById('btnFirmar').disabled = false;
 }
 
@@ -587,7 +643,7 @@ async function enviarFirmaTerminos() {
     const btn = document.getElementById('btnFirmar');
     
     btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ENVIANDO FIRMA AL CLUB...';
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ENVIANDO CONFIRMACIÓN...';
 
     try {
         const url = `${CONFIG.URL_GAS}?action=guardarTerminos&cedula=${encodeURIComponent(jugadorSesion.cedula)}&categoria=${encodeURIComponent(jugadorSesion.categoria)}&opcion=${opcion}`;
@@ -596,16 +652,16 @@ async function enviarFirmaTerminos() {
 
         if (r.success) {
             document.getElementById('modalTerms').style.display = 'none';
-            // Recargar datos limpios de la interfaz
             window.recargarPerfil();
         } else {
-            alert('Error al firmar: ' + r.message);
+            alert('Error al guardar confirmación: ' + r.message);
             btn.disabled = false;
-            btn.innerHTML = '<i class="fa-solid fa-file-signature"></i> INTENTAR DE NUEVO';
+            btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> INTENTAR DE NUEVO';
         }
     } catch (e) {
-        alert('Error de red al guardar firma.');
+        alert('Error de red al guardar la asistencia.');
         btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> INTENTAR DE NUEVO';
     }
 }
 
@@ -619,7 +675,7 @@ async function cargarPerfil(cedula, categoria){
         if(data.success && data.jugador){
             const j = data.jugador;
 
-            // CONTROL DISPARADOR DE MODAL (Si terminos_aceptados viene en false)
+            // Despliegue inteligente del modal según los datos de la base de datos
             if (!j.terminos_aceptados) {
                 document.getElementById('modalTerms').style.display = 'flex';
             } else {
