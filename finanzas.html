@@ -41,11 +41,11 @@ body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-h
 .summary-item p{ font-size:.72rem; color: #94a3b8; text-transform: uppercase; }
 .summary-item h3{ font-size: 1.15rem; font-weight: 800; font-family: 'Outfit', sans-serif; }
 
-/* ALERTA DINÁMICA DE CUENTAS POR COBRAR */
+/* ALERTA DINÁMICA DE CUENTAS POR COBRAR INTERACTIVA */
 .por-cobrar-alert-box {
     margin: 12px 18px 5px; padding: 16px; border-radius: 18px;
     background: #fff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease; cursor: pointer;
 }
 .por-cobrar-alert-box.tiene-deuda {
     background: linear-gradient(135deg, #fef2f2, #fee2e2);
@@ -86,9 +86,12 @@ body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-h
 .form-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; color: #475569; text-transform: uppercase; }
 .form-control { width: 100%; padding: 11px 14px; font-size: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; outline: none; font-family: inherit; color: var(--slate-dark); }
 
-.btn-action { width: 100%; color: white; border: none; padding: 13px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+/* CORRECCIÓN DE BOTONES: ACTIVADOS Y VISIBLES POR DEFECTO */
+.btn-action { width: 100%; color: white; border: none; padding: 13px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: block; }
 .btn-green { background: var(--success); }
+.btn-green:hover { background: #059669; }
 .btn-red { background: var(--danger); }
+.btn-red:hover { background: #dc2626; }
 .btn-blue { background: #2563eb; }
 
 /* JUGADOR BUSCADO */
@@ -121,6 +124,28 @@ body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-h
 .positive { color: var(--success); }
 .negative { color: var(--danger); }
 
+/* VENTANA MODAL ESTÉTICA PARA DEUDAS */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+    z-index: 1000; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal-container {
+    background: #fff; width: 90%; max-width: 500px; border-radius: 24px;
+    padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    transform: translateY(20px); transition: transform 0.3s ease;
+}
+.modal-overlay.open .modal-container { transform: translateY(0); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.modal-header h3 { font-family: 'Outfit', sans-serif; font-size: 1.2rem; color: var(--slate-dark); }
+.btn-close-modal { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 5px; cursor: pointer; color: var(--slate-dark); font-weight: bold; }
+.modal-body { max-height: 300px; overflow-y: auto; }
+.deuda-item-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; }
+.deuda-item-row span.concepto-d { color: var(--slate-dark); font-weight: 600; }
+.deuda-item-row span.monto-d { color: var(--danger); font-weight: 800; font-family: 'Outfit', sans-serif; }
+
 .fab { position: fixed; bottom: 18px; right: 18px; width: 50px; height: 50px; border: none; border-radius: 14px; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: var(--slate-dark); cursor: pointer; z-index: 100; }
 .loading-box { text-align: center; padding: 50px 20px; color: var(--muted); }
 .spinner-icon { font-size: 2rem; color: #cbd5e1; animation: rotar 1s linear infinite; margin-bottom: 8px; }
@@ -151,7 +176,7 @@ body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-h
 </main>
 
 <!-- PANEL ROJO ANIMADO DE CUENTAS POR COBRAR -->
-<section id="porCobrarWidget" class="por-cobrar-alert-box">
+<section id="porCobrarWidget" class="por-cobrar-alert-box" onclick="abrirModalDeudas()">
     <div class="alert-left">
         <div class="alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
         <div class="alert-text">
@@ -159,6 +184,7 @@ body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-h
             <p id="lblPorCobrarDinámico">$0.00</p>
         </div>
     </div>
+    <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; opacity: 0.5;"></i>
 </section>
 
 <!-- SELECTOR INTERACTIVO DE PESTAÑAS (TABS) -->
@@ -196,7 +222,7 @@ body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-h
     </div>
 </section>
 
-<!-- FORMULARIO 2: OTROS INGRESOS EXTRAS (CON SELECTOR DE ESTADO) -->
+<!-- FORMULARIO 2: OTROS INGRESOS EXTRAS -->
 <section id="extraTab" class="form-card">
     <h2><i class="fa-solid fa-coins" style="color: var(--success)"></i> Registrar Ingreso Externo / Extras</h2>
     <form id="ingresoExtraForm" onsubmit="enviarIngresoExtra(event)">
@@ -265,6 +291,19 @@ body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-h
     <div style="text-align: center; padding: 20px; color: var(--muted);">Esperando datos contables...</div>
 </section>
 
+<!-- VENTANA MODAL PARA DESGLOSAR LAS CUENTAS PENDIENTES -->
+<div id="modalDeudas" class="modal-overlay" onclick="cerrarModalDeudas(event)">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-list-ol" style="color: var(--danger)"></i> Desglose de Cuentas Pendientes</h3>
+            <button class="btn-close-modal" onclick="document.getElementById('modalDeudas').classList.remove('open')">×</button>
+        </div>
+        <div id="modalBodyDeudas" class="modal-body">
+            <!-- Rellenado dinámicamente con JavaScript -->
+        </div>
+    </div>
+</div>
+
 <button class="fab" onclick="cargarContabilidad()"><i class="fa-solid fa-arrows-rotate"></i></button>
 
 <script src="config.js"></script>
@@ -273,6 +312,7 @@ if(localStorage.getItem('admin_activo') !== 'true') window.location.href = './lo
 
 const formatearMoneda = (v) => new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(v);
 let jugadorSeleccionadoCedula = "";
+let movimientosLocales = []; // Cache para desglosar lo pendiente en el modal
 
 function switchForm(tabId, el) {
     document.querySelectorAll('.form-card').forEach(card => card.classList.remove('active'));
@@ -285,7 +325,10 @@ async function cargarContabilidad() {
     try {
         const res = await fetch(`${CONFIG.URL_GAS}?action=getFinanzasData&nocache=${Date.now()}`);
         const data = await res.json();
-        if (data.success) renderizarApp(data.resumen, data.movements);
+        if (data.success) {
+            movimientosLocales = data.movements;
+            renderizarApp(data.resumen, data.movements);
+        }
     } catch (e) {
         console.error(e);
     }
@@ -335,6 +378,38 @@ function renderizarApp(resumen, movimientos) {
     }).join('');
 
     document.getElementById('contenedorMovimientos').innerHTML = htmlMovs || '<p style="text-align:center;padding:20px;color:var(--muted);">Sin transacciones asentadas.</p>';
+}
+
+// FUNCIÓN PARA REVISAR QUÉ FALTA COBRAR AL DAR CLIC EN EL PANEL DE CUENTAS POR COBRAR
+function abrirModalDeudas() {
+    const modalBody = document.getElementById('modalBodyDeudas');
+    // Filtrar transacciones o deudas externas marcadas como PENDIENTE
+    let pendientesExtras = movimientosLocales.filter(m => m.estado === 'PENDIENTE');
+    
+    let html = `<h5>Deudas por Ingresos Externos Registrados:</h5><br>`;
+    
+    if (pendientesExtras.length === 0) {
+        html += `<p style="color:var(--muted); font-size:0.85rem;">No hay registros externos pendientes. El resto del valor acumulado pertenece a las Inscripciones y Uniformes no liquidados de la pestaña "Jugadores" en Google Sheets.</p>`;
+    } else {
+        pendientesExtras.forEach(p => {
+            html += `
+                <div class="deuda-item-row">
+                    <span class="concepto-d">${p.concepto} <small style="display:block; color:gray; font-weight:normal;">${p.fecha}</small></span>
+                    <span class="monto-d">${formatearMoneda(p.monto)}</span>
+                </div>
+            `;
+        });
+        html += `<br><p style="color:gray; font-size:0.75rem; text-align:center;">Nota: Las deudas de jugadores individuales se liquidan directamente buscando su cédula en la pestaña principal.</p>`;
+    }
+    
+    modalBody.innerHTML = html;
+    document.getElementById('modalDeudas').classList.add('open');
+}
+
+function cerrarModalDeudas(e) {
+    if(e.target.classList.contains('modal-overlay')) {
+        document.getElementById('modalDeudas').classList.remove('open');
+    }
 }
 
 async function buscarJugadorParaCobro() {
