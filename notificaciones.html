@@ -1,428 +1,349 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<title>Notificaciones - Nápoles F.C.</title>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-rel="stylesheet">
-
-<link
-href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-rel="stylesheet">
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-body{
-
-    font-family:'Inter',sans-serif;
-
-    background:
-    linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #f7f7ff 45%,
-    #f3f4f6 100%
-    );
-
-    color:#111827;
-
-    min-height:100vh;
-
-    padding-bottom:120px;
-}
-
-/* ====================================
-HEADER
-==================================== */
-
-.topbar{
-
-    position:sticky;
-
-    top:0;
-
-    z-index:100;
-
-    background:rgba(255,255,255,.85);
-
-    backdrop-filter:blur(12px);
-
-    padding:18px;
-
-    border-bottom:
-    1px solid rgba(0,0,0,.05);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-}
-
-.topbar h1{
-
-    font-size:1.1rem;
-
-    font-weight:800;
-}
-
-.back-btn{
-
-    width:42px;
-    height:42px;
-
-    border-radius:14px;
-
-    border:none;
-
-    background:#eef2ff;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    cursor:pointer;
-}
-
-/* ====================================
-CONTENIDO
-==================================== */
-
-.container{
-
-    padding:18px;
-}
-
-.card{
-
-    background:#fff;
-
-    border-radius:26px;
-
-    padding:20px;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.05);
-
-    border:1px solid rgba(0,0,0,.04);
-}
-
-.card h2{
-
-    font-size:1.1rem;
-
-    margin-bottom:18px;
-
-    font-weight:800;
-}
-
-.input-group{
-
-    margin-bottom:16px;
-}
-
-.input-group label{
-
-    display:block;
-
-    font-size:.88rem;
-
-    margin-bottom:8px;
-
-    color:#4b5563;
-
-    font-weight:600;
-}
-
-.input-group input,
-.input-group textarea{
-
-    width:100%;
-
-    border:none;
-
-    background:#f3f4f6;
-
-    border-radius:18px;
-
-    padding:16px;
-
-    font-size:.95rem;
-
-    font-family:'Inter',sans-serif;
-
-    outline:none;
-}
-
-textarea{
-
-    resize:none;
-
-    min-height:140px;
-}
-
-.btn{
-
-    width:100%;
-
-    border:none;
-
-    border-radius:18px;
-
-    padding:18px;
-
-    background:
-    linear-gradient(
-    135deg,
-    #0891b2,
-    #06b6d4
-    );
-
-    color:#fff;
-
-    font-size:1rem;
-
-    font-weight:800;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.btn:active{
-    transform:scale(.98);
-}
-
-.estado{
-
-    margin-top:16px;
-
-    text-align:center;
-
-    font-size:.92rem;
-
-    font-weight:700;
-}
-
-.ok{
-    color:#16a34a;
-}
-
-.error{
-    color:#dc2626;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Notificaciones y Asistencia - Nápoles F.C.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            -webkit-tap-highlight-color:transparent;
+        }
+        body{
+            font-family:'Inter',sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f7f7ff 45%, #f3f4f6 100%);
+            color:#111827;
+            min-height:100vh;
+            padding-bottom:120px;
+        }
+
+        /* HEADER */
+        .topbar{
+            position:sticky;
+            top:0;
+            z-index:100;
+            background:rgba(255,255,255,.85);
+            backdrop-filter:blur(12px);
+            padding:18px;
+            border-bottom: 1px solid rgba(0,0,0,.05);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+        .topbar h1{
+            font-size:1.1rem;
+            font-weight:800;
+        }
+        .back-btn{
+            width:42px;
+            height:42px;
+            border-radius:14px;
+            border:none;
+            background:#eef2ff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+        }
+
+        /* CONTENIDO */
+        .container{
+            padding:18px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card{
+            background:#fff;
+            border-radius:26px;
+            padding:20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.05);
+            border:1px solid rgba(0,0,0,.04);
+        }
+        .card h2{
+            font-size:1.1rem;
+            margin-bottom:18px;
+            font-weight:800;
+        }
+        .input-group{
+            margin-bottom:16px;
+        }
+        .input-group label{
+            display:block;
+            font-size:.88rem;
+            margin-bottom:8px;
+            color:#4b5563;
+            font-weight:600;
+        }
+        .input-group input,
+        .input-group textarea{
+            width:100%;
+            border:none;
+            background:#f3f4f6;
+            border-radius:18px;
+            padding:16px;
+            font-size:.95rem;
+            font-family:'Inter',sans-serif;
+            outline:none;
+        }
+        textarea{
+            resize:none;
+            min-height:140px;
+        }
+        .btn{
+            width:100%;
+            border:none;
+            border-radius:18px;
+            padding:18px;
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+            color:#fff;
+            font-size:1rem;
+            font-weight:800;
+            cursor:pointer;
+            transition:.2s;
+        }
+        .btn:active{
+            transform:scale(.98);
+        }
+        .estado{
+            margin-top:16px;
+            text-align:center;
+            font-size:.92rem;
+            font-weight:700;
+        }
+        .ok{ color:#16a34a; }
+        .error{ color:#dc2626; }
+
+        /* NUEVA SECCIÓN: INDICADORES DE ASISTENCIA */
+        .resumen-asistencia {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .badge-conteo {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 8px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .badge-conteo .num {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #0891b2;
+        }
+        .badge-conteo .lbl {
+            font-size: 0.72rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        
+        /* LISTA DE JUGADORES */
+        .lista-asistencia {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        .item-jugador {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-radius: 14px;
+            border-left: 4px solid #06b6d4;
+        }
+        .item-jugador.representante {
+            border-left-color: #f59e0b;
+        }
+        .jugador-info font {
+            display: block;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .jugador-info span {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        .status-pill {
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        .pill-titular { background: #dcfce7; color: #15803d; }
+        .pill-rep { background: #fef3c7; color: #b45309; }
+        
+        .loading-mini {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            padding: 20px 0;
+        }
+    </style>
 </head>
-
 <body>
 
 <header class="topbar">
-
-    <button
-    class="back-btn"
-    onclick="history.back()">
-
-        <span class="material-symbols-outlined">
-            arrow_back
-        </span>
-
+    <button class="back-btn" onclick="history.back()">
+        <span class="material-symbols-outlined">arrow_back</span>
     </button>
-
-    <h1>Crear Notificación</h1>
-
+    <h1>Panel de Control</h1>
     <div style="width:42px"></div>
-
 </header>
 
 <div class="container">
 
+    <!-- FORMULARIO DE NOTIFICACIONES -->
     <div class="card">
-
-        <h2>
-            Nueva noticia para jugadores
-        </h2>
-
+        <h2>Nueva noticia para jugadores</h2>
         <div class="input-group">
+            <label>Título</label>
+            <input type="text" id="titulo" placeholder="Ej: Entrenamiento viernes">
+        </div>
+        <div class="input-group">
+            <label>Descripción</label>
+            <textarea id="mensaje" placeholder="Escribe la noticia o anuncio..."></textarea>
+        </div>
+        <button class="btn" id="btnPublicar">Publicar noticia</button>
+        <div id="estado" class="estado"></div>
+    </div>
 
-            <label>
-                Título
-            </label>
-
-            <input
-            type="text"
-            id="titulo"
-            placeholder="Ej: Entrenamiento viernes">
-
+    <!-- NUEVO COMPONENTE: CONFIRMACIONES INAUGURACIÓN -->
+    <div class="card">
+        <h2>Asistencia a Inauguración</h2>
+        
+        <!-- Bloque de contadores rápidos -->
+        <div class="resumen-asistencia">
+            <div class="badge-conteo">
+                <span class="num" id="cntTotal">0</span>
+                <span class="lbl">Confirmados</span>
+            </div>
+            <div class="badge-conteo">
+                <span class="num" id="cntAsist">0</span>
+                <span class="lbl">Irán</span>
+            </div>
+            <div class="badge-conteo">
+                <span class="num" id="cntRep">0</span>
+                <span class="lbl">Con Rep.</span>
+            </div>
         </div>
 
-        <div class="input-group">
-
-            <label>
-                Descripción
-            </label>
-
-            <textarea
-            id="mensaje"
-            placeholder="Escribe la noticia o anuncio..."></textarea>
-
+        <!-- Lista dinámica de confirmados -->
+        <div id="listaJugadores" class="lista-asistencia">
+            <div class="loading-mini">Cargando lista de asistencia...</div>
         </div>
-
-        <button
-        class="btn"
-        id="btnPublicar">
-
-            Publicar noticia
-
-        </button>
-
-        <div
-        id="estado"
-        class="estado"></div>
-
     </div>
 
 </div>
 
 <script type="module">
+import { SCRIPT_URL } from './config.js';
 
-/* ====================================
-IMPORT CONFIG
-==================================== */
-
-import { SCRIPT_URL }
-from './config.js';
-
-/* ====================================
-GUARDAR NOTIFICACIÓN
-==================================== */
-
+/* GUARDAR NOTIFICACIÓN */
 async function guardarNotificacion(){
-
-    const titulo =
-    document.getElementById('titulo')
-    .value
-    .trim();
-
-    const mensaje =
-    document.getElementById('mensaje')
-    .value
-    .trim();
-
-    const estado =
-    document.getElementById('estado');
-
-    /* VALIDACIÓN */
+    const titulo = document.getElementById('titulo').value.trim();
+    const mensaje = document.getElementById('mensaje').value.trim();
+    const estado = document.getElementById('estado');
 
     if(!titulo || !mensaje){
-
-        estado.innerHTML =
-        '⚠️ Completa todos los campos';
-
-        estado.className =
-        'estado error';
-
+        estado.innerHTML = '⚠️ Completa todos los campos';
+        estado.className = 'estado error';
         return;
     }
 
-    estado.innerHTML =
-    'Publicando noticia...';
-
-    estado.className =
-    'estado';
+    estado.innerHTML = 'Publicando noticia...';
+    estado.className = 'estado';
 
     try{
-
-        const response =
-        await fetch(SCRIPT_URL,{
-
+        const response = await fetch(SCRIPT_URL, {
             method:'POST',
-
-            headers:{
-                'Content-Type':'application/json'
-            },
-
-            body:JSON.stringify({
-
-                accion:'crearNotificacion',
-
-                titulo:titulo,
-
-                mensaje:mensaje
-
+            body: new URLSearchParams({
+                action: 'crearNotificacion',
+                titulo: titulo,
+                mensaje: mensaje
             })
-
         });
 
-        const data =
-        await response.json();
-
+        const data = await response.json();
         if(data.success){
-
-            estado.innerHTML =
-            '✅ Notificación publicada';
-
-            estado.className =
-            'estado ok';
-
-            document
-            .getElementById('titulo')
-            .value = '';
-
-            document
-            .getElementById('mensaje')
-            .value = '';
-
+            estado.innerHTML = '✅ Notificación publicada';
+            estado.className = 'estado ok';
+            document.getElementById('titulo').value = '';
+            document.getElementById('mensaje').value = '';
         }else{
-
-            estado.innerHTML =
-            data.error || 'Error al guardar';
-
-            estado.className =
-            'estado error';
+            estado.innerHTML = data.error || 'Error al guardar';
+            estado.className = 'estado error';
         }
-
     }catch(error){
-
         console.error(error);
-
-        estado.innerHTML =
-        '❌ Error de conexión';
-
-        estado.className =
-        'estado error';
+        estado.innerHTML = '❌ Error de conexión';
+        estado.className = 'estado error';
     }
 }
 
-/* ====================================
-EVENTO BOTÓN
-==================================== */
+/* CARGAR ASISTENCIA DESDE GOOGLE SHEETS */
+async function cargarAsistenciaInauguracion() {
+    const contenedor = document.getElementById('listaJugadores');
+    
+    try {
+        // Forzamos bypass de caché agregando timestamp (Solución para celulares)
+        const response = await fetch(`${SCRIPT_URL}?action=getConfirmadosInauguracion&_=${new Date().getTime()}`);
+        const data = await response.json();
 
-document
-.getElementById('btnPublicar')
-.addEventListener(
-'click',
-guardarNotificacion
-);
+        if(data.success) {
+            // Actualizar Contadores globales
+            document.getElementById('cntTotal').innerText = data.conteo.total;
+            document.getElementById('cntAsist').innerText = data.conteo.asistiran;
+            document.getElementById('cntRep').innerText = data.conteo.representante;
 
+            if(data.jugadores.length === 0) {
+                contenedor.innerHTML = '<div class="loading-mini">Nadie ha confirmado asistencia aún.</div>';
+                return;
+            }
+
+            // Construir la lista de los jugadores
+            contenedor.innerHTML = '';
+            data.jugadores.forEach(jugador => {
+                const esRep = jugador.respuesta === "Envía Representante";
+                const div = document.createElement('div');
+                div.className = `item-jugador ${esRep ? 'representante' : ''}`;
+                
+                div.innerHTML = `
+                    <div class="jugador-info">
+                        <font>${jugador.nombre}</font>
+                        <span>C.I: ${jugador.cedula} | Cat: ${jugador.categoria}</span>
+                    </div>
+                    <span class="status-pill ${esRep ? 'pill-rep' : 'pill-titular'}">
+                        ${esRep ? 'Representante' : 'Puntual'}
+                    </span>
+                `;
+                contenedor.appendChild(div);
+            });
+        } else {
+            contenedor.innerHTML = '<div class="loading-mini" style="color:red">No se pudo cargar la asistencia.</div>';
+        }
+    } catch(error) {
+        console.error("Error cargando asistencia:", error);
+        contenedor.innerHTML = '<div class="loading-mini" style="color:red">Error de red al leer asistencia.</div>';
+    }
+}
+
+/* EVENTOS DE INICIALIZACIÓN */
+document.getElementById('btnPublicar').addEventListener('click', guardarNotificacion);
+
+// Ejecutar la carga automática de la lista al abrir la página
+document.addEventListener('DOMContentLoaded', cargarAsistenciaInauguracion);
 </script>
 
 </body>
