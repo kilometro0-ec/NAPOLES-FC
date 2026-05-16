@@ -21,368 +21,272 @@
 }
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+    margin:0; padding:0; box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
 body{
-    font-family:'Inter',sans-serif;
-    background:var(--bg);
-    color:#111827;
-    min-height:100vh;
-    overflow-x:hidden;
+    font-family:'Inter',sans-serif; background:var(--bg);
+    color:#111827; min-height:100vh; overflow-x:hidden;
 }
 
-/* =========================================
-HEADER
-========================================= */
 .topbar{
-    position:sticky;
-    top:0;
-    z-index:100;
-    background:rgba(255,255,255,.92);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid #e5e7eb;
-    padding:16px 18px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    position:sticky; top:0; z-index:100;
+    background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
+    border-bottom:1px solid #e5e7eb; padding:16px 18px;
+    display:flex; align-items:center; justify-content:space-between;
 }
 
-.top-left{
-    display:flex;
-    align-items:center;
-    gap:14px;
-}
-
-.admin-info h1{
-    font-family: 'Outfit', sans-serif;
-    font-size:1.2rem;
-    font-weight:900;
-}
-
-.admin-info p{
-    font-size:.85rem;
-    color:var(--muted);
-    margin-top:2px;
-    font-weight: 600;
-}
+.admin-info h1{ font-family: 'Outfit', sans-serif; font-size:1.2rem; font-weight:900; }
+.admin-info p{ font-size:.85rem; color:var(--muted); margin-top:2px; font-weight: 600; }
 
 .avatar{
-    width:44px;
-    height:44px;
-    border-radius:14px;
+    width:44px; height:44px; border-radius:14px;
     background:linear-gradient(135deg, var(--amber-dark), var(--amber-light));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-weight:800;
-    font-size:1.1rem;
-    box-shadow: 0 4px 12px rgba(217,119,6,0.2);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:800; font-size:1.1rem;
 }
 
-/* =========================================
-SUMMARY CARD
-========================================= */
-.summary{
-    padding:20px 18px 10px;
-}
-
+/* SUMMARY CARD */
+.summary{ padding:20px 18px 10px; }
 .summary-card{
     background:linear-gradient(135deg, var(--slate-dark), #1e293b);
-    border-radius:28px;
-    padding:24px;
-    color:#fff;
-    position:relative;
-    overflow:hidden;
-    box-shadow: 0 12px 30px rgba(15,23,42,0.15);
+    border-radius:24px; padding:22px; color:#fff; position:relative; overflow:hidden;
 }
-
-.summary-card::before{
-    content:'';
-    position:absolute;
-    width:200px;
-    height:200px;
-    border-radius:50%;
-    background: rgba(250, 204, 21, 0.08);
-    right:-50px;
-    top:-50px;
-}
-
-.summary-card h2{
-    font-family: 'Outfit', sans-serif;
-    font-size:.95rem;
-    margin-bottom:6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--amber-light);
-}
-
-.balance{
-    font-family: 'Outfit', sans-serif;
-    font-size: 2.4rem;
-    font-weight: 900;
-    margin-bottom:20px;
-}
+.summary-card h2{ font-family: 'Outfit', sans-serif; font-size:.9rem; margin-bottom:4px; color: var(--amber-light); text-transform: uppercase;}
+.balance{ font-family: 'Outfit', sans-serif; font-size: 2.3rem; font-weight: 900; margin-bottom:15px; }
 
 .summary-stats{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 16px;
+    display:grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-bottom: 10px;
 }
+.summary-item h3{ font-size: 1.05rem; font-weight: 800; }
+.summary-item p{ font-size:.75rem; color: #94a3b8; }
 
-.summary-item h3{
-    font-size: 1.15rem;
-    font-weight: 800;
-    margin-bottom: 2px;
+.sub-metrics {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 14px;
 }
-.summary-item.cobrar h3 { color: #38bdf8; }
-.summary-item.vocalia h3 { color: #f87171; }
+.sub-metrics div p { font-size: 0.7rem; color: #cbd5e1; }
+.sub-metrics div h4 { font-size: 0.95rem; font-weight: 700; color: #fff; }
 
-.summary-item p{
-    font-size:.78rem;
-    color: #94a3b8;
-    font-weight: 600;
-}
-
-/* =========================================
-MOVEMENTS LIST
-========================================= */
-.movements-title {
-    padding: 14px 20px 4px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: var(--slate-dark);
-}
-
-.movements{
-    padding:0 18px 80px;
-}
-
+/* MOVEMENTS */
+.movements-title { padding: 16px 20px 2px; font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; }
+.movements{ padding:0 18px 100px; }
 .movement-card{
-    background:#fff;
-    border-radius:20px;
-    padding:16px;
-    margin-top:12px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    box-shadow: 0 6px 18px rgba(15,23,42,.03);
-    border: 1px solid rgba(0,0,0,0.01);
+    background:#fff; border-radius:16px; padding:14px; margin-top:10px;
+    display:flex; align-items:center; justify-content:space-between;
+    box-shadow: 0 4px 12px rgba(15,23,42,.02);
 }
-
-.movement-left{
-    display:flex;
-    align-items:center;
-    gap:14px;
-}
-
+.movement-left{ display:flex; align-items:center; gap:12px; }
 .movement-icon{
-    width:48px;
-    height:48px;
-    border-radius:15px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-size: 1.2rem;
+    width:42px; height:42px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center; font-size: 1rem;
 }
-
-.income{ background: rgba(22,163,74,0.12); color: var(--success); }
-.expense{ background: rgba(239,68,68,0.12); color: var(--danger); }
-
-.movement-info h3{
-    font-size:.92rem;
-    font-weight:800;
-    margin-bottom:2px;
-    color: var(--slate-dark);
-}
-
-.movement-info p{
-    color:var(--muted);
-    font-size:.8rem;
-}
-
-.amount{
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 800;
-}
-
+.income{ background: rgba(22,163,74,0.1); color: var(--success); }
+.expense{ background: rgba(239,68,68,0.1); color: var(--danger); }
+.movement-info h3{ font-size:.88rem; font-weight:800; color: var(--slate-dark); }
+.movement-info p{ color:var(--muted); font-size:.78rem; }
+.amount{ font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 800; }
 .positive{ color: var(--success); }
 .negative{ color: var(--danger); }
 
-/* =========================================
-LOADING SPINNER
-========================================= */
-.loading-box {
-    text-align: center;
-    padding: 70px 20px;
+/* FORMULARIO GASTOS OBLIGATORIO */
+.gasto-form-container {
+    background: #fff; margin: 15px 18px; padding: 18px; border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #e5e7eb;
 }
+.gasto-form-container h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 12px; }
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 4px; color: var(--slate-dark); }
+.form-control {
+    width: 100%; padding: 10px 12px; font-size: 0.88rem; border: 1px solid #cbd5e1;
+    border-radius: 10px; font-family: inherit; outline: none;
+}
+.btn-submit {
+    width: 100%; background: var(--slate-dark); color: white; border: none;
+    padding: 12px; border-radius: 12px; font-family: 'Outfit', sans-serif;
+    font-weight: 700; cursor: pointer; transition: background 0.2s;
+}
+.btn-submit:hover { background: #1e293b; }
 
-.spinner-icon {
-    font-size: 3rem;
-    color: var(--amber-dark);
-    animation: rotar 1s linear infinite;
-}
+.loading-box { text-align: center; padding: 60px 20px; }
+.spinner-icon { font-size: 2.5rem; color: var(--amber-dark); animation: rotar 1s linear infinite; }
+@keyframes rotar { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-.loading-text {
-    margin-top: 14px;
-    font-family: 'Outfit', sans-serif;
-    color: var(--amber-dark);
-    font-weight: 800;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+.actions-nav {
+    position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 200;
 }
-
-@keyframes rotar {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.fab {
+    width: 54px; height: 54px; border: none; border-radius: 16px;
+    color: white; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15);
 }
-
-/* =========================================
-FAB INTERFACES
-========================================= */
-.fab{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    width:60px;
-    height:60px;
-    border:none;
-    border-radius:20px;
-    background:linear-gradient(135deg, var(--amber-dark), var(--amber-light));
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    box-shadow: 0 8px 22px rgba(217,119,6,.35);
-    font-size: 1.4rem;
-}
+.fab.refresh { background: linear-gradient(135deg, var(--amber-dark), var(--amber-light)); }
 
 @media(min-width:700px){
-    .summary, .movements, .movements-title{ max-width:700px; margin:auto; }
+    .summary, .movements, .movements-title, .gasto-form-container{ max-width:700px; margin:auto; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- TOPBAR -->
 <header class="topbar">
     <div class="top-left">
         <div class="admin-info">
-            <h1>Finanzas</h1>
-            <p>Nápoles F.C. • Auditoría</p>
+            <h1>Finanzas Club</h1>
+            <p>Nápoles F.C. • Panel Oficial</p>
         </div>
     </div>
-    <div class="avatar"><i class="fa-solid fa-dollar-sign"></i></div>
+    <div class="avatar"><i class="fa-solid fa-building-columns"></i></div>
 </header>
 
-<!-- CONTENEDOR PRINCIPAL -->
+<!-- FORMULARIO DE GASTOS DIRECTO -->
+<section class="gasto-form-container">
+    <h2><i class="fa-solid fa-money-bill-transfer" style="color: var(--danger)"></i> Registrar Salida de Dinero (Gasto)</h2>
+    <form id="gastoForm" onsubmit="enviarGasto(event)">
+        <div class="form-group">
+            <label>Concepto / Descripción del Gasto</label>
+            <input type="text" id="gastoConcepto" class="form-control" placeholder="Ej. Alquiler de Cancha, Arbitraje, Agua..." required>
+        </div>
+        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+                <label>Categoría</label>
+                <select id="gastoCategoria" class="form-control">
+                    <option value="Canchas">Canchas</option>
+                    <option value="Arbitraje">Arbitraje</option>
+                    <option value="Implementos">Implementos</option>
+                    <option value="Logística">Logística</option>
+                    <option value="Otros">Otros</option>
+                </select>
+            </div>
+            <div>
+                <label>Monto de Egreso (USD)</label>
+                <input type="number" id="gastoMonto" step="0.01" class="form-control" placeholder="0.00" required>
+            </div>
+        </div>
+        <button type="submit" class="btn-submit">Procesar y Descontar de Caja</button>
+    </form>
+</section>
+
+<!-- CONTENEDOR FINANCIERO -->
 <main id="financialApp">
     <div class="loading-box">
         <div class="spinner-icon"><i class="fa-solid fa-circle-notch"></i></div>
-        <div class="loading-text">Calculando Balances de Caja...</div>
+        <div class="loading-text">Sincronizando balances...</div>
     </div>
 </main>
 
-<!-- REFRESCAR CONTABILIDAD -->
-<button class="fab" onclick="cargarContabilidad()" title="Refrescar Caja">
-    <i class="fa-solid fa-arrows-rotate"></i>
-</button>
+<div class="actions-nav">
+    <button class="fab refresh" onclick="cargarContabilidad()" title="Refrescar">
+        <i class="fa-solid fa-arrows-rotate"></i>
+    </button>
+</div>
 
 <script src="config.js"></script>
 <script>
-// Forzar control de acceso administrativo
-if(localStorage.getItem('admin_activo') !== 'true'){
-    window.location.href = './login.html';
-}
+if(localStorage.getItem('admin_activo') !== 'true') window.location.href = './login.html';
 
-// Formateador de moneda internacional
-const formatearMoneda = (valor) => {
-    return new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(valor);
-};
+const formatearMoneda = (v) => new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(v);
 
 async function cargarContabilidad() {
-    const contenedor = document.getElementById('financialApp');
+    const app = document.getElementById('financialApp');
     try {
-        const url = `${CONFIG.URL_GAS}?action=getFinanzasData&nocache=${Date.now()}`;
-        const respuesta = await fetch(url);
-        const data = await respuesta.json();
-
-        if (data.success) {
-            renderizarFinanzas(data.resumen, data.movements);
-        } else {
-            contenedor.innerHTML = `<div style="text-align:center; padding:40px; color:var(--danger); font-weight:700;">Error contable: ${data.message}</div>`;
-        }
-    } catch (error) {
-        contenedor.innerHTML = `<div style="text-align:center; padding:40px; color:var(--danger); font-weight:700;">❌ No se pudo sincronizar la caja financiera de Google Sheets.</div>`;
+        const res = await fetch(`${CONFIG.URL_GAS}?action=getFinanzasData&nocache=${Date.now()}`);
+        const data = await res.json();
+        if (data.success) renderizarApp(data.resumen, data.movements);
+    } catch (e) {
+        app.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger);font-weight:700;">Error de red con Google Sheets.</div>`;
     }
 }
 
-function renderizarFinanzas(resumen, movimientos) {
-    const contenedor = document.getElementById('financialApp');
+function renderizarApp(resumen, movimientos) {
+    const app = document.getElementById('financialApp');
     
-    // Generación dinámica del historial contable obtenido de las columnas S, T y O
-    let htmlMovimientos = movimientos.map(mov => `
+    let htmlMovs = movimientos.map(m => `
         <div class="movement-card">
             <div class="movement-left">
-                <div class="movement-icon ${mov.tipo === 'ingreso' ? 'income' : 'expense'}">
-                    <i class="fa-solid ${mov.tipo === 'ingreso' ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down'}"></i>
+                <div class="movement-icon ${m.tipo === 'ingreso' ? 'income' : 'expense'}">
+                    <i class="fa-solid ${m.tipo === 'ingreso' ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down'}"></i>
                 </div>
                 <div class="movement-info">
-                    <h3>${mov.concepto}</h3>
-                    <p>${mov.fecha}</p>
+                    <h3>${m.concepto}</h3>
+                    <p>${m.fecha}</p>
                 </div>
             </div>
-            <div class="amount ${mov.tipo === 'ingreso' ? 'positive' : 'negative'}">
-                ${mov.tipo === 'ingreso' ? '+' : '-'} ${formatearMoneda(mov.monto)}
+            <div class="amount ${m.tipo === 'ingreso' ? 'positive' : 'negative'}">
+                ${m.tipo === 'ingreso' ? '+' : '-'} ${formatearMoneda(m.monto)}
             </div>
         </div>
     `).join('');
 
-    if(movimientos.length === 0) {
-        htmlMovimientos = `<div style="text-align:center; padding:30px; color:var(--muted); font-size:0.85rem;">No se registran recaudaciones procesadas aún.</div>`;
-    }
-
-    contenedor.innerHTML = `
+    app.innerHTML = `
         <section class="summary">
             <div class="summary-card">
-                <h2>Recaudación Real en Caja</h2>
+                <h2>Caja Real Disponible</h2>
                 <div class="balance">${formatearMoneda(resumen.balanceReal)}</div>
                 
                 <div class="summary-stats">
-                    <div class="summary-item cobrar">
-                        <h3>${formatearMoneda(resumen.porCobrar)}</h3>
-                        <p>Cuentas por Cobrar</p>
+                    <div class="summary-item">
+                        <p>Total Ingresos</p>
+                        <h3 style="color:#4ade80">+ ${formatearMoneda(resumen.ingresosTotales)}</h3>
                     </div>
-                    <div class="summary-item vocalia">
-                        <h3>${formatearMoneda(resumen.deudaVocalia)}</h3>
-                        <p>Vocalías Pendientes</p>
+                    <div class="summary-item">
+                        <p>Total Gastos</p>
+                        <h3 style="color:#f87171">- ${formatearMoneda(resumen.gastosTotales)}</h3>
+                    </div>
+                </div>
+
+                <div class="sub-metrics">
+                    <div>
+                        <p><i class="fa-solid fa-clock"></i> Inscrip/Unif Pendientes</p>
+                        <h4 style="color: #38bdf8">${formatearMoneda(resumen.porCobrar)}</h4>
+                    </div>
+                    <div>
+                        <p><i class="fa-solid fa-triangle-exclamation"></i> Deuda Vocalías</p>
+                        <h4 style="color: #fb923c">${formatearMoneda(resumen.deudaVocalia)}</h4>
                     </div>
                 </div>
             </div>
         </section>
 
-        <h2 class="movements-title">Historial de Recaudación Activa</h2>
-        <section class="movements">
-            ${htmlMovimientos}
-        </section>
+        <h2 class="movements-title">Auditoría de Movimientos</h2>
+        <section class="movements">${htmlMovs || '<p style="text-align:center;color:var(--muted);padding:20px;">Sin transacciones.</p>'}</section>
     `;
 }
 
-// Inicialización automática de la app al entrar
+async function enviarGasto(e) {
+    e.preventDefault();
+    const concepto = document.getElementById('gastoConcepto').value;
+    const categoria = document.getElementById('gastoCategoria').value;
+    const monto = document.getElementById('gastoMonto').value;
+    
+    const btn = document.querySelector('.btn-submit');
+    btn.disabled = true;
+    btn.innerText = "Registrando Egreso...";
+
+    try {
+        const url = `${CONFIG.URL_GAS}?action=registrarGasto&concepto=${encodeURIComponent(concepto)}&categoria=${encodeURIComponent(categoria)}&monto=${monto}`;
+        const res = await fetch(url, { method: 'POST' });
+        const data = await res.json();
+        
+        if(data.success) {
+            alert("Gasto asentado correctamente en Google Sheets.");
+            document.getElementById('gastoForm').reset();
+            cargarContabilidad();
+        } else {
+            alert("Error: " + data.message);
+        }
+    } catch(err) {
+        alert("Error de conexión al guardar el gasto.");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Procesar y Descontar de Caja";
+    }
+}
+
 cargarContabilidad();
 </script>
-
 </body>
 </html>
