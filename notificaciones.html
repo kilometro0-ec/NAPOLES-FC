@@ -310,11 +310,14 @@
             
             table {
                 font-size: 11px;
+                table-layout: fixed; /* Evita desbordamiento rígido */
             }
 
             th, td {
                 padding: 8px 4px;
                 white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis; /* Puntos suspensivos si el nombre es demasiado largo */
             }
 
             .table-responsive {
@@ -351,7 +354,7 @@
                     📅 17 de mayo
                     
                     🕤 Hora: 9:30 a.m.
-                    ⏰ Deben asistir 15 minutos antes (9:15 a.m.)
+                    ⏰ Deben asistir 15 minutes antes (9:15 a.m.)
                     
                     Su presencia es muy importante para el inicio de este gran evento deportivo.
                     
@@ -418,7 +421,7 @@
                     <thead>
                         <tr>
                             <th>Jugador / Deportista</th>
-                            <th>Dorsal</th>
+                            <th style="width: 70px;">Dorsal</th>
                             <th>Estado Asistencia</th>
                         </tr>
                     </thead>
@@ -433,15 +436,18 @@
 
     <!-- SCRIPT DE SINCRONIZACIÓN Y PARSEO (JSONP COMPATIBLE) -->
     <script>
-        // URL de Implementación de tu Macro unificada de Google Apps Script
         const URL_BACKEND = "https://script.google.com/macros/s/AKfycbwPzNIsrL3f82VvOymS8kFvE-y2G_u2r4bM1M9l_r3n6Yy6p7fLg/exec"; 
+
+        // Función utilitaria para sanitizar texto e impedir ataques XSS en la inyección de nombres
+        function escapeHTML(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
 
         function toggleFormNotificacion() {
             var form = document.getElementById('formNotificacion');
             form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
         }
 
-        // Ejecución Automática al inicializar el panel
         window.onload = function() {
             solicitarDatosAsistencias();
         };
@@ -451,6 +457,9 @@
             document.getElementById('loader').style.display = 'block';
             const callbackName = "cbProcesarDatos";
 
+            // Limpieza preventiva si existía un script previo para evitar colisiones
+            document.getElementById("script_jsonp_get")?.remove();
+
             window[callbackName] = function(response) {
                 if (response && response.success) {
                     actualizarDatosDesdeSheet(response.datos);
@@ -458,12 +467,13 @@
                     alert("Error al cargar los datos del servidor.");
                     document.getElementById('loader').style.display = 'none';
                 }
+                delete window[callbackName];
                 document.getElementById("script_jsonp_get")?.remove();
             };
 
             const script = document.createElement("script");
             script.id = "script_jsonp_get";
-            script.src = `${URL_BACKEND}?action=getJugadoresRaw&callback=${callbackName}`;
+            script.src = `${URL_BACKEND}?action=getJugadoresRaw&callback=${callbackName}&nocache=${Date.now()}`;
             document.body.appendChild(script);
         }
 
@@ -475,94 +485,103 @@
             let tablaHTML = "";
 
             if (!filas || filas.length === 0) {
-                document.getElementById('tablaConfirmadosBody').innerHTML = "<tr><td colspan='3'>No hay registros.</td></tr>";
+                document.getElementById('tablaConfirmadosBody').innerHTML = "<tr><td colspan='3'>No hay registros de jugadores.</td></tr>";
                 document.getElementById('loader').style.display = 'none';
                 return;
             }
 
             filas.forEach(fila => {
-                // Mapeo estricto del Array de Apps Script (Base 0):
-                // B = Index 1 (Nombres), D = Index 3 (Apellidos), R = Index 17 (Dorsal), AD = Index 29 (Inauguración)
-                let nombreCompleto = (fila[1] || '') + " " + (fila[3] || '');
-                let dorsal = fila[17] || "S/N";
-                let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
+                // Validación de que la fila posea el formato correcto mínimo antes de parsear
+                if (fila && fila.length > 3) {
+                    let nombreCompleto = ((fila[1] || '') + " " + (fila[3] || '')).trim();
+                    let dorsal = fila[17] || "S/N";
+                    let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
 
-                if (celdaInauguracion !== "") {
-                    respuestas++;
-                    let emojiEstado = "❓ Sin definir";
+                    if (celdaInauguracion !== "") {
+                        respuestas++;
+                        let badge = celdaInauguracion;
 
-                    if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asistiré")) {
-                        asistiran++;
-                        emojiEstado = "✅ Asistiré";
-                    } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("representante")) {
-                        representantes++;
-                        emojiEstado = "👤 Representante";
+                        if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asistiré")) {
+                            asistiran++;
+                            badge = "🟢 " + celdaInauguracion;
+                        } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("representante")) {
+                            representantes++;
+                            badge = "🟡 " + celdaInauguracion;
+                        } else {
+                            badge = "🔴 " + celdaInauguracion;
+                        }
+
+                        tablaHTML += `<tr>
+                            <td><strong>${escapeHTML(nombreCompleto)}</strong></td>
+                            <td>${escapeHTML(dorsal)}</td>
+                            <td>${escapeHTML(badge)}</td>
+                        </tr>`;
                     }
-
-                    tablaHTML += `
-                        <tr>
-                            <td><strong>${nombreCompleto.trim()}</strong></td>
-                            <td>#${dorsal}</td>
-                            <td>${emojiEstado}</td>
-                        </tr>
-                    `;
                 }
             });
 
+            document.getElementById('tablaConfirmadosBody').innerHTML = tablaHTML || "<tr><td colspan='3'>Ningún jugador ha confirmado aún.</td></tr>";
+            
+            // Actualización de indicadores visuales
             document.getElementById('numTotal').innerText = respuestas;
             document.getElementById('numAsistiran').innerText = asistiran;
             document.getElementById('numRepresentante').innerText = representantes;
-            document.getElementById('tablaConfirmadosBody').innerHTML = tablaHTML;
 
-            // Algoritmo de Multa Dinámica
-            let totalConfirmados = asistiran + representantes;
-            let multaBase = 190;
-            let descuento = totalConfirmados * 2;
-            let multaFinal = Math.max(0, multaBase - descuento);
+            // FÓRMULA DE CALCULO DE LA MULTA LIVE COOPERATIVA
+            let confirmadosEfectivos = asistiran + representantes;
+            let multaBase = 190.00;
+            let multaCalculada = multaBase - (confirmadosEfectivos * 2.00);
+            if (multaCalculada < 0) multaCalculada = 0;
 
-            document.getElementById('valMulta').innerText = "$" + multaFinal.toFixed(2);
+            document.getElementById('valMulta').innerText = "$" + multaCalculada.toFixed(2);
             document.getElementById('loader').style.display = 'none';
         }
 
-        // 3. ENVIAR NUEVA NOTIFICACIÓN POR CANAL JSONP COMPATIBLE CON GET/ROUTER
+        // 3. ENVÍO DE NUEVAS ALERTAS / NOTIFICACIONES AL SPREADSHEET (JSONP)
         function enviarNotificacion() {
-            var titulo = document.getElementById('tituloNoticia').value.trim();
-            var cuerpo = document.getElementById('cuerpoNoticia').value.trim();
-            
-            if(!titulo || !cuerpo){
-                alert("Por favor llena todos los campos de la notificación.");
+            const btn = document.getElementById('btnPublicar');
+            const titulo = document.getElementById('tituloNoticia').value.trim();
+            const cuerpo = document.getElementById('cuerpoNoticia').value.trim();
+
+            if (!titulo || !cuerpo) {
+                alert("Por favor complete los campos de título y contenido.");
                 return;
             }
 
-            const btn = document.getElementById('btnPublicar');
             btn.disabled = true;
-            btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Publicando...";
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando Alerta...`;
 
-            const callbackPost = "cbNotificacionPost";
+            const callbackName = "cbProcesarEnvio";
+            
+            document.getElementById("script_jsonp_post")?.remove();
 
-            window[callbackPost] = function(res) {
-                btn.disabled = false;
-                btn.innerHTML = "<i class='fa-solid fa-paper-plane'></i> Publicar Notificación";
-
-                if (res && res.success) {
-                    // Reflejar cambio visual inmediato en el banner superior sin recargar la página entera
-                    document.getElementById('lblTituloAlerta').innerText = `📢 ${titulo.toUpperCase()}`;
+            window[callbackName] = function(response) {
+                if (response && response.success) {
+                    alert("¡Notificación publicada exitosamente en la columna P!");
+                    
+                    // Actualización local de la interfaz para feedback inmediato del usuario
+                    document.getElementById('lblTituloAlerta').innerText = titulo;
                     document.getElementById('txtConvocatoria').innerText = cuerpo;
-
+                    
                     document.getElementById('tituloNoticia').value = "";
                     document.getElementById('cuerpoNoticia').value = "";
                     toggleFormNotificacion();
-                    alert("¡Notificación guardada e inyectada con éxito en la Columna P!");
                 } else {
-                    alert("Error: " + (res.message || "No se pudo publicar."));
+                    alert("Error al intentar guardar la notificación.");
                 }
+
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publicar Notificación`;
+                
+                delete window[callbackName];
                 document.getElementById("script_jsonp_post")?.remove();
             };
 
-            // Se envía como query params vía script tag para saltarse las restricciones CORS de GitHub Pages de forma limpia
+            const urlFinal = `${URL_BACKEND}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}&callback=${callbackName}`;
+
             const script = document.createElement("script");
             script.id = "script_jsonp_post";
-            script.src = `${URL_BACKEND}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}&callback=${callbackPost}`;
+            script.src = urlFinal;
             document.body.appendChild(script);
         }
     </script>
