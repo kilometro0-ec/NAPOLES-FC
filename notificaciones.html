@@ -2,223 +2,338 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inauguración - Nápoles F.C.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Notificaciones - Nápoles F.C.</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 20px;
-            color: #333;
+        :root {
+            --primary: #0f172a;
+            --amber-light: #fff9c4;
+            --secondary-color: #ffb300;
+            --success: #10b981;
+            --danger: #ef4444;
+            --muted: #6b7280;
+            --bg: #f8fafc;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-height:100vh; padding-bottom: 60px; }
+
+        .topbar {
+            position:sticky; top:0; z-index:100; background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
+            border-bottom:1px solid #e2e8f0; padding:16px 18px; display:flex; align-items:center; justify-content:space-between;
         }
-        .header-comunicado {
-            background-color: #0b1f3f;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            white-space: pre-line;
-            line-height: 1.6;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .admin-info h1 { font-family: 'Outfit', sans-serif; font-size:1.25rem; font-weight:900; color: var(--primary); }
+        .admin-info p { font-size:.8rem; color:var(--muted); font-weight: 600; text-transform: uppercase; }
+        .avatar { width:42px; height:42px; border-radius:12px; background: #f1f5f9; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:1.1rem; }
+
+        .container { max-width: 650px; margin: 0 auto; padding: 0 18px; }
+
+        /* PANEL DE NOTIFICACIÓN EN VIVO */
+        .noticias-mini-panel {
+            background: linear-gradient(135deg, #fffde7, var(--amber-light));
+            border: 1px solid #fef08a;
+            border-left: 5px solid var(--secondary-color);
+            border-radius: 18px; padding: 16px; margin-top: 20px;
+            display: flex; align-items: flex-start; gap: 14px;
+            box-shadow: 0 4px 12px rgba(254,240,138,0.15);
         }
-        .grid-conteo {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+        .icon-box {
+            background-color: var(--secondary-color); color: #7f6d00;
+            width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
         }
-        .card-conteo {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-bottom: 5px solid #ccc;
+        .noticias-content { flex-grow: 1; }
+        .noticias-content h4 { font-family: 'Outfit', sans-serif; font-size: 0.9rem; text-transform: uppercase; color: #7f6d00; margin-bottom: 4px; font-weight: 800; }
+        .noticias-content .convocatoria-texto { font-size: 0.88rem; line-height: 1.5; color: #334155; white-space: pre-line; }
+
+        /* ACCIONES ADMINISTRADOR */
+        .admin-action-zone { margin-top: 15px; }
+        .btn-toggle-form {
+            background-color: var(--primary); color: white; border: none; padding: 11px 16px;
+            font-size: 0.8rem; font-weight: 700; border-radius: 12px; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
         }
-        .card-conteo.si { border-color: #28a745; color: #28a745; }
-        .card-conteo.rep { border-color: #17a2b8; color: #17a2b8; }
-        .card-conteo.no { border-color: #dc3545; color: #dc3545; }
-        
-        .numero {
-            font-size: 3rem;
-            font-weight: bold;
-            margin: 5px 0;
+        .btn-toggle-form:hover { opacity: 0.9; }
+
+        /* FORMULARIOS */
+        .form-card {
+            background: #fff; padding: 20px; border-radius: 22px; margin-top: 12px;
+            box-shadow: 0 4px 16px rgba(15,23,42,0.02); border: 1px solid #e2e8f0; display: none;
         }
-        .seccion-lista {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .seccion-lista h3 {
-            margin-top: 0;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-        .jugador-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f1f1;
-        }
-        .badge-dorsal {
-            background: #0b1f3f;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-        }
-        /* Cuadro Rojo de la Multa solicitado */
+        .form-card.active { display: block; animation: desplegar 0.3s ease-out; }
+        @keyframes desplegar { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-card h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 16px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; color: #475569; text-transform: uppercase; }
+        .form-control { width: 100%; padding: 11px 14px; font-size: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; outline: none; font-family: inherit; color: var(--primary); }
+        textarea.form-control { resize: vertical; min-height: 90px; }
+
+        .btn-action { width: 100%; color: white; border: none; padding: 13px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-green { background: var(--success); }
+        .btn-green:hover { background: #059669; }
+
+        /* TABLA CARD */
+        .card { background: #fff; border-radius: 22px; padding: 20px; box-shadow: 0 4px 16px rgba(15,23,42,0.02); border: 1px solid #e2e8f0; margin-top: 20px; }
+        .card h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: var(--primary); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
+
+        .resumen-asistencias { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; text-align: center; }
+        .resumen-box { background-color: #f8fafc; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .resumen-box span { display: block; font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 900; color: var(--primary); }
+        .resumen-box label { font-size: 0.7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+        th { background-color: #f8fafc; color: #475569; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+        td strong { color: var(--primary); font-weight: 600; }
+
+        /* NUEVO CUADRO ROJO DE MULTA (GRANDIOSO ABAJO DEL LISTADO) */
         .cuadro-rojo-multa {
-            background-color: #dc3545;
+            background-color: var(--danger);
             color: white;
             text-align: center;
-            padding: 25px;
-            border-radius: 8px;
-            margin-top: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            padding: 24px;
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .cuadro-rojo-multa .titulo-multa {
-            font-size: 1.4rem;
-            font-weight: bold;
+        .cuadro-rojo-multa p {
+            font-size: 0.95rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            opacity: 0.95;
         }
-        .cuadro-rojo-multa .valor-multa {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-top: 10px;
+        .cuadro-rojo-multa h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-top: 6px;
         }
-        .loading { text-align: center; font-size: 1.2rem; color: #666; padding: 40px; }
+
+        .fab { position: fixed; bottom: 18px; right: 18px; width: 50px; height: 50px; border: none; border-radius: 14px; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: var(--primary); cursor: pointer; z-index: 100; }
+        .loading-box { text-align: center; padding: 50px 20px; color: var(--muted); }
+        .spinner-icon { font-size: 2rem; color: #cbd5e1; animation: rotar 1s linear infinite; margin-bottom: 8px; }
+        @keyframes rotar { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- 1. El Comunicado Completo tal cual se solicitó -->
-    <div class="header-comunicado">⚽ ATENCIÓN JUGADORES ⚽
-Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día:
-📅 17 de mayo
-
-🕤 Hora: 9:30 a.m.
-
-⏰ Deben asistir 15 minutos antes (9:15 a.m.)
-Su presencia es muy importante para el inicio de este gran evento deportivo.
-
-✅ Seleccione una de las siguientes opciones:
-1️⃣ Asistiré, ahí estaré puntual
-2️⃣ Enviaré a mi representante
-
-⚠️ IMPORTANTE:
-El hecho de NO seleccionar una opción se tomará como que NO desea asistir.
-❗ La multa por inasistencia será dividida entre todos los jugadores que no asistan.</div>
-
-    <div id="loading" class="loading">📊 Cargando datos de asistencia...</div>
-
-    <div id="contenido-panel" style="display: none;">
-        
-        <!-- 2. El Contador -->
-        <div class="grid-conteo">
-            <div class="card-conteo si">
-                <div>1️⃣ Asistiré, ahí estaré puntual</div>
-                <div class="numero" id="num-si">0</div>
-            </div>
-            <div class="card-conteo rep">
-                <div>2️⃣ Enviaré a mi representante</div>
-                <div class="numero" id="num-rep">0</div>
-            </div>
-            <div class="card-conteo no">
-                <div>⚠️ Sin Responder / No Asiste</div>
-                <div class="numero" id="num-no">0</div>
-            </div>
+<header class="topbar">
+    <div class="top-left">
+        <div class="admin-info">
+            <h1>Panel Convocatorias</h1>
+            <p>Nápoles F.C. • Control Asistencias</p>
         </div>
-
-        <!-- 3. El Listado -->
-        <div class="seccion-lista">
-            <h3 style="color: #28a745;">Confirmados (Opción 1)</h3>
-            <div id="lista-asistiran"></div>
-        </div>
-
-        <div class="seccion-lista">
-            <h3 style="color: #17a2b8;">Con Representante (Opción 2)</h3>
-            <div id="lista-rep"></div>
-        </div>
-
-        <div class="seccion-lista">
-            <h3 style="color: #dc3545;">Pendientes / No Asisten</h3>
-            <div id="lista-pendientes"></div>
-        </div>
-
-        <!-- 4. Cuadro Rojo de la Multa abajo del todo -->
-        <div class="cuadro-rojo-multa">
-            <div class="titulo-multa">Multa por inasistencia a la inauguración</div>
-            <div class="valor-multa" id="val-cuota-persona">$0.00</div>
-        </div>
-
     </div>
+    <div class="avatar"><i class="fa-solid fa-bullhorn"></i></div>
+</header>
+
+<div class="container">
+
+    <!-- 1. COMUNICADO RESUMIDO EN EL BANNER -->
+    <div class="noticias-mini-panel" id="panelNoticias">
+        <div class="icon-box"><i class="fa-solid fa-bell"></i></div>
+        <div class="noticias-content">
+            <h4>📢 COMUNICADO INAUGURACIÓN LIGA SANTA RITA</h4>
+            <div class="convocatoria-texto" id="txtConvocatoria">📅 <strong>Fecha:</strong> 17 de mayo | 🕤 <strong>Hora:</strong> 9:30 a.m. (Asistir 9:15 a.m.)
+            Su presencia es vital para el inicio del torneo. 
+            
+            <strong>Opciones:</strong>
+            1️⃣ Asistiré, ahí estaré puntual.
+            2️⃣ Enviaré a mi representante.
+            
+            ⚠️ <em>El no contestar se tomará como inasistencia y la multa general se dividirá entre los faltantes.</em></div>
+        </div>
+    </div>
+
+    <!-- FORMULARIO DE EMISIÓN DE OTRAS CIRCULARES -->
+    <div class="admin-action-zone">
+        <button class="btn-toggle-form" onclick="toggleFormNotificacion()">
+            <i class="fa-solid fa-pen-nib"></i> Redactar Otro Anuncio
+        </button>
+        
+        <section id="formNotificacion" class="form-card">
+            <h2><i class="fa-solid fa-bullhorn" style="color: var(--secondary-color)"></i> Difundir Nueva Notificación</h2>
+            <form id="noticiaForm" onsubmit="enviarNotificacion(event)">
+                <div class="form-group">
+                    <label>Título del Anuncio</label>
+                    <input type="text" id="tituloNoticia" class="form-control" placeholder="Ej. Convocatoria Oficial - Fecha 5" required>
+                </div>
+                <div class="form-group">
+                    <label>Cuerpo del Mensaje / Indicaciones</label>
+                    <textarea id="cuerpoNoticia" class="form-control" placeholder="Escriba los detalles aquí..." required></textarea>
+                </div>
+                <button type="submit" id="btnPublicar" class="btn-action btn-green">
+                    <i class="fa-solid fa-paper-plane"></i> Publicar en Cartelera
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <!-- PANTALLA DE CARGA GLOBAL -->
+    <div class="loading-box" id="loader">
+        <div class="spinner-icon"><i class="fa-solid fa-circle-notch"></i></div>
+        <p>Sincronizando asistencias desde la base de datos...</p>
+    </div>
+
+    <!-- 2. CONTADOR Y 3. LISTADO -->
+    <div class="card" id="vistaConfirmados" style="display:none;">
+        <h2><i class="fa-solid fa-users-check" style="color: var(--success)"></i> Registro de Respuestas</h2>
+        
+        <div class="resumen-asistencias">
+            <div class="resumen-box"><span id="numTotal">0</span><label>Respuestas</label></div>
+            <div class="resumen-box"><span id="numAsistiran" style="color: var(--success);">0</span><label>1️⃣ Van</label></div>
+            <div class="resumen-box"><span id="numRepresentante" style="color: var(--secondary-color);">0</span><label>2️⃣ Delegados</label></div>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jugador / Deportista</th>
+                        <th style="width: 80px; text-align: center;">Dorsal</th>
+                        <th>Estado Elección</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaConfirmadosBody">
+                    <!-- Filas dinámicas de Google Sheets -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 4. CUADRO ROJO DE LA MULTA JUSTO BAJO EL LISTADO -->
+        <div class="cuadro-rojo-multa">
+            <p>Multa por inasistencia a la inauguración</p>
+            <h3 id="valMulta">$0.00</h3>
+        </div>
+    </div>
+
 </div>
+
+<button class="fab" onclick="cargarAsistenciasYNoticias()"><i class="fa-solid fa-arrows-rotate"></i></button>
 
 <script src="config.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    obtenerConteoInauguracion();
-});
+if(localStorage.getItem('admin_activo') !== 'true') window.location.href = './login.html';
 
-function obtenerConteoInauguracion() {
-    fetch(`${CONFIG.URL_GAS}?action=getConfirmadosInauguracion`)
-        .then(response => response.json())
-        .then(data => {
-            if(!data.success) {
-                document.getElementById("loading").innerText = "Error: " + data.message;
-                return;
-            }
-
-            document.getElementById("loading").style.display = "none";
-            document.getElementById("contenido-panel").style.display = "block";
-
-            // Inyectar contadores de personas
-            document.getElementById("num-si").innerText = data.resumen.asistiran;
-            document.getElementById("num-rep").innerText = data.resumen.representante;
-            document.getElementById("num-no").innerText = data.resumen.sinResponder;
-
-            // Inyectar valor individual en el cuadro rojo final
-            document.getElementById("val-cuota-persona").innerText = `$${data.finanzas.cuotaPorInfractor}`;
-
-            // Renderizar listas de personas
-            renderizarLista(data.listas.asistiran, "lista-asistiran", "No hay jugadores confirmados aún.");
-            renderizarLista(data.listas.representante, "lista-rep", "Nadie ha asignado representante.");
-            renderizarLista(data.listas.sinResponder, "lista-pendientes", "¡Sin multados! Todos asisten.");
-        })
-        .catch(err => {
-            console.error(err);
-            document.getElementById("loading").innerText = "Error al conectar con la base de datos.";
-        });
+function toggleFormNotificacion() {
+    const form = document.getElementById('formNotificacion');
+    form.classList.toggle('active');
 }
 
-function renderizarLista(arreglo, elementoId, mensajeVacio) {
-    const contenedor = document.getElementById(elementoId);
-    if(arreglo.length === 0) {
-        contenedor.innerHTML = `<p style="color:#666; font-style:italic;">${mensajeVacio}</p>`;
+async function cargarAsistenciasYNoticias() {
+    document.getElementById('loader').style.display = 'block';
+    document.getElementById('vistaConfirmados').style.display = 'none';
+    
+    try {
+        const res = await fetch(`${CONFIG.URL_GAS}?action=getJugadoresRaw&nocache=${Date.now()}`);
+        const data = await res.json();
+        
+        if (data.success) {
+            renderizarTablaAsistencias(data.datos);
+        }
+    } catch (e) {
+        console.error("Error en la sincronización:", e);
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('vistaConfirmados').style.display = 'block';
+    }
+}
+
+function renderizarTablaAsistencias(filas) {
+    let respuestas = 0, asistiran = 0, representantes = 0, noAsistiran = 0;
+    let html = "";
+
+    if (!filas || filas.length === 0) {
+        document.getElementById('tablaConfirmadosBody').innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ningún deportista registrado.</td></tr>";
         return;
     }
-    
-    contenedor.innerHTML = "";
-    arreglo.forEach(jugador => {
-        const div = document.createElement("div");
-        div.className = "jugador-item";
-        div.innerHTML = `
-            <span><strong>${jugador.nombre}</strong> <small style="color:#777;">(${jugador.camiseta})</small></span>
-            <span class="badge-dorsal">Dorsal: ${jugador.dorsal}</span>
-        `;
-        contenedor.appendChild(div);
+
+    filas.forEach(fila => {
+        if (fila && fila.length >= 30) {
+            let nombreCompleto = ((fila[1] || '') + " " + (fila[3] || '')).trim();
+            let dorsal = fila[17] || "—";
+            let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
+
+            respuestas++;
+            let badge = "";
+
+            if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asist")) {
+                asistiran++;
+                badge = "🟢 1️⃣ Asistirá";
+            } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("represen")) {
+                representantes++;
+                badge = "🟡 2️⃣ Representante";
+            } else {
+                noAsistiran++;
+                badge = "🔴 Sin confirmar / Multado";
+            }
+
+            html += `<tr>
+                <td><strong>${nombreCompleto}</strong></td>
+                <td style="text-align: center; font-weight:700; color:#475569;">${dorsal}</td>
+                <td><span style="font-weight:600; font-size:0.8rem;">${badge}</span></td>
+            </tr>`;
+        }
     });
+
+    document.getElementById('tablaConfirmadosBody').innerHTML = html;
+    
+    document.getElementById('numTotal').innerText = respuestas;
+    document.getElementById('numAsistiran').innerText = asistiran;
+    document.getElementById('numRepresentante').innerText = representantes;
+
+    // MATEMÁTICA EXACTA SOLICITADA
+    let multaBase = 190.00;
+    let confirmadosValidos = asistiran + representantes; 
+    let descuentoTotal = confirmadosValidos * 2.00; // Resta $2 por cada asistente o delegado
+    let saldoRestanteMulta = Math.max(0, multaBase - descuentoTotal);
+
+    // Se divide el remanente exclusivamente entre los faltantes
+    let multaIndividual = 0;
+    if (noAsistiran > 0) {
+        multaIndividual = saldoRestanteMulta / noAsistiran;
+    }
+
+    document.getElementById('valMulta').innerText = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(multaIndividual);
 }
+
+async function enviarNotificacion(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnPublicar');
+    const titulo = document.getElementById('tituloNoticia').value.trim();
+    const cuerpo = document.getElementById('cuerpoNoticia').value.trim();
+
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
+
+    try {
+        const url = `${CONFIG.URL_GAS}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}`;
+        const res = await fetch(url, { method: 'POST' });
+        const data = await res.json();
+
+        if (data.success) {
+            alert("¡Anuncio publicado correctamente!");
+            document.getElementById('noticiaForm').reset();
+            document.getElementById('formNotificacion').classList.remove('active');
+            cargarAsistenciasYNoticias();
+        }
+    } catch (error) {
+        console.error(error);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publicar en Cartelera`;
+    }
+}
+
+cargarAsistenciasYNoticias();
 </script>
 </body>
 </html>
