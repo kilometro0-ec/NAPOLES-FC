@@ -2,469 +2,911 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Nápoles F.C. - Acceso</title>
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#020c1a">
-    <link rel="icon" href="data:,">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-    <style>
-        :root{
-            --primary:#00d2ff;
-            --primary-dark:#008f9b;
-            --accent:#FFD700;
-            --bg-dark:#020c1a;
-            --glass:rgba(12,25,45,.72);
-        }
+<meta charset="UTF-8">
 
-        html, body{
-            height:100%;
-        }
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            -webkit-tap-highlight-color:transparent;
-        }
+<title>Nápoles F.C. - Acceso</title>
 
-        body{
-            font-family:'Plus Jakarta Sans',sans-serif;
-            background:#020c1a;
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:20px;
-            color:#fff;
-            position:relative;
-            overflow-x:hidden;
-            overflow-y:auto;
-        }
+<link rel="manifest" href="./manifest.json">
 
-        /* =====================================================
-           FONDO HOLOGRÁFICO
-        ===================================================== */
-        body::before, body::after{
-            content:'';
-            position:fixed;
-            width:950px;
-            height:950px;
-            border-radius:50%;
-            filter:blur(130px);
-            opacity:.85;
-            z-index:0;
-            animation:moveGlow 14s infinite ease-in-out;
-            pointer-events:none;
-        }
+<meta name="theme-color" content="#020c1a">
 
-        body::before{
-            background: radial-gradient(circle, rgba(0,210,255,.95) 0%, rgba(0,140,255,.55) 40%, transparent 75%);
-            top:-340px;
-            left:-260px;
-        }
+<link rel="icon" href="data:,">
 
-        body::after{
-            background: radial-gradient(circle, rgba(111,0,255,.95) 0%, rgba(168,85,247,.55) 40%, transparent 75%);
-            bottom:-340px;
-            right:-260px;
-            animation-delay:7s;
-        }
+<link
+href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
+rel="stylesheet">
 
-        @keyframes moveGlow{
-            0%{ transform: translate(0,0) scale(1) rotate(0deg); }
-            25%{ transform: translate(120px,60px) scale(1.15) rotate(90deg); }
-            50%{ transform: translate(-90px,120px) scale(.9) rotate(180deg); }
-            75%{ transform: translate(80px,-90px) scale(1.08) rotate(270deg); }
-            100%{ transform: translate(0,0) scale(1) rotate(360deg); }
-        }
+<style>
 
-        /* =====================================================
-           CARD
-        ===================================================== */
-        .login-card{
-            width:100%;
-            max-width:430px;
-            background:rgba(10,18,35,.76);
-            backdrop-filter:blur(24px) saturate(180%);
-            border:1px solid rgba(0,210,255,.45);
-            border-radius:34px;
-            padding:42px 30px;
-            box-shadow: 0 0 35px rgba(0,210,255,.22), 0 18px 45px rgba(0,0,0,.65);
-            position:relative;
-            z-index:2;
-            transition:.45s;
-        }
+:root{
+    --primary:#00d2ff;
+    --primary-dark:#008f9b;
+    --accent:#FFD700;
+    --bg-dark:#020c1a;
+    --glass:rgba(12,25,45,.72);
+}
 
-        /* =====================================================
-           MODO ADMIN MORADO
-        ===================================================== */
-        .login-card.admin-mode{
-            background:rgba(38,16,60,.84);
-            border:1px solid rgba(168,85,247,.95);
-            box-shadow: 0 0 45px rgba(168,85,247,.55), 0 18px 45px rgba(0,0,0,.75);
-        }
+html,
+body{
+    height:100%;
+}
 
-        .login-card.admin-mode .logo-area h1{
-            background: linear-gradient(to right, #ffffff, #d8b4fe, #a855f7);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
 
-        .login-card.admin-mode .logo-area p{ color:#f3e8ff; }
-        .login-card.admin-mode label{ color:#d8b4fe; }
-        
-        .login-card.admin-mode input{
-            border:2px solid rgba(168,85,247,.4);
-            background: rgba(55,25,80,.78);
-            box-shadow: 0 0 18px rgba(168,85,247,.2);
-        }
+body{
 
-        .login-card.admin-mode input:focus{
-            border-color:#c084fc;
-            box-shadow: 0 0 25px rgba(168,85,247,.45);
-        }
+    font-family:'Plus Jakarta Sans',sans-serif;
 
-        .login-card.admin-mode .btn-submit{
-            background: linear-gradient(135deg, #6d28d9, #a855f7);
-            box-shadow: 0 10px 25px rgba(168,85,247,.35);
-        }
+    background:#020c1a;
 
-        .login-card.admin-mode #manualDownloadBtn{
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            box-shadow: 0 10px 25px rgba(168,85,247,.35);
-        }
+    min-height:100vh;
 
-        .login-card.admin-mode a{ color:#f3e8ff; }
+    display:flex;
 
-        /* =====================================================
-           LOGO
-        ===================================================== */
-        .logo-area{
-            text-align:center;
-            margin-bottom:38px;
-        }
+    align-items:center;
 
-        .logo-area h1{
-            font-size:2rem;
-            font-weight:800;
-            background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-            margin-bottom:10px;
-        }
+    justify-content:center;
 
-        .logo-area p{
-            opacity:.92;
-            font-size:1rem;
-            font-weight:700;
-            color:#d7f7ff;
-            letter-spacing:1px;
-        }
+    padding:20px;
 
-        /* =====================================================
-           INPUTS
-        ===================================================== */
-        .input-group{
-            margin-bottom:28px;
-        }
+    color:#fff;
 
-        .input-group label{
-            display:block;
-            margin-bottom:12px;
-            color:var(--primary);
-            font-size:.82rem;
-            font-weight:700;
-            letter-spacing:1.6px;
-            text-transform:uppercase;
-            transition:.35s;
-        }
+    position:relative;
 
-        input{
-            width:100%;
-            min-height:62px;
-            border-radius:18px;
-            border:2px solid rgba(255,255,255,.06);
-            background:rgba(15,23,42,.7);
-            color:#fff;
-            font-size:1.05rem;
-            font-weight:700;
-            padding:0 18px;
-            text-align:center;
-            outline:none;
-            transition:.35s;
-        }
+    overflow-x:hidden;
+    overflow-y:auto;
+}
 
-        input:focus{
-            border-color:var(--primary);
-            background:rgba(15,23,42,.92);
-            box-shadow: 0 0 18px rgba(0,210,255,.35);
-        }
+/* =====================================================
+   FONDO HOLOGRÁFICO
+===================================================== */
 
-        /* =====================================================
-           BOTÓN
-        ===================================================== */
-        .btn-submit{
-            width:100%;
-            height:58px;
-            border:none;
-            border-radius:18px;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            color:#fff;
-            font-size:1rem;
-            font-weight:800;
-            letter-spacing:1.5px;
-            text-transform:uppercase;
-            cursor:pointer;
-            transition:.35s;
-            margin-top:12px;
-        }
+body::before,
+body::after{
 
-        .btn-submit:hover{
-            transform:translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,210,255,.35);
-        }
+    content:'';
 
-        .btn-submit:disabled{
-            opacity:.6;
-            cursor:not-allowed;
-        }
+    position:fixed;
 
-        /* =====================================================
-           ERROR
-        ===================================================== */
-        .error-message{
-            display:none;
-            margin-top:20px;
-            padding:14px;
-            border-radius:14px;
-            background:rgba(239,68,68,.16);
-            border:1px solid rgba(239,68,68,.35);
-            color:#fecaca;
-            text-align:center;
-            font-size:.88rem;
-            font-weight:600;
-        }
+    width:950px;
+    height:950px;
 
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-        .footer-links{
-            width:100%;
-            margin-top:34px;
-        }
+    border-radius:50%;
 
-        .footer-links a{
-            color:#FFD700;
-            font-weight:800;
-            text-decoration:none;
-        }
+    filter:blur(130px);
 
-        .footer-links a:hover{ opacity:.9; }
+    opacity:.85;
 
-        #manualDownloadBtn{
-            padding:14px 24px;
-            border-radius:999px;
-            border:none;
-            background: linear-gradient(135deg, #00d2ff, #008f9b);
-            color:#fff;
-            font-weight:800;
-            font-size:.95rem;
-            cursor:pointer;
-            transition:.35s;
-            box-shadow: 0 10px 25px rgba(0,210,255,.25);
-        }
+    z-index:0;
 
-        #manualDownloadBtn:hover{ transform:translateY(-2px); }
+    animation:moveGlow 14s infinite ease-in-out;
 
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-        @media(max-width:480px){
-            body{ padding:16px; }
-            .login-card{ padding:32px 22px; }
-            .logo-area h1{ font-size:1.7rem; }
-            input{ min-height:56px; }
-            .btn-submit{ height:54px; }
-        }
-    </style>
+    pointer-events:none;
+}
+
+body::before{
+
+    background:
+    radial-gradient(circle,
+    rgba(0,210,255,.95) 0%,
+    rgba(0,140,255,.55) 40%,
+    transparent 75%);
+
+    top:-340px;
+    left:-260px;
+}
+
+body::after{
+
+    background:
+    radial-gradient(circle,
+    rgba(111,0,255,.95) 0%,
+    rgba(168,85,247,.55) 40%,
+    transparent 75%);
+
+    bottom:-340px;
+    right:-260px;
+
+    animation-delay:7s;
+}
+
+@keyframes moveGlow{
+
+    0%{
+        transform:
+        translate(0,0)
+        scale(1)
+        rotate(0deg);
+    }
+
+    25%{
+        transform:
+        translate(120px,60px)
+        scale(1.15)
+        rotate(90deg);
+    }
+
+    50%{
+        transform:
+        translate(-90px,120px)
+        scale(.9)
+        rotate(180deg);
+    }
+
+    75%{
+        transform:
+        translate(80px,-90px)
+        scale(1.08)
+        rotate(270deg);
+    }
+
+    100%{
+        transform:
+        translate(0,0)
+        scale(1)
+        rotate(360deg);
+    }
+}
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.login-card{
+
+    width:100%;
+    max-width:430px;
+
+    background:rgba(10,18,35,.76);
+
+    backdrop-filter:blur(24px) saturate(180%);
+
+    border:1px solid rgba(0,210,255,.45);
+
+    border-radius:34px;
+
+    padding:42px 30px;
+
+    box-shadow:
+    0 0 35px rgba(0,210,255,.22),
+    0 18px 45px rgba(0,0,0,.65);
+
+    position:relative;
+
+    z-index:2;
+
+    transition:.45s;
+}
+
+/* =====================================================
+   MODO ADMIN MORADO
+===================================================== */
+
+.login-card.admin-mode{
+
+    background:rgba(38,16,60,.84);
+
+    border:1px solid rgba(168,85,247,.95);
+
+    box-shadow:
+    0 0 45px rgba(168,85,247,.55),
+    0 18px 45px rgba(0,0,0,.75);
+}
+
+.login-card.admin-mode .logo-area h1{
+
+    background:
+    linear-gradient(
+    to right,
+    #ffffff,
+    #d8b4fe,
+    #a855f7
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.login-card.admin-mode .logo-area p{
+    color:#f3e8ff;
+}
+
+.login-card.admin-mode label{
+    color:#d8b4fe;
+}
+
+.login-card.admin-mode input{
+
+    border:2px solid rgba(168,85,247,.4);
+
+    background:
+    rgba(55,25,80,.78);
+
+    box-shadow:
+    0 0 18px rgba(168,85,247,.2);
+}
+
+.login-card.admin-mode input:focus{
+
+    border-color:#c084fc;
+
+    box-shadow:
+    0 0 25px rgba(168,85,247,.45);
+}
+
+.login-card.admin-mode .btn-submit{
+
+    background:
+    linear-gradient(
+        135deg,
+        #6d28d9,
+        #a855f7
+    );
+
+    box-shadow:
+    0 10px 25px rgba(168,85,247,.35);
+}
+
+.login-card.admin-mode #manualDownloadBtn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #7c3aed,
+        #a855f7
+    );
+
+    box-shadow:
+    0 10px 25px rgba(168,85,247,.35);
+}
+
+.login-card.admin-mode a{
+    color:#f3e8ff;
+}
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo-area{
+    text-align:center;
+    margin-bottom:38px;
+}
+
+.logo-area h1{
+
+    font-size:2rem;
+
+    font-weight:800;
+
+    background:
+    linear-gradient(
+    to right,
+    #fff,
+    var(--primary)
+    );
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    margin-bottom:10px;
+}
+
+.logo-area p{
+
+    opacity:.92;
+
+    font-size:1rem;
+
+    font-weight:700;
+
+    color:#d7f7ff;
+
+    letter-spacing:1px;
+}
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+.input-group{
+    margin-bottom:28px;
+}
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:12px;
+
+    color:var(--primary);
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    letter-spacing:1.6px;
+
+    text-transform:uppercase;
+
+    transition:.35s;
+}
+
+input{
+
+    width:100%;
+
+    min-height:62px;
+
+    border-radius:18px;
+
+    border:2px solid rgba(255,255,255,.06);
+
+    background:rgba(15,23,42,.7);
+
+    color:#fff;
+
+    font-size:1.05rem;
+
+    font-weight:700;
+
+    padding:0 18px;
+
+    text-align:center;
+
+    outline:none;
+
+    transition:.35s;
+}
+
+input:focus{
+
+    border-color:var(--primary);
+
+    background:rgba(15,23,42,.92);
+
+    box-shadow:
+    0 0 18px rgba(0,210,255,.35);
+}
+
+/* =====================================================
+   BOTÓN
+===================================================== */
+
+.btn-submit{
+
+    width:100%;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary-dark),
+        var(--primary)
+    );
+
+    color:#fff;
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    margin-top:12px;
+}
+
+.btn-submit:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 10px 25px rgba(0,210,255,.35);
+}
+
+.btn-submit:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error-message{
+
+    display:none;
+
+    margin-top:20px;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    background:rgba(239,68,68,.16);
+
+    border:1px solid rgba(239,68,68,.35);
+
+    color:#fecaca;
+
+    text-align:center;
+
+    font-size:.88rem;
+
+    font-weight:600;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer-links{
+    width:100%;
+    margin-top:34px;
+}
+
+.footer-links a{
+
+    color:#FFD700;
+
+    font-weight:800;
+
+    text-decoration:none;
+}
+
+.footer-links a:hover{
+    opacity:.9;
+}
+
+#manualDownloadBtn{
+
+    padding:14px 24px;
+
+    border-radius:999px;
+
+    border:none;
+
+    background:
+    linear-gradient(
+    135deg,
+    #00d2ff,
+    #008f9b
+    );
+
+    color:#fff;
+
+    font-weight:800;
+
+    font-size:.95rem;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    box-shadow:
+    0 10px 25px rgba(0,210,255,.25);
+}
+
+#manualDownloadBtn:hover{
+    transform:translateY(-2px);
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:480px){
+
+    body{
+        padding:16px;
+    }
+
+    .login-card{
+        padding:32px 22px;
+    }
+
+    .logo-area h1{
+        font-size:1.7rem;
+    }
+
+    input{
+        min-height:56px;
+    }
+
+    .btn-submit{
+        height:54px;
+    }
+}
+
+</style>
+
 </head>
 
 <body>
 
-<div class="login-card" id="loginCard">
+<div
+class="login-card"
+id="loginCard">
+
     <div class="logo-area">
+
         <h1>NÁPOLES F.C.</h1>
+
         <p>Acceso de Jugadores PRO</p>
+
     </div>
 
     <form id="formLogin">
+
         <div class="input-group">
-            <label>Ingresa tus credenciales</label>
-            <input type="text" id="loginCedula" placeholder="Cédula o clave" autocomplete="off" required>
+
+            <label>
+                Ingresa tus credenciales
+            </label>
+
+            <input
+                type="text"
+                id="loginCedula"
+                placeholder="Cédula o clave"
+                autocomplete="off"
+                required
+            >
+
         </div>
-        <button type="submit" id="btnLogin" class="btn-submit" disabled>
+
+        <button
+            type="submit"
+            id="btnLogin"
+            class="btn-submit"
+            disabled
+        >
             Ingresa al Vestuario
         </button>
+
     </form>
 
-    <div id="errorMsg" class="error-message"></div>
+    <div
+    id="errorMsg"
+    class="error-message"></div>
 
     <div class="footer-links">
-        <p style="margin-top:30px; margin-bottom:24px; text-align:center; line-height:1.8;">
+
+        <p
+        style="
+        margin-top:30px;
+        margin-bottom:24px;
+        text-align:center;
+        line-height:1.8;
+        ">
+
             ¿No tienes cuenta?
-            <a href="./index.html">REGÍSTRATE ✨</a>
+
+            <a href="./index.html">
+                REGÍSTRATE ✨
+            </a>
+
         </p>
-        <div style="display:flex; justify-content:center;">
-            <button id="manualDownloadBtn" type="button">📲 INSTALAR APP</button>
+
+        <div
+        style="
+        display:flex;
+        justify-content:center;
+        ">
+
+            <button
+                id="manualDownloadBtn"
+                type="button"
+            >
+                📲 INSTALAR APP
+            </button>
+
         </div>
+
     </div>
+
 </div>
 
 <!-- CONFIG EN CARPETA RAÍZ -->
 <script src="./config.js"></script>
 
 <script>
-const formLogin = document.getElementById('formLogin');
-const cedulaInput = document.getElementById('loginCedula');
-const btnLogin = document.getElementById('btnLogin');
-const errorDiv = document.getElementById('errorMsg');
-const loginCard = document.getElementById('loginCard');
+
+const formLogin =
+document.getElementById('formLogin');
+
+const cedulaInput =
+document.getElementById('loginCedula');
+
+const btnLogin =
+document.getElementById('btnLogin');
+
+const errorDiv =
+document.getElementById('errorMsg');
+
+const loginCard =
+document.getElementById('loginCard');
 
 // =====================================================
 // ERROR
 // =====================================================
+
 function mostrarError(msj){
+
     errorDiv.textContent = msj;
+
     errorDiv.style.display = 'block';
+
     setTimeout(() => {
+
         errorDiv.style.display = 'none';
+
     }, 5000);
 }
 
 // =====================================================
 // INPUT
 // =====================================================
+
 cedulaInput.addEventListener('input', () => {
-    const val = cedulaInput.value.trim();
-    btnLogin.disabled = !val;
+
+    const val =
+    cedulaInput.value.trim();
+
+    btnLogin.disabled =
+    !val;
 
     // EFECTO ADMIN MORADO
+
     if(val.includes('Gata')){
-        loginCard.classList.add('admin-mode');
-    } else {
-        loginCard.classList.remove('admin-mode');
+
+        loginCard.classList.add(
+            'admin-mode'
+        );
+
+    }else{
+
+        loginCard.classList.remove(
+            'admin-mode'
+        );
     }
+
 });
 
 // =====================================================
-// LOGIN REMASTERIZADO CON INYECCIÓN JSONP (ANTI-CORS)
+// LOGIN CORREGIDO Y ADAPTADO AL BACKEND
 // =====================================================
-formLogin.addEventListener('submit', (e) => {
+
+formLogin.addEventListener('submit', async (e) => {
+
     e.preventDefault();
-    const valor = cedulaInput.value.trim();
+
+    const valor =
+    cedulaInput.value.trim();
 
     if(!navigator.onLine){
-        mostrarError('📡 Sin conexión a internet');
+
+        mostrarError(
+            '📡 Sin conexión a internet'
+        );
+
         return;
     }
 
-    if(typeof CONFIG === 'undefined' || !CONFIG.URL_GAS){
-        mostrarError('❌ Configuración del servidor no disponible');
+    if(typeof CONFIG === 'undefined'){
+
+        mostrarError(
+            '❌ No se cargó config.js'
+        );
+
+        return;
+    }
+
+    if(!CONFIG.URL_GAS){
+
+        mostrarError(
+            '❌ URL_GAS no existe'
+        );
+
         return;
     }
 
     btnLogin.disabled = true;
-    btnLogin.textContent = 'CONECTANDO...';
 
-    // Limpieza previa de scripts colgados en el documento
-    document.getElementById("script_jsonp_auth")?.remove();
+    btnLogin.textContent =
+    'CONECTANDO...';
 
-    // 1. LOGIN ADMINISTRADOR (GataFiera54321)
-    if(valor === 'GataFiera54321'){
-        const callbackAdmin = "cbAuthAdmin";
-        
-        window[callbackAdmin] = function(dataAdmin) {
-            if(dataAdmin.success === true && dataAdmin.acceso === true){
-                localStorage.setItem('admin_activo', 'true');
-                window.location.assign('./admin.html');
-            } else {
-                mostrarError('❌ Clave admin incorrecta');
-                restaurarBoton();
+    try{
+
+        // LOGIN ADMIN (Adaptado a POST + estructura de datos correcta)
+
+        if(valor === 'GataFiera54321'){
+
+            const parametrosAdmin = new URLSearchParams();
+            parametrosAdmin.append('action', 'loginAdmin');
+            parametrosAdmin.append('clave', valor);
+
+            const responseAdmin = await fetch(CONFIG.URL_GAS, {
+                method: 'POST',
+                mode: 'cors',
+                body: parametrosAdmin
+            });
+
+            const dataAdmin = await responseAdmin.json();
+
+            // Modificado de dataAdmin.ok a dataAdmin.success conforme a tu Apps Script
+            if(
+                dataAdmin.success === true &&
+                dataAdmin.acceso === true
+            ){
+
+                localStorage.setItem(
+                    'admin_activo',
+                    'true'
+                );
+
+                window.location.assign(
+                    './admin.html'
+                );
+
+                return;
             }
-            limpiarCanal(callbackAdmin);
-        };
 
-        const scriptAdmin = document.createElement("script");
-        scriptAdmin.id = "script_jsonp_auth";
-        scriptAdmin.src = `${CONFIG.URL_GAS}?action=loginAdmin&clave=${encodeURIComponent(valor)}&callback=${callbackAdmin}&nocache=${Date.now()}`;
-        scriptAdmin.onerror = () => { errorRed(); limpiarCanal(callbackAdmin); };
-        document.body.appendChild(scriptAdmin);
-        return;
-    }
+            mostrarError(
+                '❌ Clave admin incorrecta'
+            );
 
-    // 2. LOGIN JUGADOR (Validación de cédulas de 10 dígitos)
-    if(!/^\d{10}$/.test(valor)){
-        mostrarError('❌ Ingresa una cédula válida o clave admin');
-        restaurarBoton();
-        return;
-    }
-
-    const callbackJugador = "cbAuthJugador";
-
-    window[callbackJugador] = function(data) {
-        if(data.success === true && data.cedulaExiste === true && data.estado === 'APROBADO'){
-            localStorage.setItem('jugador_actual', JSON.stringify(data.datosJugador));
-            localStorage.setItem('userCedula', valor);
-            window.location.assign('./perfil.html');
-        } 
-        else if(data.success === true && data.cedulaExiste === true){
-            mostrarError(`⏳ Estado actual: ${data.estado}`);
-            restaurarBoton();
-        } 
-        else if(data.success === true && data.cedulaExiste === false){
-            mostrarError('❌ Jugador no encontrado');
-            restaurarBoton();
-        } 
-        else {
-            mostrarError(data.error || '⚠️ Error inesperado');
-            restaurarBoton();
+            return;
         }
-        limpiarCanal(callbackJugador);
-    };
 
-    const scriptJugador = document.createElement("script");
-    scriptJugador.id = "script_jsonp_auth";
-    scriptJugador.src = `${CONFIG.URL_GAS}?action=validarRegistro&cedula=${encodeURIComponent(valor)}&callback=${callbackJugador}&nocache=${Date.now()}`;
-    scriptJugador.onerror = () => { errorRed(); limpiarCanal(callbackJugador); };
-    document.body.appendChild(scriptJugador);
+        // LOGIN JUGADOR
+
+        if(!/^\d{10}$/.test(valor)){
+
+            mostrarError(
+                '❌ Ingresa una cédula válida o clave admin'
+            );
+
+            return;
+        }
+
+        const parametrosJugador = new URLSearchParams();
+        parametrosJugador.append('action', 'validarRegistro');
+        parametrosJugador.append('cedula', valor);
+
+        const response = await fetch(CONFIG.URL_GAS, {
+            method: 'POST',
+            mode: 'cors',
+            body: parametrosJugador
+        });
+
+        if(!response.ok){
+
+            throw new Error(
+                'Servidor no disponible'
+            );
+        }
+
+        const data = await response.json();
+
+        // APROBADO (Modificado de data.ok a data.success conforme a tu Apps Script)
+
+        if(
+            data.success === true &&
+            data.cedulaExiste === true &&
+            data.estado === 'APROBADO'
+        ){
+
+            localStorage.setItem(
+                'jugador_actual',
+                JSON.stringify(data.datosJugador)
+            );
+
+            localStorage.setItem(
+                'userCedula',
+                valor
+            );
+
+            window.location.assign(
+                './perfil.html'
+            );
+
+            return;
+        }
+
+        // PENDIENTE / RECHAZADO
+
+        if(
+            data.success === true &&
+            data.cedulaExiste === true
+        ){
+
+            mostrarError(
+                `⏳ Estado actual: ${data.estado}`
+            );
+
+            return;
+        }
+
+        // NO EXISTE
+
+        if(
+            data.success === true &&
+            data.cedulaExiste === false
+        ){
+
+            mostrarError(
+                '❌ Jugador no encontrado'
+            );
+
+            return;
+        }
+
+        mostrarError(
+            data.error ||
+            '⚠️ Error inesperado'
+        );
+
+    }catch(error){
+
+        mostrarError(
+            error.message ||
+            '🔌 Error de conexión'
+        );
+
+    }finally{
+
+        btnLogin.disabled = false;
+
+        btnLogin.textContent =
+        'Ingresa al Vestuario';
+    }
+
 });
-
-// Funciones de soporte estructural
-function restaurarBoton() {
-    btnLogin.disabled = false;
-    btnLogin.textContent = 'Ingresa al Vestuario';
-}
-
-function errorRed() {
-    mostrarError('🔌 Falla de red: El servidor de Google no respondió.');
-    restaurarBoton();
-}
-
-function limpiarCanal(nombreCallback) {
-    delete window[nombreCallback];
-    document.getElementById("script_jsonp_auth")?.remove();
-}
 
 // =====================================================
 // INSTALAR APP
 // =====================================================
-const manualDownloadBtn = document.getElementById('manualDownloadBtn');
+
+const manualDownloadBtn =
+document.getElementById('manualDownloadBtn');
+
 manualDownloadBtn.addEventListener('click', () => {
-    alert(`📲 INSTALAR APP\n\n1. Abre el menú del navegador\n\n2. Presiona:\n"Instalar aplicación"\n\n3. Agregar a pantalla principal`);
+
+    alert(
+`📲 INSTALAR APP
+
+1. Abre el menú del navegador
+
+2. Presiona:
+"Instalar aplicación"
+
+3. Agregar a pantalla principal`
+    );
+
 });
+
 </script>
 
 </body>
