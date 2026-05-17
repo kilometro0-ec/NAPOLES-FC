@@ -197,7 +197,7 @@ body{
 .m-label-total{
   font-size:12px;
   color:var(--text-muted);
-  line-height:1.5;
+  line-height:1.7;
 }
 
 .progress-container-club{
@@ -360,7 +360,7 @@ Jugadores confirmados
 id="txt-saldo-multa-club">$0.00</span>
 
 <span class="m-label-total">
-Pendientes por responder
+Calculando multas...
 </span>
 
 </div>
@@ -403,10 +403,12 @@ class="progress-bar-fill"></div>
 const API_URL = CONFIG.URL_GAS;
 
 /*
-TOTAL REAL
-AJUSTA SI CAMBIA
+========================================
+TOTAL REAL DE JUGADORES
+========================================
 */
-const TOTAL_PLANTILLA = 30;
+
+const TOTAL_PLANTILLA = 22;
 
 window.addEventListener(
 "DOMContentLoaded",
@@ -417,6 +419,7 @@ window.addEventListener(
   /*
   AUTO REFRESH
   */
+
   setInterval(() => {
     cargarDatosInauguracion();
   }, 30000);
@@ -469,6 +472,12 @@ const totalGlobal = resumen.total || 0;
 const totalAsisten = resumen.asistiran || 0;
 const totalRepresentantes = resumen.representante || 0;
 
+/*
+========================================
+CONTADORES
+========================================
+*/
+
 document.getElementById(
 "txt-total-global"
 ).innerText = totalGlobal;
@@ -481,18 +490,101 @@ document.getElementById(
 "txt-van-delegados"
 ).innerText = totalRepresentantes;
 
+/*
+========================================
+JUGADORES FALTANTES
+========================================
+*/
+
 const sinResponder =
 Math.max(
 TOTAL_PLANTILLA - totalGlobal,
 0
 );
 
-const multa = sinResponder * 10;
+/*
+========================================
+MULTA BASE
+22 jugadores x $10
+========================================
+*/
+
+const multaBase =
+TOTAL_PLANTILLA * 10;
+
+/*
+========================================
+DESCUENTO
+Cada confirmación reduce $2
+========================================
+*/
+
+const descuentoConfirmados =
+totalGlobal * 2;
+
+/*
+========================================
+MULTA ACTUAL
+========================================
+*/
+
+const multaActual =
+Math.max(
+multaBase - descuentoConfirmados,
+0
+);
+
+/*
+========================================
+MULTA POR JUGADOR
+========================================
+*/
+
+const multaPorFaltar =
+sinResponder > 0
+? (multaActual / sinResponder)
+: 0;
+
+/*
+========================================
+MOSTRAR TOTAL
+========================================
+*/
 
 document.getElementById(
 "txt-saldo-multa-club"
 ).innerText =
-"$" + multa.toFixed(2);
+"$" + multaActual.toFixed(2);
+
+/*
+========================================
+DETALLE ABAJO
+========================================
+*/
+
+document.querySelector(
+".m-label-total"
+).innerHTML =
+`
+Faltan <strong>${sinResponder}</strong> jugadores por responder
+<br><br>
+
+Valor de la multa a pagar dividido para los jugadores que faltaron a la inauguración:
+
+<br><br>
+
+<strong style="
+color:#e74c3c;
+font-size:16px;">
+$${multaPorFaltar.toFixed(2)}
+</strong>
+`;
+
+/*
+========================================
+PROGRESO
+========================================
+*/
 
 const porcentaje =
 Math.min(
@@ -511,6 +603,12 @@ document.getElementById(
 "bar-progreso-llenado"
 ).style.width =
 porcentaje + "%";
+
+/*
+========================================
+ALERTA SUPERIOR
+========================================
+*/
 
 const notifBox =
 document.getElementById(
