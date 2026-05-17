@@ -2,323 +2,182 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Notificaciones - Nápoles F.C.</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conteo de Inauguración - Nápoles F.C.</title>
     <style>
-        :root {
-            --primary: #0f172a;
-            --amber-light: #fff9c4;
-            --secondary-color: #ffb300;
-            --success: #10b981;
-            --danger: #ef4444;
-            --muted: #6b7280;
-            --bg: #f8fafc;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
         }
-
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-height:100vh; padding-bottom: 60px; }
-
-        .topbar {
-            position:sticky; top:0; z-index:100; background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
-            border-bottom:1px solid #e2e8f0; padding:16px 18px; display:flex; align-items:center; justify-content:space-between;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .admin-info h1 { font-family: 'Outfit', sans-serif; font-size:1.25rem; font-weight:900; color: var(--primary); }
-        .admin-info p { font-size:.8rem; color:var(--muted); font-weight: 600; text-transform: uppercase; }
-        .avatar { width:42px; height:42px; border-radius:12px; background: #f1f5f9; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:1.1rem; }
-
-        .container { max-width: 650px; margin: 0 auto; padding: 0 18px; }
-
-        /* PANEL DE NOTIFICACIÓN EN VIVO */
-        .noticias-mini-panel {
-            background: linear-gradient(135deg, #fffde7, var(--amber-light));
-            border: 1px solid #fef08a;
-            border-left: 5px solid var(--secondary-color);
-            border-radius: 18px; padding: 16px; margin-top: 20px;
-            display: flex; align-items: flex-start; gap: 14px;
-            box-shadow: 0 4px 12px rgba(254,240,138,0.15);
+        .header-comunicado {
+            background-color: #0b1f3f;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .icon-box {
-            background-color: var(--secondary-color); color: #7f6d00;
-            width: 38px; height: 38px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+        .header-comunicado h2 { margin-top: 0; color: #ffcc00; }
+        .grid-conteo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
-        .noticias-content { flex-grow: 1; }
-        .noticias-content h4 { font-family: 'Outfit', sans-serif; font-size: 0.9rem; text-transform: uppercase; color: #7f6d00; margin-bottom: 4px; font-weight: 800; }
-        .noticias-content .convocatoria-texto { font-size: 0.88rem; line-height: 1.5; color: #334155; white-space: pre-line; }
-
-        /* MULTA LIVE BOX */
-        .multa-live-box {
-            background-color: #fdf2f2; border: 1px solid #fee2e2; border-radius: 14px;
-            padding: 12px 16px; margin-top: 14px; display: flex; align-items: center; justify-content: space-between; color: var(--danger);
+        .card-conteo {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-bottom: 5px solid #ccc;
         }
-        .multa-live-box p { font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .multa-live-box span { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 900; background: var(--danger); color: white; padding: 2px 8px; border-radius: 6px; }
-
-        /* ACCIONES ADMINISTRADOR */
-        .admin-action-zone { margin-top: 15px; }
-        .btn-toggle-form {
-            background-color: var(--primary); color: white; border: none; padding: 11px 16px;
-            font-size: 0.8rem; font-weight: 700; border-radius: 12px; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
+        .card-conteo.si { border-color: #28a745; color: #28a745; }
+        .card-conteo.rep { border-color: #17a2b8; color: #17a2b8; }
+        .card-conteo.no { border-color: #dc3545; color: #dc3545; }
+        
+        .numero {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 5px 0;
         }
-        .btn-toggle-form:hover { opacity: 0.9; }
-
-        /* FORMULARIOS */
-        .form-card {
-            background: #fff; padding: 20px; border-radius: 22px; margin-top: 12px;
-            box-shadow: 0 4px 16px rgba(15,23,42,0.02); border: 1px solid #e2e8f0; display: none;
+        .seccion-lista {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .form-card.active { display: block; animation: desplegar 0.3s ease-out; }
-        @keyframes desplegar { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-        .form-card h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 16px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; color: #475569; text-transform: uppercase; }
-        .form-control { width: 100%; padding: 11px 14px; font-size: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; outline: none; font-family: inherit; color: var(--primary); }
-        textarea.form-control { resize: vertical; min-height: 90px; }
-
-        .btn-action { width: 100%; color: white; border: none; padding: 13px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-green { background: var(--success); }
-        .btn-green:hover { background: #059669; }
-
-        /* TABLA CARD */
-        .card { background: #fff; border-radius: 22px; padding: 20px; box-shadow: 0 4px 16px rgba(15,23,42,0.02); border: 1px solid #e2e8f0; margin-top: 20px; }
-        .card h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: var(--primary); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
-
-        .resumen-asistencias { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; text-align: center; }
-        .resumen-box { background-color: #f8fafc; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .resumen-box span { display: block; font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 900; color: var(--primary); }
-        .resumen-box label { font-size: 0.7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
-
-        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #f1f5f9; }
-        th { background-color: #f8fafc; color: #475569; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
-        td strong { color: var(--primary); font-weight: 600; }
-
-        .fab { position: fixed; bottom: 18px; right: 18px; width: 50px; height: 50px; border: none; border-radius: 14px; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: var(--primary); cursor: pointer; z-index: 100; }
-        .loading-box { text-align: center; padding: 50px 20px; color: var(--muted); }
-        .spinner-icon { font-size: 2rem; color: #cbd5e1; animation: rotar 1s linear infinite; margin-bottom: 8px; }
-        @keyframes rotar { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .seccion-lista h3 {
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .jugador-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .badge-dorsal {
+            background: #0b1f3f;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        .loading { text-align: center; font-size: 1.2rem; color: #666; padding: 4px; }
     </style>
 </head>
 <body>
 
-<header class="topbar">
-    <div class="top-left">
-        <div class="admin-info">
-            <h1>Panel Convocatorias</h1>
-            <p>Nápoles F.C. • Control Asistencias</p>
-        </div>
-    </div>
-    <div class="avatar"><i class="fa-solid fa-bullhorn"></i></div>
-</header>
-
 <div class="container">
-
-    <!-- COMPONENTE: MINIPANEL DE NOTICIAS -->
-    <div class="noticias-mini-panel" id="panelNoticias">
-        <div class="icon-box"><i class="fa-solid fa-bell"></i></div>
-        <div class="noticias-content">
-            <h4 id="lblTituloAlerta">Sincronizando...</h4>
-            <div class="convocatoria-texto" id="txtConvocatoria">Cargando última circular emitida...</div>
-        </div>
+    <!-- Bloque Informativo del Evento -->
+    <div class="header-comunicado">
+        <h2>⚽ ATENCIÓN JUGADORES ⚽</h2>
+        <p>Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día: <strong>📅 17 de mayo</strong></p>
+        <p>🕤 <strong>Hora:</strong> 9:30 a.m. (Asistir desde las 9:15 a.m.)</p>
+        <small>⚠️ La multa por inasistencia será dividida entre todos los jugadores que no asistan.</small>
     </div>
 
-    <!-- FORMULARIO DE EMISIÓN (SÓLO ADM) -->
-    <div class="admin-action-zone">
-        <button class="btn-toggle-form" onclick="toggleFormNotificacion()">
-            <i class="fa-solid fa-pen-nib"></i> Redactar Comunicado
-        </button>
-        
-        <section id="formNotificacion" class="form-card">
-            <h2><i class="fa-solid fa-bullhorn" style="color: var(--secondary-color)"></i> Difundir Nueva Notificación</h2>
-            <form id="noticiaForm" onsubmit="enviarNotificacion(event)">
-                <div class="form-group">
-                    <label>Título del Anuncio</label>
-                    <input type="text" id="tituloNoticia" class="form-control" placeholder="Ej. Convocatoria Oficial - Fecha 5" required>
-                </div>
-                <div class="form-group">
-                    <label>Cuerpo del Mensaje / Indicaciones</label>
-                    <textarea id="cuerpoNoticia" class="form-control" placeholder="Escriba el lugar, hora, uniforme y detalles del partido aquí..." required></textarea>
-                </div>
-                <button type="submit" id="btnPublicar" class="btn-action btn-green">
-                    <i class="fa-solid fa-paper-plane"></i> Publicar en Cartelera Real
-                </button>
-            </form>
-        </section>
-    </div>
+    <div id="loading" class="loading">📊 Conectando con la base de datos de Jugadores...</div>
 
-    <!-- PANTALLA DE CARGA GLOBAL -->
-    <div class="loading-box" id="loader">
-        <div class="spinner-icon"><i class="fa-solid fa-circle-notch"></i></div>
-        <p>Extrayendo confirmaciones desde la Base de Datos...</p>
-    </div>
-
-    <!-- TABLA DE CONTROL DE JUGADORES -->
-    <div class="card" id="vistaConfirmados" style="display:none;">
-        <h2><i class="fa-solid fa-users-check" style="color: var(--success)"></i> Confirmación de Asistencia (Inauguración)</h2>
-        
-        <div class="resumen-asistencias">
-            <div class="resumen-box"><span id="numTotal">0</span><label>Respuestas</label></div>
-            <div class="resumen-box"><span id="numAsistiran" style="color: var(--success);">0</span><label>Asistirán</label></div>
-            <div class="resumen-box"><span id="numRepresentante" style="color: var(--secondary-color);">0</span><label>Delegados</label></div>
+    <div id="contenido-panel" style="display: none;">
+        <!-- Indicadores Numéricos -->
+        <div class="grid-conteo">
+            <div class="card-conteo si">
+                <div>1️⃣ Asistirán Puntual</div>
+                <div class="numero" id="num-si">0</div>
+            </div>
+            <div class="card-conteo rep">
+                <div>2️⃣ Envían Representante</div>
+                <div class="numero" id="num-rep">0</div>
+            </div>
+            <div class="card-conteo no">
+                <div>⚠️ Sin Responder (Multa)</div>
+                <div class="numero" id="num-no">0</div>
+            </div>
         </div>
 
-        <div class="multa-live-box">
-            <p><i class="fa-solid fa-triangle-exclamation"></i> Penalización por inasistencia no justificada:</p>
-            <span id="valMulta">$190.00</span>
+        <!-- Listas Desglosadas -->
+        <div class="seccion-lista">
+            <h3 style="color: #28a745;">Listado: Confirmados en Persona</h3>
+            <div id="lista-asistiran"></div>
         </div>
 
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Jugador / Deportista</th>
-                        <th style="width: 80px; text-align: center;">Dorsal</th>
-                        <th>Estado Matrícula</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaConfirmadosBody">
-                    <!-- Filas dinámicas -->
-                </tbody>
-            </table>
+        <div class="seccion-lista">
+            <h3 style="color: #17a2b8;">Listado: Enviarán Representante</h3>
+            <div id="lista-rep"></div>
+        </div>
+
+        <div class="seccion-lista">
+            <h3 style="color: #dc3545;">Listado: Pendientes / No Asistirán</h3>
+            <div id="lista-pendientes"></div>
         </div>
     </div>
-
 </div>
 
-<button class="fab" onclick="cargarAsistenciasYNoticias()"><i class="fa-solid fa-arrows-rotate"></i></button>
-
+<!-- Enlace a tu Configuración existente -->
 <script src="config.js"></script>
 <script>
-if(localStorage.getItem('admin_activo') !== 'true') window.location.href = './login.html';
+document.addEventListener("DOMContentLoaded", function() {
+    obtenerConteoInauguracion();
+});
 
-function toggleFormNotificacion() {
-    const form = document.getElementById('formNotificacion');
-    form.classList.toggle('active');
-}
-
-async function cargarAsistenciasYNoticias() {
-    document.getElementById('loader').style.display = 'block';
-    document.getElementById('vistaConfirmados').style.display = 'none';
-    
-    try {
-        // Petición moderna vía FETCH limpia usando CONFIG.URL_GAS
-        const res = await fetch(`${CONFIG.URL_GAS}?action=getJugadoresRaw&nocache=${Date.now()}`);
-        const data = await res.json();
-        
-        if (data.success) {
-            // 1. Renderizar Notificación Alta en Banner
-            if (data.ultimaNotificacion) {
-                document.getElementById('lblTituloAlerta').innerText = data.ultimaNotificacion.titulo;
-                document.getElementById('txtConvocatoria').innerText = data.ultimaNotificacion.cuerpo;
-            } else {
-                document.getElementById('lblTituloAlerta').innerText = "Sin alertas vigentes";
-                document.getElementById('txtConvocatoria').innerText = "No hay circulares publicadas recientemente.";
+function obtenerConteoInauguracion() {
+    fetch(`${CONFIG.URL_GAS}?action=getConfirmadosInauguracion`)
+        .then(response => response.json())
+        .then(data => {
+            if(!data.success) {
+                document.getElementById("loading").innerText = "Error: " + data.message;
+                return;
             }
 
-            // 2. Procesar listado de filas de Jugadores
-            renderizarTablaAsistencias(data.datos);
-        }
-    } catch (e) {
-        console.error("Error en la sincronización:", e);
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('vistaConfirmados').style.display = 'block';
-    }
+            // Ocultar cargando y mostrar contenido
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("contenido-panel").style.display = "block";
+
+            // Inyectar contadores principales
+            document.getElementById("num-si").innerText = data.resumen.asistiran;
+            document.getElementById("num-rep").innerText = data.resumen.representante;
+            document.getElementById("num-no").innerText = data.resumen.sinResponder;
+
+            // Renderizar listas de personas
+            renderizarLista(data.listas.asistiran, "lista-asistiran", "No hay jugadores confirmados aún.");
+            renderizarLista(data.listas.representante, "lista-rep", "Nadie ha asignado representante.");
+            renderizarLista(data.listas.sinResponder, "lista-pendientes", "¡Excelente! Todos los jugadores han respondido.");
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("loading").innerText = "Fallo de conexión con el servidor.";
+        });
 }
 
-function renderizarTablaAsistencias(filas) {
-    let respuestas = 0, asistiran = 0, representantes = 0;
-    let html = "";
-
-    if (!filas || filas.length === 0) {
-        document.getElementById('tablaConfirmadosBody').innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ningún deportista registrado en las listas.</td></tr>";
+function renderizarLista(arreglo, elementoId, mensajeVacio) {
+    const contenedor = document.getElementById(elementoId);
+    if(arreglo.length === 0) {
+        contenedor.innerHTML = `<p style="color:#666; font-style:italic;">${mensajeVacio}</p>`;
         return;
     }
-
-    filas.forEach(fila => {
-        // Mapeo exacto: fila[1]=Nombre, fila[3]=Apellido, fila[17]=Dorsal, fila[29]=Inauguración (AD)
-        if (fila && fila.length >= 30) {
-            let nombreCompleto = ((fila[1] || '') + " " + (fila[3] || '')).trim();
-            let dorsal = fila[17] || "—";
-            let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
-
-            if (celdaInauguracion !== "") {
-                respuestas++;
-                let badge = celdaInauguracion;
-
-                if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asist")) {
-                    asistiran++;
-                    badge = "🟢 " + celdaInauguracion;
-                } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("represen")) {
-                    representantes++;
-                    badge = "🟡 " + celdaInauguracion;
-                } else {
-                    badge = "🔴 " + celdaInauguracion;
-                }
-
-                html += `<tr>
-                    <td><strong>${nombreCompleto}</strong></td>
-                    <td style="text-align: center; font-weight:700; color:#475569;">${dorsal}</td>
-                    <td><span style="font-weight:600; font-size:0.8rem;">${badge}</span></td>
-                </tr>`;
-            }
-        }
-    });
-
-    document.getElementById('tablaConfirmadosBody').innerHTML = html || "<tr><td colspan='3' style='text-align:center;'>Nadie ha completado la encuesta aún.</td></tr>";
     
-    document.getElementById('numTotal').innerText = respuestas;
-    document.getElementById('numAsistiran').innerText = asistiran;
-    document.getElementById('numRepresentante').innerText = representantes;
-
-    // Cálculo dinámico de la multa contable
-    let presentes = asistiran + representantes;
-    let multaBase = 190.00;
-    let multaFinal = Math.max(0, multaBase - (presentes * 2.00));
-    document.getElementById('valMulta').innerText = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(multaFinal);
+    contenedor.innerHTML = "";
+    arreglo.forEach(jugador => {
+        const div = document.createElement("div");
+        div.className = "jugador-item";
+        div.innerHTML = `
+            <span><strong>${jugador.nombre}</strong> <small style="color:#777;">(${jugador.camiseta})</small></span>
+            <span class="badge-dorsal">Dorsal: ${jugador.dorsal}</span>
+        `;
+        contenedor.appendChild(div);
+    });
 }
-
-async function enviarNotificacion(e) {
-    e.preventDefault();
-    const btn = document.getElementById('btnPublicar');
-    const titulo = document.getElementById('tituloNoticia').value.trim();
-    const cuerpo = document.getElementById('cuerpoNoticia').value.trim();
-
-    btn.disabled = true;
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Emitiendo Circular...`;
-
-    try {
-        const url = `${CONFIG.URL_GAS}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}`;
-        // Envío nativo vía FETCH POST/GET directo estructurado
-        const res = await fetch(url, { method: 'POST' });
-        const data = await res.json();
-
-        if (data.success) {
-            alert("¡Comunicado guardado y publicado en cartelera con éxito!");
-            document.getElementById('noticiaForm').reset();
-            document.getElementById('formNotificacion').classList.remove('active');
-            cargarAsistenciasYNoticias();
-        } else {
-            alert("Hubo un percance en el servidor al guardar.");
-        }
-    } catch (error) {
-        console.error(error);
-        alert("Error de comunicación de red con el script.");
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publicar en Cartelera Real`;
-    }
-}
-
-// Inicialización de la App al cargar
-cargarAsistenciasYNoticias();
 </script>
 </body>
 </html>
