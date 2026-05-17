@@ -1,512 +1,324 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Finanzas - Nápoles F.C.</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Notificaciones - Nápoles F.C.</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<style>
-:root {
-    --amber-dark: #b45309;
-    --amber-light: #facc15;
-    --success: #10b981;
-    --danger: #ef4444;
-    --slate-dark: #0f172a;
-    --muted: #6b7280;
-    --bg: #f8fafc;
-}
+    <style>
+        :root {
+            --primary: #0f172a;
+            --amber-light: #fff9c4;
+            --secondary-color: #ffb300;
+            --success: #10b981;
+            --danger: #ef4444;
+            --muted: #6b7280;
+            --bg: #f8fafc;
+        }
 
-*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body{ font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-height:100vh; padding-bottom: 60px; }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:#111827; min-height:100vh; padding-bottom: 60px; }
 
-.topbar{
-    position:sticky; top:0; z-index:100; background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
-    border-bottom:1px solid #e2e8f0; padding:16px 18px; display:flex; align-items:center; justify-content:space-between;
-}
-.admin-info h1{ font-family: 'Outfit', sans-serif; font-size:1.25rem; font-weight:900; color: var(--slate-dark); }
-.admin-info p{ font-size:.8rem; color:var(--muted); font-weight: 600; text-transform: uppercase; }
+        .topbar {
+            position:sticky; top:0; z-index:100; background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
+            border-bottom:1px solid #e2e8f0; padding:16px 18px; display:flex; align-items:center; justify-content:space-between;
+        }
+        .admin-info h1 { font-family: 'Outfit', sans-serif; font-size:1.25rem; font-weight:900; color: var(--primary); }
+        .admin-info p { font-size:.8rem; color:var(--muted); font-weight: 600; text-transform: uppercase; }
+        .avatar { width:42px; height:42px; border-radius:12px; background: #f1f5f9; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:1.1rem; }
 
-.avatar{ width:42px; height:42px; border-radius:12px; background: #f1f5f9; display:flex; align-items:center; justify-content:center; color:var(--slate-dark); font-size:1.1rem; }
+        .container { max-width: 650px; margin: 0 auto; padding: 0 18px; }
 
-/* PANEL DE BALANCES */
-.summary{ padding:20px 18px 5px; }
-.summary-card{ background:linear-gradient(135deg, #1e293b, var(--slate-dark)); border-radius:24px; padding:24px; color:#fff; box-shadow: 0 10px 30px rgba(15,23,42,0.08); }
-.balance-label { font-size: .75rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; font-weight: 700; }
-.balance{ font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 900; margin: 4px 0 20px 0; }
-.summary-stats{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; }
-.summary-item p{ font-size:.72rem; color: #94a3b8; text-transform: uppercase; }
-.summary-item h3{ font-size: 1.15rem; font-weight: 800; font-family: 'Outfit', sans-serif; }
+        /* PANEL DE NOTIFICACIÓN EN VIVO */
+        .noticias-mini-panel {
+            background: linear-gradient(135deg, #fffde7, var(--amber-light));
+            border: 1px solid #fef08a;
+            border-left: 5px solid var(--secondary-color);
+            border-radius: 18px; padding: 16px; margin-top: 20px;
+            display: flex; align-items: flex-start; gap: 14px;
+            box-shadow: 0 4px 12px rgba(254,240,138,0.15);
+        }
+        .icon-box {
+            background-color: var(--secondary-color); color: #7f6d00;
+            width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .noticias-content { flex-grow: 1; }
+        .noticias-content h4 { font-family: 'Outfit', sans-serif; font-size: 0.9rem; text-transform: uppercase; color: #7f6d00; margin-bottom: 4px; font-weight: 800; }
+        .noticias-content .convocatoria-texto { font-size: 0.88rem; line-height: 1.5; color: #334155; white-space: pre-line; }
 
-/* ALERTA DINÁMICA DE CUENTAS POR COBRAR INTERACTIVA */
-.por-cobrar-alert-box {
-    margin: 12px 18px 5px; padding: 16px; border-radius: 18px;
-    background: #fff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;
-    transition: all 0.3s ease; cursor: pointer;
-}
-.por-cobrar-alert-box.tiene-deuda {
-    background: linear-gradient(135deg, #fef2f2, #fee2e2);
-    border: 1px solid #fca5a5;
-    color: var(--danger);
-    animation: pulsarAlerta 2s infinite ease-in-out;
-}
-@keyframes pulsarAlerta {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.2); }
-    50% { transform: scale(1.02); box-shadow: 0 4px 15px 5px rgba(239, 68, 68, 0.12); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
-.alert-left { display: flex; align-items: center; gap: 12px; }
-.alert-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(239,68,68,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--danger); }
-.alert-text h4 { font-size: .75rem; text-transform: uppercase; color: #7f1d1d; font-weight: 700; }
-.alert-text p { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 900; color: #991b1b; }
+        /* MULTA LIVE BOX */
+        .multa-live-box {
+            background-color: #fdf2f2; border: 1px solid #fee2e2; border-radius: 14px;
+            padding: 12px 16px; margin-top: 14px; display: flex; align-items: center; justify-content: space-between; color: var(--danger);
+        }
+        .multa-live-box p { font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .multa-live-box span { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 900; background: var(--danger); color: white; padding: 2px 8px; border-radius: 6px; }
 
-/* TABS SELECTOR */
-.tab-selector-wrapper { padding: 15px 18px 5px; }
-.tab-selector { display: flex; background: #e2e8f0; padding: 5px; border-radius: 14px; gap: 4px; }
-.tab-btn {
-    flex: 1; border: none; padding: 10px 4px; border-radius: 10px; font-size: 0.76rem;
-    font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; color: #475569;
-    background: transparent; transition: all 0.25s ease; text-align: center;
-}
-.tab-btn.active { background: #fff; color: var(--slate-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        /* ACCIONES ADMINISTRADOR */
+        .admin-action-zone { margin-top: 15px; }
+        .btn-toggle-form {
+            background-color: var(--primary); color: white; border: none; padding: 11px 16px;
+            font-size: 0.8rem; font-weight: 700; border-radius: 12px; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
+        }
+        .btn-toggle-form:hover { opacity: 0.9; }
 
-/* CONTENEDORES DE FORMULARIO */
-.form-card {
-    background: #fff; margin: 12px 18px; padding: 20px; border-radius: 22px;
-    box-shadow: 0 4px 16px rgba(15,23,42,0.02); border: 1px solid #e2e8f0; display: none;
-}
-.form-card.active { display: block; animation: desplegar 0.3s ease-out; }
-@keyframes desplegar { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        /* FORMULARIOS */
+        .form-card {
+            background: #fff; padding: 20px; border-radius: 22px; margin-top: 12px;
+            box-shadow: 0 4px 16px rgba(15,23,42,0.02); border: 1px solid #e2e8f0; display: none;
+        }
+        .form-card.active { display: block; animation: desplegar 0.3s ease-out; }
+        @keyframes desplegar { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-.form-card h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 16px; color: var(--slate-dark); display: flex; align-items: center; gap: 8px; }
-.form-group { margin-bottom: 14px; }
-.form-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; color: #475569; text-transform: uppercase; }
-.form-control { width: 100%; padding: 11px 14px; font-size: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; outline: none; font-family: inherit; color: var(--slate-dark); }
+        .form-card h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; margin-bottom: 16px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; color: #475569; text-transform: uppercase; }
+        .form-control { width: 100%; padding: 11px 14px; font-size: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; outline: none; font-family: inherit; color: var(--primary); }
+        textarea.form-control { resize: vertical; min-height: 90px; }
 
-/* CORRECCIÓN DE BOTONES: ACTIVADOS Y VISIBLES POR DEFECTO */
-.btn-action { width: 100%; color: white; border: none; padding: 13px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: block; }
-.btn-green { background: var(--success); }
-.btn-green:hover { background: #059669; }
-.btn-red { background: var(--danger); }
-.btn-red:hover { background: #dc2626; }
-.btn-blue { background: #2563eb; }
+        .btn-action { width: 100%; color: white; border: none; padding: 13px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-green { background: var(--success); }
+        .btn-green:hover { background: #059669; }
 
-/* JUGADOR BUSCADO */
-.jugador-buscado-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 16px; border-radius: 16px; margin-top: 14px; display: none; }
-.jugador-buscado-card p { font-size: 0.9rem; font-weight: 700; color: var(--slate-dark); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
-.grid-cobros { display: grid; grid-template-columns: 1fr; gap: 8px; }
-.btn-cobro-opcion {
-    display: flex; align-items: center; justify-content: space-between; padding: 11px 14px;
-    border: 1px solid #cbd5e1; border-radius: 10px; background: white; font-size: 0.82rem;
-    font-weight: 700; cursor: pointer; color: var(--slate-dark);
-}
-.btn-cobro-opcion.pay-active { border-color: var(--success); color: var(--success); background: #f0fdf4; }
-.badge-precio { background: #e2e8f0; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; }
-.pay-active .badge-precio { background: var(--success); color: white; }
+        /* TABLA CARD */
+        .card { background: #fff; border-radius: 22px; padding: 20px; box-shadow: 0 4px 16px rgba(15,23,42,0.02); border: 1px solid #e2e8f0; margin-top: 20px; }
+        .card h2 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: var(--primary); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
 
-/* MOVIMIENTOS CARD STYLES */
-.movements-title { padding: 16px 20px 2px; font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--slate-dark); }
-.movements{ padding:0 18px 40px; }
-.movement-card{ background:#fff; border-radius:16px; padding:14px; margin-top:10px; display:flex; align-items:center; justify-content:space-between; border: 1px solid #edf2f7; }
-.movement-left{ display:flex; align-items:center; gap:12px; }
-.movement-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size: 0.95rem; }
-.income{ background: #ecfdf5; color: var(--success); }
-.expense{ background: #fef2f2; color: var(--danger); }
-.movement-info h3{ font-size:.85rem; font-weight:700; color: var(--slate-dark); }
-.movement-info p{ color:var(--muted); font-size:0.72rem; }
-.badge-status { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 5px; }
-.status-pagado { background: #d1fae5; color: #065f46; }
-.status-pendiente { background: #fee2e2; color: #991b1b; }
-.amount{ font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800; }
-.positive { color: var(--success); }
-.negative { color: var(--danger); }
+        .resumen-asistencias { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; text-align: center; }
+        .resumen-box { background-color: #f8fafc; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .resumen-box span { display: block; font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 900; color: var(--primary); }
+        .resumen-box label { font-size: 0.7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
 
-/* VENTANA MODAL ESTÉTICA PARA DEUDAS */
-.modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-    z-index: 1000; display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-}
-.modal-overlay.open { opacity: 1; pointer-events: auto; }
-.modal-container {
-    background: #fff; width: 90%; max-width: 500px; border-radius: 24px;
-    padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    transform: translateY(20px); transition: transform 0.3s ease;
-}
-.modal-overlay.open .modal-container { transform: translateY(0); }
-.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.modal-header h3 { font-family: 'Outfit', sans-serif; font-size: 1.2rem; color: var(--slate-dark); }
-.btn-close-modal { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 5px; cursor: pointer; color: var(--slate-dark); font-weight: bold; }
-.modal-body { max-height: 300px; overflow-y: auto; }
-.deuda-item-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; }
-.deuda-item-row span.concepto-d { color: var(--slate-dark); font-weight: 600; }
-.deuda-item-row span.monto-d { color: var(--danger); font-weight: 800; font-family: 'Outfit', sans-serif; }
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+        th { background-color: #f8fafc; color: #475569; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+        td strong { color: var(--primary); font-weight: 600; }
 
-.fab { position: fixed; bottom: 18px; right: 18px; width: 50px; height: 50px; border: none; border-radius: 14px; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: var(--slate-dark); cursor: pointer; z-index: 100; }
-.loading-box { text-align: center; padding: 50px 20px; color: var(--muted); }
-.spinner-icon { font-size: 2rem; color: #cbd5e1; animation: rotar 1s linear infinite; margin-bottom: 8px; }
-@keyframes rotar { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-@media(min-width:700px){ .summary, .movements, .movements-title, .form-card, .tab-selector-wrapper, .por-cobrar-alert-box { max-width:650px; margin-left:auto; margin-right:auto; } }
-</style>
+        .fab { position: fixed; bottom: 18px; right: 18px; width: 50px; height: 50px; border: none; border-radius: 14px; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: var(--primary); cursor: pointer; z-index: 100; }
+        .loading-box { text-align: center; padding: 50px 20px; color: var(--muted); }
+        .spinner-icon { font-size: 2rem; color: #cbd5e1; animation: rotar 1s linear infinite; margin-bottom: 8px; }
+        @keyframes rotar { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
-
 <body>
 
 <header class="topbar">
     <div class="top-left">
         <div class="admin-info">
-            <h1>Finanzas Club</h1>
-            <p>Nápoles F.C. • Panel Contable</p>
+            <h1>Panel Convocatorias</h1>
+            <p>Nápoles F.C. • Control Asistencias</p>
         </div>
     </div>
-    <div class="avatar"><i class="fa-solid fa-chart-pie"></i></div>
+    <div class="avatar"><i class="fa-solid fa-bullhorn"></i></div>
 </header>
 
-<!-- DASHBOARD CONTABLE PRINCIPAL -->
-<main id="financialApp">
-    <div class="loading-box">
+<div class="container">
+
+    <!-- COMPONENTE: MINIPANEL DE NOTICIAS -->
+    <div class="noticias-mini-panel" id="panelNoticias">
+        <div class="icon-box"><i class="fa-solid fa-bell"></i></div>
+        <div class="noticias-content">
+            <h4 id="lblTituloAlerta">Sincronizando...</h4>
+            <div class="convocatoria-texto" id="txtConvocatoria">Cargando última circular emitida...</div>
+        </div>
+    </div>
+
+    <!-- FORMULARIO DE EMISIÓN (SÓLO ADM) -->
+    <div class="admin-action-zone">
+        <button class="btn-toggle-form" onclick="toggleFormNotificacion()">
+            <i class="fa-solid fa-pen-nib"></i> Redactar Comunicado
+        </button>
+        
+        <section id="formNotificacion" class="form-card">
+            <h2><i class="fa-solid fa-bullhorn" style="color: var(--secondary-color)"></i> Difundir Nueva Notificación</h2>
+            <form id="noticiaForm" onsubmit="enviarNotificacion(event)">
+                <div class="form-group">
+                    <label>Título del Anuncio</label>
+                    <input type="text" id="tituloNoticia" class="form-control" placeholder="Ej. Convocatoria Oficial - Fecha 5" required>
+                </div>
+                <div class="form-group">
+                    <label>Cuerpo del Mensaje / Indicaciones</label>
+                    <textarea id="cuerpoNoticia" class="form-control" placeholder="Escriba el lugar, hora, uniforme y detalles del partido aquí..." required></textarea>
+                </div>
+                <button type="submit" id="btnPublicar" class="btn-action btn-green">
+                    <i class="fa-solid fa-paper-plane"></i> Publicar en Cartelera Real
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <!-- PANTALLA DE CARGA GLOBAL -->
+    <div class="loading-box" id="loader">
         <div class="spinner-icon"><i class="fa-solid fa-circle-notch"></i></div>
-        <p>Sincronizando caja real con Google Sheets...</p>
+        <p>Extrayendo confirmaciones desde la Base de Datos...</p>
     </div>
-</main>
 
-<!-- PANEL ROJO ANIMADO DE CUENTAS POR COBRAR -->
-<section id="porCobrarWidget" class="por-cobrar-alert-box" onclick="abrirModalDeudas()">
-    <div class="alert-left">
-        <div class="alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-        <div class="alert-text">
-            <h4>Cuentas Pendientes por Cobrar</h4>
-            <p id="lblPorCobrarDinámico">$0.00</p>
+    <!-- TABLA DE CONTROL DE JUGADORES -->
+    <div class="card" id="vistaConfirmados" style="display:none;">
+        <h2><i class="fa-solid fa-users-check" style="color: var(--success)"></i> Confirmación de Asistencia (Inauguración)</h2>
+        
+        <div class="resumen-asistencias">
+            <div class="resumen-box"><span id="numTotal">0</span><label>Respuestas</label></div>
+            <div class="resumen-box"><span id="numAsistiran" style="color: var(--success);">0</span><label>Asistirán</label></div>
+            <div class="resumen-box"><span id="numRepresentante" style="color: var(--secondary-color);">0</span><label>Delegados</label></div>
+        </div>
+
+        <div class="multa-live-box">
+            <p><i class="fa-solid fa-triangle-exclamation"></i> Penalización por inasistencia no justificada:</p>
+            <span id="valMulta">$190.00</span>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jugador / Deportista</th>
+                        <th style="width: 80px; text-align: center;">Dorsal</th>
+                        <th>Estado Matrícula</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaConfirmadosBody">
+                    <!-- Filas dinámicas -->
+                </tbody>
+            </table>
         </div>
     </div>
-    <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; opacity: 0.5;"></i>
-</section>
 
-<!-- SELECTOR INTERACTIVO DE PESTAÑAS (TABS) -->
-<div class="tab-selector-wrapper">
-    <div class="tab-selector">
-        <button class="tab-btn active" onclick="switchForm('jugadorTab', this)">Cobro Jugador</button>
-        <button class="tab-btn" onclick="switchForm('extraTab', this)">Ingreso Extra</button>
-        <button class="tab-btn" onclick="switchForm('gastoTab', this)">Registrar Gasto</button>
-    </div>
 </div>
 
-<!-- FORMULARIO 1: COBRO A JUGADORES -->
-<section id="jugadorTab" class="form-card active">
-    <h2><i class="fa-solid fa-id-card" style="color: #2563eb"></i> Buscar Jugador Registrado</h2>
-    <div class="form-group">
-        <label>Número de Cédula</label>
-        <div style="display: flex; gap: 8px;">
-            <input type="text" id="buscarCedula" class="form-control" placeholder="Ej. 1725341290">
-            <button onclick="buscarJugadorParaCobro()" class="btn-action btn-blue" style="width: auto; padding: 0 18px;"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
-    </div>
-    
-    <div id="resultadoJugadorCard" class="jugador-buscado-card">
-        <p id="lblNombreJugador">Cargando...</p>
-        <div class="grid-cobros">
-            <button id="btnCobrarInscrip" class="btn-cobro-opcion" onclick="procesarCobro('inscripcion')">
-                <span><i class="fa-solid fa-file-invoice-dollar" style="color: var(--success); margin-right:6px;"></i> Liquidar Inscripción</span>
-                <span class="badge-precio">$5.00</span>
-            </button>
-            <button id="btnCobrarUnif" class="btn-cobro-opcion" onclick="procesarCobro('uniforme')">
-                <span><i class="fa-solid fa-shirt" style="color: #0284c7; margin-right:6px;"></i> Liquidar Uniforme Oficial</span>
-                <span class="badge-precio">$17.00</span>
-            </button>
-        </div>
-    </div>
-</section>
-
-<!-- FORMULARIO 2: OTROS INGRESOS EXTRAS -->
-<section id="extraTab" class="form-card">
-    <h2><i class="fa-solid fa-coins" style="color: var(--success)"></i> Registrar Ingreso Externo / Extras</h2>
-    <form id="ingresoExtraForm" onsubmit="enviarIngresoExtra(event)">
-        <div class="form-group">
-            <label>Concepto del Ingreso</label>
-            <input type="text" id="extraConcepto" class="form-control" placeholder="Ej. Auspicio, Medias Extras, Mascotas..." required>
-        </div>
-        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div>
-                <label>Categoría</label>
-                <select id="extraCategoria" class="form-control">
-                    <option value="Auspicios">Auspicios</option>
-                    <option value="Mascotas">Mascotas</option>
-                    <option value="Rifas">Rifas / Eventos</option>
-                    <option value="Medias Extras">Medias Extras</option>
-                    <option value="Otros">Otros Ingresos</option>
-                </select>
-            </div>
-            <div>
-                <label>Monto Recaudado ($)</label>
-                <input type="number" id="extraMonto" step="0.01" class="form-control" placeholder="0.00" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Estado de este Ingreso</label>
-            <select id="extraEstado" class="form-control" style="font-weight: 700;">
-                <option value="PAGADO" style="color: var(--success);">PAGADO (Suma inmediatamente a Caja Disponible)</option>
-                <option value="PENDIENTE" style="color: var(--danger);">PENDIENTE (No suma a caja, va a Cuentas por Cobrar)</option>
-            </select>
-        </div>
-        <button type="submit" class="btn-action btn-green">Procesar Ingreso de Caja</button>
-    </form>
-</section>
-
-<!-- FORMULARIO 3: GASTOS -->
-<section id="gastoTab" class="form-card">
-    <h2><i class="fa-solid fa-money-bill-transfer" style="color: var(--danger)"></i> Registrar Salida / Gasto Directo</h2>
-    <form id="gastoForm" onsubmit="enviarGasto(event)">
-        <div class="form-group">
-            <label>Concepto o Motivo del Gasto</label>
-            <input type="text" id="gastoConcepto" class="form-control" placeholder="Ej. Arbitraje fecha 3, Agua..." required>
-        </div>
-        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div>
-                <label>Categoría Egreso</label>
-                <select id="gastoCategoria" class="form-control">
-                    <option value="Canchas">Canchas</option>
-                    <option value="Arbitraje">Arbitraje</option>
-                    <option value="Logística">Logística</option>
-                    <option value="Implementos">Implementos</option>
-                    <option value="Otros">Otros Gastos</option>
-                </select>
-            </div>
-            <div>
-                <label>Monto del Gasto ($)</label>
-                <input type="number" id="gastoMonto" step="0.01" class="form-control" placeholder="0.00" required>
-            </div>
-        </div>
-        <button type="submit" class="btn-action btn-red">Descontar Salida de Caja</button>
-    </form>
-</section>
-
-<!-- MOVIMIENTOS RECIENTES -->
-<h2 class="movements-title">Auditoría General de Caja</h2>
-<section id="contenedorMovimientos" class="movements">
-    <div style="text-align: center; padding: 20px; color: var(--muted);">Esperando datos contables...</div>
-</section>
-
-<!-- VENTANA MODAL PARA DESGLOSAR LAS CUENTAS PENDIENTES -->
-<div id="modalDeudas" class="modal-overlay" onclick="cerrarModalDeudas(event)">
-    <div class="modal-container">
-        <div class="modal-header">
-            <h3><i class="fa-solid fa-list-ol" style="color: var(--danger)"></i> Desglose de Cuentas Pendientes</h3>
-            <button class="btn-close-modal" onclick="document.getElementById('modalDeudas').classList.remove('open')">×</button>
-        </div>
-        <div id="modalBodyDeudas" class="modal-body">
-            <!-- Rellenado dinámicamente con JavaScript -->
-        </div>
-    </div>
-</div>
-
-<button class="fab" onclick="cargarContabilidad()"><i class="fa-solid fa-arrows-rotate"></i></button>
+<button class="fab" onclick="cargarAsistenciasYNoticias()"><i class="fa-solid fa-arrows-rotate"></i></button>
 
 <script src="config.js"></script>
 <script>
 if(localStorage.getItem('admin_activo') !== 'true') window.location.href = './login.html';
 
-const formatearMoneda = (v) => new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(v);
-let jugadorSeleccionadoCedula = "";
-let movimientosLocales = []; // Cache para desglosar lo pendiente en el modal
-
-function switchForm(tabId, el) {
-    document.querySelectorAll('.form-card').forEach(card => card.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    el.classList.add('active');
+function toggleFormNotificacion() {
+    const form = document.getElementById('formNotificacion');
+    form.classList.toggle('active');
 }
 
-async function cargarContabilidad() {
+async function cargarAsistenciasYNoticias() {
+    document.getElementById('loader').style.display = 'block';
+    document.getElementById('vistaConfirmados').style.display = 'none';
+    
     try {
-        const res = await fetch(`${CONFIG.URL_GAS}?action=getFinanzasData&nocache=${Date.now()}`);
+        // Petición moderna vía FETCH limpia usando CONFIG.URL_GAS
+        const res = await fetch(`${CONFIG.URL_GAS}?action=getJugadoresRaw&nocache=${Date.now()}`);
         const data = await res.json();
+        
         if (data.success) {
-            movimientosLocales = data.movements;
-            renderizarApp(data.resumen, data.movements);
+            // 1. Renderizar Notificación Alta en Banner
+            if (data.ultimaNotificacion) {
+                document.getElementById('lblTituloAlerta').innerText = data.ultimaNotificacion.titulo;
+                document.getElementById('txtConvocatoria').innerText = data.ultimaNotificacion.cuerpo;
+            } else {
+                document.getElementById('lblTituloAlerta').innerText = "Sin alertas vigentes";
+                document.getElementById('txtConvocatoria').innerText = "No hay circulares publicadas recientemente.";
+            }
+
+            // 2. Procesar listado de filas de Jugadores
+            renderizarTablaAsistencias(data.datos);
         }
     } catch (e) {
-        console.error(e);
+        console.error("Error en la sincronización:", e);
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('vistaConfirmados').style.display = 'block';
     }
 }
 
-function renderizarApp(resumen, movimientos) {
-    document.getElementById('financialApp').innerHTML = `
-        <section class="summary">
-            <div class="summary-card">
-                <p class="balance-label">Caja Real Disponible</p>
-                <div class="balance">${formatearMoneda(resumen.balanceReal)}</div>
-                <div class="summary-stats">
-                    <div class="summary-item"><p>Total Ingresos</p><h3 style="color:#34d399">+ ${formatearMoneda(resumen.ingresosTotales)}</h3></div>
-                    <div class="summary-item"><p>Total Gastos</p><h3 style="color:#f87171">- ${formatearMoneda(resumen.gastosTotales)}</h3></div>
-                </div>
-            </div>
-        </section>
-    `;
+function renderizarTablaAsistencias(filas) {
+    let respuestas = 0, asistiran = 0, representantes = 0;
+    let html = "";
 
-    const widgetCobrar = document.getElementById('porCobrarWidget');
-    document.getElementById('lblPorCobrarDinámico').innerText = formatearMoneda(resumen.porCobrar);
-
-    if (resumen.porCobrar > 0) {
-        widgetCobrar.classList.add('tiene-deuda');
-    } else {
-        widgetCobrar.classList.remove('tiene-deuda');
+    if (!filas || filas.length === 0) {
+        document.getElementById('tablaConfirmadosBody').innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ningún deportista registrado en las listas.</td></tr>";
+        return;
     }
 
-    let htmlMovs = movimientos.map(m => {
-        let labelEstado = m.tipo === 'ingreso' ? `<span class="badge-status ${m.estado === 'PAGADO' ? 'status-pagado' : 'status-pendiente'}">${m.estado}</span>` : '';
-        return `
-            <div class="movement-card">
-                <div class="movement-left">
-                    <div class="movement-icon ${m.tipo === 'ingreso' ? 'income' : 'expense'}">
-                        <i class="fa-solid ${m.tipo === 'ingreso' ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down'}"></i>
-                    </div>
-                    <div class="movement-info">
-                        <h3>${m.concepto} ${labelEstado}</h3>
-                        <p>${m.fecha}</p>
-                    </div>
-                </div>
-                <div class="amount ${m.tipo === 'ingreso' ? 'positive' : 'negative'}">
-                    ${m.tipo === 'ingreso' ? '+' : '-'} ${formatearMoneda(m.monto)}
-                </div>
-            </div>
-        `;
-    }).join('');
+    filas.forEach(fila => {
+        // Mapeo exacto: fila[1]=Nombre, fila[3]=Apellido, fila[17]=Dorsal, fila[29]=Inauguración (AD)
+        if (fila && fila.length >= 30) {
+            let nombreCompleto = ((fila[1] || '') + " " + (fila[3] || '')).trim();
+            let dorsal = fila[17] || "—";
+            let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
 
-    document.getElementById('contenedorMovimientos').innerHTML = htmlMovs || '<p style="text-align:center;padding:20px;color:var(--muted);">Sin transacciones asentadas.</p>';
-}
+            if (celdaInauguracion !== "") {
+                respuestas++;
+                let badge = celdaInauguracion;
 
-// FUNCIÓN PARA REVISAR QUÉ FALTA COBRAR AL DAR CLIC EN EL PANEL DE CUENTAS POR COBRAR
-function abrirModalDeudas() {
-    const modalBody = document.getElementById('modalBodyDeudas');
-    // Filtrar transacciones o deudas externas marcadas como PENDIENTE
-    let pendientesExtras = movimientosLocales.filter(m => m.estado === 'PENDIENTE');
-    
-    let html = `<h5>Deudas por Ingresos Externos Registrados:</h5><br>`;
-    
-    if (pendientesExtras.length === 0) {
-        html += `<p style="color:var(--muted); font-size:0.85rem;">No hay registros externos pendientes. El resto del valor acumulado pertenece a las Inscripciones y Uniformes no liquidados de la pestaña "Jugadores" en Google Sheets.</p>`;
-    } else {
-        pendientesExtras.forEach(p => {
-            html += `
-                <div class="deuda-item-row">
-                    <span class="concepto-d">${p.concepto} <small style="display:block; color:gray; font-weight:normal;">${p.fecha}</small></span>
-                    <span class="monto-d">${formatearMoneda(p.monto)}</span>
-                </div>
-            `;
-        });
-        html += `<br><p style="color:gray; font-size:0.75rem; text-align:center;">Nota: Las deudas de jugadores individuales se liquidan directamente buscando su cédula en la pestaña principal.</p>`;
-    }
-    
-    modalBody.innerHTML = html;
-    document.getElementById('modalDeudas').classList.add('open');
-}
+                if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asist")) {
+                    asistiran++;
+                    badge = "🟢 " + celdaInauguracion;
+                } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("represen")) {
+                    representantes++;
+                    badge = "🟡 " + celdaInauguracion;
+                } else {
+                    badge = "🔴 " + celdaInauguracion;
+                }
 
-function cerrarModalDeudas(e) {
-    if(e.target.classList.contains('modal-overlay')) {
-        document.getElementById('modalDeudas').classList.remove('open');
-    }
-}
-
-async function buscarJugadorParaCobro() {
-    const cedula = document.getElementById('buscarCedula').value.trim();
-    if(!cedula) return;
-    document.getElementById('lblNombreJugador').innerText = "Buscando en Google Sheets...";
-    document.getElementById('resultadoJugadorCard').style.display = 'block';
-
-    const res = await fetch(`${CONFIG.URL_GAS}?action=getPerfil&cedula=${cedula}`);
-    const data = await res.json();
-    
-    if(data.success) {
-        jugadorSeleccionadoCedula = cedula;
-        document.getElementById('lblNombreJugador').innerHTML = `<i class="fa-solid fa-user"></i> ${data.jugador['primer nombre']} ${data.jugador['apellidos']}`;
-        
-        const btnInsc = document.getElementById('btnCobrarInscrip');
-        const btnUnif = document.getElementById('btnCobrarUnif');
-
-        if(data.jugador['inscrip_estado'] === 'PAGADO') {
-            btnInsc.disabled = true;
-            btnInsc.classList.add('pay-active');
-            btnInsc.innerHTML = `<span><i class="fa-solid fa-circle-check"></i> Inscripción (PAGADA)</span>`;
-        } else {
-            btnInsc.disabled = false;
-            btnInsc.classList.remove('pay-active');
-            btnInsc.innerHTML = `<span><i class="fa-solid fa-file-invoice-dollar" style="color:var(--success)"></i> Liquidar Inscripción</span><span class="badge-precio">$5.00</span>`;
+                html += `<tr>
+                    <td><strong>${nombreCompleto}</strong></td>
+                    <td style="text-align: center; font-weight:700; color:#475569;">${dorsal}</td>
+                    <td><span style="font-weight:600; font-size:0.8rem;">${badge}</span></td>
+                </tr>`;
+            }
         }
+    });
 
-        if(data.jugador['unif_estado'] === 'PAGADO') {
-            btnUnif.disabled = true;
-            btnUnif.classList.add('pay-active');
-            btnUnif.innerHTML = `<span><i class="fa-solid fa-circle-check"></i> Uniforme (PAGADO)</span>`;
+    document.getElementById('tablaConfirmadosBody').innerHTML = html || "<tr><td colspan='3' style='text-align:center;'>Nadie ha completado la encuesta aún.</td></tr>";
+    
+    document.getElementById('numTotal').innerText = respuestas;
+    document.getElementById('numAsistiran').innerText = asistiran;
+    document.getElementById('numRepresentante').innerText = representantes;
+
+    // Cálculo dinámico de la multa contable
+    let presentes = asistiran + representantes;
+    let multaBase = 190.00;
+    let multaFinal = Math.max(0, multaBase - (presentes * 2.00));
+    document.getElementById('valMulta').innerText = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(multaFinal);
+}
+
+async function enviarNotificacion(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnPublicar');
+    const titulo = document.getElementById('tituloNoticia').value.trim();
+    const cuerpo = document.getElementById('cuerpoNoticia').value.trim();
+
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Emitiendo Circular...`;
+
+    try {
+        const url = `${CONFIG.URL_GAS}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}`;
+        // Envío nativo vía FETCH POST/GET directo estructurado
+        const res = await fetch(url, { method: 'POST' });
+        const data = await res.json();
+
+        if (data.success) {
+            alert("¡Comunicado guardado y publicado en cartelera con éxito!");
+            document.getElementById('noticiaForm').reset();
+            document.getElementById('formNotificacion').classList.remove('active');
+            cargarAsistenciasYNoticias();
         } else {
-            btnUnif.disabled = false;
-            btnUnif.classList.remove('pay-active');
-            btnUnif.innerHTML = `<span><i class="fa-solid fa-shirt" style="color:#0284c7"></i> Liquidar Uniforme Oficial</span><span class="badge-precio">$17.00</span>`;
+            alert("Hubo un percance en el servidor al guardar.");
         }
-    } else {
-        alert("El número de cédula no coincide.");
-        document.getElementById('resultadoJugadorCard').style.display = 'none';
+    } catch (error) {
+        console.error(error);
+        alert("Error de comunicación de red con el script.");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publicar en Cartelera Real`;
     }
 }
 
-async function procesarCobro(tipo) {
-    if(!confirm("¿Confirmar cobro?")) return;
-    const check = await fetch(`${CONFIG.URL_GAS}?action=getPerfil&cedula=${jugadorSeleccionadoCedula}`);
-    const currentData = await check.json();
-    let estInscrip = currentData.jugador['inscrip_estado'];
-    let estUnif = currentData.jugador['unif_estado'];
-    
-    if(tipo === 'inscripcion') estInscrip = "PAGADO";
-    if(tipo === 'uniforme') estUnif = "PAGADO";
-
-    const ejecutado = await fetch(`${CONFIG.URL_GAS}?action=updateEstados&cedula=${jugadorSeleccionadoCedula}&inscrip=${estInscrip}&unif=${estUnif}`);
-    const res = await ejecutado.json();
-    if(res.success) {
-        alert("¡Cobro aplicado!");
-        document.getElementById('resultadoJugadorCard').style.display = 'none';
-        document.getElementById('buscarCedula').value = "";
-        cargarContabilidad();
-    }
-}
-
-async function enviarIngresoExtra(e) {
-    e.preventDefault();
-    const concepto = document.getElementById('extraConcepto').value;
-    const categoria = document.getElementById('extraCategoria').value;
-    const monto = document.getElementById('extraMonto').value;
-    const estado = document.getElementById('extraEstado').value;
-    
-    const url = `${CONFIG.URL_GAS}?action=registrarOtrosIngresos&concepto=${encodeURIComponent(concepto)}&categoria=${encodeURIComponent(categoria)}&monto=${monto}&estado=${estado}`;
-    const res = await fetch(url, { method: 'POST' });
-    const data = await res.json();
-    if(data.success) {
-        alert("Registro guardado con éxito.");
-        document.getElementById('ingresoExtraForm').reset();
-        cargarContabilidad();
-    }
-}
-
-async function enviarGasto(e) {
-    e.preventDefault();
-    const concepto = document.getElementById('gastoConcepto').value;
-    const categoria = document.getElementById('gastoCategoria').value;
-    const monto = document.getElementById('gastoMonto').value;
-    
-    const url = `${CONFIG.URL_GAS}?action=registrarGasto&concepto=${encodeURIComponent(concepto)}&categoria=${encodeURIComponent(categoria)}&monto=${monto}`;
-    const res = await fetch(url, { method: 'POST' });
-    const data = await res.json();
-    if(data.success) {
-        alert("Egreso registrado.");
-        document.getElementById('gastoForm').reset();
-        cargarContabilidad();
-    }
-}
-
-cargarContabilidad();
+// Inicialización de la App al cargar
+cargarAsistenciasYNoticias();
 </script>
 </body>
 </html>
