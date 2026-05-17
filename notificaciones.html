@@ -1,23 +1,269 @@
-<!-- CONTENEDOR PRINCIPAL DEL MÓDULO DE INAUGURACIÓN -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Asistencia - Nápoles F.C.</title>
+  <style>
+    :root {
+      --primary-dark: #111111;
+      --accent-gold: #d4af37;
+      --sport-green: #2ecc71;
+      --sport-amber: #f39c12;
+      --sport-red: #e74c3c;
+      --card-bg: #1a1a1a;
+      --text-light: #ffffff;
+      --text-muted: #aaaaaa;
+    }
+
+    body {
+      background-color: #0b0b0b;
+      color: var(--text-light);
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .inauguracion-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* --- ESTILO DE LA NOTIFICACIÓN COMPACTA --- */
+    .alerta-notificacion-sport {
+      background: rgba(243, 156, 18, 0.1);
+      border: 1px solid rgba(243, 156, 18, 0.25);
+      border-left: 4px solid var(--sport-amber);
+      padding: 12px 15px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .alerta-notificacion-sport.completado {
+      background: rgba(46, 204, 113, 0.1);
+      border: 1px solid rgba(46, 204, 113, 0.25);
+      border-left: 4px solid var(--sport-green);
+    }
+
+    .alerta-icon { 
+      font-size: 20px; 
+    }
+    
+    .alerta-cuerpo { 
+      font-size: 13.5px; 
+      line-height: 1.4; 
+    }
+    
+    .alerta-titulo { 
+      color: var(--accent-gold); 
+      margin-right: 4px; 
+      font-weight: bold;
+    }
+
+    /* --- TARJETA DE CONTROL DE ASISTENCIA --- */
+    .asistencia-card {
+      background: var(--card-bg);
+      border: 1px solid #282828;
+      border-radius: 16px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+
+    .card-header-sport {
+      background: linear-gradient(135deg, #111 0%, #222 100%);
+      padding: 22px 20px;
+      text-align: center;
+      border-bottom: 2px solid var(--accent-gold);
+    }
+
+    .sport-badge {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--accent-gold);
+      font-size: 11px;
+      font-weight: bold;
+      padding: 5px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .card-header-sport h3 { 
+      margin: 0; 
+      font-size: 22px; 
+      font-weight: 700; 
+    }
+    
+    .sub-date { 
+      margin: 4px 0 0 0; 
+      font-size: 12.5px; 
+      color: var(--text-muted); 
+    }
+
+    .card-body-metrics { 
+      padding: 20px 20px 15px 20px; 
+    }
+
+    .metric-featured {
+      text-align: center;
+      background: rgba(255,255,255,0.015);
+      border: 1px solid #262626;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .metric-label { 
+      font-size: 11px; 
+      font-weight: 600; 
+      color: var(--text-muted); 
+      letter-spacing: 0.5px; 
+      display: block; 
+    }
+    
+    .metric-featured h1 { 
+      margin: 8px 0; 
+      font-size: 55px; 
+      font-weight: 800; 
+      color: var(--text-light); 
+      line-height: 1; 
+    }
+    
+    .metric-desc { 
+      margin: 0; 
+      font-size: 11.5px; 
+      color: var(--text-muted); 
+    }
+
+    .metrics-grid-split { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 12px; 
+    }
+    
+    .metric-box { 
+      background: #1f1f1f; 
+      border: 1px solid #2a2a2a; 
+      padding: 12px 15px; 
+      border-radius: 10px; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+    }
+    
+    .metric-box.box-green { border-left: 4px solid var(--sport-green); }
+    .metric-box.box-amber { border-left: 4px solid var(--sport-amber); }
+    .icon-wrap { font-size: 22px; }
+    .box-data { display: flex; flex-direction: column; }
+    .box-qty { font-size: 22px; font-weight: 700; line-height: 1.2; }
+    .box-label { font-size: 12px; color: var(--text-muted); }
+
+    /* --- CUADRO DE MULTA PERSONALIZADO --- */
+    .cuadro-multa-club {
+      background: #141414;
+      margin: 5px 20px 20px 20px;
+      border-radius: 12px;
+      border: 1px dashed #333333;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .m-monto-total {
+      display: block;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--sport-red);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .m-label-total {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    /* --- BARRA DE PROGRESO --- */
+    .progress-container-club { 
+      padding: 0 20px 25px 20px; 
+    }
+    
+    .progress-labels { 
+      display: flex; 
+      justify-content: space-between; 
+      font-size: 11.5px; 
+      color: var(--text-muted); 
+      margin-bottom: 6px; 
+    }
+    
+    .progress-bar-bg { 
+      background: #222; 
+      height: 7px; 
+      border-radius: 4px; 
+      overflow: hidden; 
+    }
+    
+    .progress-bar-fill { 
+      background: linear-gradient(90deg, var(--accent-gold) 0%, var(--sport-green) 100%); 
+      height: 100%; 
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+
+    /* Efecto de Carga Pasiva */
+    .loading-pulse {
+      animation: pulse 1.8s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+  </style>
+</head>
+<body>
+
 <div class="inauguracion-container">
   
-  <!-- TARJETA PREMIUM DE CONTROL DE ASISTENCIA -->
+  <!-- 1. NOTIFICACIÓN COMPACTA -->
+  <div id="notificacion-resumen" class="alerta-notificacion-sport loading-pulse">
+    <span class="alerta-icon">⏳</span>
+    <div class="alerta-cuerpo">
+      <strong class="alerta-titulo">Sincronizando:</strong>
+      <span id="txt-alerta-mensaje">Conectando con la base de datos de Nápoles F.C...</span>
+    </div>
+  </div>
+
+  <!-- 2. TARJETA PRINCIPAL -->
   <div class="asistencia-card">
     <div class="card-header-sport">
-      <div class="sport-badge">📌 CONTROL DE QUÓRUM</div>
+      <div class="sport-badge">📌 CONTROL DE ASISTENCIA</div>
       <h3>Inauguración Oficial Nápoles F.C.</h3>
-      <p class="sub-date">Monitoreo de Confirmaciones en Tiempo Real</p>
+      <p class="sub-date">Reporte Logístico en Tiempo Real</p>
     </div>
     
     <div class="card-body-metrics">
-      <!-- Métrica Principal Destacada: El Quórum Total -->
+      <!-- Quórum Total Confirmado -->
       <div class="metric-featured">
         <span class="metric-label">TOTAL ASISTENTES CONFIRMADOS</span>
         <h1 id="txt-total-global">0</h1>
-        <p class="metric-desc">Garantía de presencia en el desfile (Jugadores + Delegados)</p>
+        <p class="metric-desc">Garantía de presencia física en la cancha (Jugadores + Delegados)</p>
       </div>
       
-      <!-- Desglose Interno en Dos Columnas -->
+      <!-- Desglose Interno -->
       <div class="metrics-grid-split">
         <div class="metric-box box-green">
           <div class="icon-wrap">🏃‍♂️</div>
@@ -36,178 +282,108 @@
         </div>
       </div>
     </div>
+
+    <!-- 3. CUADRO DE MULTA EXCLUSIVO Y FORMATEADO -->
+    <div class="cuadro-multa-club">
+      <span class="m-monto-total" id="txt-saldo-multa-club">$190.00</span>
+      <span class="m-label-total">Total a Pagar x inasistencia dividido para los jugadores que no llegaron a la inauguración</span>
+    </div>
     
-    <!-- Barra de progreso visual del Club -->
+    <!-- 4. BARRA DE PROGRESO -->
     <div class="progress-container-club">
       <div class="progress-labels">
-        <span>Progreso de Confirmación del Equipo</span>
+        <span>Progreso de Fichas de Confirmación</span>
         <span id="txt-porcentaje-progreso">0%</span>
       </div>
       <div class="progress-bar-bg">
-        <div id="bar-progreso-llenado" class="progress-bar-fill" style="width: 0%"></div>
+        <div id="bar-progreso-llenado" class="progress-bar-fill"></div>
       </div>
     </div>
-  </div>
 
+  </div>
 </div>
 
-<!-- ESTILOS CSS RECOMENDADOS PARA TU HOJA DE ESTILOS -->
-<style>
-  :root {
-    --primary-dark: #111111;
-    --accent-gold: #d4af37;
-    --sport-green: #2ecc71;
-    --sport-amber: #f39c12;
-    --card-bg: #1a1a1a;
-    --text-light: #ffffff;
-    --text-muted: #aaaaaa;
+<!-- IMPORTACIÓN DE CONFIGURACIÓN DESDE LA CARPETA RAÍZ -->
+<script src="config.js"></script>
+
+<script>
+  window.addEventListener("DOMContentLoaded", function() {
+    cargarDatosInauguracion();
+  });
+
+  function cargarDatosInauguracion() {
+    if (typeof API_URL === 'undefined') {
+      mostrarErrorUI("Error: No se encontró 'API_URL' en config.js");
+      return;
+    }
+
+    fetch(`${API_URL}?action=getConfirmadosInauguracion`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          actualizarInterfazDashboard(data);
+        } else {
+          mostrarErrorUI("Error en reporte: " + data.message);
+        }
+      })
+      .catch(error => {
+        console.error("Error crítico de red:", error);
+        mostrarErrorUI("No se pudo conectar con el servidor.");
+      });
   }
 
-  .inauguracion-container {
-    padding: 20px;
-    max-width: 550px;
-    margin: 0 auto;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  function actualizarInterfazDashboard(json) {
+    const resumen = json.resumen;
+    const notifBox = document.getElementById("notificacion-resumen");
+    notifBox.classList.remove("loading-pulse");
+
+    // 1. Cargar contadores de asistencia
+    document.getElementById("txt-total-global").innerText = resumen.totalAsistentesGlobal;
+    document.getElementById("txt-van-jugadores").innerText = resumen.asistiran;
+    document.getElementById("txt-van-delegados").innerText = resumen.representante;
+    
+    // 2. Inyectar dinámicamente el Saldo de Multa que viene desde el Script
+    const saldoRestante = parseFloat(resumen.saldoPendienteClub) || 0;
+    document.getElementById("txt-saldo-multa-club").innerText = "$" + saldoRestante.toFixed(2);
+
+    // Ajustar color si ya llegó a cero por asistencia perfecta
+    if (saldoRestante === 0) {
+      document.getElementById("txt-saldo-multa-club").style.color = "var(--sport-green)";
+    } else {
+      document.getElementById("txt-saldo-multa-club").style.color = "var(--sport-red)";
+    }
+
+    // 3. Barra de progreso lineal
+    const respondieron = resumen.asistiran + resumen.representante;
+    const plantillaTotal = resumen.totalJugadores || 1;
+    const porcentajeLlenado = Math.round((respondieron / plantillaTotal) * 100);
+    
+    document.getElementById("txt-porcentaje-progreso").innerText = porcentajeLlenado + "%";
+    document.getElementById("bar-progreso-llenado").style.width = porcentajeLlenado + "%";
+
+    // 4. Actualizar el Mensaje de la Notificación Alerta
+    const alertaTxt = document.getElementById("txt-alerta-mensaje");
+    
+    if (resumen.sinResponder > 0) {
+      notifBox.classList.remove("completado");
+      notifBox.querySelector(".alerta-icon").innerText = "📢";
+      alertaTxt.innerHTML = `Faltan <strong>${resumen.sinResponder} jugadores</strong> por definir su ficha de asistencia.`;
+    } else {
+      notifBox.classList.add("completado");
+      notifBox.querySelector(".alerta-icon").innerText = "✅";
+      alertaTxt.innerHTML = `<strong>¡Equipo Completo!</strong> El 100% de la plantilla ha respondido el quórum logístico.`;
+    }
   }
 
-  .asistencia-card {
-    background: var(--card-bg);
-    border: 1px solid #2a2a2a;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    overflow: hidden;
-    color: var(--text-light);
+  function mostrarErrorUI(mensaje) {
+    const notifBox = document.getElementById("notificacion-resumen");
+    notifBox.classList.remove("loading-pulse");
+    notifBox.style.background = "rgba(231, 76, 60, 0.1)";
+    notifBox.style.borderLeft = "4px solid #e74c3c";
+    notifBox.querySelector(".alerta-icon").innerText = "❌";
+    document.getElementById("txt-alerta-mensaje").innerText = mensaje;
   }
+</script>
 
-  .card-header-sport {
-    background: linear-gradient(135deg, #111 0%, #222 100%);
-    padding: 25px 20px;
-    text-align: center;
-    border-bottom: 2px solid var(--accent-gold);
-  }
-
-  .sport-badge {
-    background: rgba(212, 175, 55, 0.15);
-    color: var(--accent-gold);
-    font-size: 11px;
-    font-weight: bold;
-    padding: 6px 12px;
-    border-radius: 20px;
-    display: inline-block;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-  }
-
-  .card-header-sport h3 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-
-  .sub-date {
-    margin: 5px 0 0 0;
-    font-size: 13px;
-    color: var(--text-muted);
-  }
-
-  .card-body-metrics {
-    padding: 25px 20px;
-  }
-
-  .metric-featured {
-    text-align: center;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid #2a2a2a;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-  }
-
-  .metric-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-    display: block;
-  }
-
-  .metric-featured h1 {
-    margin: 10px 0;
-    font-size: 54px;
-    font-weight: 800;
-    color: var(--text-light);
-    line-height: 1;
-  }
-
-  .metric-desc {
-    margin: 0;
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .metrics-grid-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
-
-  .metric-box {
-    background: #222;
-    border: 1px solid #333;
-    padding: 15px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .metric-box.box-green { border-left: 4px solid var(--sport-green); }
-  .metric-box.box-amber { border-left: 4px solid var(--sport-amber); }
-
-  .icon-wrap {
-    font-size: 24px;
-  }
-
-  .box-data {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .box-qty {
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .box-label {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .progress-container-club {
-    padding: 0 20px 25px 20px;
-  }
-
-  .progress-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-
-  .progress-bar-bg {
-    background: #222;
-    height: 8px;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .progress-bar-fill {
-    background: linear-gradient(90deg, var(--accent-gold) 0%, var(--sport-green) 100%);
-    height: 100%;
-    transition: width 0.6s ease-in-out;
-  }
-</style>
+</body>
+</html>
