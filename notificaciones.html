@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conteo de Inauguración - Nápoles F.C.</title>
+    <title>Inauguración - Nápoles F.C.</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,9 +22,10 @@
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
+            white-space: pre-line;
+            line-height: 1.6;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .header-comunicado h2 { margin-top: 0; color: #ffcc00; }
         .grid-conteo {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -73,58 +74,96 @@
             border-radius: 4px;
             font-size: 0.85rem;
         }
-        .loading { text-align: center; font-size: 1.2rem; color: #666; padding: 4px; }
+        /* Cuadro Rojo de la Multa solicitado */
+        .cuadro-rojo-multa {
+            background-color: #dc3545;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+        .cuadro-rojo-multa .titulo-multa {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .cuadro-rojo-multa .valor-multa {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .loading { text-align: center; font-size: 1.2rem; color: #666; padding: 40px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Bloque Informativo del Evento -->
-    <div class="header-comunicado">
-        <h2>⚽ ATENCIÓN JUGADORES ⚽</h2>
-        <p>Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día: <strong>📅 17 de mayo</strong></p>
-        <p>🕤 <strong>Hora:</strong> 9:30 a.m. (Asistir desde las 9:15 a.m.)</p>
-        <small>⚠️ La multa por inasistencia será dividida entre todos los jugadores que no asistan.</small>
-    </div>
+    <!-- 1. El Comunicado Completo tal cual se solicitó -->
+    <div class="header-comunicado">⚽ ATENCIÓN JUGADORES ⚽
+Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día:
+📅 17 de mayo
 
-    <div id="loading" class="loading">📊 Conectando con la base de datos de Jugadores...</div>
+🕤 Hora: 9:30 a.m.
+
+⏰ Deben asistir 15 minutos antes (9:15 a.m.)
+Su presencia es muy importante para el inicio de este gran evento deportivo.
+
+✅ Seleccione una de las siguientes opciones:
+1️⃣ Asistiré, ahí estaré puntual
+2️⃣ Enviaré a mi representante
+
+⚠️ IMPORTANTE:
+El hecho de NO seleccionar una opción se tomará como que NO desea asistir.
+❗ La multa por inasistencia será dividida entre todos los jugadores que no asistan.</div>
+
+    <div id="loading" class="loading">📊 Cargando datos de asistencia...</div>
 
     <div id="contenido-panel" style="display: none;">
-        <!-- Indicadores Numéricos -->
+        
+        <!-- 2. El Contador -->
         <div class="grid-conteo">
             <div class="card-conteo si">
-                <div>1️⃣ Asistirán Puntual</div>
+                <div>1️⃣ Asistiré, ahí estaré puntual</div>
                 <div class="numero" id="num-si">0</div>
             </div>
             <div class="card-conteo rep">
-                <div>2️⃣ Envían Representante</div>
+                <div>2️⃣ Enviaré a mi representante</div>
                 <div class="numero" id="num-rep">0</div>
             </div>
             <div class="card-conteo no">
-                <div>⚠️ Sin Responder (Multa)</div>
+                <div>⚠️ Sin Responder / No Asiste</div>
                 <div class="numero" id="num-no">0</div>
             </div>
         </div>
 
-        <!-- Listas Desglosadas -->
+        <!-- 3. El Listado -->
         <div class="seccion-lista">
-            <h3 style="color: #28a745;">Listado: Confirmados en Persona</h3>
+            <h3 style="color: #28a745;">Confirmados (Opción 1)</h3>
             <div id="lista-asistiran"></div>
         </div>
 
         <div class="seccion-lista">
-            <h3 style="color: #17a2b8;">Listado: Enviarán Representante</h3>
+            <h3 style="color: #17a2b8;">Con Representante (Opción 2)</h3>
             <div id="lista-rep"></div>
         </div>
 
         <div class="seccion-lista">
-            <h3 style="color: #dc3545;">Listado: Pendientes / No Asistirán</h3>
+            <h3 style="color: #dc3545;">Pendientes / No Asisten</h3>
             <div id="lista-pendientes"></div>
         </div>
+
+        <!-- 4. Cuadro Rojo de la Multa abajo del todo -->
+        <div class="cuadro-rojo-multa">
+            <div class="titulo-multa">Multa por inasistencia a la inauguración</div>
+            <div class="valor-multa" id="val-cuota-persona">$0.00</div>
+        </div>
+
     </div>
 </div>
 
-<!-- Enlace a tu Configuración existente -->
 <script src="config.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -140,23 +179,25 @@ function obtenerConteoInauguracion() {
                 return;
             }
 
-            // Ocultar cargando y mostrar contenido
             document.getElementById("loading").style.display = "none";
             document.getElementById("contenido-panel").style.display = "block";
 
-            // Inyectar contadores principales
+            // Inyectar contadores de personas
             document.getElementById("num-si").innerText = data.resumen.asistiran;
             document.getElementById("num-rep").innerText = data.resumen.representante;
             document.getElementById("num-no").innerText = data.resumen.sinResponder;
 
+            // Inyectar valor individual en el cuadro rojo final
+            document.getElementById("val-cuota-persona").innerText = `$${data.finanzas.cuotaPorInfractor}`;
+
             // Renderizar listas de personas
             renderizarLista(data.listas.asistiran, "lista-asistiran", "No hay jugadores confirmados aún.");
             renderizarLista(data.listas.representante, "lista-rep", "Nadie ha asignado representante.");
-            renderizarLista(data.listas.sinResponder, "lista-pendientes", "¡Excelente! Todos los jugadores han respondido.");
+            renderizarLista(data.listas.sinResponder, "lista-pendientes", "¡Sin multados! Todos asisten.");
         })
         .catch(err => {
             console.error(err);
-            document.getElementById("loading").innerText = "Fallo de conexión con el servidor.";
+            document.getElementById("loading").innerText = "Error al conectar con la base de datos.";
         });
 }
 
