@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Notificaciones - Nápoles F.C.</title>
+    <title>Nápoles F.C. - Panel de Convocatorias</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -194,131 +194,168 @@
 
 <button class="fab" onclick="cargarAsistenciasYNoticias()"><i class="fa-solid fa-arrows-rotate"></i></button>
 
-<script src="config.js"></script>
 <script>
-if(localStorage.getItem('admin_activo') !== 'true') window.location.href = './login.html';
+    // ==================== CONFIGURACIÓN ====================
+    // REEMPLAZA ESTA URL CON LA DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
+    const CONFIG = {
+        URL_GAS: "https://script.google.com/macros/s/AKfycbzeL6pNpu5e1aRi2nFdswHQ1YRSoJGntpnMMHibEzSvWJFwa2lr5clVx1UgoKKGLKTH/exec"
+    };
 
-function toggleFormNotificacion() {
-    const form = document.getElementById('formNotificacion');
-    form.classList.toggle('active');
-}
+    // ==================== VERIFICACIÓN DE SESIÓN ====================
+    // Si no existe una sesión activa, redirige al login.
+    // Para pruebas sin login.html, comenta la siguiente línea o establece admin_activo=true manualmente.
+    if (localStorage.getItem('admin_activo') !== 'true') {
+        // Si no hay login.html, puedes descomentar la línea de abajo para simular acceso:
+        // localStorage.setItem('admin_activo', 'true');
+        // else:
+        window.location.href = './login.html';
+    }
 
-async function cargarAsistenciasYNoticias() {
-    document.getElementById('loader').style.display = 'block';
-    document.getElementById('vistaConfirmados').style.display = 'none';
-    
-    try {
-        // Petición moderna vía FETCH limpia usando CONFIG.URL_GAS
-        const res = await fetch(`${CONFIG.URL_GAS}?action=getJugadoresRaw&nocache=${Date.now()}`);
-        const data = await res.json();
+    // ==================== FUNCIONES PRINCIPALES ====================
+    function toggleFormNotificacion() {
+        const form = document.getElementById('formNotificacion');
+        form.classList.toggle('active');
+    }
+
+    async function cargarAsistenciasYNoticias() {
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('vistaConfirmados').style.display = 'none';
         
-        if (data.success) {
-            // 1. Renderizar Notificación Alta en Banner
-            if (data.ultimaNotificacion) {
-                document.getElementById('lblTituloAlerta').innerText = data.ultimaNotificacion.titulo;
-                document.getElementById('txtConvocatoria').innerText = data.ultimaNotificacion.cuerpo;
-            } else {
-                document.getElementById('lblTituloAlerta').innerText = "Sin alertas vigentes";
-                document.getElementById('txtConvocatoria').innerText = "No hay circulares publicadas recientemente.";
-            }
-
-            // 2. Procesar listado de filas de Jugadores
-            renderizarTablaAsistencias(data.datos);
-        }
-    } catch (e) {
-        console.error("Error en la sincronización:", e);
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('vistaConfirmados').style.display = 'block';
-    }
-}
-
-function renderizarTablaAsistencias(filas) {
-    let respuestas = 0, asistiran = 0, representantes = 0;
-    let html = "";
-
-    if (!filas || filas.length === 0) {
-        document.getElementById('tablaConfirmadosBody').innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ningún deportista registrado en las listas.</td></tr>";
-        return;
-    }
-
-    filas.forEach(fila => {
-        // Mapeo exacto: fila[1]=Nombre, fila[3]=Apellido, fila[17]=Dorsal, fila[29]=Inauguración (AD)
-        if (fila && fila.length >= 30) {
-            let nombreCompleto = ((fila[1] || '') + " " + (fila[3] || '')).trim();
-            let dorsal = fila[17] || "—";
-            let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
-
-            if (celdaInauguracion !== "") {
-                respuestas++;
-                let badge = celdaInauguracion;
-
-                if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asist")) {
-                    asistiran++;
-                    badge = "🟢 " + celdaInauguracion;
-                } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("represen")) {
-                    representantes++;
-                    badge = "🟡 " + celdaInauguracion;
+        try {
+            // Petición GET directa (sin callback) al backend GAS corregido
+            const url = `${CONFIG.URL_GAS}?action=getJugadoresRaw&nocache=${Date.now()}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            if (data.success) {
+                // Mostrar última notificación si existe
+                if (data.ultimaNotificacion && data.ultimaNotificacion.titulo) {
+                    document.getElementById('lblTituloAlerta').innerText = data.ultimaNotificacion.titulo;
+                    document.getElementById('txtConvocatoria').innerText = data.ultimaNotificacion.cuerpo;
                 } else {
-                    badge = "🔴 " + celdaInauguracion;
+                    document.getElementById('lblTituloAlerta').innerText = "Sin alertas vigentes";
+                    document.getElementById('txtConvocatoria').innerText = "No hay circulares publicadas recientemente.";
                 }
 
-                html += `<tr>
-                    <td><strong>${nombreCompleto}</strong></td>
-                    <td style="text-align: center; font-weight:700; color:#475569;">${dorsal}</td>
-                    <td><span style="font-weight:600; font-size:0.8rem;">${badge}</span></td>
-                </tr>`;
+                renderizarTablaAsistencias(data.datos);
+            } else {
+                console.error("Error del backend:", data.message);
+                alert("Error al cargar datos: " + (data.message || "Desconocido"));
             }
+        } catch (e) {
+            console.error("Error en la sincronización:", e);
+            alert("Error de red o CORS. Verifica que la URL del GAS sea correcta y que la aplicación web esté publicada con acceso 'Cualquiera'.");
+        } finally {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('vistaConfirmados').style.display = 'block';
         }
-    });
-
-    document.getElementById('tablaConfirmadosBody').innerHTML = html || "<tr><td colspan='3' style='text-align:center;'>Nadie ha completado la encuesta aún.</td></tr>";
-    
-    document.getElementById('numTotal').innerText = respuestas;
-    document.getElementById('numAsistiran').innerText = asistiran;
-    document.getElementById('numRepresentante').innerText = representantes;
-
-    // Cálculo dinámico de la multa contable
-    let presentes = asistiran + representantes;
-    let multaBase = 190.00;
-    let multaFinal = Math.max(0, multaBase - (presentes * 2.00));
-    document.getElementById('valMulta').innerText = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(multaFinal);
-}
-
-async function enviarNotificacion(e) {
-    e.preventDefault();
-    const btn = document.getElementById('btnPublicar');
-    const titulo = document.getElementById('tituloNoticia').value.trim();
-    const cuerpo = document.getElementById('cuerpoNoticia').value.trim();
-
-    btn.disabled = true;
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Emitiendo Circular...`;
-
-    try {
-        const url = `${CONFIG.URL_GAS}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}`;
-        // Envío nativo vía FETCH POST/GET directo estructurado
-        const res = await fetch(url, { method: 'POST' });
-        const data = await res.json();
-
-        if (data.success) {
-            alert("¡Comunicado guardado y publicado en cartelera con éxito!");
-            document.getElementById('noticiaForm').reset();
-            document.getElementById('formNotificacion').classList.remove('active');
-            cargarAsistenciasYNoticias();
-        } else {
-            alert("Hubo un percance en el servidor al guardar.");
-        }
-    } catch (error) {
-        console.error(error);
-        alert("Error de comunicación de red con el script.");
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publicar en Cartelera Real`;
     }
-}
 
-// Inicialización de la App al cargar
-cargarAsistenciasYNoticias();
+    function renderizarTablaAsistencias(filas) {
+        let respuestas = 0, asistiran = 0, representantes = 0;
+        let html = "";
+
+        if (!filas || filas.length === 0) {
+            document.getElementById('tablaConfirmadosBody').innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ningún deportista registrado en las listas.</td></tr>";
+            document.getElementById('numTotal').innerText = "0";
+            document.getElementById('numAsistiran').innerText = "0";
+            document.getElementById('numRepresentante').innerText = "0";
+            document.getElementById('valMulta').innerText = "$190.00";
+            return;
+        }
+
+        filas.forEach(fila => {
+            // Mapeo exacto: fila[1]=Primer Nombre, fila[3]=Apellidos, fila[17]=Dorsal, fila[29]=Confirmación Inauguración (columna AD)
+            if (fila && fila.length >= 30) {
+                let nombreCompleto = ((fila[1] || '') + " " + (fila[3] || '')).trim();
+                let dorsal = fila[17] || "—";
+                let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
+
+                if (celdaInauguracion !== "") {
+                    respuestas++;
+                    let badge = celdaInauguracion;
+
+                    if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asist")) {
+                        asistiran++;
+                        badge = "🟢 " + celdaInauguracion;
+                    } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("represen")) {
+                        representantes++;
+                        badge = "🟡 " + celdaInauguracion;
+                    } else {
+                        badge = "🔴 " + celdaInauguracion;
+                    }
+
+                    html += `<tr>
+                        <td><strong>${escapeHtml(nombreCompleto)}</strong></td>
+                        <td style="text-align: center; font-weight:700; color:#475569;">${escapeHtml(dorsal)}</td>
+                        <td><span style="font-weight:600; font-size:0.8rem;">${escapeHtml(badge)}</span></td>
+                    </tr>`;
+                }
+            }
+        });
+
+        document.getElementById('tablaConfirmadosBody').innerHTML = html || "<tr><td colspan='3' style='text-align:center;'>Nadie ha completado la encuesta aún.</td></tr>";
+        
+        document.getElementById('numTotal').innerText = respuestas;
+        document.getElementById('numAsistiran').innerText = asistiran;
+        document.getElementById('numRepresentante').innerText = representantes;
+
+        // Cálculo dinámico de la multa (ejemplo)
+        let presentes = asistiran + representantes;
+        let multaBase = 190.00;
+        let multaFinal = Math.max(0, multaBase - (presentes * 2.00));
+        document.getElementById('valMulta').innerText = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(multaFinal);
+    }
+
+    async function enviarNotificacion(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnPublicar');
+        const titulo = document.getElementById('tituloNoticia').value.trim();
+        const cuerpo = document.getElementById('cuerpoNoticia').value.trim();
+
+        if (!titulo || !cuerpo) {
+            alert("Debes llenar título y mensaje.");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Emitiendo Circular...`;
+
+        try {
+            const url = `${CONFIG.URL_GAS}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}&nocache=${Date.now()}`;
+            const res = await fetch(url);
+            const data = await res.json();
+
+            if (data.success) {
+                alert("¡Comunicado guardado y publicado en cartelera con éxito!");
+                document.getElementById('noticiaForm').reset();
+                document.getElementById('formNotificacion').classList.remove('active');
+                cargarAsistenciasYNoticias(); // Recargar para mostrar la nueva noticia
+            } else {
+                alert("Error del servidor: " + (data.message || "Desconocido"));
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Error de comunicación con el servidor. Verifica tu conexión y la URL del GAS.");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publicar en Cartelera Real`;
+        }
+    }
+
+    // Helper para evitar inyección XSS
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Inicialización al cargar la página
+    cargarAsistenciasYNoticias();
 </script>
 </body>
 </html>
