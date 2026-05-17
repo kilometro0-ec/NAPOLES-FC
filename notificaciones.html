@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- IMPORTACIÓN DEL CONFIG DE LA RAÍZ -->
+    <script src="config.js"></script>
+
     <style>
         :root {
             --primary-color: #0d47a1;
@@ -58,7 +61,6 @@
             padding: 0 15px;
         }
 
-        /* PANEL DE NOTICIAS DE LA INAUGURACIÓN */
         .noticias-mini-panel {
             background: linear-gradient(135deg, #fffde7, #fff9c4);
             border-left: 5px solid var(--secondary-color);
@@ -103,7 +105,6 @@
             white-space: pre-line;
         }
 
-        /* CUADRO DE MULTA DINÁMICA DE INASISTENCIA */
         .multa-live-box {
             background-color: #fdf2f2;
             border: 1px solid #f8b4b4;
@@ -134,7 +135,6 @@
             border-radius: 4px;
         }
 
-        /* FORMULARIO DE NOTIFICACIONES MINIMIZADO */
         .admin-action-zone {
             margin-bottom: 20px;
         }
@@ -216,7 +216,6 @@
             gap: 8px;
         }
 
-        /* ANIMACIÓN DE CARGA */
         .loading-box {
             display: block;
             text-align: center;
@@ -234,12 +233,11 @@
             margin: 0 auto 10px auto;
         }
 
-        /* TARJETA PRINCIPAL DE CONFIRMADOS */
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15 rgba(0,0,0,0.08);
             margin-bottom: 20px;
         }
 
@@ -282,8 +280,10 @@
         }
 
         .table-responsive {
+            width: 100%;
             overflow-x: auto;
             margin-top: 15px;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
@@ -304,26 +304,16 @@
         }
 
         @media (max-width: 600px) {
-            .resumen-asistencias { 
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
             table {
                 font-size: 11px;
-                table-layout: fixed; /* Evita desbordamiento rígido */
+                table-layout: fixed;
             }
 
             th, td {
                 padding: 8px 4px;
                 white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis; /* Puntos suspensivos si el nombre es demasiado largo */
-            }
-
-            .table-responsive {
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
+                text-overflow: ellipsis;
             }
         }
 
@@ -342,23 +332,15 @@
 
     <div class="container">
 
-        <!-- COMPONENTE: MINIPANEL DE NOTICIAS (CONVOCATORIA BASE) -->
+        <!-- COMPONENTE: MINIPANEL DE NOTICIAS -->
         <div class="noticias-mini-panel" id="panelNoticias">
             <div class="icon-box">
                 <i class="fa-solid fa-bullhorn"></i>
             </div>
             <div class="noticias-content">
-                <h4 id="lblTituloAlerta">⚽ GRAN INAUGURACIÓN - ATENCIÓN JUGADORES ⚽</h4>
+                <h4 id="lblTituloAlerta">Cargando última notificación...</h4>
                 <div class="convocatoria-texto" id="txtConvocatoria">
-                    Se les informa que la gran inauguración de fútbol de la Liga Santa Rita se realizará el día:
-                    📅 17 de mayo
-                    
-                    🕤 Hora: 9:30 a.m.
-                    ⏰ Deben asistir 15 minutes antes (9:15 a.m.)
-                    
-                    Su presencia es muy importante para el inicio de este gran evento deportivo.
-                    
-                    ❗ La multa por inasistencia será dividida entre todos los jugadores que no asistan.
+                    Por favor, espere...
                 </div>
             </div>
         </div>
@@ -434,11 +416,7 @@
 
     </div>
 
-    <!-- SCRIPT DE SINCRONIZACIÓN Y PARSEO (JSONP COMPATIBLE) -->
     <script>
-        const URL_BACKEND = "https://script.google.com/macros/s/AKfycbwPzNIsrL3f82VvOymS8kFvE-y2G_u2r4bM1M9l_r3n6Yy6p7fLg/exec"; 
-
-        // Función utilitaria para sanitizar texto e impedir ataques XSS en la inyección de nombres
         function escapeHTML(str) {
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
@@ -452,17 +430,21 @@
             solicitarDatosAsistencias();
         };
 
-        // 1. OBTENER JUGADORES DESDE EL BACKEND (JSONP)
+        // 1. OBTENER JUGADORES Y LA ÚLTIMA NOTIFICACIÓN DESDE EL BACKEND
         function solicitarDatosAsistencias() {
             document.getElementById('loader').style.display = 'block';
             const callbackName = "cbProcesarDatos";
 
-            // Limpieza preventiva si existía un script previo para evitar colisiones
             document.getElementById("script_jsonp_get")?.remove();
 
             window[callbackName] = function(response) {
                 if (response && response.success) {
                     actualizarDatosDesdeSheet(response.datos);
+                    // Colocar última notificación guardada en la Base de Datos
+                    if(response.ultimaNotificacion) {
+                        document.getElementById('lblTituloAlerta').innerText = response.ultimaNotificacion.titulo;
+                        document.getElementById('txtConvocatoria').innerText = response.ultimaNotificacion.cuerpo;
+                    }
                 } else {
                     alert("Error al cargar los datos del servidor.");
                     document.getElementById('loader').style.display = 'none';
@@ -473,11 +455,11 @@
 
             const script = document.createElement("script");
             script.id = "script_jsonp_get";
-            script.src = `${URL_BACKEND}?action=getJugadoresRaw&callback=${callbackName}&nocache=${Date.now()}`;
+            script.src = `${DairyConfig.URL_BACKEND}?action=getJugadoresRaw&callback=${callbackName}&nocache=${Date.now()}`;
             document.body.appendChild(script);
         }
 
-        // 2. RENDERIZADO Y PROCESAMIENTO DINÁMICO DE FILAS
+        // 2. RENDERIZADO DINÁMICO DE JUGADORES (Mapeado exacto a tus columnas de Google Sheet)
         function actualizarDatosDesdeSheet(filas) {
             let respuestas = 0;
             let asistiran = 0;
@@ -491,8 +473,8 @@
             }
 
             filas.forEach(fila => {
-                // Validación de que la fila posea el formato correcto mínimo antes de parsear
-                if (fila && fila.length > 3) {
+                // fila[1] = Primer Nombre, fila[3] = Apellidos, fila[17] = Dorsal, fila[29] = Inauguración (Columna AD)
+                if (fila && fila.length >= 30) {
                     let nombreCompleto = ((fila[1] || '') + " " + (fila[3] || '')).trim();
                     let dorsal = fila[17] || "S/N";
                     let celdaInauguracion = fila[29] ? fila[29].toString().trim() : "";
@@ -501,7 +483,7 @@
                         respuestas++;
                         let badge = celdaInauguracion;
 
-                        if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asistiré")) {
+                        if (celdaInauguracion.includes("1️⃣") || celdaInauguracion.toLowerCase().includes("asistiré") || celdaInauguracion.toLowerCase().includes("asistire")) {
                             asistiran++;
                             badge = "🟢 " + celdaInauguracion;
                         } else if (celdaInauguracion.includes("2️⃣") || celdaInauguracion.toLowerCase().includes("representante")) {
@@ -522,12 +504,11 @@
 
             document.getElementById('tablaConfirmadosBody').innerHTML = tablaHTML || "<tr><td colspan='3'>Ningún jugador ha confirmado aún.</td></tr>";
             
-            // Actualización de indicadores visuales
             document.getElementById('numTotal').innerText = respuestas;
             document.getElementById('numAsistiran').innerText = asistiran;
             document.getElementById('numRepresentante').innerText = representantes;
 
-            // FÓRMULA DE CALCULO DE LA MULTA LIVE COOPERATIVA
+            // Cálculo de multa dinámica
             let confirmadosEfectivos = asistiran + representantes;
             let multaBase = 190.00;
             let multaCalculada = multaBase - (confirmadosEfectivos * 2.00);
@@ -537,7 +518,7 @@
             document.getElementById('loader').style.display = 'none';
         }
 
-        // 3. ENVÍO DE NUEVAS ALERTAS / NOTIFICACIONES AL SPREADSHEET (JSONP)
+        // 3. ENVIAR NUEVA NOTIFICACIÓN POR JSONP
         function enviarNotificacion() {
             const btn = document.getElementById('btnPublicar');
             const titulo = document.getElementById('tituloNoticia').value.trim();
@@ -552,14 +533,12 @@
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando Alerta...`;
 
             const callbackName = "cbProcesarEnvio";
-            
             document.getElementById("script_jsonp_post")?.remove();
 
             window[callbackName] = function(response) {
                 if (response && response.success) {
-                    alert("¡Notificación publicada exitosamente en la columna P!");
+                    alert("¡Notificación publicada exitosamente en Google Sheets!");
                     
-                    // Actualización local de la interfaz para feedback inmediato del usuario
                     document.getElementById('lblTituloAlerta').innerText = titulo;
                     document.getElementById('txtConvocatoria').innerText = cuerpo;
                     
@@ -567,7 +546,7 @@
                     document.getElementById('cuerpoNoticia').value = "";
                     toggleFormNotificacion();
                 } else {
-                    alert("Error al intentar guardar la notificación.");
+                    alert("Error al intentar guardar la notificación: " + (response.message || ''));
                 }
 
                 btn.disabled = false;
@@ -577,7 +556,7 @@
                 document.getElementById("script_jsonp_post")?.remove();
             };
 
-            const urlFinal = `${URL_BACKEND}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}&callback=${callbackName}`;
+            const urlFinal = `${DairyConfig.URL_BACKEND}?action=publicarNotificacion&titulo=${encodeURIComponent(titulo)}&cuerpo=${encodeURIComponent(cuerpo)}&callback=${callbackName}`;
 
             const script = document.createElement("script");
             script.id = "script_jsonp_post";
