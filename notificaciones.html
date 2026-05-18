@@ -280,117 +280,67 @@ body{
 
 <div class="inauguracion-container">
 
-<div id="notificacion-resumen"
-class="alerta-notificacion-sport loading-pulse">
-
-<span class="alerta-icon">⏳</span>
-
-<div class="alerta-cuerpo">
-<strong class="alerta-titulo">Sincronizando:</strong>
-<span id="txt-alerta-mensaje">
-Conectando con Google Sheets...
-</span>
-</div>
-
+<div id="notificacion-resumen" class="alerta-notificacion-sport loading-pulse">
+  <span class="alerta-icon">⏳</span>
+  <div class="alerta-cuerpo">
+    <strong class="alerta-titulo">Sincronizando:</strong>
+    <span id="txt-alerta-mensaje">Conectando con Google Sheets...</span>
+  </div>
 </div>
 
 <div class="asistencia-card">
 
-<div class="card-header-sport">
+  <div class="card-header-sport">
+    <div class="sport-badge">📌 CONTROL OFICIAL</div>
+    <h3>Inauguración Nápoles F.C.</h3>
+    <p class="sub-date">Sistema en Tiempo Real</p>
+  </div>
 
-<div class="sport-badge">
-📌 CONTROL OFICIAL
-</div>
+  <div class="card-body-metrics">
+    <div class="metric-featured">
+      <span class="metric-label">TOTAL RESPUESTAS</span>
+      <h1 id="txt-total-global">0</h1>
+      <p class="metric-desc">Jugadores confirmados</p>
+    </div>
 
-<h3>Inauguración Nápoles F.C.</h3>
+    <div class="metrics-grid-split">
+      <div class="metric-box box-green">
+        <div class="icon-wrap">🏃</div>
+        <div>
+          <div class="box-qty" id="txt-van-jugadores">0</div>
+          <div class="box-label">Asisten</div>
+        </div>
+      </div>
 
-<p class="sub-date">
-Sistema en Tiempo Real
-</p>
+      <div class="metric-box box-amber">
+        <div class="icon-wrap">🤝</div>
+        <div>
+          <div class="box-qty" id="txt-van-delegados">0</div>
+          <div class="box-label">Representantes</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-</div>
+  <div class="cuadro-multa-club">
+    <span class="m-monto-total" id="txt-saldo-multa-club">$0.00</span>
+    <span class="m-label-total">Calculando multas...</span>
+  </div>
 
-<div class="card-body-metrics">
+  <div class="progress-container-club">
+    <div class="progress-labels">
+      <span>Progreso General</span>
+      <span id="txt-porcentaje-progreso">0%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div id="bar-progreso-llenado" class="progress-bar-fill"></div>
+    </div>
+  </div>
 
-<div class="metric-featured">
-
-<span class="metric-label">
-TOTAL RESPUESTAS
-</span>
-
-<h1 id="txt-total-global">0</h1>
-
-<p class="metric-desc">
-Jugadores confirmados
-</p>
-
-</div>
-
-<div class="metrics-grid-split">
-
-<div class="metric-box box-green">
-
-<div class="icon-wrap">🏃</div>
-
-<div>
-<div class="box-qty" id="txt-van-jugadores">0</div>
-<div class="box-label">Asisten</div>
-</div>
-
-</div>
-
-<div class="metric-box box-amber">
-
-<div class="icon-wrap">🤝</div>
-
-<div>
-<div class="box-qty" id="txt-van-delegados">0</div>
-<div class="box-label">Representantes</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="cuadro-multa-club">
-
-<span class="m-monto-total"
-id="txt-saldo-multa-club">$0.00</span>
-
-<span class="m-label-total">
-Calculando multas...
-</span>
-
-</div>
-
-<div class="progress-container-club">
-
-<div class="progress-labels">
-
-<span>Progreso General</span>
-
-<span id="txt-porcentaje-progreso">0%</span>
-
-</div>
-
-<div class="progress-bar-bg">
-
-<div id="bar-progreso-llenado"
-class="progress-bar-fill"></div>
-
-</div>
-
-</div>
-
-<div class="lista-confirmados">
-
-<h4>Jugadores Confirmados</h4>
-
-<div id="listaJugadores"></div>
-
-</div>
+  <div class="lista-confirmados">
+    <h4>Jugadores Confirmados</h4>
+    <div id="listaJugadores"></div>
+  </div>
 
 </div>
 
@@ -399,7 +349,6 @@ class="progress-bar-fill"></div>
 <script src="config.js"></script>
 
 <script>
-
 const API_URL = CONFIG.URL_GAS;
 
 /*
@@ -407,341 +356,167 @@ const API_URL = CONFIG.URL_GAS;
 TOTAL REAL DE JUGADORES
 ========================================
 */
-
 const TOTAL_PLANTILLA = 22;
 
-window.addEventListener(
-"DOMContentLoaded",
-() => {
-
+window.addEventListener("DOMContentLoaded", () => {
   cargarDatosInauguracion();
 
   /*
-  AUTO REFRESH
+  AUTO REFRESH (Cada 30 segundos)
   */
-
   setInterval(() => {
     cargarDatosInauguracion();
   }, 30000);
+});
 
-}
-);
+async function cargarDatosInauguracion() {
+  try {
+    const response = await fetch(`${API_URL}?action=getConfirmadosInauguracion&nocache=${Date.now()}`);
+    const data = await response.json();
 
-async function cargarDatosInauguracion(){
+    console.log("Datos recibidos de Apps Script:", data);
 
-try{
-
-const response =
-await fetch(
-`${API_URL}?action=getConfirmadosInauguracion&nocache=${Date.now()}`
-);
-
-const data = await response.json();
-
-console.log(data);
-
-if(data.success){
-
-actualizarInterfazDashboard(data);
-
-}else{
-
-mostrarErrorUI(
-data.message || "Error"
-);
-
+    if (data.success) {
+      actualizarInterfazDashboard(data);
+    } else {
+      mostrarErrorUI(data.message || "Error al leer la estructura de datos.");
+    }
+  } catch (error) {
+    console.error("Error capturado:", error);
+    mostrarErrorUI("No se pudo conectar con Apps Script o procesar los datos");
+  }
 }
 
-}catch(error){
+function actualizarInterfazDashboard(json) {
+  // Corrección en mapeo: El script de Google devuelve 'resumen'
+  const resumen = json.resumen || {};
 
-console.error(error);
+  const totalAsisten = resumen.asistiran || 0;
+  const totalRepresentantes = resumen.representante || 0;
+  // El total global responde a la suma de las confirmaciones procesadas con éxito
+  const totalGlobal = totalAsisten + totalRepresentantes;
 
-mostrarErrorUI(
-"No se pudo conectar con Apps Script"
-);
+  /*
+  ========================================
+  CONTADORES INTERFAZ
+  ========================================
+  */
+  document.getElementById("txt-total-global").innerText = totalGlobal;
+  document.getElementById("txt-van-jugadores").innerText = totalAsisten;
+  document.getElementById("txt-van-delegados").innerText = totalRepresentantes;
 
+  /*
+  ========================================
+  JUGADORES FALTANTES
+  ========================================
+  */
+  const sinResponder = Math.max(TOTAL_PLANTILLA - totalGlobal, 0);
+
+  /*
+  ========================================
+  CÁLCULO DINÁMICO DE MULTAS
+  ========================================
+  */
+  const multaBase = TOTAL_PLANTILLA * 10;
+  const descuentoConfirmados = totalGlobal * 2;
+  const multaActual = Math.max(multaBase - descuentoConfirmados, 0);
+  const multaPorFaltar = sinResponder > 0 ? (multaActual / sinResponder) : 0;
+
+  /*
+  ========================================
+  RENDERIZAR VALORES DE MULTA
+  ========================================
+  */
+  document.getElementById("txt-saldo-multa-club").innerText = "$" + multaActual.toFixed(2);
+
+  document.querySelector(".m-label-total").innerHTML = `
+    Faltan <strong>${sinResponder}</strong> jugadores por responder
+    <br><br>
+    Valor de la multa a pagar dividido para los jugadores que faltaron a la inauguración:
+    <br><br>
+    <strong style="color:#e74c3c; font-size:16px;">$${multaPorFaltar.toFixed(2)}</strong>
+  `;
+
+  /*
+  ========================================
+  BARRA DE PROGRESO
+  ========================================
+  */
+  const porcentaje = Math.min(Math.round((totalGlobal / TOTAL_PLANTILLA) * 100), 100);
+  document.getElementById("txt-porcentaje-progreso").innerText = porcentaje + "%";
+  document.getElementById("bar-progreso-llenado").style.width = porcentaje + "%";
+
+  /*
+  ========================================
+  ALERTA E INFORME SUPERIOR
+  ========================================
+  */
+  const notifBox = document.getElementById("notificacion-resumen");
+  notifBox.classList.remove("loading-pulse");
+  const alertaTxt = document.getElementById("txt-alerta-mensaje");
+
+  if (sinResponder > 0) {
+    notifBox.classList.remove("completado");
+    notifBox.querySelector(".alerta-icon").innerText = "📢";
+    alertaTxt.innerHTML = `Faltan <strong>${sinResponder}</strong> jugadores por responder.`;
+  } else {
+    notifBox.classList.add("completado");
+    notifBox.querySelector(".alerta-icon").innerText = "✅";
+    alertaTxt.innerHTML = `<strong>¡Todos confirmaron asistencia!</strong>`;
+  }
+
+  // Se pasa 'json.datos' que contiene el array de filas directo desde Google Sheets
+  renderizarJugadores(json.datos || []);
 }
 
+function renderizarJugadores(matrizFilas) {
+  const contenedor = document.getElementById("listaJugadores");
+
+  // Omitimos cabecera (fila 0) y limpiamos filas inactivas o vacías
+  const listaFiltrada = matrizFilas.slice(1).filter(fila => fila[4] && fila[1].toString().trim() !== "");
+
+  if (listaFiltrada.length === 0) {
+    contenedor.innerHTML = `
+      <div style="text-align:center; padding:20px; color:#888;">
+        No existen respuestas aún
+      </div>
+    `;
+    return;
+  }
+
+  // Mapeamos dinámicamente las columnas de la hoja de cálculo
+  contenedor.innerHTML = listaFiltrada.map(fila => {
+    const nombreCompleto = (fila[1] || "") + " " + (fila[3] || "");
+    const respuestaInauguracion = fila[29] ? fila[29].toString().trim() : "";
+    
+    // Si no tiene respuesta de asistencia registrada, no se muestra en el muro de confirmados
+    if (!respuestaInauguracion) return "";
+
+    const esRepresentante = respuestaInauguracion.includes("2️⃣") || respuestaInauguracion.toLowerCase().includes("representante");
+    const estadoBadge = esRepresentante 
+      ? `<span class="estado-rep">REPRESENTANTE</span>` 
+      : `<span class="estado-ok">CONFIRMADO</span>`;
+
+    return `
+      <div class="jugador-row">
+        <div>
+          <div style="font-weight:700;">${nombreCompleto}</div>
+          <div style="font-size:12px; color:#888;">Categoría Activa</div>
+        </div>
+        ${estadoBadge}
+      </div>
+    `;
+  }).join("");
 }
 
-function actualizarInterfazDashboard(json){
-
-const resumen = json.conteo || {};
-
-const totalGlobal = resumen.total || 0;
-const totalAsisten = resumen.asistiran || 0;
-const totalRepresentantes = resumen.representante || 0;
-
-/*
-========================================
-CONTADORES
-========================================
-*/
-
-document.getElementById(
-"txt-total-global"
-).innerText = totalGlobal;
-
-document.getElementById(
-"txt-van-jugadores"
-).innerText = totalAsisten;
-
-document.getElementById(
-"txt-van-delegados"
-).innerText = totalRepresentantes;
-
-/*
-========================================
-JUGADORES FALTANTES
-========================================
-*/
-
-const sinResponder =
-Math.max(
-TOTAL_PLANTILLA - totalGlobal,
-0
-);
-
-/*
-========================================
-MULTA BASE
-22 jugadores x $10
-========================================
-*/
-
-const multaBase =
-TOTAL_PLANTILLA * 10;
-
-/*
-========================================
-DESCUENTO
-Cada confirmación reduce $2
-========================================
-*/
-
-const descuentoConfirmados =
-totalGlobal * 2;
-
-/*
-========================================
-MULTA ACTUAL
-========================================
-*/
-
-const multaActual =
-Math.max(
-multaBase - descuentoConfirmados,
-0
-);
-
-/*
-========================================
-MULTA POR JUGADOR
-========================================
-*/
-
-const multaPorFaltar =
-sinResponder > 0
-? (multaActual / sinResponder)
-: 0;
-
-/*
-========================================
-MOSTRAR TOTAL
-========================================
-*/
-
-document.getElementById(
-"txt-saldo-multa-club"
-).innerText =
-"$" + multaActual.toFixed(2);
-
-/*
-========================================
-DETALLE ABAJO
-========================================
-*/
-
-document.querySelector(
-".m-label-total"
-).innerHTML =
-`
-Faltan <strong>${sinResponder}</strong> jugadores por responder
-<br><br>
-
-Valor de la multa a pagar dividido para los jugadores que faltaron a la inauguración:
-
-<br><br>
-
-<strong style="
-color:#e74c3c;
-font-size:16px;">
-$${multaPorFaltar.toFixed(2)}
-</strong>
-`;
-
-/*
-========================================
-PROGRESO
-========================================
-*/
-
-const porcentaje =
-Math.min(
-Math.round(
-(totalGlobal / TOTAL_PLANTILLA) * 100
-),
-100
-);
-
-document.getElementById(
-"txt-porcentaje-progreso"
-).innerText =
-porcentaje + "%";
-
-document.getElementById(
-"bar-progreso-llenado"
-).style.width =
-porcentaje + "%";
-
-/*
-========================================
-ALERTA SUPERIOR
-========================================
-*/
-
-const notifBox =
-document.getElementById(
-"notificacion-resumen"
-);
-
-notifBox.classList.remove(
-"loading-pulse"
-);
-
-const alertaTxt =
-document.getElementById(
-"txt-alerta-mensaje"
-);
-
-if(sinResponder > 0){
-
-notifBox.classList.remove(
-"completado"
-);
-
-notifBox.querySelector(
-".alerta-icon"
-).innerText = "📢";
-
-alertaTxt.innerHTML =
-`Faltan <strong>${sinResponder}</strong> jugadores por responder.`;
-
-}else{
-
-notifBox.classList.add(
-"completado"
-);
-
-notifBox.querySelector(
-".alerta-icon"
-).innerText = "✅";
-
-alertaTxt.innerHTML =
-`<strong>Todos confirmaron asistencia.</strong>`;
-
+function mostrarErrorUI(mensaje) {
+  const notifBox = document.getElementById("notificacion-resumen");
+  notifBox.classList.remove("loading-pulse");
+  notifBox.style.background = "rgba(231,76,60,.1)";
+  notifBox.style.borderLeft = "4px solid #e74c3c";
+  notifBox.querySelector(".alerta-icon").innerText = "❌";
+  document.getElementById("txt-alerta-mensaje").innerText = mensaje;
 }
-
-renderizarJugadores(
-json.jugadores || []
-);
-
-}
-
-function renderizarJugadores(lista){
-
-const contenedor =
-document.getElementById(
-"listaJugadores"
-);
-
-if(lista.length === 0){
-
-contenedor.innerHTML =
-`
-<div style="
-text-align:center;
-padding:20px;
-color:#888;">
-No existen respuestas aún
-</div>
-`;
-
-return;
-
-}
-
-contenedor.innerHTML =
-lista.map(j => {
-
-const estado =
-j.respuesta.includes("Representante")
-?
-`<span class="estado-rep">REPRESENTANTE</span>`
-:
-`<span class="estado-ok">CONFIRMADO</span>`;
-
-return `
-<div class="jugador-row">
-
-<div>
-<div style="font-weight:700;">
-${j.nombre}
-</div>
-
-<div style="
-font-size:12px;
-color:#888;">
-${j.categoria}
-</div>
-</div>
-
-${estado}
-
-</div>
-`;
-
-}).join("");
-
-}
-
-function mostrarErrorUI(mensaje){
-
-const notifBox =
-document.getElementById(
-"notificacion-resumen"
-);
-
-notifBox.classList.remove(
-"loading-pulse"
-);
-
-notifBox.style.background =
-"rgba(231,76,60,.1)";
-
-notifBox.style.borderLeft =
-"4px solid #e74c3c";
-
-notifBox.querySelector(
-".alerta-icon"
-).innerText = "❌";
-
-document.getElementById(
-"txt-alerta-mensaje"
-).innerText = mensaje;
-
-}
-
 </script>
 
 </body>
