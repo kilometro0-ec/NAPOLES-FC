@@ -417,7 +417,7 @@ function actualizarInterfazDashboard(json) {
   CÁLCULO DINÁMICO DE MULTAS
   ========================================
   */
-  const multaBase = TOTAL_PLANTILLA * 10;
+  const multaBase = TOTAL_PLANTILLA * 5;
   const descuentoConfirmados = totalGlobal * 2;
   const multaActual = Math.max(multaBase - descuentoConfirmados, 0);
   const multaPorFaltar = sinResponder > 0 ? (multaActual / sinResponder) : 0;
